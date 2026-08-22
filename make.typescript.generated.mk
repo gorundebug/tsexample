@@ -140,7 +140,7 @@ $(TYPESCRIPT_BUF):
 	@mkdir -p "$(TOOLS_DIR)"
 	@$(TYPESCRIPT_PROGRESS) "Download buf $(TYPESCRIPT_BUF_VERSION)" \
 		curl --fail --location --silent --show-error \
-		"https://github.com/bufbuild/buf/releases/download/$(TYPESCRIPT_BUF_VERSION)/buf-$(OS)-$(ARCH)" \
+		"$(SERVICEGEN_GITHUB_RAW_URL)/bufbuild/buf/releases/download/$(TYPESCRIPT_BUF_VERSION)/buf-$(OS)-$(ARCH)" \
 		-o "$(TYPESCRIPT_BUF)"
 	@chmod +x "$(TYPESCRIPT_BUF)"
 

@@ -3,12 +3,14 @@ MODULE_DIR := $(abspath .)
 TOOLS_DIR ?= $(MODULE_DIR)/tools
 PNPM ?= env CI=true corepack pnpm
 PROGRESS := ./scripts/run-with-progress.generated.sh
+SERVICEGEN_GITHUB_RAW_URL ?= https://github.com
 ifneq ($(strip $(SERVICEGEN_DEPENDENCY_PROXY_DIR)),)
 SERVICEGEN_DEPENDENCY_PROXY_HOST ?= localhost
 SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST ?= host.docker.internal
 SERVICEGEN_DEPENDENCY_PROXY_PORT ?= 18081
 SERVICEGEN_DEPENDENCY_PROXY_DOCKER_ARGS := --add-host host.docker.internal:host-gateway
 export NPM_CONFIG_REGISTRY := http://$(SERVICEGEN_DEPENDENCY_PROXY_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/npm-proxy/
+export SERVICEGEN_GITHUB_RAW_URL := http://$(SERVICEGEN_DEPENDENCY_PROXY_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/github-raw
 docker-build: export NPM_CONFIG_REGISTRY := http://$(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/npm-proxy/
 endif
 BUF_VERSION := v1.47.2
@@ -49,6 +51,6 @@ $(BUF):
 	@mkdir -p "$(TOOLS_DIR)"
 	@$(PROGRESS) "Download buf $(BUF_VERSION)" \
 		curl --fail --location --silent --show-error \
-		"https://github.com/bufbuild/buf/releases/download/$(BUF_VERSION)/buf-$(OS)-$(ARCH)" \
+		"$(SERVICEGEN_GITHUB_RAW_URL)/bufbuild/buf/releases/download/$(BUF_VERSION)/buf-$(OS)-$(ARCH)" \
 		-o "$(BUF)"
 	@chmod +x "$(BUF)"

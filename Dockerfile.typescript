@@ -7,7 +7,20 @@ ENV CI=true \
 RUN corepack enable
 WORKDIR /workspace
 COPY . .
-COPY --from=tsservicelib-source . /workspace/.tsservicelib
+COPY --from=tsservicelib-source . /tmp/tsservicelib-source
+RUN source_dir=/tmp/tsservicelib-source; \
+    if [ -f "$source_dir/context" ]; then \
+      mkdir -p /tmp/tsservicelib-archive; \
+      tar -xf "$source_dir/context" -C /tmp/tsservicelib-archive; \
+      source_dir=/tmp/tsservicelib-archive; \
+    fi; \
+    if [ ! -f "$source_dir/package.json" ]; then \
+      source_dir=$(find "$source_dir" -mindepth 1 -maxdepth 1 -type d | head -n 1); \
+    fi; \
+    test -n "$source_dir" && test -f "$source_dir/package.json"; \
+    mkdir -p /workspace/.tsservicelib; \
+    cp -a "$source_dir/." /workspace/.tsservicelib/; \
+    rm -rf /tmp/tsservicelib-source
 RUN sed -i '/^allowBuilds:/i\  - ".tsservicelib"' pnpm-workspace.yaml \
     && printf '\noverrides:\n  "@gorundebug/tsservicelib": "workspace:*"\n' >> pnpm-workspace.yaml
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \

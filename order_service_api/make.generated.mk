@@ -3,12 +3,14 @@ MODULE_DIR := $(abspath .)
 TOOLS_DIR ?= $(MODULE_DIR)/tools
 PNPM ?= env CI=true corepack pnpm
 PROGRESS := ./scripts/run-with-progress.generated.sh
+SERVICEGEN_GITHUB_RAW_URL ?= https://github.com
 ifneq ($(strip $(SERVICEGEN_DEPENDENCY_PROXY_DIR)),)
 SERVICEGEN_DEPENDENCY_PROXY_HOST ?= localhost
 SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST ?= host.docker.internal
 SERVICEGEN_DEPENDENCY_PROXY_PORT ?= 18081
 SERVICEGEN_DEPENDENCY_PROXY_DOCKER_ARGS := --add-host host.docker.internal:host-gateway
 export NPM_CONFIG_REGISTRY := http://$(SERVICEGEN_DEPENDENCY_PROXY_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/npm-proxy/
+export SERVICEGEN_GITHUB_RAW_URL := http://$(SERVICEGEN_DEPENDENCY_PROXY_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/github-raw
 docker-build: export NPM_CONFIG_REGISTRY := http://$(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/npm-proxy/
 endif
 
