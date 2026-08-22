@@ -1,0 +1,350 @@
+{
+   "panels": [
+      {
+         "collapsed": false,
+         "gridPos": {
+            "h": 1,
+            "w": 0,
+            "x": 0,
+            "y": 0
+         },
+         "id": 1,
+         "panels": [ ],
+         "title": "Connections",
+         "type": "row"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "unit": "short"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 1
+         },
+         "id": 2,
+         "pluginVersion": "v11.0.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "kafka_client_brokers{job=~\"$job\"}",
+               "intervalFactor": 2,
+               "legendFormat": "{{role}} known"
+            },
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "kafka_client_brokers_up{job=~\"$job\"}",
+               "intervalFactor": 2,
+               "legendFormat": "{{role}} connected"
+            }
+         ],
+         "title": "Known and Connected Brokers",
+         "type": "timeseries"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "unit": "short"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 1
+         },
+         "id": 3,
+         "pluginVersion": "v11.0.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "kafka_client_consumer_lag{job=~\"$job\",role=\"consumer\"}",
+               "intervalFactor": 2,
+               "legendFormat": "{{job}}"
+            }
+         ],
+         "title": "Consumer Lag",
+         "type": "timeseries"
+      },
+      {
+         "collapsed": false,
+         "gridPos": {
+            "h": 1,
+            "w": 0,
+            "x": 24,
+            "y": 9
+         },
+         "id": 4,
+         "panels": [ ],
+         "title": "Queues",
+         "type": "row"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "unit": "short"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 10
+         },
+         "id": 5,
+         "pluginVersion": "v11.0.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "kafka_client_messages_queued{job=~\"$job\"}",
+               "intervalFactor": 2,
+               "legendFormat": "{{role}} messages"
+            },
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "kafka_client_reply_queue_messages{job=~\"$job\"}",
+               "intervalFactor": 2,
+               "legendFormat": "{{role}} replies"
+            }
+         ],
+         "title": "Queued Messages and Replies",
+         "type": "timeseries"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "unit": "bytes"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 10
+         },
+         "id": 6,
+         "pluginVersion": "v11.0.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "kafka_client_message_bytes_queued{job=~\"$job\"}",
+               "intervalFactor": 2,
+               "legendFormat": "{{role}}"
+            }
+         ],
+         "title": "Queued Message Bytes",
+         "type": "timeseries"
+      },
+      {
+         "collapsed": false,
+         "gridPos": {
+            "h": 1,
+            "w": 0,
+            "x": 24,
+            "y": 18
+         },
+         "id": 7,
+         "panels": [ ],
+         "title": "Traffic",
+         "type": "row"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "unit": "Bps"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 19
+         },
+         "id": 8,
+         "pluginVersion": "v11.0.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "rate(kafka_client_bytes_sent{job=~\"$job\"}[$__rate_interval])",
+               "intervalFactor": 2,
+               "legendFormat": "{{role}} sent"
+            },
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "rate(kafka_client_bytes_received{job=~\"$job\"}[$__rate_interval])",
+               "intervalFactor": 2,
+               "legendFormat": "{{role}} received"
+            }
+         ],
+         "title": "Network Throughput",
+         "type": "timeseries"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "unit": "ops"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 19
+         },
+         "id": 9,
+         "pluginVersion": "v11.0.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "rate(kafka_client_requests_sent{job=~\"$job\"}[$__rate_interval])",
+               "intervalFactor": 2,
+               "legendFormat": "{{role}} requests"
+            },
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "rate(kafka_client_responses_received{job=~\"$job\"}[$__rate_interval])",
+               "intervalFactor": 2,
+               "legendFormat": "{{role}} responses"
+            }
+         ],
+         "title": "Kafka Requests and Responses",
+         "type": "timeseries"
+      },
+      {
+         "datasource": {
+            "type": "datasource",
+            "uid": "-- Mixed --"
+         },
+         "fieldConfig": {
+            "defaults": {
+               "unit": "ops"
+            }
+         },
+         "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 27
+         },
+         "id": 10,
+         "pluginVersion": "v11.0.0",
+         "targets": [
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "rate(kafka_client_messages_sent{job=~\"$job\"}[$__rate_interval])",
+               "intervalFactor": 2,
+               "legendFormat": "{{role}} sent"
+            },
+            {
+               "datasource": {
+                  "type": "prometheus",
+                  "uid": "$datasource"
+               },
+               "expr": "rate(kafka_client_messages_received{job=~\"$job\"}[$__rate_interval])",
+               "intervalFactor": 2,
+               "legendFormat": "{{role}} received"
+            }
+         ],
+         "title": "Messages Sent and Received",
+         "type": "timeseries"
+      }
+   ],
+   "refresh": "30s",
+   "schemaVersion": 39,
+   "tags": [
+      "servicelib",
+      "kafka",
+      "librdkafka",
+      "typescript"
+   ],
+   "templating": {
+      "list": [
+         {
+            "label": "Datasource",
+            "name": "datasource",
+            "query": "prometheus",
+            "type": "datasource"
+         },
+         {
+            "datasource": {
+               "type": "prometheus",
+               "uid": "$datasource"
+            },
+            "includeAll": false,
+            "label": "Job",
+            "multi": false,
+            "name": "job",
+            "query": "label_values(kafka_client_brokers, job)",
+            "regex": "inventoryservice",
+            "type": "query"
+         }
+      ]
+   },
+   "time": {
+      "from": "now-1h",
+      "to": "now"
+   },
+   "timezone": "browser",
+   "title": "inventoryservice / Kafka Client (librdkafka)",
+   "uid": "inventoryservice-kafka-client"
+}

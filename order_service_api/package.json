@@ -1,0 +1,23 @@
+{
+  "name": "@gorundebug/order-service-api",
+  "version": "0.2.5",
+  "type": "module",
+  "engines": { "node": "24.19.0" },
+  "packageManager": "pnpm@11.18.0",
+  "exports": { ".": { "types": "./dist/index.generated.d.ts", "import": "./dist/index.generated.js" } },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc --build",
+    "test": "tsc --build && node --test test/*.test.generated.mjs"
+  },
+  "dependencies": {
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "prettier": "3.9.6",
+    "@hey-api/openapi-ts": "0.99.0",
+    "openapi-typescript": "7.13.0",
+    "@types/node": "24.13.3",
+    "typescript": "6.0.3"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@gorundebug/inventory-service-api",
+  "version": "0.2.5",
+  "type": "module",
+  "engines": { "node": "24.19.0" },
+  "packageManager": "pnpm@11.18.0",
+  "exports": { ".": { "types": "./dist/index.generated.d.ts", "import": "./dist/index.generated.js" } },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc --build",
+    "test": "tsc --build && node --test test/*.test.generated.mjs"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "2.14.0"
+  },
+  "devDependencies": {
+    "prettier": "3.9.6",
+    "@bufbuild/protoc-gen-es": "2.14.0",
+    "@types/node": "24.13.3",
+    "typescript": "6.0.3"
+  }
+}

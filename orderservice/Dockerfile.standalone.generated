@@ -1,0 +1,37 @@
+# syntax=docker/dockerfile:1.7
+FROM node:24.19.0-bookworm-slim AS development
+ARG TARGETARCH
+ARG NPM_CONFIG_REGISTRY=https://registry.npmjs.org/
+ENV CI=true \
+    NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY}
+RUN corepack enable
+WORKDIR /workspace
+COPY package*.json ./
+RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
+    corepack pnpm config set store-dir /pnpm/store \
+    && if [ -f package.standalone.generated.json ]; then \
+         cp package.standalone.generated.json package.json; \
+       fi \
+    && if [ -f pnpm-lock.yaml ]; then \
+         corepack pnpm install --frozen-lockfile; \
+       else \
+         corepack pnpm install; \
+       fi
+COPY . .
+
+ENTRYPOINT ["scripts/run-service.generated.sh", "src/main.generated.ts"]
+
+FROM development AS builder
+RUN corepack pnpm build && corepack pnpm prune --prod
+
+FROM node:24.19.0-bookworm-slim AS runtime
+ENV NODE_ENV=production
+WORKDIR /app
+RUN mkdir -p /tmp/node-diagnostics && chown node:node /tmp/node-diagnostics
+COPY --from=builder /workspace/package.json ./
+COPY --from=builder /workspace/node_modules ./node_modules
+COPY --from=builder /workspace/dist ./dist
+COPY --from=builder /workspace/config ./config
+COPY --from=builder /workspace/scripts/node-diagnostics.generated.mjs ./scripts/node-diagnostics.generated.mjs
+USER node
+ENTRYPOINT ["node", "--enable-source-maps", "--report-on-fatalerror", "--report-on-signal", "--report-signal=SIGUSR1", "--report-directory=/tmp/node-diagnostics", "--diagnostic-dir=/tmp/node-diagnostics", "--import=/app/scripts/node-diagnostics.generated.mjs", "dist/main.generated.js"]

@@ -1,0 +1,20 @@
+# syntax=docker/dockerfile:1.7
+FROM node:24.19.0-bookworm-slim AS test
+ARG TARGETARCH
+ARG NPM_CONFIG_REGISTRY=https://registry.npmjs.org/
+ENV CI=true \
+    NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY}
+RUN corepack enable && corepack prepare pnpm@11.18.0 --activate
+WORKDIR /workspace
+COPY package.json ./
+RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
+    corepack pnpm config set store-dir /pnpm/store \
+    && corepack pnpm install --no-frozen-lockfile --ignore-scripts
+COPY . .
+RUN corepack pnpm test
+
+FROM scratch AS package
+COPY --from=test /workspace/LICENSE /LICENSE
+COPY --from=test /workspace/README.md /README.md
+COPY --from=test /workspace/package.json /package.json
+COPY --from=test /workspace/dist /dist

@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./inventory_service_api" },
+    { "path": "./model" },
+    { "path": "./order_service_api" },
+    { "path": "./analyticsservice" },
+    { "path": "./inventoryservice" },
+    { "path": "./orderservice" },
+  ]
+}

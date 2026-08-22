@@ -1,0 +1,12 @@
+packages:
+  - "analyticsservice"
+  - "inventoryservice"
+  - "orderservice"
+  - "inventory_service_api"
+  - "model"
+  - "order_service_api"
+
+allowBuilds:
+  '@confluentinc/kafka-javascript': true
+  esbuild: true
+  protobufjs: false

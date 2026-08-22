@@ -1,0 +1,40 @@
+services:
+  analyticsservice:
+    image: analyticsservice-typescript:latest
+    build:
+      target: runtime-analyticsservice
+    command: ["--config", "/app/config/config.yaml", "--values", "/app/config/docker_overrides.yaml"]
+    environment:
+      - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
+    volumes: !reset []
+    security_opt: !reset []
+    cap_add: !reset []
+    ports: !override
+      - "9093:9093"
+      - "9203:9203"
+  inventoryservice:
+    image: inventoryservice-typescript:latest
+    build:
+      target: runtime-inventoryservice
+    command: ["--config", "/app/config/config.yaml", "--values", "/app/config/docker_overrides.yaml"]
+    environment:
+      - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
+    volumes: !reset []
+    security_opt: !reset []
+    cap_add: !reset []
+    ports: !override
+      - "9092:9092"
+      - "9202:9202"
+  orderservice:
+    image: orderservice-typescript:latest
+    build:
+      target: runtime-orderservice
+    command: ["--config", "/app/config/config.yaml", "--values", "/app/config/docker_overrides.yaml"]
+    environment:
+      - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
+    volumes: !reset []
+    security_opt: !reset []
+    cap_add: !reset []
+    ports: !override
+      - "9091:9091"
+      - "9201:9201"

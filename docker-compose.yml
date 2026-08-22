@@ -1,0 +1,188 @@
+services:
+  analyticsservice:
+    image: example-typescript-development:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.typescript
+      target: ${SERVICEGEN_DOCKER_TARGET:-development}
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      args:
+        NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
+      additional_contexts:
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.5}"
+    command:
+      - /workspace/analyticsservice/scripts/run-service.generated.sh
+      - /workspace/analyticsservice/src/main.generated.ts
+      - --config
+      - /workspace/analyticsservice/config/config.yaml
+      - --values
+      - /workspace/analyticsservice/config/docker_overrides.yaml
+    volumes:
+      - .:/workspace
+      - /workspace/.tsservicelib
+      - /workspace/node_modules
+      - /workspace/analyticsservice/node_modules
+      - /workspace/inventoryservice/node_modules
+      - /workspace/orderservice/node_modules
+      - /workspace/inventory_service_api/node_modules
+      - /workspace/model/node_modules
+      - /workspace/order_service_api/node_modules
+    restart: unless-stopped
+    environment:
+      - DEBUG=${ANALYTICS_SERVICE_DEBUG:-0}
+      - NODE_DIAGNOSTIC_DIR=/workspace/.artifacts/node-diagnostics/analyticsservice
+    ports:
+      - "9093:9093"
+      - "9203:9203"
+      - "2345:2345"
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+      - SYS_PTRACE
+    networks:
+      - app_net
+
+  inventoryservice:
+    image: example-typescript-development:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.typescript
+      target: ${SERVICEGEN_DOCKER_TARGET:-development}
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      args:
+        NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
+      additional_contexts:
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.5}"
+    command:
+      - /workspace/inventoryservice/scripts/run-service.generated.sh
+      - /workspace/inventoryservice/src/main.generated.ts
+      - --config
+      - /workspace/inventoryservice/config/config.yaml
+      - --values
+      - /workspace/inventoryservice/config/docker_overrides.yaml
+    volumes:
+      - .:/workspace
+      - /workspace/.tsservicelib
+      - /workspace/node_modules
+      - /workspace/analyticsservice/node_modules
+      - /workspace/inventoryservice/node_modules
+      - /workspace/orderservice/node_modules
+      - /workspace/inventory_service_api/node_modules
+      - /workspace/model/node_modules
+      - /workspace/order_service_api/node_modules
+    restart: unless-stopped
+    environment:
+      - DEBUG=${INVENTORY_SERVICE_DEBUG:-0}
+      - NODE_DIAGNOSTIC_DIR=/workspace/.artifacts/node-diagnostics/inventoryservice
+    ports:
+      - "9092:9092"
+      - "9202:9202"
+      - "2346:2345"
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+      - SYS_PTRACE
+    networks:
+      - app_net
+
+  orderservice:
+    image: example-typescript-development:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.typescript
+      target: ${SERVICEGEN_DOCKER_TARGET:-development}
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      args:
+        NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
+      additional_contexts:
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.5}"
+    command:
+      - /workspace/orderservice/scripts/run-service.generated.sh
+      - /workspace/orderservice/src/main.generated.ts
+      - --config
+      - /workspace/orderservice/config/config.yaml
+      - --values
+      - /workspace/orderservice/config/docker_overrides.yaml
+    volumes:
+      - .:/workspace
+      - /workspace/.tsservicelib
+      - /workspace/node_modules
+      - /workspace/analyticsservice/node_modules
+      - /workspace/inventoryservice/node_modules
+      - /workspace/orderservice/node_modules
+      - /workspace/inventory_service_api/node_modules
+      - /workspace/model/node_modules
+      - /workspace/order_service_api/node_modules
+    restart: unless-stopped
+    environment:
+      - DEBUG=${ORDER_SERVICE_DEBUG:-0}
+      - NODE_DIAGNOSTIC_DIR=/workspace/.artifacts/node-diagnostics/orderservice
+    ports:
+      - "9091:9091"
+      - "9201:9201"
+      - "2347:2345"
+    depends_on:
+      - analyticsservice
+      - inventoryservice
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+      - SYS_PTRACE
+    networks:
+      - app_net
+
+
+  redpanda:
+    image: redpandadata/redpanda:v24.2.5
+    restart: unless-stopped
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp=1
+      - --memory=512M
+      - --reserve-memory=0M
+      - --node-id=0
+      - --check=false
+      - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:19092
+      - --advertise-kafka-addr=internal://redpanda:9092,external://localhost:19092
+    ports:
+      - "${REDPANDA_PORT:-19092}:19092"
+    networks:
+      - app_net
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - app_net
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./analyticsservice/grafana/dist:/etc/grafana/dashboards/analyticsservice:ro
+      - ./inventoryservice/grafana/dist:/etc/grafana/dashboards/inventoryservice:ro
+      - ./orderservice/grafana/dist:/etc/grafana/dashboards/orderservice:ro
+    networks:
+      - app_net
+
+networks:
+  app_net:
+    driver: bridge
+
+volumes:
+  grafana_data:

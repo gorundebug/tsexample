@@ -1,0 +1,69 @@
+# syntax=docker/dockerfile:1.7
+FROM node:24.19.0-bookworm-slim AS development
+ARG TARGETARCH
+ARG NPM_CONFIG_REGISTRY=https://registry.npmjs.org/
+ENV CI=true \
+    NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY}
+RUN corepack enable
+WORKDIR /workspace
+COPY . .
+COPY --from=tsservicelib-source . /workspace/.tsservicelib
+RUN sed -i '/^allowBuilds:/i\  - ".tsservicelib"' pnpm-workspace.yaml \
+    && printf '\noverrides:\n  "@gorundebug/tsservicelib": "workspace:*"\n' >> pnpm-workspace.yaml
+RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
+    corepack pnpm config set store-dir /pnpm/store \
+    && corepack pnpm install --no-frozen-lockfile \
+    && corepack pnpm --recursive build
+
+FROM development AS deploy-analyticsservice
+RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
+    corepack pnpm --filter @gorundebug/tsexample-analyticsservice deploy --prod --legacy /deploy/analyticsservice \
+    && rm -f /deploy/analyticsservice/node_modules/@gorundebug/tsservicelib \
+    && mkdir -p /deploy/analyticsservice/node_modules/@gorundebug/tsservicelib \
+    && cp /workspace/.tsservicelib/package.json /workspace/.tsservicelib/LICENSE \
+      /deploy/analyticsservice/node_modules/@gorundebug/tsservicelib/ \
+    && cp -R /workspace/.tsservicelib/dist \
+      /deploy/analyticsservice/node_modules/@gorundebug/tsservicelib/dist
+
+FROM development AS deploy-inventoryservice
+RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
+    corepack pnpm --filter @gorundebug/tsexample-inventoryservice deploy --prod --legacy /deploy/inventoryservice \
+    && rm -f /deploy/inventoryservice/node_modules/@gorundebug/tsservicelib \
+    && mkdir -p /deploy/inventoryservice/node_modules/@gorundebug/tsservicelib \
+    && cp /workspace/.tsservicelib/package.json /workspace/.tsservicelib/LICENSE \
+      /deploy/inventoryservice/node_modules/@gorundebug/tsservicelib/ \
+    && cp -R /workspace/.tsservicelib/dist \
+      /deploy/inventoryservice/node_modules/@gorundebug/tsservicelib/dist
+
+FROM development AS deploy-orderservice
+RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
+    corepack pnpm --filter @gorundebug/tsexample-orderservice deploy --prod --legacy /deploy/orderservice \
+    && rm -f /deploy/orderservice/node_modules/@gorundebug/tsservicelib \
+    && mkdir -p /deploy/orderservice/node_modules/@gorundebug/tsservicelib \
+    && cp /workspace/.tsservicelib/package.json /workspace/.tsservicelib/LICENSE \
+      /deploy/orderservice/node_modules/@gorundebug/tsservicelib/ \
+    && cp -R /workspace/.tsservicelib/dist \
+      /deploy/orderservice/node_modules/@gorundebug/tsservicelib/dist
+
+FROM node:24.19.0-bookworm-slim AS runtime-base
+ENV NODE_ENV=production
+WORKDIR /app
+RUN mkdir -p /tmp/node-diagnostics && chown node:node /tmp/node-diagnostics
+
+FROM runtime-base AS runtime-analyticsservice
+COPY --from=deploy-analyticsservice /deploy/analyticsservice /app
+COPY --from=development /workspace/analyticsservice/scripts/node-diagnostics.generated.mjs /app/scripts/node-diagnostics.generated.mjs
+USER node
+ENTRYPOINT ["node", "--enable-source-maps", "--report-on-fatalerror", "--report-on-signal", "--report-signal=SIGUSR1", "--report-directory=/tmp/node-diagnostics", "--diagnostic-dir=/tmp/node-diagnostics", "--import=/app/scripts/node-diagnostics.generated.mjs", "dist/main.generated.js"]
+
+FROM runtime-base AS runtime-inventoryservice
+COPY --from=deploy-inventoryservice /deploy/inventoryservice /app
+COPY --from=development /workspace/inventoryservice/scripts/node-diagnostics.generated.mjs /app/scripts/node-diagnostics.generated.mjs
+USER node
+ENTRYPOINT ["node", "--enable-source-maps", "--report-on-fatalerror", "--report-on-signal", "--report-signal=SIGUSR1", "--report-directory=/tmp/node-diagnostics", "--diagnostic-dir=/tmp/node-diagnostics", "--import=/app/scripts/node-diagnostics.generated.mjs", "dist/main.generated.js"]
+
+FROM runtime-base AS runtime-orderservice
+COPY --from=deploy-orderservice /deploy/orderservice /app
+COPY --from=development /workspace/orderservice/scripts/node-diagnostics.generated.mjs /app/scripts/node-diagnostics.generated.mjs
+USER node
+ENTRYPOINT ["node", "--enable-source-maps", "--report-on-fatalerror", "--report-on-signal", "--report-signal=SIGUSR1", "--report-directory=/tmp/node-diagnostics", "--diagnostic-dir=/tmp/node-diagnostics", "--import=/app/scripts/node-diagnostics.generated.mjs", "dist/main.generated.js"]

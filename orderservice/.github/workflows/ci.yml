@@ -1,0 +1,70 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  quality:
+    strategy:
+      matrix:
+        node: [24.19.0, 26]
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+      - name: Enable the pinned package manager
+        run: corepack enable && corepack prepare pnpm@11.18.0 --activate
+      - name: Install dependencies
+        run: |
+          if [ -f pnpm-lock.yaml ]; then
+            corepack pnpm install --frozen-lockfile
+          else
+            corepack pnpm install
+          fi
+      - name: Typecheck and lint
+        run: make lint
+      - name: Test
+        run: make test
+
+  image:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the production image
+        run: make docker-build RUNTIME_IMAGE=1
+
+  supply-chain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: pnpm
+      - run: corepack enable && corepack prepare pnpm@11.18.0 --activate
+      - run: corepack pnpm install --frozen-lockfile
+      - name: Record production dependency licenses
+        run: mkdir -p .artifacts/security && corepack pnpm licenses list --prod --json > .artifacts/security/dependency-licenses.json
+      - name: Generate SPDX SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          path: .
+          format: spdx-json
+          output-file: .artifacts/security/sbom.spdx.json
+      - name: Enforce the high-severity vulnerability policy
+        run: corepack pnpm audit --prod --audit-level high
+      - name: Upload supply-chain evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: typescript-service-supply-chain
+          path: .artifacts/security

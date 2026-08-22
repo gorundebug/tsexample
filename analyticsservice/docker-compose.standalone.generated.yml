@@ -1,0 +1,19 @@
+services:
+  analyticsservice:
+    build:
+      context: .
+      dockerfile: Dockerfile.standalone.generated
+      target: ${SERVICEGEN_DOCKER_TARGET:-development}
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      args:
+        NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
+    image: analyticsservice-typescript:latest
+    command: ["--config", "config/config.yaml", "--values", "config/docker_overrides.yaml"]
+    environment:
+      - DEBUG=${DEBUG:-0}
+      - NODE_DIAGNOSTIC_DIR=/workspace/.artifacts/node-diagnostics
+    ports:
+      - "9093:9093"
+      - "9203:9203"
+      - "2345:2345"
