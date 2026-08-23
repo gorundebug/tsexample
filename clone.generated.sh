@@ -19,13 +19,13 @@ clone_if_missing() {
 }
 
 echo "==> Cloning services..."
-clone_if_missing "analyticsservice" "https://github.com/gorundebug/tsexample-analyticsservice.git" "v0.2.10"
-clone_if_missing "inventoryservice" "https://github.com/gorundebug/tsexample-inventoryservice.git" "v0.2.10"
-clone_if_missing "orderservice" "https://github.com/gorundebug/tsexample-orderservice.git" "v0.2.10"
+clone_if_missing "analyticsservice" "https://github.com/gorundebug/tsexample-analyticsservice.git" "v0.2.11"
+clone_if_missing "inventoryservice" "https://github.com/gorundebug/tsexample-inventoryservice.git" "v0.2.11"
+clone_if_missing "orderservice" "https://github.com/gorundebug/tsexample-orderservice.git" "v0.2.11"
 
 echo "==> Cloning modules..."
-clone_if_missing "inventory_service_api" "https://github.com/gorundebug/tsexample-inventory-service-api.git" "v0.2.10"
-clone_if_missing "model" "https://github.com/gorundebug/tsexample-model.git" "v0.2.10"
-clone_if_missing "order_service_api" "https://github.com/gorundebug/tsexample-order-service-api.git" "v0.2.10"
+clone_if_missing "inventory_service_api" "https://github.com/gorundebug/tsexample-inventory-service-api.git" "v0.2.11"
+clone_if_missing "model" "https://github.com/gorundebug/tsexample-model.git" "v0.2.11"
+clone_if_missing "order_service_api" "https://github.com/gorundebug/tsexample-order-service-api.git" "v0.2.11"
 
 echo "==> Done."

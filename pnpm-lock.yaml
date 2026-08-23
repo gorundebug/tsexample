@@ -82,7 +82,7 @@ importers:
         specifier: workspace:*
         version: link:../model
       '@gorundebug/tsservicelib':
-        specifier: github:gorundebug/tsservicelib#v0.2.10
+        specifier: github:gorundebug/tsservicelib#v0.2.11
         version: https://codeload.github.com/gorundebug/tsservicelib/tar.gz/87318df5173fdf3676f17696bfa74af90d636485(supports-color@10.2.2)
     devDependencies:
       '@types/node':
@@ -123,7 +123,7 @@ importers:
         specifier: workspace:*
         version: link:../model
       '@gorundebug/tsservicelib':
-        specifier: github:gorundebug/tsservicelib#v0.2.10
+        specifier: github:gorundebug/tsservicelib#v0.2.11
         version: https://codeload.github.com/gorundebug/tsservicelib/tar.gz/87318df5173fdf3676f17696bfa74af90d636485(supports-color@10.2.2)
     devDependencies:
       '@types/node':
@@ -182,7 +182,7 @@ importers:
         specifier: workspace:*
         version: link:../order_service_api
       '@gorundebug/tsservicelib':
-        specifier: github:gorundebug/tsservicelib#v0.2.10
+        specifier: github:gorundebug/tsservicelib#v0.2.11
         version: https://codeload.github.com/gorundebug/tsservicelib/tar.gz/87318df5173fdf3676f17696bfa74af90d636485(supports-color@10.2.2)
     devDependencies:
       '@types/node':
