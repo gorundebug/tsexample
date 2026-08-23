@@ -10,7 +10,7 @@ services:
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.7}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.8}"
     command:
       - /workspace/analyticsservice/scripts/run-service.generated.sh
       - /workspace/analyticsservice/src/main.generated.ts
@@ -54,7 +54,7 @@ services:
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.7}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.8}"
     command:
       - /workspace/inventoryservice/scripts/run-service.generated.sh
       - /workspace/inventoryservice/src/main.generated.ts
@@ -98,7 +98,7 @@ services:
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.7}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.8}"
     command:
       - /workspace/orderservice/scripts/run-service.generated.sh
       - /workspace/orderservice/src/main.generated.ts
