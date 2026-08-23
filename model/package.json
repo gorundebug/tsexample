@@ -1,6 +1,6 @@
 {
   "name": "@gorundebug/model",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "type": "module",
   "engines": { "node": "24.19.0" },
   "packageManager": "pnpm@11.18.0",
