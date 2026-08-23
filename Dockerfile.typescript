@@ -16,7 +16,8 @@ RUN set -eu; \
       tar -xf "$archive" -C /tmp/tsservicelib-archive; \
       source_dir=/tmp/tsservicelib-archive; \
     fi; \
-    manifest=$(find "$source_dir" -mindepth 1 -maxdepth 2 -type f -name package.json -print -quit); \
+    manifest="$source_dir/package.json"; \
+    if [ ! -f "$manifest" ]; then manifest=$(find "$source_dir" -mindepth 2 -maxdepth 2 -type f -name package.json -print -quit); fi; \
     if [ -z "$manifest" ]; then echo "tsservicelib source context has no package.json" >&2; exit 1; fi; \
     source_dir=${manifest%/package.json}; \
     if [ -z "$source_dir" ] || [ "$source_dir" = "/" ]; then echo "unsafe tsservicelib source directory" >&2; exit 1; fi; \
