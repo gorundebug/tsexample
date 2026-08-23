@@ -16,6 +16,7 @@ LANG_FMT_TARGETS += typescript-format
 LANG_GEN_TARGETS += typescript-gen
 LANG_CLEAN_TARGETS += typescript-clean
 LANG_DOCKER_BUILD_TARGETS += typescript-docker-build
+LANG_HOST_PREP_TARGETS += typescript-gen typescript-tools
 DOCKER_COMPOSE_RUNTIME_FILES += docker-compose.typescript-runtime.generated.yml
 LANG_TOOL_TARGETS += typescript-tools
 
