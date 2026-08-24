@@ -341,7 +341,7 @@ const DEFAULT_CONFIG = {
       "activityStartToCloseTimeout": 30000,
       "callSemantics": 6,
       "from": 1,
-      "idDataConnector": 5,
+      "idDataConnector": 2,
       "maximumAttempts": 3,
       "taskQueue": "automation-durable-calls",
       "to": 6,
