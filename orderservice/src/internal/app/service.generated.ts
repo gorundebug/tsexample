@@ -8,7 +8,8 @@ import {
   errorFromUnknown,
   float32SerdeType, float64SerdeType,
   int8SerdeType, int16SerdeType, int32SerdeType, int64SerdeType, intSerdeType,
-  makeDefaultSerdeRegistry, makeStreamSerde, runeSerdeType, stringSerdeType,
+  makeDefaultSerdeRegistry, makeStreamSerde, runeSerdeType,
+  stringSerdeType,
   uint8SerdeType, uint16SerdeType, uint32SerdeType, uint64SerdeType, uintSerdeType,
 } from "@gorundebug/tsservicelib/runtime";
 import {
@@ -27,7 +28,7 @@ import { InventoryServiceApi } from "@gorundebug/inventory-service-api";
 import type { Order, OrderState } from "../types/index.generated.js";
 import type { OrderItem, OrderItemResult, OrderProcessed } from "@gorundebug/model";
 import { Config } from "../config/config.js";
-import { ServiceIds, StreamIds } from "../config/config.generated.js";
+import { DataConnectorIds, ServiceIds, StreamIds } from "../config/config.generated.js";
 import {
   MapOrderItemResultToOrderState, makeMapOrderItemResultToOrderState,
   MapToOrderProcessed, makeMapToOrderProcessed,
@@ -156,6 +157,10 @@ function initClients() {
 
 export type ServiceClients = ReturnType<typeof initClients>;
 
+function initRuntimeConnectors(environment: ServiceEnvironment): void {
+  void environment;
+}
+
 function initStreams(
   config: Config,
   environment: ServiceEnvironment,
@@ -253,6 +258,7 @@ export abstract class ServiceGenerated {
     this.clients = initClients();
     this.functions = initFunctions(messageContext, config, environment, this.makers);
     this.customFunctionsInit(messageContext);
+    initRuntimeConnectors(environment);
     this.streams = initStreams(config, environment, this.functions);
     const bindings = initDataConnectors(this.streams, this.functions, this.clients);
     this.dataConnectors = bindings.dataConnectors;

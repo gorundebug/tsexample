@@ -132,51 +132,51 @@ export interface NamedConfig {
 
 interface DefaultConfig {
   readonly services: {
-    readonly orderService: ServiceConfigDocument;
+    readonly "orderService": ServiceConfigDocument;
   };
   readonly streams: {
-    readonly mapOrderItemResultToOrderState: MapStreamConfigDocument;
-    readonly mapToOrderProcessed: MapStreamConfigDocument;
-    readonly mapToOrderState: MapStreamConfigDocument;
-    readonly mergeResults: MergeStreamConfigDocument;
-    readonly processOrder: InputStreamConfigDocument;
-    readonly processOrderItem: SinkStreamConfigDocument;
-    readonly processOrderItems: FlatMapStreamConfigDocument;
-    readonly publishOrderProcessed: SinkStreamConfigDocument;
-    readonly softDeadline: DelayStreamConfigDocument;
-    readonly splitOrderResult: SplitStreamConfigDocument;
-    readonly splitPipeline: SplitStreamConfigDocument;
+    readonly "mapOrderItemResultToOrderState": MapStreamConfigDocument;
+    readonly "mapToOrderProcessed": MapStreamConfigDocument;
+    readonly "mapToOrderState": MapStreamConfigDocument;
+    readonly "mergeResults": MergeStreamConfigDocument;
+    readonly "processOrder": InputStreamConfigDocument;
+    readonly "processOrderItem": SinkStreamConfigDocument;
+    readonly "processOrderItems": FlatMapStreamConfigDocument;
+    readonly "publishOrderProcessed": SinkStreamConfigDocument;
+    readonly "softDeadline": DelayStreamConfigDocument;
+    readonly "splitOrderResult": SplitStreamConfigDocument;
+    readonly "splitPipeline": SplitStreamConfigDocument;
   };
   readonly dataConnectors: {
-    readonly inventoryServiceApi: GrpcDataConnectorConfigDocument;
-    readonly orderEvents: KafkaDataConnectorConfigDocument;
-    readonly orderServiceApi: HttpDataConnectorConfigDocument;
+    readonly "inventoryServiceApi": GrpcDataConnectorConfigDocument;
+    readonly "orderEvents": KafkaDataConnectorConfigDocument;
+    readonly "orderServiceApi": HttpDataConnectorConfigDocument;
   };
   readonly endpoints: {
-    readonly orderProcessed: KafkaEndpointConfigDocument;
-    readonly processOrder: HttpEndpointConfigDocument;
-    readonly processOrderItem: GrpcEndpointConfigDocument;
+    readonly "orderProcessed": KafkaEndpointConfigDocument;
+    readonly "processOrder": HttpEndpointConfigDocument;
+    readonly "processOrderItem": GrpcEndpointConfigDocument;
   };
   readonly pools: {
-    readonly defaultPool: PoolConfigDocument;
+    readonly "defaultPool": PoolConfigDocument;
   };
   readonly links: {
-    readonly mergeResultsToSplitOrderResult: LinkConfigDocument;
-    readonly processOrderToSplitPipeline: LinkConfigDocument;
-    readonly splitPipelineToProcessOrderItems: LinkConfigDocument;
-    readonly splitPipelineToSoftDeadline: LinkConfigDocument;
+    readonly "mergeResultsToSplitOrderResult": LinkConfigDocument;
+    readonly "processOrderToSplitPipeline": LinkConfigDocument;
+    readonly "splitPipelineToProcessOrderItems": LinkConfigDocument;
+    readonly "splitPipelineToSoftDeadline": LinkConfigDocument;
   };
   readonly modules: {
-    readonly inventoryServiceApi: ModuleConfigDocument;
-    readonly model: ModuleConfigDocument;
-    readonly orderServiceApi: ModuleConfigDocument;
+    readonly "inventoryServiceApi": ModuleConfigDocument;
+    readonly "model": ModuleConfigDocument;
+    readonly "orderServiceApi": ModuleConfigDocument;
   };
   readonly types: {
-    readonly order: TypeConfigDocument;
-    readonly orderItem: TypeConfigDocument;
-    readonly orderItemResult: TypeConfigDocument;
-    readonly orderProcessed: TypeConfigDocument;
-    readonly orderState: TypeConfigDocument;
+    readonly "order": TypeConfigDocument;
+    readonly "orderItem": TypeConfigDocument;
+    readonly "orderItemResult": TypeConfigDocument;
+    readonly "orderProcessed": TypeConfigDocument;
+    readonly "orderState": TypeConfigDocument;
   };
 }
 

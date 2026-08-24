@@ -71,29 +71,29 @@ export interface NamedConfig {
 
 interface DefaultConfig {
   readonly services: {
-    readonly analyticsService: ServiceConfigDocument;
+    readonly "analyticsService": ServiceConfigDocument;
   };
   readonly streams: {
-    readonly consumeOrderProcessed: InputStreamConfigDocument;
-    readonly countOrderProcessed: ProcessStreamConfigDocument;
+    readonly "consumeOrderProcessed": InputStreamConfigDocument;
+    readonly "countOrderProcessed": ProcessStreamConfigDocument;
   };
   readonly dataConnectors: {
-    readonly orderEvents: KafkaDataConnectorConfigDocument;
+    readonly "orderEvents": KafkaDataConnectorConfigDocument;
   };
   readonly endpoints: {
-    readonly orderProcessed: KafkaEndpointConfigDocument;
+    readonly "orderProcessed": KafkaEndpointConfigDocument;
   };
   readonly pools: {
   };
   readonly links: {
   };
   readonly modules: {
-    readonly inventoryServiceApi: ModuleConfigDocument;
-    readonly model: ModuleConfigDocument;
-    readonly orderServiceApi: ModuleConfigDocument;
+    readonly "inventoryServiceApi": ModuleConfigDocument;
+    readonly "model": ModuleConfigDocument;
+    readonly "orderServiceApi": ModuleConfigDocument;
   };
   readonly types: {
-    readonly orderProcessed: TypeConfigDocument;
+    readonly "orderProcessed": TypeConfigDocument;
   };
 }
 

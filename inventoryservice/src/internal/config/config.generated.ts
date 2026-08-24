@@ -81,34 +81,34 @@ export interface NamedConfig {
 
 interface DefaultConfig {
   readonly services: {
-    readonly inventoryService: ServiceConfigDocument;
+    readonly "inventoryService": ServiceConfigDocument;
   };
   readonly streams: {
-    readonly getInventoryItemData: ProcessStreamConfigDocument;
-    readonly mergeInventoryResult: MergeStreamConfigDocument;
-    readonly processInventoryItem: InputStreamConfigDocument;
+    readonly "getInventoryItemData": ProcessStreamConfigDocument;
+    readonly "mergeInventoryResult": MergeStreamConfigDocument;
+    readonly "processInventoryItem": InputStreamConfigDocument;
   };
   readonly dataConnectors: {
-    readonly inventoryServiceApi: GrpcDataConnectorConfigDocument;
+    readonly "inventoryServiceApi": GrpcDataConnectorConfigDocument;
   };
   readonly endpoints: {
-    readonly processOrderItem: GrpcEndpointConfigDocument;
+    readonly "processOrderItem": GrpcEndpointConfigDocument;
   };
   readonly pools: {
-    readonly inventoryPriorityWorkers: PoolConfigDocument;
+    readonly "inventoryPriorityWorkers": PoolConfigDocument;
   };
   readonly links: {
-    readonly getInventoryItemDataToMergeInventoryResult: LinkConfigDocument;
-    readonly processInventoryItemToGetInventoryItemData: LinkConfigDocument;
+    readonly "getInventoryItemDataToMergeInventoryResult": LinkConfigDocument;
+    readonly "processInventoryItemToGetInventoryItemData": LinkConfigDocument;
   };
   readonly modules: {
-    readonly inventoryServiceApi: ModuleConfigDocument;
-    readonly model: ModuleConfigDocument;
-    readonly orderServiceApi: ModuleConfigDocument;
+    readonly "inventoryServiceApi": ModuleConfigDocument;
+    readonly "model": ModuleConfigDocument;
+    readonly "orderServiceApi": ModuleConfigDocument;
   };
   readonly types: {
-    readonly orderItem: TypeConfigDocument;
-    readonly orderItemResult: TypeConfigDocument;
+    readonly "orderItem": TypeConfigDocument;
+    readonly "orderItemResult": TypeConfigDocument;
   };
 }
 

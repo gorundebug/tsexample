@@ -5,6 +5,7 @@
     { "path": "./model" },
     { "path": "./order_service_api" },
     { "path": "./analyticsservice" },
+    { "path": "./automationservice" },
     { "path": "./inventoryservice" },
     { "path": "./orderservice" },
   ]

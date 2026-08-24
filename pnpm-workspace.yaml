@@ -1,5 +1,6 @@
 packages:
   - "analyticsservice"
+  - "automationservice"
   - "inventoryservice"
   - "orderservice"
   - "inventory_service_api"
@@ -8,5 +9,6 @@ packages:
 
 allowBuilds:
   '@confluentinc/kafka-javascript': true
+  '@swc/core': true
   esbuild: true
   protobufjs: false
