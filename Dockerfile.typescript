@@ -29,7 +29,8 @@ RUN sed -i '/^allowBuilds:/i\  - ".tsservicelib"' pnpm-workspace.yaml \
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
     corepack pnpm config set store-dir /pnpm/store \
     && corepack pnpm install --no-frozen-lockfile \
-    && corepack pnpm --recursive build
+    && corepack pnpm --filter @gorundebug/tsservicelib build \
+    && corepack pnpm --recursive --filter '!@gorundebug/tsservicelib' build
 
 FROM development AS deploy-analyticsservice
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
