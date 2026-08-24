@@ -38,6 +38,7 @@ order_service_api/tsconfig.json
 order_service_api/.dockerignore
 order_service_api/LICENSE
 order_service_api/Makefile
+analyticsservice/grafana/Dockerfile
 analyticsservice/grafana/dashboards/_lib.libsonnet
 analyticsservice/helm/Chart.yaml
 analyticsservice/helm/values.schema.json
@@ -56,6 +57,7 @@ analyticsservice/tsconfig.test.json
 analyticsservice/config/docker_overrides.yaml
 analyticsservice/LICENSE
 analyticsservice/.github/workflows/ci.yml
+automationservice/grafana/Dockerfile
 automationservice/grafana/dashboards/_lib.libsonnet
 automationservice/helm/Chart.yaml
 automationservice/helm/values.schema.json
@@ -74,6 +76,7 @@ automationservice/tsconfig.test.json
 automationservice/config/docker_overrides.yaml
 automationservice/LICENSE
 automationservice/.github/workflows/ci.yml
+inventoryservice/grafana/Dockerfile
 inventoryservice/grafana/dashboards/_lib.libsonnet
 inventoryservice/helm/Chart.yaml
 inventoryservice/helm/values.schema.json
@@ -92,6 +95,7 @@ inventoryservice/tsconfig.test.json
 inventoryservice/config/docker_overrides.yaml
 inventoryservice/LICENSE
 inventoryservice/.github/workflows/ci.yml
+orderservice/grafana/Dockerfile
 orderservice/grafana/dashboards/_lib.libsonnet
 orderservice/helm/Chart.yaml
 orderservice/helm/values.schema.json
