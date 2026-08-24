@@ -4,7 +4,7 @@
 
 | Field | Value |
 |-------|-------|
-| Language | `unknown` |
+| Language | `TypeScript` |
 | Kind | `map` |
 | File | `orderservice/src/internal/functions/map-order-item-result-to-order-state.ts` |
 | Test | `orderservice/test/functions/map-order-item-result-to-order-state.test.ts` |
@@ -26,10 +26,10 @@ Record the time when this result is produced.
 
 ## Checklist
 
-- [ ] Read [`spec/rules.md`](../rules.md), especially the `unknown` section
+- [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `orderservice/src/internal/functions/map-order-item-result-to-order-state.ts` and preserve its generated contract
 - [ ] Inspect input type `OrderItemResult` in `model/src/types/order-item-result.ts`
 - [ ] Inspect output type `OrderState` in `orderservice/src/internal/types/order-state.ts`
 - [ ] Implement meaningful assertions in `orderservice/test/functions/map-order-item-result-to-order-state.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] orderservice/task1.md — MapOrderItemResultToOrderState — unknown — done`
+- [ ] Append to `spec/progress.md`: `- [x] orderservice/task1.md — MapOrderItemResultToOrderState — TypeScript — done`

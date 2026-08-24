@@ -4,7 +4,7 @@
 
 | Field | Value |
 |-------|-------|
-| Language | `unknown` |
+| Language | `TypeScript` |
 | Kind | `map` |
 | File | `orderservice/src/internal/functions/map-to-order-processed.ts` |
 | Test | `orderservice/test/functions/map-to-order-processed.test.ts` |
@@ -25,10 +25,10 @@ Preserve the order ID, status, and processing time. Count all item results and r
 
 ## Checklist
 
-- [ ] Read [`spec/rules.md`](../rules.md), especially the `unknown` section
+- [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `orderservice/src/internal/functions/map-to-order-processed.ts` and preserve its generated contract
 - [ ] Inspect input type `OrderState` in `orderservice/src/internal/types/order-state.ts`
 - [ ] Inspect output type `OrderProcessed` in `model/src/types/order-processed.ts`
 - [ ] Implement meaningful assertions in `orderservice/test/functions/map-to-order-processed.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] orderservice/task2.md — MapToOrderProcessed — unknown — done`
+- [ ] Append to `spec/progress.md`: `- [x] orderservice/task2.md — MapToOrderProcessed — TypeScript — done`

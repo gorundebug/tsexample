@@ -4,7 +4,7 @@
 
 | Field | Value |
 |-------|-------|
-| Language | `unknown` |
+| Language | `TypeScript` |
 | Kind | `map` |
 | File | `orderservice/src/internal/functions/map-to-order-state.ts` |
 | Test | `orderservice/test/functions/map-to-order-state.test.ts` |
@@ -25,10 +25,10 @@ Do not add item results at this stage; results received before the timeout are i
 
 ## Checklist
 
-- [ ] Read [`spec/rules.md`](../rules.md), especially the `unknown` section
+- [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `orderservice/src/internal/functions/map-to-order-state.ts` and preserve its generated contract
 - [ ] Inspect input type `Order` in `orderservice/src/internal/types/order.ts`
 - [ ] Inspect output type `OrderState` in `orderservice/src/internal/types/order-state.ts`
 - [ ] Implement meaningful assertions in `orderservice/test/functions/map-to-order-state.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] orderservice/task3.md — MapToOrderState — unknown — done`
+- [ ] Append to `spec/progress.md`: `- [x] orderservice/task3.md — MapToOrderState — TypeScript — done`

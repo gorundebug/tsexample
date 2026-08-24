@@ -36,8 +36,10 @@ import { Config } from "../config/config.js";
 import { DataConnectorIds, ServiceIds, StreamIds } from "../config/config.generated.js";
 import {
   LocalJob, makeLocalJob,
+  LocalSchedule, makeLocalSchedule,
   ProcessDurableJob, makeProcessDurableJob,
   TemporalJob, makeTemporalJob,
+  TemporalSchedule, makeTemporalSchedule,
 } from "../functions/index.generated.js";
 
 function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
@@ -68,6 +70,11 @@ export interface ServiceMakers {
     environment: ServiceEnvironment,
     config: import("@gorundebug/tsservicelib/runtime").MapStreamConfig,
   ) => LocalJob;
+  localSchedule: (
+    context: MessageContext,
+    environment: ServiceEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime").CronEndpointConfig,
+  ) => LocalSchedule;
   processDurableJob: (
     context: MessageContext,
     environment: ServiceEnvironment,
@@ -78,13 +85,20 @@ export interface ServiceMakers {
     environment: ServiceEnvironment,
     config: import("@gorundebug/tsservicelib/runtime").MapStreamConfig,
   ) => TemporalJob;
+  temporalSchedule: (
+    context: MessageContext,
+    environment: ServiceEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime").TemporalEndpointConfig,
+  ) => TemporalSchedule;
 }
 
 function defaultMakers(): ServiceMakers {
   return {
     localJob: makeLocalJob,
+    localSchedule: makeLocalSchedule,
     processDurableJob: makeProcessDurableJob,
     temporalJob: makeTemporalJob,
+    temporalSchedule: makeTemporalSchedule,
   };
 }
 
@@ -96,8 +110,10 @@ function initFunctions(
 ) {
   return {
     localJob: makers.localJob(context, environment, config.named.streams.makeLocalJob),
+    localSchedule: makers.localSchedule(context, environment, config.named.endpoints.localSchedule),
     processDurableJob: makers.processDurableJob(context, environment, config.named.streams.processDurableJob),
     temporalJob: makers.temporalJob(context, environment, config.named.streams.makeTemporalJob),
+    temporalSchedule: makers.temporalSchedule(context, environment, config.named.endpoints.temporalSchedule),
   };
 }
 
@@ -148,8 +164,8 @@ function initDataConnectors(
   clients: ServiceClients,
 ) {
   const consumeDurableJob = makeTemporalEndpointConsumer(streams.consumeDurableJob);
-  const localSchedule = makeCronEndpointConsumer(streams.localSchedule);
-  const temporalSchedule = makeTemporalScheduleEndpointConsumer(streams.temporalSchedule);
+  const localSchedule = makeCronEndpointConsumer(streams.localSchedule, functions.localSchedule);
+  const temporalSchedule = makeTemporalScheduleEndpointConsumer(streams.temporalSchedule, functions.temporalSchedule);
   const submitDurableJob = makeTemporalSinkEndpointConsumer(streams.submitDurableJob);
   return {
     dataConnectors: {

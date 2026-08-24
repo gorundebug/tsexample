@@ -4,7 +4,7 @@
 
 | Field | Value |
 |-------|-------|
-| Language | `unknown` |
+| Language | `TypeScript` |
 | Kind | `process` |
 | File | `inventoryservice/src/internal/functions/get-inventory-item-data.ts` |
 | Test | `inventoryservice/test/functions/get-inventory-item-data.test.ts` |
@@ -27,10 +27,10 @@ The example starts with SKU-001: 100, SKU-002: 50, and SKU-003: 25.
 
 ## Checklist
 
-- [ ] Read [`spec/rules.md`](../rules.md), especially the `unknown` section
+- [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `inventoryservice/src/internal/functions/get-inventory-item-data.ts` and preserve its generated contract
 - [ ] Inspect input type `OrderItem` in `model/src/types/order-item.ts`
 - [ ] Inspect output type `OrderItemResult` in `model/src/types/order-item-result.ts`
 - [ ] Implement meaningful assertions in `inventoryservice/test/functions/get-inventory-item-data.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] inventoryservice/task1.md — GetInventoryItemData — unknown — done`
+- [ ] Append to `spec/progress.md`: `- [x] inventoryservice/task1.md — GetInventoryItemData — TypeScript — done`

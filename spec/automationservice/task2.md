@@ -1,29 +1,27 @@
-# Task 2/3: `ProcessDurableJob`
+# Task 2/5: `LocalSchedule`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
-| Language | `unknown` |
-| Kind | `map` |
-| File | `automationservice/src/internal/functions/process-durable-job.ts` |
-| Test | `automationservice/test/functions/process-durable-job.test.ts` |
+| Language | `TypeScript` |
+| Kind | `schedule-source` |
+| File | `automationservice/src/internal/functions/local-schedule.ts` |
+| Test | `automationservice/test/functions/local-schedule.test.ts` |
 | Service | `Automation Service` |
 
-
-## Behaviour
-
-Process one accepted automation job and return its result.
 
 
 
 
 ## Stream types
+- Input: `ScheduleTrigger`
+- Output: `ScheduleTrigger`
 
 ## Checklist
 
-- [ ] Read [`spec/rules.md`](../rules.md), especially the `unknown` section
-- [ ] Open `automationservice/src/internal/functions/process-durable-job.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/process-durable-job.test.ts`
+- [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
+- [ ] Open `automationservice/src/internal/functions/local-schedule.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/local-schedule.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task2.md — ProcessDurableJob — unknown — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task2.md — LocalSchedule — TypeScript — done`

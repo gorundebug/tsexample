@@ -1,10 +1,10 @@
-# Task 1/3: `LocalJob`
+# Task 1/5: `LocalJob`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
-| Language | `unknown` |
+| Language | `TypeScript` |
 | Kind | `map` |
 | File | `automationservice/src/internal/functions/local-job.ts` |
 | Test | `automationservice/test/functions/local-job.test.ts` |
@@ -23,8 +23,8 @@ Create a job message identifying the local scheduled firing.
 
 ## Checklist
 
-- [ ] Read [`spec/rules.md`](../rules.md), especially the `unknown` section
+- [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `automationservice/src/internal/functions/local-job.ts` and preserve its generated contract
 - [ ] Implement meaningful assertions in `automationservice/test/functions/local-job.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task1.md — LocalJob — unknown — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task1.md — LocalJob — TypeScript — done`

@@ -4,7 +4,7 @@
 
 | Field | Value |
 |-------|-------|
-| Language | `unknown` |
+| Language | `TypeScript` |
 | Kind | `http-source` |
 | File | `orderservice/src/internal/functions/process-order.ts` |
 | Test | `orderservice/test/functions/process-order.test.ts` |
@@ -25,8 +25,8 @@ Calculate the total from processed item prices, falling back to the submitted to
 | Field | Value |
 |-------|-------|
 | Format | `openapi` |
-| Request | `unknown` |
-| Response | `unknown` |
+| Request | `ProcessOrderRequest` |
+| Response | `ProcessOrderResponse` |
 
 
 ## Stream types
@@ -35,11 +35,11 @@ Calculate the total from processed item prices, falling back to the submitted to
 
 ## Checklist
 
-- [ ] Read [`spec/rules.md`](../rules.md), especially the `unknown` section
+- [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `orderservice/src/internal/functions/process-order.ts` and preserve its generated contract
 - [ ] Inspect input type `Order` in `orderservice/src/internal/types/order.ts`
 - [ ] Inspect output type `OrderState` in `orderservice/src/internal/types/order-state.ts`
 - [ ] Implement meaningful assertions in `orderservice/test/functions/process-order.test.ts`
 - [ ] Verify the endpoint/result lifecycle, including completion and error paths
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] orderservice/task5.md — ProcessOrder — unknown — done`
+- [ ] Append to `spec/progress.md`: `- [x] orderservice/task5.md — ProcessOrder — TypeScript — done`

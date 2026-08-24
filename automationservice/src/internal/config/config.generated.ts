@@ -309,6 +309,7 @@ const DEFAULT_CONFIG = {
     },
     "localSchedule": {
       "enabled": true,
+      "functionName": "LocalSchedule",
       "id": 1,
       "idDataConnector": 1,
       "missedRunPolicy": "FireOnce",
@@ -321,6 +322,7 @@ const DEFAULT_CONFIG = {
       "activityHeartbeatTimeout": 5000,
       "activityStartToCloseTimeout": 30000,
       "enabled": true,
+      "functionName": "TemporalSchedule",
       "id": 3,
       "idDataConnector": 2,
       "maximumAttempts": 3,

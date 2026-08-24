@@ -4,7 +4,7 @@
 
 | Field | Value |
 |-------|-------|
-| Language | `unknown` |
+| Language | `TypeScript` |
 | Kind | `kafka-source` |
 | File | `analyticsservice/src/internal/functions/order-processed-endpoint.ts` |
 | Test | `analyticsservice/test/functions/order-processed-endpoint.test.ts` |
@@ -26,10 +26,10 @@ Consumers decode the event and mark its Kafka message processed only after the p
 
 ## Checklist
 
-- [ ] Read [`spec/rules.md`](../rules.md), especially the `unknown` section
+- [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `analyticsservice/src/internal/functions/order-processed-endpoint.ts` and preserve its generated contract
 - [ ] Inspect input type `OrderProcessed` in `model/src/types/order-processed.ts`
 - [ ] Inspect output type `OrderProcessed` in `model/src/types/order-processed.ts`
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/order-processed-endpoint.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task2.md — OrderProcessedEndpoint — unknown — done`
+- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task2.md — OrderProcessedEndpoint — TypeScript — done`
