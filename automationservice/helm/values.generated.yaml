@@ -14,10 +14,15 @@ service:
   type: ClusterIP
   httpPort: 9094
   grpcPort: 9204
+  temporalSdkMetricsPort: 9464
 
 metrics:
   serviceMonitor:
     enabled: false
+    path: /metrics
+    interval: 5s
+  temporalSdk:
+    enabled: true
     path: /metrics
     interval: 5s
 
@@ -73,6 +78,7 @@ persistence:
 env:
   TEMPORAL_ADDRESS: "temporal-frontend:7233"
   NODE_DIAGNOSTIC_DIR: "/tmp/node-diagnostics"
+  TEMPORAL_SDK_METRICS_BIND_ADDRESS: "0.0.0.0:9464"
 
 args:
   - "--config"
