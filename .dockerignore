@@ -24,3 +24,5 @@ node_modules/
 .ruff_cache/
 __pycache__/
 *.py[cod]
+.pyservicelib/
+.tsservicelib/
