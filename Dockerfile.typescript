@@ -32,6 +32,10 @@ RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},targe
     && corepack pnpm --filter @gorundebug/tsservicelib build \
     && corepack pnpm --recursive --filter '!@gorundebug/tsservicelib' build
 
+FROM development AS deploy-tsservicelib
+RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
+    corepack pnpm --filter @gorundebug/tsservicelib deploy --prod --legacy /deploy/tsservicelib
+
 FROM development AS deploy-analyticsservice
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
     corepack pnpm --filter @gorundebug/tsexample-analyticsservice deploy --prod --legacy /deploy/analyticsservice \
@@ -79,24 +83,28 @@ RUN mkdir -p /tmp/node-diagnostics && chown node:node /tmp/node-diagnostics
 
 FROM runtime-base AS runtime-analyticsservice
 COPY --from=deploy-analyticsservice /deploy/analyticsservice /app
+COPY --from=deploy-tsservicelib /deploy/tsservicelib/node_modules /app/node_modules
 COPY --from=development /workspace/analyticsservice/scripts/node-diagnostics.generated.mjs /app/scripts/node-diagnostics.generated.mjs
 USER node
 ENTRYPOINT ["node", "--enable-source-maps", "--report-on-fatalerror", "--report-on-signal", "--report-signal=SIGUSR1", "--report-directory=/tmp/node-diagnostics", "--diagnostic-dir=/tmp/node-diagnostics", "--import=/app/scripts/node-diagnostics.generated.mjs", "dist/main.generated.js"]
 
 FROM runtime-base AS runtime-automationservice
 COPY --from=deploy-automationservice /deploy/automationservice /app
+COPY --from=deploy-tsservicelib /deploy/tsservicelib/node_modules /app/node_modules
 COPY --from=development /workspace/automationservice/scripts/node-diagnostics.generated.mjs /app/scripts/node-diagnostics.generated.mjs
 USER node
 ENTRYPOINT ["node", "--enable-source-maps", "--report-on-fatalerror", "--report-on-signal", "--report-signal=SIGUSR1", "--report-directory=/tmp/node-diagnostics", "--diagnostic-dir=/tmp/node-diagnostics", "--import=/app/scripts/node-diagnostics.generated.mjs", "dist/main.generated.js"]
 
 FROM runtime-base AS runtime-inventoryservice
 COPY --from=deploy-inventoryservice /deploy/inventoryservice /app
+COPY --from=deploy-tsservicelib /deploy/tsservicelib/node_modules /app/node_modules
 COPY --from=development /workspace/inventoryservice/scripts/node-diagnostics.generated.mjs /app/scripts/node-diagnostics.generated.mjs
 USER node
 ENTRYPOINT ["node", "--enable-source-maps", "--report-on-fatalerror", "--report-on-signal", "--report-signal=SIGUSR1", "--report-directory=/tmp/node-diagnostics", "--diagnostic-dir=/tmp/node-diagnostics", "--import=/app/scripts/node-diagnostics.generated.mjs", "dist/main.generated.js"]
 
 FROM runtime-base AS runtime-orderservice
 COPY --from=deploy-orderservice /deploy/orderservice /app
+COPY --from=deploy-tsservicelib /deploy/tsservicelib/node_modules /app/node_modules
 COPY --from=development /workspace/orderservice/scripts/node-diagnostics.generated.mjs /app/scripts/node-diagnostics.generated.mjs
 USER node
 ENTRYPOINT ["node", "--enable-source-maps", "--report-on-fatalerror", "--report-on-signal", "--report-signal=SIGUSR1", "--report-directory=/tmp/node-diagnostics", "--diagnostic-dir=/tmp/node-diagnostics", "--import=/app/scripts/node-diagnostics.generated.mjs", "dist/main.generated.js"]
