@@ -7,7 +7,7 @@ import type {
   Stream,
   DelayStreamConfig
 } from "@gorundebug/tsservicelib/runtime";
-import { durableCallError, requireDelayStreamConfig } from "@gorundebug/tsservicelib/runtime";
+import { requireDelayStreamConfig } from "@gorundebug/tsservicelib/runtime";
 import type { DelayFunction } from "@gorundebug/tsservicelib/transformation";
 
 /** Suspend a DurableCall through a Temporal timer, then resume the pipeline without occupying an Activity slot. */
@@ -23,7 +23,8 @@ export class DurablePause implements DelayFunction<string> {
     error: unknown,
     _out: Collector<string>
   ): void {
-    durableCallError(context, error instanceof Error ? error : new Error(String(error)));
+    void context;
+    void error;
   }
 }
 

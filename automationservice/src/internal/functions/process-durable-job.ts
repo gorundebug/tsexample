@@ -5,18 +5,19 @@ import type {
   MessageContext,
   RuntimeEnvironment,
   Stream,
-  MapStreamConfig,
+  MapStreamConfig
 } from "@gorundebug/tsservicelib/runtime";
-import { durableCallSuccess } from "@gorundebug/tsservicelib/runtime";
-import type {
-  MapFunction,
-} from "@gorundebug/tsservicelib/transformation";
+import type { MapFunction } from "@gorundebug/tsservicelib/transformation";
 
 /** Process one accepted automation job and return its result. */
 export class ProcessDurableJob implements MapFunction<string, string> {
-  public async map(context: MessageContext, _stream: Stream, value: Readonly<string>, out: Collector<string>): Promise<void> {
+  public async map(
+    context: MessageContext,
+    _stream: Stream,
+    value: Readonly<string>,
+    out: Collector<string>
+  ): Promise<void> {
     await out.out(context, `processed:${value}`);
-    durableCallSuccess(context);
   }
 }
 
@@ -24,8 +25,10 @@ export class ProcessDurableJob implements MapFunction<string, string> {
 export function makeProcessDurableJob(
   context: MessageContext,
   environment: RuntimeEnvironment,
-  config: MapStreamConfig,
+  config: MapStreamConfig
 ): ProcessDurableJob {
-  void context; void environment; void config;
+  void context;
+  void environment;
+  void config;
   return new ProcessDurableJob();
 }

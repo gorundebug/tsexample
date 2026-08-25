@@ -6,7 +6,7 @@ import type {
   RuntimeEnvironment,
   Collector,
   ScheduleEndpointFunction,
-  ScheduleTrigger,
+  ScheduleTrigger
 } from "@gorundebug/tsservicelib/runtime";
 
 export type LocalScheduleHandlerState = undefined;
@@ -16,7 +16,7 @@ export class LocalSchedule implements ScheduleEndpointFunction<string> {
   public onTrigger(
     context: MessageContext,
     trigger: Readonly<ScheduleTrigger>,
-    out: Collector<string>,
+    out: Collector<string>
   ): void | Promise<void> {
     return out.out(context, `local:${trigger.scheduleId}:${trigger.triggerId}`);
   }
@@ -26,7 +26,7 @@ export class LocalSchedule implements ScheduleEndpointFunction<string> {
 export function makeLocalSchedule(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: CronEndpointConfig,
+  _config: CronEndpointConfig
 ): LocalSchedule {
   return new LocalSchedule();
 }

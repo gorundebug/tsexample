@@ -2,12 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
-  DurableCallAlreadyCompletedError,
   DurableCallContext,
   FunctionCollector,
   MessageContext,
   ScheduleBackend,
-  durableCallSuccess,
   makeScheduleTrigger
 } from "@gorundebug/tsservicelib/runtime";
 
@@ -24,7 +22,9 @@ void test("TemporalSchedule converts the trigger to the input value", async () =
     ScheduleBackend.Temporal
   );
 
-  const context = new MessageContext().withDurableCallContext(new DurableCallContext("test"));
+  const context = new MessageContext().withDurableCallContext(
+    new DurableCallContext("test", "Activity")
+  );
   await function_.onTrigger(
     context,
     trigger,
@@ -34,5 +34,4 @@ void test("TemporalSchedule converts the trigger to the input value", async () =
   );
 
   assert.deepEqual(collected, ["temporal:temporal-cleanup:" + trigger.triggerId]);
-  assert.throws(() => durableCallSuccess(context), DurableCallAlreadyCompletedError);
 });

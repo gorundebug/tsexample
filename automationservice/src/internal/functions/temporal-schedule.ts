@@ -8,7 +8,6 @@ import type {
   ScheduleEndpointFunction,
   ScheduleTrigger
 } from "@gorundebug/tsservicelib/runtime";
-import { durableCallSuccess } from "@gorundebug/tsservicelib/runtime";
 
 export type TemporalScheduleHandlerState = undefined;
 
@@ -20,7 +19,6 @@ export class TemporalSchedule implements ScheduleEndpointFunction<string> {
     out: Collector<string>
   ): Promise<void> {
     await out.out(context, `temporal:${trigger.scheduleId}:${trigger.triggerId}`);
-    durableCallSuccess(context);
   }
 }
 
