@@ -32,6 +32,6 @@ void test("ProcessWorkflowJob continues once and returns its final result", asyn
       timer: async () => {}
     })
   );
-  await function_.map(second, undefined!, "continued:job-1", collector);
-  assert.deepEqual(collected, ["workflow:processed:job-1"]);
+  await function_.map(second, undefined!, "sequential:b:sequential:a:continued:job-1", collector);
+  assert.deepEqual(collected, ["workflow:processed:sequential:b:sequential:a:job-1"]);
 });

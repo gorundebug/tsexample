@@ -19,10 +19,10 @@ export class ProcessWorkflowJob implements MapFunction<string, string> {
     out: Collector<string>
   ): Promise<void> {
     const continuedPrefix = "continued:";
-    if (!value.startsWith(continuedPrefix)) {
+    if (!value.includes(continuedPrefix)) {
       temporalContinueAsNew(context, `${continuedPrefix}${value}`);
     }
-    await out.out(context, `workflow:processed:${value.slice(continuedPrefix.length)}`);
+    await out.out(context, `workflow:processed:${value.replace(continuedPrefix, "")}`);
   }
 }
 
