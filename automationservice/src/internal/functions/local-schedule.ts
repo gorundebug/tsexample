@@ -7,7 +7,7 @@ import type {
   Collector,
   ScheduleEndpointFunction,
   ScheduleTrigger
-} from "@gorundebug/tsservicelib/runtime";
+} from "@gorundebug/tsservicelib/runtime/graph";
 
 export type LocalScheduleHandlerState = undefined;
 

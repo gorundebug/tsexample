@@ -6,7 +6,7 @@ import type {
   RuntimeEnvironment,
   Stream,
   MapStreamConfig
-} from "@gorundebug/tsservicelib/runtime";
+} from "@gorundebug/tsservicelib/runtime/graph";
 import type { MapFunction } from "@gorundebug/tsservicelib/transformation";
 
 /** Observe the typed result returned by the Activity B fan-out branch. */

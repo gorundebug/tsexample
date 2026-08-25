@@ -6,7 +6,7 @@ import type {
   RuntimeEnvironment,
   Stream,
   MapStreamConfig
-} from "@gorundebug/tsservicelib/runtime";
+} from "@gorundebug/tsservicelib/runtime/graph";
 import type { MapFunction } from "@gorundebug/tsservicelib/transformation";
 
 /** Return Activity C's typed fan-out result. */

@@ -6,8 +6,8 @@ import type {
   RuntimeEnvironment,
   Stream,
   MapStreamConfig
-} from "@gorundebug/tsservicelib/runtime";
-import { durableCallHeartbeat } from "@gorundebug/tsservicelib/runtime";
+} from "@gorundebug/tsservicelib/runtime/graph";
+import { durableCallHeartbeat } from "@gorundebug/tsservicelib/runtime/graph";
 import type { MapFunction } from "@gorundebug/tsservicelib/transformation";
 
 /** Record Activity progress with DurableCallHeartbeat and return the processed job result. */

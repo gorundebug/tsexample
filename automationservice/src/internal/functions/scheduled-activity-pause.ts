@@ -6,8 +6,8 @@ import type {
   RuntimeEnvironment,
   Stream,
   DelayStreamConfig
-} from "@gorundebug/tsservicelib/runtime";
-import { requireDelayStreamConfig } from "@gorundebug/tsservicelib/runtime";
+} from "@gorundebug/tsservicelib/runtime/graph";
+import { requireDelayStreamConfig } from "@gorundebug/tsservicelib/runtime/graph";
 import type { DelayFunction } from "@gorundebug/tsservicelib/transformation";
 
 /** Apply the ordinary local Delay inside an Activity started by Temporal Schedule. */

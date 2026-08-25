@@ -6,8 +6,8 @@ import type {
   RuntimeEnvironment,
   Stream,
   MapStreamConfig
-} from "@gorundebug/tsservicelib/runtime";
-import { temporalContinueAsNew } from "@gorundebug/tsservicelib/runtime";
+} from "@gorundebug/tsservicelib/runtime/graph";
+import { temporalContinueAsNew } from "@gorundebug/tsservicelib/runtime/graph";
 import type { MapFunction } from "@gorundebug/tsservicelib/transformation";
 
 /** Continue the Workflow as new once, then return its final result. */
