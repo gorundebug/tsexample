@@ -1,4 +1,4 @@
-# Task 4/13: `ObserveWorkflowResult`
+# Task 4/20: `ObserveFanoutActivityB`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
@@ -6,14 +6,14 @@
 |-------|-------|
 | Language | `TypeScript` |
 | Kind | `map` |
-| File | `automationservice/src/internal/functions/observe-workflow-result.ts` |
-| Test | `automationservice/test/functions/observe-workflow-result.test.ts` |
+| File | `automationservice/src/internal/functions/observe-fanout-activity-b.ts` |
+| Test | `automationservice/test/functions/observe-fanout-activity-b.test.ts` |
 | Service | `Automation Service` |
 
 
 ## Behaviour
 
-Preserve the result returned through the on-demand Workflow endpoint.
+Observe the typed result returned by the Activity B fan-out branch.
 
 
 
@@ -23,7 +23,7 @@ Preserve the result returned through the on-demand Workflow endpoint.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/observe-workflow-result.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/observe-workflow-result.test.ts`
+- [ ] Open `automationservice/src/internal/functions/observe-fanout-activity-b.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/observe-fanout-activity-b.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task4.md — ObserveWorkflowResult — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task4.md — ObserveFanoutActivityB — TypeScript — done`

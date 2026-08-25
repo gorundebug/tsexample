@@ -1,19 +1,19 @@
-# Task 9/13: `ScheduledActivityPause`
+# Task 9/20: `ProcessFanoutActivityB`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `delay` |
-| File | `automationservice/src/internal/functions/scheduled-activity-pause.ts` |
-| Test | `automationservice/test/functions/scheduled-activity-pause.test.ts` |
+| Kind | `map` |
+| File | `automationservice/src/internal/functions/process-fanout-activity-b.ts` |
+| Test | `automationservice/test/functions/process-fanout-activity-b.test.ts` |
 | Service | `Automation Service` |
 
 
 ## Behaviour
 
-Apply the ordinary local Delay inside an Activity started by Temporal Schedule.
+Return Activity B's typed fan-out result.
 
 
 
@@ -23,7 +23,7 @@ Apply the ordinary local Delay inside an Activity started by Temporal Schedule.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/scheduled-activity-pause.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/scheduled-activity-pause.test.ts`
+- [ ] Open `automationservice/src/internal/functions/process-fanout-activity-b.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/process-fanout-activity-b.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task9.md — ScheduledActivityPause — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task9.md — ProcessFanoutActivityB — TypeScript — done`

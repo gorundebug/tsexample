@@ -31,23 +31,43 @@ export const ServiceIds = {
 
 export const StreamIds = {
   ACTIVITY_PAUSE: 1,
-  CONSUME_ACTIVITY_JOB: 2,
-  CONSUME_WORKFLOW_JOB: 3,
-  LOCAL_SCHEDULE: 4,
-  OBSERVE_ACTIVITY_RESULT: 5,
-  OBSERVE_WORKFLOW_RESULT: 6,
-  PROCESS_ACTIVITY_JOB: 7,
-  PROCESS_SCHEDULED_ACTIVITY: 8,
-  PROCESS_SCHEDULED_WORKFLOW: 9,
-  PROCESS_WORKFLOW_JOB: 10,
-  SCHEDULED_ACTIVITY_PAUSE: 11,
-  SCHEDULED_WORKFLOW_PAUSE: 12,
-  SPLIT_ON_DEMAND_JOBS: 13,
-  SUBMIT_ACTIVITY_JOB: 14,
-  SUBMIT_WORKFLOW_JOB: 15,
-  TEMPORAL_ACTIVITY_SCHEDULE: 16,
-  TEMPORAL_WORKFLOW_SCHEDULE: 17,
-  WORKFLOW_PAUSE: 18,
+  CALL_FAN_OUT_ACTIVITY_A: 2,
+  CALL_FAN_OUT_ACTIVITY_B: 3,
+  CALL_FAN_OUT_ACTIVITY_C: 4,
+  CALL_SEQUENTIAL_ACTIVITY_A: 5,
+  CALL_SEQUENTIAL_ACTIVITY_B: 6,
+  CONSUME_ACTIVITY_JOB: 7,
+  CONSUME_FAN_OUT_ACTIVITY_A: 8,
+  CONSUME_FAN_OUT_ACTIVITY_B: 9,
+  CONSUME_FAN_OUT_ACTIVITY_C: 10,
+  CONSUME_FAN_OUT_WORKFLOW_JOB: 11,
+  CONSUME_SEQUENTIAL_ACTIVITY_A: 12,
+  CONSUME_SEQUENTIAL_ACTIVITY_B: 13,
+  CONSUME_WORKFLOW_JOB: 14,
+  LOCAL_SCHEDULE: 15,
+  OBSERVE_ACTIVITY_RESULT: 16,
+  OBSERVE_FAN_OUT_ACTIVITY_B: 17,
+  OBSERVE_FAN_OUT_ACTIVITY_C: 18,
+  OBSERVE_WORKFLOW_RESULT: 19,
+  PROCESS_ACTIVITY_JOB: 20,
+  PROCESS_FAN_OUT_ACTIVITY_A: 21,
+  PROCESS_FAN_OUT_ACTIVITY_B: 22,
+  PROCESS_FAN_OUT_ACTIVITY_C: 23,
+  PROCESS_SCHEDULED_ACTIVITY: 24,
+  PROCESS_SCHEDULED_WORKFLOW: 25,
+  PROCESS_SEQUENTIAL_ACTIVITY_A: 26,
+  PROCESS_SEQUENTIAL_ACTIVITY_B: 27,
+  PROCESS_WORKFLOW_JOB: 28,
+  SCHEDULED_ACTIVITY_PAUSE: 29,
+  SCHEDULED_WORKFLOW_PAUSE: 30,
+  SPLIT_ACTIVITY_A_RESULT: 31,
+  SPLIT_ON_DEMAND_JOBS: 32,
+  SUBMIT_ACTIVITY_JOB: 33,
+  SUBMIT_FAN_OUT_WORKFLOW_JOB: 34,
+  SUBMIT_WORKFLOW_JOB: 35,
+  TEMPORAL_ACTIVITY_SCHEDULE: 36,
+  TEMPORAL_WORKFLOW_SCHEDULE: 37,
+  WORKFLOW_PAUSE: 38,
 } as const;
 
 export const DataConnectorIds = {
@@ -57,10 +77,16 @@ export const DataConnectorIds = {
 
 export const EndpointIds = {
   ACTIVITY_JOB: 2,
+  FAN_OUT_ACTIVITY_A: 3,
+  FAN_OUT_ACTIVITY_B: 4,
+  FAN_OUT_ACTIVITY_C: 5,
+  FAN_OUT_WORKFLOW_JOB: 6,
   LOCAL_SCHEDULE: 1,
-  TEMPORAL_ACTIVITY_SCHEDULE: 3,
-  TEMPORAL_WORKFLOW_SCHEDULE: 4,
-  WORKFLOW_JOB: 5,
+  SEQUENTIAL_ACTIVITY_A: 7,
+  SEQUENTIAL_ACTIVITY_B: 8,
+  TEMPORAL_ACTIVITY_SCHEDULE: 9,
+  TEMPORAL_WORKFLOW_SCHEDULE: 10,
+  WORKFLOW_JOB: 11,
 } as const;
 
 export interface NamedConfig {
@@ -69,19 +95,39 @@ export interface NamedConfig {
   };
   readonly streams: {
     readonly activityPause: DelayStreamConfig;
+    readonly callFanOutActivityA: SinkStreamConfig;
+    readonly callFanOutActivityB: SinkStreamConfig;
+    readonly callFanOutActivityC: SinkStreamConfig;
+    readonly callSequentialActivityA: SinkStreamConfig;
+    readonly callSequentialActivityB: SinkStreamConfig;
     readonly consumeActivityJob: InputStreamConfig;
+    readonly consumeFanOutActivityA: InputStreamConfig;
+    readonly consumeFanOutActivityB: InputStreamConfig;
+    readonly consumeFanOutActivityC: InputStreamConfig;
+    readonly consumeFanOutWorkflowJob: InputStreamConfig;
+    readonly consumeSequentialActivityA: InputStreamConfig;
+    readonly consumeSequentialActivityB: InputStreamConfig;
     readonly consumeWorkflowJob: InputStreamConfig;
     readonly localSchedule: InputStreamConfig;
     readonly observeActivityResult: MapStreamConfig;
+    readonly observeFanOutActivityB: MapStreamConfig;
+    readonly observeFanOutActivityC: MapStreamConfig;
     readonly observeWorkflowResult: MapStreamConfig;
     readonly processActivityJob: MapStreamConfig;
+    readonly processFanOutActivityA: MapStreamConfig;
+    readonly processFanOutActivityB: MapStreamConfig;
+    readonly processFanOutActivityC: MapStreamConfig;
     readonly processScheduledActivity: MapStreamConfig;
     readonly processScheduledWorkflow: MapStreamConfig;
+    readonly processSequentialActivityA: MapStreamConfig;
+    readonly processSequentialActivityB: MapStreamConfig;
     readonly processWorkflowJob: MapStreamConfig;
     readonly scheduledActivityPause: DelayStreamConfig;
     readonly scheduledWorkflowPause: DelayStreamConfig;
+    readonly splitActivityAResult: SplitStreamConfig;
     readonly splitOnDemandJobs: SplitStreamConfig;
     readonly submitActivityJob: SinkStreamConfig;
+    readonly submitFanOutWorkflowJob: SinkStreamConfig;
     readonly submitWorkflowJob: SinkStreamConfig;
     readonly temporalActivitySchedule: InputStreamConfig;
     readonly temporalWorkflowSchedule: InputStreamConfig;
@@ -93,7 +139,13 @@ export interface NamedConfig {
   };
   readonly endpoints: {
     readonly activityJob: TemporalEndpointConfig;
+    readonly fanOutActivityA: TemporalEndpointConfig;
+    readonly fanOutActivityB: TemporalEndpointConfig;
+    readonly fanOutActivityC: TemporalEndpointConfig;
+    readonly fanOutWorkflowJob: TemporalEndpointConfig;
     readonly localSchedule: CronEndpointConfig;
+    readonly sequentialActivityA: TemporalEndpointConfig;
+    readonly sequentialActivityB: TemporalEndpointConfig;
     readonly temporalActivitySchedule: TemporalEndpointConfig;
     readonly temporalWorkflowSchedule: TemporalEndpointConfig;
     readonly workflowJob: TemporalEndpointConfig;
@@ -122,19 +174,39 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
     },
     streams: {
       activityPause: requireDelayStreamConfig(runtime.streamById(StreamIds.ACTIVITY_PAUSE)),
+      callFanOutActivityA: requireSinkStreamConfig(runtime.streamById(StreamIds.CALL_FAN_OUT_ACTIVITY_A)),
+      callFanOutActivityB: requireSinkStreamConfig(runtime.streamById(StreamIds.CALL_FAN_OUT_ACTIVITY_B)),
+      callFanOutActivityC: requireSinkStreamConfig(runtime.streamById(StreamIds.CALL_FAN_OUT_ACTIVITY_C)),
+      callSequentialActivityA: requireSinkStreamConfig(runtime.streamById(StreamIds.CALL_SEQUENTIAL_ACTIVITY_A)),
+      callSequentialActivityB: requireSinkStreamConfig(runtime.streamById(StreamIds.CALL_SEQUENTIAL_ACTIVITY_B)),
       consumeActivityJob: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_ACTIVITY_JOB)),
+      consumeFanOutActivityA: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_FAN_OUT_ACTIVITY_A)),
+      consumeFanOutActivityB: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_FAN_OUT_ACTIVITY_B)),
+      consumeFanOutActivityC: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_FAN_OUT_ACTIVITY_C)),
+      consumeFanOutWorkflowJob: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_FAN_OUT_WORKFLOW_JOB)),
+      consumeSequentialActivityA: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_SEQUENTIAL_ACTIVITY_A)),
+      consumeSequentialActivityB: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_SEQUENTIAL_ACTIVITY_B)),
       consumeWorkflowJob: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_WORKFLOW_JOB)),
       localSchedule: requireInputStreamConfig(runtime.streamById(StreamIds.LOCAL_SCHEDULE)),
       observeActivityResult: requireMapStreamConfig(runtime.streamById(StreamIds.OBSERVE_ACTIVITY_RESULT)),
+      observeFanOutActivityB: requireMapStreamConfig(runtime.streamById(StreamIds.OBSERVE_FAN_OUT_ACTIVITY_B)),
+      observeFanOutActivityC: requireMapStreamConfig(runtime.streamById(StreamIds.OBSERVE_FAN_OUT_ACTIVITY_C)),
       observeWorkflowResult: requireMapStreamConfig(runtime.streamById(StreamIds.OBSERVE_WORKFLOW_RESULT)),
       processActivityJob: requireMapStreamConfig(runtime.streamById(StreamIds.PROCESS_ACTIVITY_JOB)),
+      processFanOutActivityA: requireMapStreamConfig(runtime.streamById(StreamIds.PROCESS_FAN_OUT_ACTIVITY_A)),
+      processFanOutActivityB: requireMapStreamConfig(runtime.streamById(StreamIds.PROCESS_FAN_OUT_ACTIVITY_B)),
+      processFanOutActivityC: requireMapStreamConfig(runtime.streamById(StreamIds.PROCESS_FAN_OUT_ACTIVITY_C)),
       processScheduledActivity: requireMapStreamConfig(runtime.streamById(StreamIds.PROCESS_SCHEDULED_ACTIVITY)),
       processScheduledWorkflow: requireMapStreamConfig(runtime.streamById(StreamIds.PROCESS_SCHEDULED_WORKFLOW)),
+      processSequentialActivityA: requireMapStreamConfig(runtime.streamById(StreamIds.PROCESS_SEQUENTIAL_ACTIVITY_A)),
+      processSequentialActivityB: requireMapStreamConfig(runtime.streamById(StreamIds.PROCESS_SEQUENTIAL_ACTIVITY_B)),
       processWorkflowJob: requireMapStreamConfig(runtime.streamById(StreamIds.PROCESS_WORKFLOW_JOB)),
       scheduledActivityPause: requireDelayStreamConfig(runtime.streamById(StreamIds.SCHEDULED_ACTIVITY_PAUSE)),
       scheduledWorkflowPause: requireDelayStreamConfig(runtime.streamById(StreamIds.SCHEDULED_WORKFLOW_PAUSE)),
+      splitActivityAResult: requireSplitStreamConfig(runtime.streamById(StreamIds.SPLIT_ACTIVITY_A_RESULT)),
       splitOnDemandJobs: requireSplitStreamConfig(runtime.streamById(StreamIds.SPLIT_ON_DEMAND_JOBS)),
       submitActivityJob: requireSinkStreamConfig(runtime.streamById(StreamIds.SUBMIT_ACTIVITY_JOB)),
+      submitFanOutWorkflowJob: requireSinkStreamConfig(runtime.streamById(StreamIds.SUBMIT_FAN_OUT_WORKFLOW_JOB)),
       submitWorkflowJob: requireSinkStreamConfig(runtime.streamById(StreamIds.SUBMIT_WORKFLOW_JOB)),
       temporalActivitySchedule: requireInputStreamConfig(runtime.streamById(StreamIds.TEMPORAL_ACTIVITY_SCHEDULE)),
       temporalWorkflowSchedule: requireInputStreamConfig(runtime.streamById(StreamIds.TEMPORAL_WORKFLOW_SCHEDULE)),
@@ -146,7 +218,13 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
     },
     endpoints: {
       activityJob: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.ACTIVITY_JOB)),
+      fanOutActivityA: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.FAN_OUT_ACTIVITY_A)),
+      fanOutActivityB: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.FAN_OUT_ACTIVITY_B)),
+      fanOutActivityC: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.FAN_OUT_ACTIVITY_C)),
+      fanOutWorkflowJob: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.FAN_OUT_WORKFLOW_JOB)),
       localSchedule: requireCronEndpointConfig(runtime.endpointById(EndpointIds.LOCAL_SCHEDULE)),
+      sequentialActivityA: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.SEQUENTIAL_ACTIVITY_A)),
+      sequentialActivityB: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.SEQUENTIAL_ACTIVITY_B)),
       temporalActivitySchedule: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.TEMPORAL_ACTIVITY_SCHEDULE)),
       temporalWorkflowSchedule: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.TEMPORAL_WORKFLOW_SCHEDULE)),
       workflowJob: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.WORKFLOW_JOB)),

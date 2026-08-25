@@ -1,4 +1,4 @@
-# Task 8/13: `ProcessWorkflowJob`
+# Task 8/20: `ProcessFanoutActivityA`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
@@ -6,14 +6,14 @@
 |-------|-------|
 | Language | `TypeScript` |
 | Kind | `map` |
-| File | `automationservice/src/internal/functions/process-workflow-job.ts` |
-| Test | `automationservice/test/functions/process-workflow-job.test.ts` |
+| File | `automationservice/src/internal/functions/process-fanout-activity-a.ts` |
+| Test | `automationservice/test/functions/process-fanout-activity-a.test.ts` |
 | Service | `Automation Service` |
 
 
 ## Behaviour
 
-Continue the Workflow as new once, then return its final result.
+Return Activity A's typed result before the Workflow Split.
 
 
 
@@ -23,7 +23,7 @@ Continue the Workflow as new once, then return its final result.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/process-workflow-job.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/process-workflow-job.test.ts`
+- [ ] Open `automationservice/src/internal/functions/process-fanout-activity-a.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/process-fanout-activity-a.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task8.md — ProcessWorkflowJob — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task8.md — ProcessFanoutActivityA — TypeScript — done`

@@ -1,19 +1,19 @@
-# Task 10/13: `ScheduledWorkflowPause`
+# Task 10/20: `ProcessFanoutActivityC`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `delay` |
-| File | `automationservice/src/internal/functions/scheduled-workflow-pause.ts` |
-| Test | `automationservice/test/functions/scheduled-workflow-pause.test.ts` |
+| Kind | `map` |
+| File | `automationservice/src/internal/functions/process-fanout-activity-c.ts` |
+| Test | `automationservice/test/functions/process-fanout-activity-c.test.ts` |
 | Service | `Automation Service` |
 
 
 ## Behaviour
 
-Use the official Temporal Workflow timer for a scheduled Workflow.
+Return Activity C's typed fan-out result.
 
 
 
@@ -23,7 +23,7 @@ Use the official Temporal Workflow timer for a scheduled Workflow.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/scheduled-workflow-pause.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/scheduled-workflow-pause.test.ts`
+- [ ] Open `automationservice/src/internal/functions/process-fanout-activity-c.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/process-fanout-activity-c.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task10.md — ScheduledWorkflowPause — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task10.md — ProcessFanoutActivityC — TypeScript — done`

@@ -2,13 +2,38 @@
 export { ActivityPause, makeActivityPause } from "./activity-pause.js";
 export { LocalSchedule, makeLocalSchedule } from "./local-schedule.js";
 export { ObserveActivityResult, makeObserveActivityResult } from "./observe-activity-result.js";
+export { ObserveFanoutActivityB, makeObserveFanoutActivityB } from "./observe-fanout-activity-b.js";
+export { ObserveFanoutActivityC, makeObserveFanoutActivityC } from "./observe-fanout-activity-c.js";
 export { ObserveWorkflowResult, makeObserveWorkflowResult } from "./observe-workflow-result.js";
 export { ProcessActivityJob, makeProcessActivityJob } from "./process-activity-job.js";
-export { ProcessScheduledActivity, makeProcessScheduledActivity } from "./process-scheduled-activity.js";
-export { ProcessScheduledWorkflow, makeProcessScheduledWorkflow } from "./process-scheduled-workflow.js";
+export { ProcessFanoutActivityA, makeProcessFanoutActivityA } from "./process-fanout-activity-a.js";
+export { ProcessFanoutActivityB, makeProcessFanoutActivityB } from "./process-fanout-activity-b.js";
+export { ProcessFanoutActivityC, makeProcessFanoutActivityC } from "./process-fanout-activity-c.js";
+export {
+  ProcessScheduledActivity,
+  makeProcessScheduledActivity
+} from "./process-scheduled-activity.js";
+export {
+  ProcessScheduledWorkflow,
+  makeProcessScheduledWorkflow
+} from "./process-scheduled-workflow.js";
+export {
+  ProcessSequentialActivityA,
+  makeProcessSequentialActivityA
+} from "./process-sequential-activity-a.js";
+export {
+  ProcessSequentialActivityB,
+  makeProcessSequentialActivityB
+} from "./process-sequential-activity-b.js";
 export { ProcessWorkflowJob, makeProcessWorkflowJob } from "./process-workflow-job.js";
 export { ScheduledActivityPause, makeScheduledActivityPause } from "./scheduled-activity-pause.js";
 export { ScheduledWorkflowPause, makeScheduledWorkflowPause } from "./scheduled-workflow-pause.js";
-export { TemporalActivitySchedule, makeTemporalActivitySchedule } from "./temporal-activity-schedule.js";
-export { TemporalWorkflowSchedule, makeTemporalWorkflowSchedule } from "./temporal-workflow-schedule.js";
+export {
+  TemporalActivitySchedule,
+  makeTemporalActivitySchedule
+} from "./temporal-activity-schedule.js";
+export {
+  TemporalWorkflowSchedule,
+  makeTemporalWorkflowSchedule
+} from "./temporal-workflow-schedule.js";
 export { WorkflowPause, makeWorkflowPause } from "./workflow-pause.js";

@@ -37,19 +37,39 @@ interface DefaultConfig {
   };
   readonly streams: {
     readonly "activityPause": DelayStreamConfigDocument;
+    readonly "callFanOutActivityA": SinkStreamConfigDocument;
+    readonly "callFanOutActivityB": SinkStreamConfigDocument;
+    readonly "callFanOutActivityC": SinkStreamConfigDocument;
+    readonly "callSequentialActivityA": SinkStreamConfigDocument;
+    readonly "callSequentialActivityB": SinkStreamConfigDocument;
     readonly "consumeActivityJob": InputStreamConfigDocument;
+    readonly "consumeFanOutActivityA": InputStreamConfigDocument;
+    readonly "consumeFanOutActivityB": InputStreamConfigDocument;
+    readonly "consumeFanOutActivityC": InputStreamConfigDocument;
+    readonly "consumeFanOutWorkflowJob": InputStreamConfigDocument;
+    readonly "consumeSequentialActivityA": InputStreamConfigDocument;
+    readonly "consumeSequentialActivityB": InputStreamConfigDocument;
     readonly "consumeWorkflowJob": InputStreamConfigDocument;
     readonly "localSchedule": InputStreamConfigDocument;
     readonly "observeActivityResult": MapStreamConfigDocument;
+    readonly "observeFanOutActivityB": MapStreamConfigDocument;
+    readonly "observeFanOutActivityC": MapStreamConfigDocument;
     readonly "observeWorkflowResult": MapStreamConfigDocument;
     readonly "processActivityJob": MapStreamConfigDocument;
+    readonly "processFanOutActivityA": MapStreamConfigDocument;
+    readonly "processFanOutActivityB": MapStreamConfigDocument;
+    readonly "processFanOutActivityC": MapStreamConfigDocument;
     readonly "processScheduledActivity": MapStreamConfigDocument;
     readonly "processScheduledWorkflow": MapStreamConfigDocument;
+    readonly "processSequentialActivityA": MapStreamConfigDocument;
+    readonly "processSequentialActivityB": MapStreamConfigDocument;
     readonly "processWorkflowJob": MapStreamConfigDocument;
     readonly "scheduledActivityPause": DelayStreamConfigDocument;
     readonly "scheduledWorkflowPause": DelayStreamConfigDocument;
+    readonly "splitActivityAResult": SplitStreamConfigDocument;
     readonly "splitOnDemandJobs": SplitStreamConfigDocument;
     readonly "submitActivityJob": SinkStreamConfigDocument;
+    readonly "submitFanOutWorkflowJob": SinkStreamConfigDocument;
     readonly "submitWorkflowJob": SinkStreamConfigDocument;
     readonly "temporalActivitySchedule": InputStreamConfigDocument;
     readonly "temporalWorkflowSchedule": InputStreamConfigDocument;
@@ -61,7 +81,13 @@ interface DefaultConfig {
   };
   readonly endpoints: {
     readonly "activityJob": TemporalEndpointConfigDocument;
+    readonly "fanOutActivityA": TemporalEndpointConfigDocument;
+    readonly "fanOutActivityB": TemporalEndpointConfigDocument;
+    readonly "fanOutActivityC": TemporalEndpointConfigDocument;
+    readonly "fanOutWorkflowJob": TemporalEndpointConfigDocument;
     readonly "localSchedule": CronEndpointConfigDocument;
+    readonly "sequentialActivityA": TemporalEndpointConfigDocument;
+    readonly "sequentialActivityB": TemporalEndpointConfigDocument;
     readonly "temporalActivitySchedule": TemporalEndpointConfigDocument;
     readonly "temporalWorkflowSchedule": TemporalEndpointConfigDocument;
     readonly "workflowJob": TemporalEndpointConfigDocument;
@@ -70,6 +96,11 @@ interface DefaultConfig {
   };
   readonly links: {
     readonly "consumeActivityJobToActivityPause": LinkConfigDocument;
+    readonly "consumeFanOutActivityAToProcessFanOutActivityA": LinkConfigDocument;
+    readonly "consumeFanOutActivityBToProcessFanOutActivityB": LinkConfigDocument;
+    readonly "consumeFanOutActivityCToProcessFanOutActivityC": LinkConfigDocument;
+    readonly "consumeSequentialActivityAToProcessSequentialActivityA": LinkConfigDocument;
+    readonly "consumeSequentialActivityBToProcessSequentialActivityB": LinkConfigDocument;
     readonly "consumeWorkflowJobToWorkflowPause": LinkConfigDocument;
   };
   readonly modules: {
@@ -116,18 +147,78 @@ const DEFAULT_CONFIG = {
       "functionPackage": "",
       "id": 1,
       "idService": 1,
-      "idSource": 2,
+      "idSource": 7,
       "name": "Activity Pause",
       "pipeline": "automation",
       "type": 16,
       "xPos": -250,
       "yPos": -720
     },
-    "consumeActivityJob": {
+    "callFanOutActivityA": {
       "id": 2,
+      "idEndpoint": 3,
+      "idService": 1,
+      "idSource": 11,
+      "name": "Call Fan-Out Activity A",
+      "pipeline": "automation",
+      "type": 13,
+      "valueType": "string",
+      "xPos": -250,
+      "yPos": 800
+    },
+    "callFanOutActivityB": {
+      "id": 3,
+      "idEndpoint": 4,
+      "idService": 1,
+      "idSource": 31,
+      "name": "Call Fan-Out Activity B",
+      "pipeline": "automation",
+      "type": 13,
+      "valueType": "string",
+      "xPos": 270,
+      "yPos": 720
+    },
+    "callFanOutActivityC": {
+      "id": 4,
+      "idEndpoint": 5,
+      "idService": 1,
+      "idSource": 31,
+      "name": "Call Fan-Out Activity C",
+      "pipeline": "automation",
+      "type": 13,
+      "valueType": "string",
+      "xPos": 270,
+      "yPos": 880
+    },
+    "callSequentialActivityA": {
+      "id": 5,
+      "idEndpoint": 7,
+      "idService": 1,
+      "idSource": 38,
+      "name": "Call Sequential Activity A",
+      "pipeline": "automation",
+      "type": 13,
+      "valueType": "string",
+      "xPos": 10,
+      "yPos": -420
+    },
+    "callSequentialActivityB": {
+      "id": 6,
+      "idEndpoint": 8,
+      "idService": 1,
+      "idSource": 5,
+      "name": "Call Sequential Activity B",
+      "pipeline": "automation",
+      "type": 13,
+      "valueType": "string",
+      "xPos": 270,
+      "yPos": -420
+    },
+    "consumeActivityJob": {
+      "id": 7,
       "idEndpoint": 2,
       "idService": 1,
-      "idSource": 7,
+      "idSource": 20,
       "name": "Consume Activity Job",
       "pipeline": "automation",
       "type": 1,
@@ -135,11 +226,83 @@ const DEFAULT_CONFIG = {
       "xPos": -500,
       "yPos": -720
     },
-    "consumeWorkflowJob": {
-      "id": 3,
+    "consumeFanOutActivityA": {
+      "id": 8,
+      "idEndpoint": 3,
+      "idService": 1,
+      "idSource": 21,
+      "name": "Consume Fan-Out Activity A",
+      "pipeline": "automation",
+      "type": 1,
+      "valueType": "string",
+      "xPos": -500,
+      "yPos": 1050
+    },
+    "consumeFanOutActivityB": {
+      "id": 9,
+      "idEndpoint": 4,
+      "idService": 1,
+      "idSource": 22,
+      "name": "Consume Fan-Out Activity B",
+      "pipeline": "automation",
+      "type": 1,
+      "valueType": "string",
+      "xPos": -500,
+      "yPos": 1200
+    },
+    "consumeFanOutActivityC": {
+      "id": 10,
       "idEndpoint": 5,
       "idService": 1,
-      "idSource": 10,
+      "idSource": 23,
+      "name": "Consume Fan-Out Activity C",
+      "pipeline": "automation",
+      "type": 1,
+      "valueType": "string",
+      "xPos": -500,
+      "yPos": 1350
+    },
+    "consumeFanOutWorkflowJob": {
+      "id": 11,
+      "idEndpoint": 6,
+      "idService": 1,
+      "idSource": 0,
+      "name": "Consume Fan-Out Workflow Job",
+      "pipeline": "automation",
+      "type": 1,
+      "valueType": "string",
+      "xPos": -500,
+      "yPos": 800
+    },
+    "consumeSequentialActivityA": {
+      "id": 12,
+      "idEndpoint": 7,
+      "idService": 1,
+      "idSource": 26,
+      "name": "Consume Sequential Activity A",
+      "pipeline": "automation",
+      "type": 1,
+      "valueType": "string",
+      "xPos": -500,
+      "yPos": 500
+    },
+    "consumeSequentialActivityB": {
+      "id": 13,
+      "idEndpoint": 8,
+      "idService": 1,
+      "idSource": 27,
+      "name": "Consume Sequential Activity B",
+      "pipeline": "automation",
+      "type": 1,
+      "valueType": "string",
+      "xPos": -500,
+      "yPos": 650
+    },
+    "consumeWorkflowJob": {
+      "id": 14,
+      "idEndpoint": 11,
+      "idService": 1,
+      "idSource": 28,
       "name": "Consume Workflow Job",
       "pipeline": "automation",
       "type": 1,
@@ -148,7 +311,7 @@ const DEFAULT_CONFIG = {
       "yPos": -420
     },
     "localSchedule": {
-      "id": 4,
+      "id": 15,
       "idEndpoint": 1,
       "idService": 1,
       "idSource": 0,
@@ -165,9 +328,9 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "ObserveActivityResult",
       "functionPackage": "",
-      "id": 5,
+      "id": 16,
       "idService": 1,
-      "idSource": 14,
+      "idSource": 33,
       "name": "Observe Activity Result",
       "pipeline": "automation",
       "type": 2,
@@ -175,15 +338,47 @@ const DEFAULT_CONFIG = {
       "xPos": -500,
       "yPos": -570
     },
+    "observeFanOutActivityB": {
+      "functionDescription": "Observe the typed result returned by the Activity B fan-out branch.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ObserveFanoutActivityB",
+      "functionPackage": "",
+      "id": 17,
+      "idService": 1,
+      "idSource": 3,
+      "name": "Observe Fan-Out Activity B",
+      "pipeline": "automation",
+      "type": 2,
+      "valueType": "string",
+      "xPos": 530,
+      "yPos": 720
+    },
+    "observeFanOutActivityC": {
+      "functionDescription": "Observe the typed result returned by the Activity C fan-out branch.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ObserveFanoutActivityC",
+      "functionPackage": "",
+      "id": 18,
+      "idService": 1,
+      "idSource": 4,
+      "name": "Observe Fan-Out Activity C",
+      "pipeline": "automation",
+      "type": 2,
+      "valueType": "string",
+      "xPos": 530,
+      "yPos": 880
+    },
     "observeWorkflowResult": {
       "functionDescription": "Preserve the result returned through the on-demand Workflow endpoint.\n",
       "functionInitializerGroup": "",
       "functionModule": "",
       "functionName": "ObserveWorkflowResult",
       "functionPackage": "",
-      "id": 6,
+      "id": 19,
       "idService": 1,
-      "idSource": 15,
+      "idSource": 35,
       "name": "Observe Workflow Result",
       "pipeline": "automation",
       "type": 2,
@@ -197,7 +392,7 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "ProcessActivityJob",
       "functionPackage": "",
-      "id": 7,
+      "id": 20,
       "idService": 1,
       "idSource": 1,
       "name": "Process Activity Job",
@@ -207,15 +402,63 @@ const DEFAULT_CONFIG = {
       "xPos": 10,
       "yPos": -720
     },
+    "processFanOutActivityA": {
+      "functionDescription": "Return Activity A's typed result before the Workflow Split.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ProcessFanoutActivityA",
+      "functionPackage": "",
+      "id": 21,
+      "idService": 1,
+      "idSource": 8,
+      "name": "Process Fan-Out Activity A",
+      "pipeline": "automation",
+      "type": 2,
+      "valueType": "string",
+      "xPos": -250,
+      "yPos": 1050
+    },
+    "processFanOutActivityB": {
+      "functionDescription": "Return Activity B's typed fan-out result.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ProcessFanoutActivityB",
+      "functionPackage": "",
+      "id": 22,
+      "idService": 1,
+      "idSource": 9,
+      "name": "Process Fan-Out Activity B",
+      "pipeline": "automation",
+      "type": 2,
+      "valueType": "string",
+      "xPos": -250,
+      "yPos": 1200
+    },
+    "processFanOutActivityC": {
+      "functionDescription": "Return Activity C's typed fan-out result.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ProcessFanoutActivityC",
+      "functionPackage": "",
+      "id": 23,
+      "idService": 1,
+      "idSource": 10,
+      "name": "Process Fan-Out Activity C",
+      "pipeline": "automation",
+      "type": 2,
+      "valueType": "string",
+      "xPos": -250,
+      "yPos": 1350
+    },
     "processScheduledActivity": {
       "functionDescription": "Return the visible result of one scheduled Activity execution.\n",
       "functionInitializerGroup": "",
       "functionModule": "",
       "functionName": "ProcessScheduledActivity",
       "functionPackage": "",
-      "id": 8,
+      "id": 24,
       "idService": 1,
-      "idSource": 11,
+      "idSource": 29,
       "name": "Process Scheduled Activity",
       "pipeline": "automation",
       "type": 2,
@@ -229,9 +472,9 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "ProcessScheduledWorkflow",
       "functionPackage": "",
-      "id": 9,
+      "id": 25,
       "idService": 1,
-      "idSource": 12,
+      "idSource": 30,
       "name": "Process Scheduled Workflow",
       "pipeline": "automation",
       "type": 2,
@@ -239,20 +482,52 @@ const DEFAULT_CONFIG = {
       "xPos": -250,
       "yPos": 240
     },
+    "processSequentialActivityA": {
+      "functionDescription": "Return sequential Activity A's typed result to its Temporal sink.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ProcessSequentialActivityA",
+      "functionPackage": "",
+      "id": 26,
+      "idService": 1,
+      "idSource": 12,
+      "name": "Process Sequential Activity A",
+      "pipeline": "automation",
+      "type": 2,
+      "valueType": "string",
+      "xPos": -250,
+      "yPos": 500
+    },
+    "processSequentialActivityB": {
+      "functionDescription": "Return sequential Activity B's typed result to its Temporal sink.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ProcessSequentialActivityB",
+      "functionPackage": "",
+      "id": 27,
+      "idService": 1,
+      "idSource": 13,
+      "name": "Process Sequential Activity B",
+      "pipeline": "automation",
+      "type": 2,
+      "valueType": "string",
+      "xPos": -250,
+      "yPos": 650
+    },
     "processWorkflowJob": {
       "functionDescription": "Continue the Workflow as new once, then return its final result.\n",
       "functionInitializerGroup": "",
       "functionModule": "",
       "functionName": "ProcessWorkflowJob",
       "functionPackage": "",
-      "id": 10,
+      "id": 28,
       "idService": 1,
-      "idSource": 18,
+      "idSource": 6,
       "name": "Process Workflow Job",
       "pipeline": "automation",
       "type": 2,
       "valueType": "string",
-      "xPos": 10,
+      "xPos": 530,
       "yPos": -420
     },
     "scheduledActivityPause": {
@@ -262,9 +537,9 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "ScheduledActivityPause",
       "functionPackage": "",
-      "id": 11,
+      "id": 29,
       "idService": 1,
-      "idSource": 16,
+      "idSource": 36,
       "name": "Scheduled Activity Pause",
       "pipeline": "automation",
       "type": 16,
@@ -278,19 +553,29 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "ScheduledWorkflowPause",
       "functionPackage": "",
-      "id": 12,
+      "id": 30,
       "idService": 1,
-      "idSource": 17,
+      "idSource": 37,
       "name": "Scheduled Workflow Pause",
       "pipeline": "automation",
       "type": 16,
       "xPos": -500,
       "yPos": 240
     },
-    "splitOnDemandJobs": {
-      "id": 13,
+    "splitActivityAResult": {
+      "id": 31,
       "idService": 1,
-      "idSource": 4,
+      "idSource": 2,
+      "name": "Split Activity A Result",
+      "pipeline": "automation",
+      "type": 11,
+      "xPos": 10,
+      "yPos": 800
+    },
+    "splitOnDemandJobs": {
+      "id": 32,
+      "idService": 1,
+      "idSource": 15,
       "name": "Split On-Demand Jobs",
       "pipeline": "automation",
       "type": 11,
@@ -298,10 +583,10 @@ const DEFAULT_CONFIG = {
       "yPos": -570
     },
     "submitActivityJob": {
-      "id": 14,
+      "id": 33,
       "idEndpoint": 2,
       "idService": 1,
-      "idSource": 13,
+      "idSource": 32,
       "name": "Submit Activity Job",
       "pipeline": "automation",
       "type": 13,
@@ -309,11 +594,23 @@ const DEFAULT_CONFIG = {
       "xPos": -760,
       "yPos": -720
     },
-    "submitWorkflowJob": {
-      "id": 15,
-      "idEndpoint": 5,
+    "submitFanOutWorkflowJob": {
+      "id": 34,
+      "idEndpoint": 6,
       "idService": 1,
-      "idSource": 13,
+      "idSource": 32,
+      "name": "Submit Fan-Out Workflow Job",
+      "pipeline": "automation",
+      "type": 13,
+      "valueType": "string",
+      "xPos": -760,
+      "yPos": 800
+    },
+    "submitWorkflowJob": {
+      "id": 35,
+      "idEndpoint": 11,
+      "idService": 1,
+      "idSource": 32,
       "name": "Submit Workflow Job",
       "pipeline": "automation",
       "type": 13,
@@ -322,10 +619,10 @@ const DEFAULT_CONFIG = {
       "yPos": -420
     },
     "temporalActivitySchedule": {
-      "id": 16,
-      "idEndpoint": 3,
+      "id": 36,
+      "idEndpoint": 9,
       "idService": 1,
-      "idSource": 8,
+      "idSource": 24,
       "name": "Temporal Activity Schedule",
       "pipeline": "automation",
       "type": 1,
@@ -334,10 +631,10 @@ const DEFAULT_CONFIG = {
       "yPos": -60
     },
     "temporalWorkflowSchedule": {
-      "id": 17,
-      "idEndpoint": 4,
+      "id": 37,
+      "idEndpoint": 10,
       "idService": 1,
-      "idSource": 9,
+      "idSource": 25,
       "name": "Temporal Workflow Schedule",
       "pipeline": "automation",
       "type": 1,
@@ -352,9 +649,9 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "WorkflowPause",
       "functionPackage": "",
-      "id": 18,
+      "id": 38,
       "idService": 1,
-      "idSource": 3,
+      "idSource": 14,
       "name": "Workflow Pause",
       "pipeline": "automation",
       "type": 16,
@@ -394,6 +691,52 @@ const DEFAULT_CONFIG = {
       "temporalExecutionType": "Activity",
       "workflowExecutionTimeout": 60000
     },
+    "fanOutActivityA": {
+      "activityHeartbeatTimeout": 5000,
+      "activityStartToCloseTimeout": 30000,
+      "enabled": true,
+      "id": 3,
+      "idDataConnector": 2,
+      "maximumAttempts": 3,
+      "name": "Fan-Out Activity A",
+      "taskQueue": "automation-activity-jobs",
+      "temporalExecutionType": "Activity",
+      "workflowExecutionTimeout": 60000
+    },
+    "fanOutActivityB": {
+      "activityHeartbeatTimeout": 5000,
+      "activityStartToCloseTimeout": 30000,
+      "enabled": true,
+      "id": 4,
+      "idDataConnector": 2,
+      "maximumAttempts": 3,
+      "name": "Fan-Out Activity B",
+      "taskQueue": "automation-activity-jobs",
+      "temporalExecutionType": "Activity",
+      "workflowExecutionTimeout": 60000
+    },
+    "fanOutActivityC": {
+      "activityHeartbeatTimeout": 5000,
+      "activityStartToCloseTimeout": 30000,
+      "enabled": true,
+      "id": 5,
+      "idDataConnector": 2,
+      "maximumAttempts": 3,
+      "name": "Fan-Out Activity C",
+      "taskQueue": "automation-activity-jobs",
+      "temporalExecutionType": "Activity",
+      "workflowExecutionTimeout": 60000
+    },
+    "fanOutWorkflowJob": {
+      "enabled": true,
+      "id": 6,
+      "idDataConnector": 2,
+      "maximumAttempts": 3,
+      "name": "Fan-Out Workflow Job",
+      "taskQueue": "automation-workflow-jobs",
+      "temporalExecutionType": "Workflow",
+      "workflowExecutionTimeout": 60000
+    },
     "localSchedule": {
       "enabled": true,
       "functionDescription": "Create a job message identifying the local scheduled firing.\n",
@@ -406,13 +749,37 @@ const DEFAULT_CONFIG = {
       "schedule": "*/5 * * * *",
       "timezone": "UTC"
     },
+    "sequentialActivityA": {
+      "activityHeartbeatTimeout": 5000,
+      "activityStartToCloseTimeout": 30000,
+      "enabled": true,
+      "id": 7,
+      "idDataConnector": 2,
+      "maximumAttempts": 3,
+      "name": "Sequential Activity A",
+      "taskQueue": "automation-activity-jobs",
+      "temporalExecutionType": "Activity",
+      "workflowExecutionTimeout": 60000
+    },
+    "sequentialActivityB": {
+      "activityHeartbeatTimeout": 5000,
+      "activityStartToCloseTimeout": 30000,
+      "enabled": true,
+      "id": 8,
+      "idDataConnector": 2,
+      "maximumAttempts": 3,
+      "name": "Sequential Activity B",
+      "taskQueue": "automation-activity-jobs",
+      "temporalExecutionType": "Activity",
+      "workflowExecutionTimeout": 60000
+    },
     "temporalActivitySchedule": {
       "activityHeartbeatTimeout": 5000,
       "activityStartToCloseTimeout": 30000,
       "enabled": true,
       "functionDescription": "Create an Activity job message identifying the durable scheduled firing.\n",
       "functionName": "TemporalActivitySchedule",
-      "id": 3,
+      "id": 9,
       "idDataConnector": 2,
       "maximumAttempts": 3,
       "missedRunPolicy": "FireOnce",
@@ -429,7 +796,7 @@ const DEFAULT_CONFIG = {
       "enabled": true,
       "functionDescription": "Create a Workflow job message identifying the durable scheduled firing.\n",
       "functionName": "TemporalWorkflowSchedule",
-      "id": 4,
+      "id": 10,
       "idDataConnector": 2,
       "maximumAttempts": 3,
       "missedRunPolicy": "FireOnce",
@@ -444,7 +811,7 @@ const DEFAULT_CONFIG = {
     },
     "workflowJob": {
       "enabled": true,
-      "id": 5,
+      "id": 11,
       "idDataConnector": 2,
       "maximumAttempts": 3,
       "name": "Workflow Job",
@@ -457,13 +824,38 @@ const DEFAULT_CONFIG = {
   "links": {
     "consumeActivityJobToActivityPause": {
       "callSemantics": 2,
-      "from": 2,
+      "from": 7,
       "to": 1
+    },
+    "consumeFanOutActivityAToProcessFanOutActivityA": {
+      "callSemantics": 2,
+      "from": 8,
+      "to": 21
+    },
+    "consumeFanOutActivityBToProcessFanOutActivityB": {
+      "callSemantics": 2,
+      "from": 9,
+      "to": 22
+    },
+    "consumeFanOutActivityCToProcessFanOutActivityC": {
+      "callSemantics": 2,
+      "from": 10,
+      "to": 23
+    },
+    "consumeSequentialActivityAToProcessSequentialActivityA": {
+      "callSemantics": 2,
+      "from": 12,
+      "to": 26
+    },
+    "consumeSequentialActivityBToProcessSequentialActivityB": {
+      "callSemantics": 2,
+      "from": 13,
+      "to": 27
     },
     "consumeWorkflowJobToWorkflowPause": {
       "callSemantics": 2,
-      "from": 3,
-      "to": 18
+      "from": 14,
+      "to": 38
     }
   },
   "modules": {
@@ -529,9 +921,15 @@ const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
   { environment: "AUTOMATION_SERVICE_GRPC_PORT", path: ["services", "automationService", "grpcPort", ], parse: parseIntegerEnvironment },
   { environment: "AUTOMATION_SERVICE_HTTP_HOST", path: ["services", "automationService", "httpHost", ], parse: parseStringEnvironment },
   { environment: "AUTOMATION_SERVICE_HTTP_PORT", path: ["services", "automationService", "httpPort", ], parse: parseIntegerEnvironment },
+  { environment: "FAN_OUT_ACTIVITY_A_ENABLED", path: ["endpoints", "fanOutActivityA", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "FAN_OUT_ACTIVITY_B_ENABLED", path: ["endpoints", "fanOutActivityB", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "FAN_OUT_ACTIVITY_C_ENABLED", path: ["endpoints", "fanOutActivityC", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "FAN_OUT_WORKFLOW_JOB_ENABLED", path: ["endpoints", "fanOutWorkflowJob", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "LOCAL_SCHEDULE_ENABLED", path: ["endpoints", "localSchedule", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "SCHEDULED_ACTIVITY_PAUSE_DURATION", path: ["streams", "scheduledActivityPause", "duration", ], parse: parseIntegerEnvironment },
   { environment: "SCHEDULED_WORKFLOW_PAUSE_DURATION", path: ["streams", "scheduledWorkflowPause", "duration", ], parse: parseIntegerEnvironment },
+  { environment: "SEQUENTIAL_ACTIVITY_A_ENABLED", path: ["endpoints", "sequentialActivityA", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "SEQUENTIAL_ACTIVITY_B_ENABLED", path: ["endpoints", "sequentialActivityB", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "TEMPORAL_ACTIVITY_SCHEDULE_ENABLED", path: ["endpoints", "temporalActivitySchedule", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "TEMPORAL_ADDRESS", path: ["dataConnectors", "temporal", "address", ], parse: parseStringEnvironment },
   { environment: "TEMPORAL_WORKFLOW_SCHEDULE_ENABLED", path: ["endpoints", "temporalWorkflowSchedule", "enabled", ], parse: parseBooleanEnvironment },

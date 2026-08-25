@@ -46,21 +46,45 @@ function initDataConnectors(
   clients: ServiceClients,
 ) {
   const consumeActivityJob = makeTemporalEndpointConsumer(streams.consumeActivityJob);
+  const consumeFanOutWorkflowJob = makeTemporalEndpointConsumer(streams.consumeFanOutWorkflowJob);
+  const callFanOutActivityA = makeTemporalSinkEndpointConsumerWithResult(streams.callFanOutActivityA);
+  const callFanOutActivityB = makeTemporalSinkEndpointConsumerWithResult(streams.callFanOutActivityB);
+  const callFanOutActivityC = makeTemporalSinkEndpointConsumerWithResult(streams.callFanOutActivityC);
   const consumeWorkflowJob = makeTemporalEndpointConsumer(streams.consumeWorkflowJob);
+  const callSequentialActivityA = makeTemporalSinkEndpointConsumerWithResult(streams.callSequentialActivityA);
+  const callSequentialActivityB = makeTemporalSinkEndpointConsumerWithResult(streams.callSequentialActivityB);
+  const consumeFanOutActivityA = makeTemporalEndpointConsumer(streams.consumeFanOutActivityA);
+  const consumeFanOutActivityB = makeTemporalEndpointConsumer(streams.consumeFanOutActivityB);
+  const consumeFanOutActivityC = makeTemporalEndpointConsumer(streams.consumeFanOutActivityC);
+  const consumeSequentialActivityA = makeTemporalEndpointConsumer(streams.consumeSequentialActivityA);
+  const consumeSequentialActivityB = makeTemporalEndpointConsumer(streams.consumeSequentialActivityB);
   const localSchedule = makeCronEndpointConsumer(streams.localSchedule, functions.localSchedule);
   const submitActivityJob = makeTemporalSinkEndpointConsumerWithResult(streams.submitActivityJob);
   const submitWorkflowJob = makeTemporalSinkEndpointConsumerWithResult(streams.submitWorkflowJob);
   const temporalActivitySchedule = makeTemporalScheduleEndpointConsumer(streams.temporalActivitySchedule, functions.temporalActivitySchedule);
   const temporalWorkflowSchedule = makeTemporalScheduleEndpointConsumer(streams.temporalWorkflowSchedule, functions.temporalWorkflowSchedule);
+  const submitFanOutWorkflowJob = makeTemporalSinkEndpointConsumer(streams.submitFanOutWorkflowJob);
   return {
     dataConnectors: {
       consumeActivityJob,
+      consumeFanOutWorkflowJob,
+      callFanOutActivityA,
+      callFanOutActivityB,
+      callFanOutActivityC,
       consumeWorkflowJob,
+      callSequentialActivityA,
+      callSequentialActivityB,
+      consumeFanOutActivityA,
+      consumeFanOutActivityB,
+      consumeFanOutActivityC,
+      consumeSequentialActivityA,
+      consumeSequentialActivityB,
       localSchedule,
       submitActivityJob,
       submitWorkflowJob,
       temporalActivitySchedule,
       temporalWorkflowSchedule,
+      submitFanOutWorkflowJob,
     },
     handlers: {
     },

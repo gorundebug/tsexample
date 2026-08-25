@@ -1,4 +1,4 @@
-# Task 5/13: `ProcessActivityJob`
+# Task 5/20: `ObserveFanoutActivityC`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
@@ -6,14 +6,14 @@
 |-------|-------|
 | Language | `TypeScript` |
 | Kind | `map` |
-| File | `automationservice/src/internal/functions/process-activity-job.ts` |
-| Test | `automationservice/test/functions/process-activity-job.test.ts` |
+| File | `automationservice/src/internal/functions/observe-fanout-activity-c.ts` |
+| Test | `automationservice/test/functions/observe-fanout-activity-c.test.ts` |
 | Service | `Automation Service` |
 
 
 ## Behaviour
 
-Record Activity progress with DurableCallHeartbeat and return the processed job result.
+Observe the typed result returned by the Activity C fan-out branch.
 
 
 
@@ -23,7 +23,7 @@ Record Activity progress with DurableCallHeartbeat and return the processed job 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/process-activity-job.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/process-activity-job.test.ts`
+- [ ] Open `automationservice/src/internal/functions/observe-fanout-activity-c.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/observe-fanout-activity-c.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task5.md — ProcessActivityJob — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task5.md — ObserveFanoutActivityC — TypeScript — done`

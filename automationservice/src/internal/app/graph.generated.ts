@@ -24,10 +24,17 @@ import {
   ActivityPause, makeActivityPause,
   LocalSchedule, makeLocalSchedule,
   ObserveActivityResult, makeObserveActivityResult,
+  ObserveFanoutActivityB, makeObserveFanoutActivityB,
+  ObserveFanoutActivityC, makeObserveFanoutActivityC,
   ObserveWorkflowResult, makeObserveWorkflowResult,
   ProcessActivityJob, makeProcessActivityJob,
+  ProcessFanoutActivityA, makeProcessFanoutActivityA,
+  ProcessFanoutActivityB, makeProcessFanoutActivityB,
+  ProcessFanoutActivityC, makeProcessFanoutActivityC,
   ProcessScheduledActivity, makeProcessScheduledActivity,
   ProcessScheduledWorkflow, makeProcessScheduledWorkflow,
+  ProcessSequentialActivityA, makeProcessSequentialActivityA,
+  ProcessSequentialActivityB, makeProcessSequentialActivityB,
   ProcessWorkflowJob, makeProcessWorkflowJob,
   ScheduledActivityPause, makeScheduledActivityPause,
   ScheduledWorkflowPause, makeScheduledWorkflowPause,
@@ -47,18 +54,47 @@ export function registerGeneratedSerdes(registry: SerdeRegistry): void {
   registry.registerStreamValueType(StreamIds.CONSUME_ACTIVITY_JOB, stringSerdeType);
   registry.registerStreamErrorType(StreamIds.CONSUME_ACTIVITY_JOB, errorSerdeType);
   registry.registerStreamValueType(StreamIds.ACTIVITY_PAUSE, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.CONSUME_FAN_OUT_WORKFLOW_JOB, stringSerdeType);
+  registry.registerStreamErrorType(StreamIds.CONSUME_FAN_OUT_WORKFLOW_JOB, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.CALL_FAN_OUT_ACTIVITY_A, stringSerdeType);
+  registry.registerStreamErrorType(StreamIds.CALL_FAN_OUT_ACTIVITY_A, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.SPLIT_ACTIVITY_A_RESULT, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.CALL_FAN_OUT_ACTIVITY_B, stringSerdeType);
+  registry.registerStreamErrorType(StreamIds.CALL_FAN_OUT_ACTIVITY_B, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.CALL_FAN_OUT_ACTIVITY_C, stringSerdeType);
+  registry.registerStreamErrorType(StreamIds.CALL_FAN_OUT_ACTIVITY_C, errorSerdeType);
   registry.registerStreamValueType(StreamIds.CONSUME_WORKFLOW_JOB, stringSerdeType);
   registry.registerStreamErrorType(StreamIds.CONSUME_WORKFLOW_JOB, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.WORKFLOW_PAUSE, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.CALL_SEQUENTIAL_ACTIVITY_A, stringSerdeType);
+  registry.registerStreamErrorType(StreamIds.CALL_SEQUENTIAL_ACTIVITY_A, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.CALL_SEQUENTIAL_ACTIVITY_B, stringSerdeType);
+  registry.registerStreamErrorType(StreamIds.CALL_SEQUENTIAL_ACTIVITY_B, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_A, stringSerdeType);
+  registry.registerStreamErrorType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_A, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_B, stringSerdeType);
+  registry.registerStreamErrorType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_B, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_C, stringSerdeType);
+  registry.registerStreamErrorType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_C, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.CONSUME_SEQUENTIAL_ACTIVITY_A, stringSerdeType);
+  registry.registerStreamErrorType(StreamIds.CONSUME_SEQUENTIAL_ACTIVITY_A, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.CONSUME_SEQUENTIAL_ACTIVITY_B, stringSerdeType);
+  registry.registerStreamErrorType(StreamIds.CONSUME_SEQUENTIAL_ACTIVITY_B, errorSerdeType);
   registry.registerStreamValueType(StreamIds.LOCAL_SCHEDULE, stringSerdeType);
   registry.registerStreamErrorType(StreamIds.LOCAL_SCHEDULE, errorSerdeType);
   registry.registerStreamValueType(StreamIds.SPLIT_ON_DEMAND_JOBS, stringSerdeType);
   registry.registerStreamValueType(StreamIds.SUBMIT_ACTIVITY_JOB, stringSerdeType);
   registry.registerStreamErrorType(StreamIds.SUBMIT_ACTIVITY_JOB, errorSerdeType);
   registry.registerStreamValueType(StreamIds.OBSERVE_ACTIVITY_RESULT, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.OBSERVE_FAN_OUT_ACTIVITY_B, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.OBSERVE_FAN_OUT_ACTIVITY_C, stringSerdeType);
   registry.registerStreamValueType(StreamIds.SUBMIT_WORKFLOW_JOB, stringSerdeType);
   registry.registerStreamErrorType(StreamIds.SUBMIT_WORKFLOW_JOB, errorSerdeType);
   registry.registerStreamValueType(StreamIds.OBSERVE_WORKFLOW_RESULT, stringSerdeType);
   registry.registerStreamValueType(StreamIds.PROCESS_ACTIVITY_JOB, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.PROCESS_FAN_OUT_ACTIVITY_A, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.PROCESS_FAN_OUT_ACTIVITY_B, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.PROCESS_FAN_OUT_ACTIVITY_C, stringSerdeType);
   registry.registerStreamValueType(StreamIds.TEMPORAL_ACTIVITY_SCHEDULE, stringSerdeType);
   registry.registerStreamErrorType(StreamIds.TEMPORAL_ACTIVITY_SCHEDULE, errorSerdeType);
   registry.registerStreamValueType(StreamIds.SCHEDULED_ACTIVITY_PAUSE, stringSerdeType);
@@ -67,8 +103,11 @@ export function registerGeneratedSerdes(registry: SerdeRegistry): void {
   registry.registerStreamErrorType(StreamIds.TEMPORAL_WORKFLOW_SCHEDULE, errorSerdeType);
   registry.registerStreamValueType(StreamIds.SCHEDULED_WORKFLOW_PAUSE, stringSerdeType);
   registry.registerStreamValueType(StreamIds.PROCESS_SCHEDULED_WORKFLOW, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.WORKFLOW_PAUSE, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.PROCESS_SEQUENTIAL_ACTIVITY_A, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.PROCESS_SEQUENTIAL_ACTIVITY_B, stringSerdeType);
   registry.registerStreamValueType(StreamIds.PROCESS_WORKFLOW_JOB, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.SUBMIT_FAN_OUT_WORKFLOW_JOB, stringSerdeType);
+  registry.registerStreamErrorType(StreamIds.SUBMIT_FAN_OUT_WORKFLOW_JOB, errorSerdeType);
 }
 
 export interface ServiceMakers {
@@ -87,6 +126,16 @@ export interface ServiceMakers {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
   ) => ObserveActivityResult;
+  observeFanoutActivityB: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => ObserveFanoutActivityB;
+  observeFanoutActivityC: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => ObserveFanoutActivityC;
   observeWorkflowResult: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -97,6 +146,21 @@ export interface ServiceMakers {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
   ) => ProcessActivityJob;
+  processFanoutActivityA: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => ProcessFanoutActivityA;
+  processFanoutActivityB: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => ProcessFanoutActivityB;
+  processFanoutActivityC: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => ProcessFanoutActivityC;
   processScheduledActivity: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -107,6 +171,16 @@ export interface ServiceMakers {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
   ) => ProcessScheduledWorkflow;
+  processSequentialActivityA: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => ProcessSequentialActivityA;
+  processSequentialActivityB: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => ProcessSequentialActivityB;
   processWorkflowJob: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -144,10 +218,17 @@ export function defaultMakers(): ServiceMakers {
     activityPause: makeActivityPause,
     localSchedule: makeLocalSchedule,
     observeActivityResult: makeObserveActivityResult,
+    observeFanoutActivityB: makeObserveFanoutActivityB,
+    observeFanoutActivityC: makeObserveFanoutActivityC,
     observeWorkflowResult: makeObserveWorkflowResult,
     processActivityJob: makeProcessActivityJob,
+    processFanoutActivityA: makeProcessFanoutActivityA,
+    processFanoutActivityB: makeProcessFanoutActivityB,
+    processFanoutActivityC: makeProcessFanoutActivityC,
     processScheduledActivity: makeProcessScheduledActivity,
     processScheduledWorkflow: makeProcessScheduledWorkflow,
+    processSequentialActivityA: makeProcessSequentialActivityA,
+    processSequentialActivityB: makeProcessSequentialActivityB,
     processWorkflowJob: makeProcessWorkflowJob,
     scheduledActivityPause: makeScheduledActivityPause,
     scheduledWorkflowPause: makeScheduledWorkflowPause,
@@ -167,10 +248,17 @@ export function initFunctions(
     activityPause: makers.activityPause(context, environment, config.named.streams.activityPause),
     localSchedule: makers.localSchedule(context, environment, config.named.endpoints.localSchedule),
     observeActivityResult: makers.observeActivityResult(context, environment, config.named.streams.observeActivityResult),
+    observeFanoutActivityB: makers.observeFanoutActivityB(context, environment, config.named.streams.observeFanOutActivityB),
+    observeFanoutActivityC: makers.observeFanoutActivityC(context, environment, config.named.streams.observeFanOutActivityC),
     observeWorkflowResult: makers.observeWorkflowResult(context, environment, config.named.streams.observeWorkflowResult),
     processActivityJob: makers.processActivityJob(context, environment, config.named.streams.processActivityJob),
+    processFanoutActivityA: makers.processFanoutActivityA(context, environment, config.named.streams.processFanOutActivityA),
+    processFanoutActivityB: makers.processFanoutActivityB(context, environment, config.named.streams.processFanOutActivityB),
+    processFanoutActivityC: makers.processFanoutActivityC(context, environment, config.named.streams.processFanOutActivityC),
     processScheduledActivity: makers.processScheduledActivity(context, environment, config.named.streams.processScheduledActivity),
     processScheduledWorkflow: makers.processScheduledWorkflow(context, environment, config.named.streams.processScheduledWorkflow),
+    processSequentialActivityA: makers.processSequentialActivityA(context, environment, config.named.streams.processSequentialActivityA),
+    processSequentialActivityB: makers.processSequentialActivityB(context, environment, config.named.streams.processSequentialActivityB),
     processWorkflowJob: makers.processWorkflowJob(context, environment, config.named.streams.processWorkflowJob),
     scheduledActivityPause: makers.scheduledActivityPause(context, environment, config.named.streams.scheduledActivityPause),
     scheduledWorkflowPause: makers.scheduledWorkflowPause(context, environment, config.named.streams.scheduledWorkflowPause),
@@ -189,45 +277,90 @@ export function initStreams(
 ) {
   const consumeActivityJob = makeInputStream<string, string, Error>(config.named.streams.consumeActivityJob, environment);
   const activityPause = makeDelayStream<string>(config.named.streams.activityPause, consumeActivityJob, functions.activityPause);
+  const consumeFanOutWorkflowJob = makeInputStream<string, unknown, Error>(config.named.streams.consumeFanOutWorkflowJob, environment);
+  const callFanOutActivityA = makeSinkStreamWithResult<string, string, Error>(config.named.streams.callFanOutActivityA, consumeFanOutWorkflowJob);
+  const splitActivityAResult = makeSplitStream<string>(config.named.streams.splitActivityAResult, callFanOutActivityA);
+  const callFanOutActivityB = makeSinkStreamWithResult<string, string, Error>(config.named.streams.callFanOutActivityB, splitActivityAResult.addStream());
+  const callFanOutActivityC = makeSinkStreamWithResult<string, string, Error>(config.named.streams.callFanOutActivityC, splitActivityAResult.addStream());
   const consumeWorkflowJob = makeInputStream<string, string, Error>(config.named.streams.consumeWorkflowJob, environment);
+  const workflowPause = makeDelayStream<string>(config.named.streams.workflowPause, consumeWorkflowJob, functions.workflowPause);
+  const callSequentialActivityA = makeSinkStreamWithResult<string, string, Error>(config.named.streams.callSequentialActivityA, workflowPause);
+  const callSequentialActivityB = makeSinkStreamWithResult<string, string, Error>(config.named.streams.callSequentialActivityB, callSequentialActivityA);
+  const consumeFanOutActivityA = makeInputStream<string, string, Error>(config.named.streams.consumeFanOutActivityA, environment);
+  const consumeFanOutActivityB = makeInputStream<string, string, Error>(config.named.streams.consumeFanOutActivityB, environment);
+  const consumeFanOutActivityC = makeInputStream<string, string, Error>(config.named.streams.consumeFanOutActivityC, environment);
+  const consumeSequentialActivityA = makeInputStream<string, string, Error>(config.named.streams.consumeSequentialActivityA, environment);
+  const consumeSequentialActivityB = makeInputStream<string, string, Error>(config.named.streams.consumeSequentialActivityB, environment);
   const localSchedule = makeInputStream<string, unknown, Error>(config.named.streams.localSchedule, environment);
   const splitOnDemandJobs = makeSplitStream<string>(config.named.streams.splitOnDemandJobs, localSchedule);
   const submitActivityJob = makeSinkStreamWithResult<string, string, Error>(config.named.streams.submitActivityJob, splitOnDemandJobs.addStream());
   const observeActivityResult = makeMapStream<string, string>(config.named.streams.observeActivityResult, submitActivityJob, functions.observeActivityResult);
+  const observeFanOutActivityB = makeMapStream<string, string>(config.named.streams.observeFanOutActivityB, callFanOutActivityB, functions.observeFanoutActivityB);
+  const observeFanOutActivityC = makeMapStream<string, string>(config.named.streams.observeFanOutActivityC, callFanOutActivityC, functions.observeFanoutActivityC);
   const submitWorkflowJob = makeSinkStreamWithResult<string, string, Error>(config.named.streams.submitWorkflowJob, splitOnDemandJobs.addStream());
   const observeWorkflowResult = makeMapStream<string, string>(config.named.streams.observeWorkflowResult, submitWorkflowJob, functions.observeWorkflowResult);
   const processActivityJob = makeMapStream<string, string>(config.named.streams.processActivityJob, activityPause, functions.processActivityJob);
+  const processFanOutActivityA = makeMapStream<string, string>(config.named.streams.processFanOutActivityA, consumeFanOutActivityA, functions.processFanoutActivityA);
+  const processFanOutActivityB = makeMapStream<string, string>(config.named.streams.processFanOutActivityB, consumeFanOutActivityB, functions.processFanoutActivityB);
+  const processFanOutActivityC = makeMapStream<string, string>(config.named.streams.processFanOutActivityC, consumeFanOutActivityC, functions.processFanoutActivityC);
   const temporalActivitySchedule = makeInputStream<string, string, Error>(config.named.streams.temporalActivitySchedule, environment);
   const scheduledActivityPause = makeDelayStream<string>(config.named.streams.scheduledActivityPause, temporalActivitySchedule, functions.scheduledActivityPause);
   const processScheduledActivity = makeMapStream<string, string>(config.named.streams.processScheduledActivity, scheduledActivityPause, functions.processScheduledActivity);
   const temporalWorkflowSchedule = makeInputStream<string, string, Error>(config.named.streams.temporalWorkflowSchedule, environment);
   const scheduledWorkflowPause = makeDelayStream<string>(config.named.streams.scheduledWorkflowPause, temporalWorkflowSchedule, functions.scheduledWorkflowPause);
   const processScheduledWorkflow = makeMapStream<string, string>(config.named.streams.processScheduledWorkflow, scheduledWorkflowPause, functions.processScheduledWorkflow);
-  const workflowPause = makeDelayStream<string>(config.named.streams.workflowPause, consumeWorkflowJob, functions.workflowPause);
-  const processWorkflowJob = makeMapStream<string, string>(config.named.streams.processWorkflowJob, workflowPause, functions.processWorkflowJob);
+  const processSequentialActivityA = makeMapStream<string, string>(config.named.streams.processSequentialActivityA, consumeSequentialActivityA, functions.processSequentialActivityA);
+  const processSequentialActivityB = makeMapStream<string, string>(config.named.streams.processSequentialActivityB, consumeSequentialActivityB, functions.processSequentialActivityB);
+  const processWorkflowJob = makeMapStream<string, string>(config.named.streams.processWorkflowJob, callSequentialActivityB, functions.processWorkflowJob);
+  const submitFanOutWorkflowJob = makeSinkStream<string, Error>(config.named.streams.submitFanOutWorkflowJob, splitOnDemandJobs.addStream());
   consumeActivityJob.setSource(processActivityJob);
   consumeWorkflowJob.setSource(processWorkflowJob);
+  consumeFanOutActivityA.setSource(processFanOutActivityA);
+  consumeFanOutActivityB.setSource(processFanOutActivityB);
+  consumeFanOutActivityC.setSource(processFanOutActivityC);
+  consumeSequentialActivityA.setSource(processSequentialActivityA);
+  consumeSequentialActivityB.setSource(processSequentialActivityB);
   temporalActivitySchedule.setSource(processScheduledActivity);
   temporalWorkflowSchedule.setSource(processScheduledWorkflow);
   return {
     consumeActivityJob,
     activityPause,
+    consumeFanOutWorkflowJob,
+    callFanOutActivityA,
+    splitActivityAResult,
+    callFanOutActivityB,
+    callFanOutActivityC,
     consumeWorkflowJob,
+    workflowPause,
+    callSequentialActivityA,
+    callSequentialActivityB,
+    consumeFanOutActivityA,
+    consumeFanOutActivityB,
+    consumeFanOutActivityC,
+    consumeSequentialActivityA,
+    consumeSequentialActivityB,
     localSchedule,
     splitOnDemandJobs,
     submitActivityJob,
     observeActivityResult,
+    observeFanOutActivityB,
+    observeFanOutActivityC,
     submitWorkflowJob,
     observeWorkflowResult,
     processActivityJob,
+    processFanOutActivityA,
+    processFanOutActivityB,
+    processFanOutActivityC,
     temporalActivitySchedule,
     scheduledActivityPause,
     processScheduledActivity,
     temporalWorkflowSchedule,
     scheduledWorkflowPause,
     processScheduledWorkflow,
-    workflowPause,
+    processSequentialActivityA,
+    processSequentialActivityB,
     processWorkflowJob,
+    submitFanOutWorkflowJob,
   };
 }
 
