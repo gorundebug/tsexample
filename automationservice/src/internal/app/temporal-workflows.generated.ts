@@ -2,14 +2,14 @@
 
 export {
   servicelibTemporalEndpointV1,
-  servicelibTemporalEndpointV1 as "servicelib.temporal-endpoint.v1"
+  servicelibTemporalEndpointV1 as "servicelib.temporal-endpoint.v1",
 } from "@gorundebug/tsservicelib/datasource/temporal/workflow";
 
 import {
   FunctionCollector,
   MessageContext,
   RuntimeConfig,
-  makeDefaultSerdeRegistry
+  makeDefaultSerdeRegistry,
 } from "@gorundebug/tsservicelib/runtime/graph";
 import {
   ScheduleBackend,
@@ -19,21 +19,25 @@ import {
   makeTemporalWorkflowSinkEndpointConsumerWithResult,
   makeScheduleTrigger,
   type EndpointWireResult,
-  type EndpointWorkflowRequest
+  type EndpointWorkflowRequest,
 } from "@gorundebug/tsservicelib/datasource/temporal/workflow";
 
-import { ConfigSnapshot, EndpointIds, ServiceIds } from "../config/config-snapshot.generated.js";
+import {
+  ConfigSnapshot,
+  EndpointIds,
+  ServiceIds,
+} from "../config/config-snapshot.generated.js";
 import {
   defaultMakers,
   initFunctions,
   initStreams,
-  registerGeneratedSerdes
+  registerGeneratedSerdes,
 } from "./graph.generated.js";
 import { customWorkflowMakersInit } from "./temporal-workflows.js";
 
 async function executeGeneratedWorkflow(
   request: EndpointWorkflowRequest,
-  endpointId: number
+  endpointId: number,
 ): Promise<EndpointWireResult> {
   const runtime = new RuntimeConfig(request.runtimeConfig);
   const config = new ConfigSnapshot(runtime);
@@ -42,7 +46,7 @@ async function executeGeneratedWorkflow(
   const environment = new TemporalWorkflowEnvironment(
     request.runtimeConfig,
     ServiceIds.AUTOMATION_SERVICE,
-    registry
+    registry,
   );
   const context = new MessageContext();
   const makers = defaultMakers();
@@ -67,9 +71,9 @@ async function executeGeneratedWorkflow(
         activate: (messageContext, envelope) => {
           return streams.consumeFanOutWorkflowJob.consume(
             messageContext,
-            streams.consumeFanOutWorkflowJob.serde().deserialize(Uint8Array.from(envelope.payload))
+            streams.consumeFanOutWorkflowJob.serde().deserialize(Uint8Array.from(envelope.payload)),
           );
-        }
+        },
       });
     case EndpointIds.WORKFLOW_JOB:
       return executeTemporalWorkflowEndpoint({
@@ -79,9 +83,9 @@ async function executeGeneratedWorkflow(
         activate: (messageContext, envelope) => {
           return streams.consumeWorkflowJob.consume(
             messageContext,
-            streams.consumeWorkflowJob.serde().deserialize(Uint8Array.from(envelope.payload))
+            streams.consumeWorkflowJob.serde().deserialize(Uint8Array.from(envelope.payload)),
           );
-        }
+        },
       });
     case EndpointIds.TEMPORAL_WORKFLOW_SCHEDULE:
       return executeTemporalWorkflowEndpoint({
@@ -102,35 +106,37 @@ async function executeGeneratedWorkflow(
             envelope.scheduleId,
             new Date(envelope.scheduledAtUnixMillis).toISOString(),
             new Date(envelope.firedAtUnixMillis).toISOString(),
-            ScheduleBackend.Temporal
+            ScheduleBackend.Temporal,
           );
           return functions.temporalWorkflowSchedule.onTrigger(
             messageContext,
             trigger,
             new FunctionCollector((nextContext, value) =>
-              streams.temporalWorkflowSchedule.consume(nextContext, value)
-            )
+              streams.temporalWorkflowSchedule.consume(nextContext, value),
+            ),
           );
-        }
+        },
       });
     default:
       throw new Error(`unknown generated Temporal Workflow endpoint ${String(endpointId)}`);
   }
 }
 async function fanOutWorkflowJobWorkflow(
-  request: EndpointWorkflowRequest
+  request: EndpointWorkflowRequest,
 ): Promise<EndpointWireResult> {
   return executeGeneratedWorkflow(request, EndpointIds.FAN_OUT_WORKFLOW_JOB);
 }
 
 export { fanOutWorkflowJobWorkflow as "temporal.endpoint.fan_out_workflow_job.workflow.v1" };
-async function workflowJobWorkflow(request: EndpointWorkflowRequest): Promise<EndpointWireResult> {
+async function workflowJobWorkflow(
+  request: EndpointWorkflowRequest,
+): Promise<EndpointWireResult> {
   return executeGeneratedWorkflow(request, EndpointIds.WORKFLOW_JOB);
 }
 
 export { workflowJobWorkflow as "temporal.endpoint.workflow_job.workflow.v1" };
 async function temporalWorkflowScheduleWorkflow(
-  request: EndpointWorkflowRequest
+  request: EndpointWorkflowRequest,
 ): Promise<EndpointWireResult> {
   return executeGeneratedWorkflow(request, EndpointIds.TEMPORAL_WORKFLOW_SCHEDULE);
 }
