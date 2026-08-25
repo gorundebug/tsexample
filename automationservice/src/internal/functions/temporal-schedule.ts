@@ -6,19 +6,21 @@ import type {
   RuntimeEnvironment,
   Collector,
   ScheduleEndpointFunction,
-  ScheduleTrigger,
+  ScheduleTrigger
 } from "@gorundebug/tsservicelib/runtime";
+import { durableCallSuccess } from "@gorundebug/tsservicelib/runtime";
 
 export type TemporalScheduleHandlerState = undefined;
 
 /** Create a job message identifying the durable scheduled firing. */
 export class TemporalSchedule implements ScheduleEndpointFunction<string> {
-  public onTrigger(
+  public async onTrigger(
     context: MessageContext,
     trigger: Readonly<ScheduleTrigger>,
-    out: Collector<string>,
-  ): void | Promise<void> {
-    return out.out(context, `temporal:${trigger.scheduleId}:${trigger.triggerId}`);
+    out: Collector<string>
+  ): Promise<void> {
+    await out.out(context, `temporal:${trigger.scheduleId}:${trigger.triggerId}`);
+    durableCallSuccess(context);
   }
 }
 
@@ -26,7 +28,7 @@ export class TemporalSchedule implements ScheduleEndpointFunction<string> {
 export function makeTemporalSchedule(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: TemporalEndpointConfig,
+  _config: TemporalEndpointConfig
 ): TemporalSchedule {
   return new TemporalSchedule();
 }
