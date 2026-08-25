@@ -9,12 +9,10 @@ import {
   float32SerdeType, float64SerdeType,
   int8SerdeType, int16SerdeType, int32SerdeType, int64SerdeType, intSerdeType,
   makeDefaultSerdeRegistry, makeStreamSerde, runeSerdeType,
-  scheduleTriggerSerdeType,
   stringSerdeType,
   uint8SerdeType, uint16SerdeType, uint32SerdeType, uint64SerdeType, uintSerdeType,
   makeTemporalConnector,
 } from "@gorundebug/tsservicelib/runtime";
-import type { ScheduleTrigger } from "@gorundebug/tsservicelib/runtime";
 import {
   makeCaseStream, makeDelayStream, makeFilterStream, makeFlatMapIterableStream,
   makeFlatMapStream, makeInputStream, makeJoinStream, makeKeyByStream,
@@ -35,10 +33,8 @@ import type { String } from "../types/index.generated.js";
 import { Config } from "../config/config.js";
 import { DataConnectorIds, ServiceIds, StreamIds } from "../config/config.generated.js";
 import {
-  LocalJob, makeLocalJob,
   LocalSchedule, makeLocalSchedule,
   ProcessDurableJob, makeProcessDurableJob,
-  TemporalJob, makeTemporalJob,
   TemporalSchedule, makeTemporalSchedule,
 } from "../functions/index.generated.js";
 
@@ -52,12 +48,10 @@ const serdeTypes = {
 function registerGeneratedSerdes(registry: SerdeRegistry): void {
   registry.registerStreamValueType(StreamIds.CONSUME_DURABLE_JOB, stringSerdeType);
   registry.registerStreamErrorType(StreamIds.CONSUME_DURABLE_JOB, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.LOCAL_SCHEDULE, scheduleTriggerSerdeType);
+  registry.registerStreamValueType(StreamIds.LOCAL_SCHEDULE, stringSerdeType);
   registry.registerStreamErrorType(StreamIds.LOCAL_SCHEDULE, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.MAKE_LOCAL_JOB, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.TEMPORAL_SCHEDULE, scheduleTriggerSerdeType);
+  registry.registerStreamValueType(StreamIds.TEMPORAL_SCHEDULE, stringSerdeType);
   registry.registerStreamErrorType(StreamIds.TEMPORAL_SCHEDULE, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.MAKE_TEMPORAL_JOB, stringSerdeType);
   registry.registerStreamValueType(StreamIds.MERGE_JOB_SUBMISSIONS, stringSerdeType);
   registry.registerStreamValueType(StreamIds.PROCESS_DURABLE_JOB, stringSerdeType);
   registry.registerStreamValueType(StreamIds.SUBMIT_DURABLE_JOB, stringSerdeType);
@@ -65,11 +59,6 @@ function registerGeneratedSerdes(registry: SerdeRegistry): void {
 }
 
 export interface ServiceMakers {
-  localJob: (
-    context: MessageContext,
-    environment: ServiceEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime").MapStreamConfig,
-  ) => LocalJob;
   localSchedule: (
     context: MessageContext,
     environment: ServiceEnvironment,
@@ -80,11 +69,6 @@ export interface ServiceMakers {
     environment: ServiceEnvironment,
     config: import("@gorundebug/tsservicelib/runtime").MapStreamConfig,
   ) => ProcessDurableJob;
-  temporalJob: (
-    context: MessageContext,
-    environment: ServiceEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime").MapStreamConfig,
-  ) => TemporalJob;
   temporalSchedule: (
     context: MessageContext,
     environment: ServiceEnvironment,
@@ -94,10 +78,8 @@ export interface ServiceMakers {
 
 function defaultMakers(): ServiceMakers {
   return {
-    localJob: makeLocalJob,
     localSchedule: makeLocalSchedule,
     processDurableJob: makeProcessDurableJob,
-    temporalJob: makeTemporalJob,
     temporalSchedule: makeTemporalSchedule,
   };
 }
@@ -109,10 +91,8 @@ function initFunctions(
   makers: ServiceMakers,
 ) {
   return {
-    localJob: makers.localJob(context, environment, config.named.streams.makeLocalJob),
     localSchedule: makers.localSchedule(context, environment, config.named.endpoints.localSchedule),
     processDurableJob: makers.processDurableJob(context, environment, config.named.streams.processDurableJob),
-    temporalJob: makers.temporalJob(context, environment, config.named.streams.makeTemporalJob),
     temporalSchedule: makers.temporalSchedule(context, environment, config.named.endpoints.temporalSchedule),
   };
 }
@@ -136,20 +116,16 @@ function initStreams(
   functions: ServiceFunctions,
 ) {
   const consumeDurableJob = makeInputStream<string, string, Error>(config.named.streams.consumeDurableJob, environment);
-  const localSchedule = makeInputStream<ScheduleTrigger, unknown, Error>(config.named.streams.localSchedule, environment);
-  const makeLocalJob = makeMapStream<ScheduleTrigger, string>(config.named.streams.makeLocalJob, localSchedule, functions.localJob);
-  const temporalSchedule = makeInputStream<ScheduleTrigger, unknown, Error>(config.named.streams.temporalSchedule, environment);
-  const makeTemporalJob = makeMapStream<ScheduleTrigger, string>(config.named.streams.makeTemporalJob, temporalSchedule, functions.temporalJob);
-  const mergeJobSubmissions = makeMergeStream<string>(config.named.streams.mergeJobSubmissions, makeLocalJob, makeTemporalJob);
+  const localSchedule = makeInputStream<string, unknown, Error>(config.named.streams.localSchedule, environment);
+  const temporalSchedule = makeInputStream<string, unknown, Error>(config.named.streams.temporalSchedule, environment);
+  const mergeJobSubmissions = makeMergeStream<string>(config.named.streams.mergeJobSubmissions, localSchedule, temporalSchedule);
   const processDurableJob = makeMapStream<string, string>(config.named.streams.processDurableJob, consumeDurableJob, functions.processDurableJob);
   const submitDurableJob = makeSinkStream<string, Error>(config.named.streams.submitDurableJob, mergeJobSubmissions);
   consumeDurableJob.setSource(processDurableJob);
   return {
     consumeDurableJob,
     localSchedule,
-    makeLocalJob,
     temporalSchedule,
-    makeTemporalJob,
     mergeJobSubmissions,
     processDurableJob,
     submitDurableJob,

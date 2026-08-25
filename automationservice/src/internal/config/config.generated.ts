@@ -46,12 +46,10 @@ export const ServiceIds = {
 export const StreamIds = {
   CONSUME_DURABLE_JOB: 1,
   LOCAL_SCHEDULE: 2,
-  MAKE_LOCAL_JOB: 3,
-  MAKE_TEMPORAL_JOB: 4,
-  MERGE_JOB_SUBMISSIONS: 5,
-  PROCESS_DURABLE_JOB: 6,
-  SUBMIT_DURABLE_JOB: 7,
-  TEMPORAL_SCHEDULE: 8,
+  MERGE_JOB_SUBMISSIONS: 3,
+  PROCESS_DURABLE_JOB: 4,
+  SUBMIT_DURABLE_JOB: 5,
+  TEMPORAL_SCHEDULE: 6,
 } as const;
 
 export const DataConnectorIds = {
@@ -72,8 +70,6 @@ export interface NamedConfig {
   readonly streams: {
     readonly consumeDurableJob: InputStreamConfig;
     readonly localSchedule: InputStreamConfig;
-    readonly makeLocalJob: MapStreamConfig;
-    readonly makeTemporalJob: MapStreamConfig;
     readonly mergeJobSubmissions: MergeStreamConfig;
     readonly processDurableJob: MapStreamConfig;
     readonly submitDurableJob: SinkStreamConfig;
@@ -96,7 +92,6 @@ export interface NamedConfig {
     readonly orderServiceApi: ModuleConfig;
   };
   readonly types: {
-    readonly scheduleTrigger: TypeConfig;
     readonly string_: TypeConfig;
   };
 }
@@ -108,8 +103,6 @@ interface DefaultConfig {
   readonly streams: {
     readonly "consumeDurableJob": InputStreamConfigDocument;
     readonly "localSchedule": InputStreamConfigDocument;
-    readonly "makeLocalJob": MapStreamConfigDocument;
-    readonly "makeTemporalJob": MapStreamConfigDocument;
     readonly "mergeJobSubmissions": MergeStreamConfigDocument;
     readonly "processDurableJob": MapStreamConfigDocument;
     readonly "submitDurableJob": SinkStreamConfigDocument;
@@ -135,7 +128,6 @@ interface DefaultConfig {
     readonly "orderServiceApi": ModuleConfigDocument;
   };
   readonly types: {
-    readonly "scheduleTrigger": TypeConfigDocument;
     readonly "string": TypeConfigDocument;
   };
 }
@@ -169,7 +161,7 @@ const DEFAULT_CONFIG = {
       "id": 1,
       "idEndpoint": 2,
       "idService": 1,
-      "idSource": 6,
+      "idSource": 4,
       "name": "Consume Durable Job",
       "pipeline": "automation",
       "type": 1,
@@ -185,49 +177,17 @@ const DEFAULT_CONFIG = {
       "name": "Local Schedule",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "ScheduleTrigger",
+      "valueType": "string",
       "xPos": -1050,
       "yPos": -480
     },
-    "makeLocalJob": {
-      "functionDescription": "Create a job message identifying the local scheduled firing.\n",
-      "functionInitializerGroup": "",
-      "functionModule": "",
-      "functionName": "LocalJob",
-      "functionPackage": "",
-      "id": 3,
-      "idService": 1,
-      "idSource": 2,
-      "name": "Make Local Job",
-      "pipeline": "automation",
-      "type": 2,
-      "valueType": "string",
-      "xPos": -820,
-      "yPos": -480
-    },
-    "makeTemporalJob": {
-      "functionDescription": "Create a job message identifying the durable scheduled firing.\n",
-      "functionInitializerGroup": "",
-      "functionModule": "",
-      "functionName": "TemporalJob",
-      "functionPackage": "",
-      "id": 4,
-      "idService": 1,
-      "idSource": 8,
-      "name": "Make Temporal Job",
-      "pipeline": "automation",
-      "type": 2,
-      "valueType": "string",
-      "xPos": -820,
-      "yPos": -180
-    },
     "mergeJobSubmissions": {
-      "id": 5,
+      "id": 3,
       "idService": 1,
       "idSource": 0,
       "idSources": [
-        3,
-        4
+        2,
+        6
       ],
       "name": "Merge Job Submissions",
       "pipeline": "automation",
@@ -241,7 +201,7 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "ProcessDurableJob",
       "functionPackage": "",
-      "id": 6,
+      "id": 4,
       "idService": 1,
       "idSource": 1,
       "name": "Process Durable Job",
@@ -252,10 +212,10 @@ const DEFAULT_CONFIG = {
       "yPos": -330
     },
     "submitDurableJob": {
-      "id": 7,
+      "id": 5,
       "idEndpoint": 2,
       "idService": 1,
-      "idSource": 5,
+      "idSource": 3,
       "name": "Submit Durable Job",
       "pipeline": "automation",
       "type": 13,
@@ -264,14 +224,14 @@ const DEFAULT_CONFIG = {
       "yPos": -330
     },
     "temporalSchedule": {
-      "id": 8,
+      "id": 6,
       "idEndpoint": 3,
       "idService": 1,
       "idSource": 0,
       "name": "Temporal Schedule",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "ScheduleTrigger",
+      "valueType": "string",
       "xPos": -1050,
       "yPos": -180
     }
@@ -309,6 +269,7 @@ const DEFAULT_CONFIG = {
     },
     "localSchedule": {
       "enabled": true,
+      "functionDescription": "Create a job message identifying the local scheduled firing.\n",
       "functionName": "LocalSchedule",
       "id": 1,
       "idDataConnector": 1,
@@ -322,6 +283,7 @@ const DEFAULT_CONFIG = {
       "activityHeartbeatTimeout": 5000,
       "activityStartToCloseTimeout": 30000,
       "enabled": true,
+      "functionDescription": "Create a job message identifying the durable scheduled firing.\n",
       "functionName": "TemporalSchedule",
       "id": 3,
       "idDataConnector": 2,
@@ -346,7 +308,7 @@ const DEFAULT_CONFIG = {
       "idDataConnector": 2,
       "maximumAttempts": 3,
       "taskQueue": "automation-durable-calls",
-      "to": 6,
+      "to": 4,
       "workflowExecutionTimeout": 60000
     }
   },
@@ -365,12 +327,6 @@ const DEFAULT_CONFIG = {
     }
   },
   "types": {
-    "scheduleTrigger": {
-      "name": "ScheduleTrigger",
-      "type": "schedule trigger",
-      "typeDefinition": "ScheduleTrigger",
-      "typeImport": "@gorundebug/tsservicelib/runtime"
-    },
     "string": {
       "name": "string",
       "type": "string",
@@ -436,8 +392,6 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
     streams: {
       consumeDurableJob: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_DURABLE_JOB)),
       localSchedule: requireInputStreamConfig(runtime.streamById(StreamIds.LOCAL_SCHEDULE)),
-      makeLocalJob: requireMapStreamConfig(runtime.streamById(StreamIds.MAKE_LOCAL_JOB)),
-      makeTemporalJob: requireMapStreamConfig(runtime.streamById(StreamIds.MAKE_TEMPORAL_JOB)),
       mergeJobSubmissions: requireMergeStreamConfig(runtime.streamById(StreamIds.MERGE_JOB_SUBMISSIONS)),
       processDurableJob: requireMapStreamConfig(runtime.streamById(StreamIds.PROCESS_DURABLE_JOB)),
       submitDurableJob: requireSinkStreamConfig(runtime.streamById(StreamIds.SUBMIT_DURABLE_JOB)),
@@ -460,7 +414,6 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       orderServiceApi: required(runtime.moduleByName("order_service_api"), "order_service_api"),
     },
     types: {
-      scheduleTrigger: required(runtime.typeByName("ScheduleTrigger"), "ScheduleTrigger"),
       string_: required(runtime.typeByName("string"), "string"),
     }
   };

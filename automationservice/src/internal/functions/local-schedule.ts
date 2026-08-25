@@ -11,14 +11,14 @@ import type {
 
 export type LocalScheduleHandlerState = undefined;
 
-/** Implement LocalSchedule. */
-export class LocalSchedule implements ScheduleEndpointFunction<ScheduleTrigger> {
+/** Create a job message identifying the local scheduled firing. */
+export class LocalSchedule implements ScheduleEndpointFunction<string> {
   public onTrigger(
     context: MessageContext,
     trigger: Readonly<ScheduleTrigger>,
-    out: Collector<ScheduleTrigger>,
+    out: Collector<string>,
   ): void | Promise<void> {
-    return out.out(context, trigger);
+    return out.out(context, `local:${trigger.scheduleId}:${trigger.triggerId}`);
   }
 }
 

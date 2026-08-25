@@ -1,19 +1,19 @@
-# Task 3/5: `ProcessDurableJob`
+# Task 3/3: `TemporalSchedule`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `map` |
-| File | `automationservice/src/internal/functions/process-durable-job.ts` |
-| Test | `automationservice/test/functions/process-durable-job.test.ts` |
+| Kind | `schedule-source` |
+| File | `automationservice/src/internal/functions/temporal-schedule.ts` |
+| Test | `automationservice/test/functions/temporal-schedule.test.ts` |
 | Service | `Automation Service` |
 
 
 ## Behaviour
 
-Process one accepted automation job and return its result.
+Create a job message identifying the durable scheduled firing.
 
 
 
@@ -23,7 +23,7 @@ Process one accepted automation job and return its result.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/process-durable-job.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/process-durable-job.test.ts`
+- [ ] Open `automationservice/src/internal/functions/temporal-schedule.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/temporal-schedule.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task3.md — ProcessDurableJob — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task3.md — TemporalSchedule — TypeScript — done`

@@ -11,14 +11,14 @@ import type {
 
 export type TemporalScheduleHandlerState = undefined;
 
-/** Implement TemporalSchedule. */
-export class TemporalSchedule implements ScheduleEndpointFunction<ScheduleTrigger> {
+/** Create a job message identifying the durable scheduled firing. */
+export class TemporalSchedule implements ScheduleEndpointFunction<string> {
   public onTrigger(
     context: MessageContext,
     trigger: Readonly<ScheduleTrigger>,
-    out: Collector<ScheduleTrigger>,
+    out: Collector<string>,
   ): void | Promise<void> {
-    return out.out(context, trigger);
+    return out.out(context, `temporal:${trigger.scheduleId}:${trigger.triggerId}`);
   }
 }
 

@@ -16,17 +16,17 @@ export class Service extends ServiceGenerated {
    */
   protected override customMakersInit(context: MessageContext): void {
     void context;
-    // this.makers.localJob = customLocalJobMaker;
+    // this.makers.localSchedule = customLocalScheduleMaker;
     // this.makers.processDurableJob = customProcessDurableJobMaker;
-    // this.makers.temporalJob = customTemporalJobMaker;
+    // this.makers.temporalSchedule = customTemporalScheduleMaker;
   }
 
   /** Called after every function is constructed and before the graph is wired. */
   protected override customFunctionsInit(context: MessageContext): void {
     void context;
-    // Configure this.functions.localJob here when post-construction setup is needed.
+    // Configure this.functions.localSchedule here when post-construction setup is needed.
     // Configure this.functions.processDurableJob here when post-construction setup is needed.
-    // Configure this.functions.temporalJob here when post-construction setup is needed.
+    // Configure this.functions.temporalSchedule here when post-construction setup is needed.
   }
 
   protected override createServiceAppOptions(config: ServiceConfig): ServiceAppOptions {

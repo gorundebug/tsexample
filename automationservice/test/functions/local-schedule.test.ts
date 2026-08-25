@@ -5,15 +5,14 @@ import {
   FunctionCollector,
   MessageContext,
   ScheduleBackend,
-  type ScheduleTrigger,
   makeScheduleTrigger,
 } from "@gorundebug/tsservicelib/runtime";
 
 import { LocalSchedule } from "../../src/internal/functions/local-schedule.js";
 
-void test("LocalSchedule emits the trigger", async () => {
+void test("LocalSchedule converts the trigger to the input value", async () => {
   const function_ = new LocalSchedule();
-  const collected: ScheduleTrigger[] = [];
+  const collected: string[] = [];
   const trigger = makeScheduleTrigger(
     1, "local-cleanup", "2026-08-24T00:00:00Z", "2026-08-24T00:00:01Z", ScheduleBackend.Local,
   );
@@ -24,5 +23,5 @@ void test("LocalSchedule emits the trigger", async () => {
     new FunctionCollector((_context, value) => { collected.push(value); }),
   );
 
-  assert.deepEqual(collected, [trigger]);
+  assert.deepEqual(collected, ["local:local-cleanup:" + trigger.triggerId]);
 });
