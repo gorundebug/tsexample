@@ -33,6 +33,7 @@ import type { String } from "../types/index.generated.js";
 import { Config } from "../config/config.js";
 import { DataConnectorIds, ServiceIds, StreamIds } from "../config/config.generated.js";
 import {
+  DurablePause, makeDurablePause,
   LocalSchedule, makeLocalSchedule,
   ProcessDurableJob, makeProcessDurableJob,
   TemporalSchedule, makeTemporalSchedule,
@@ -48,6 +49,7 @@ const serdeTypes = {
 function registerGeneratedSerdes(registry: SerdeRegistry): void {
   registry.registerStreamValueType(StreamIds.CONSUME_DURABLE_JOB, stringSerdeType);
   registry.registerStreamErrorType(StreamIds.CONSUME_DURABLE_JOB, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.DURABLE_PAUSE, stringSerdeType);
   registry.registerStreamValueType(StreamIds.LOCAL_SCHEDULE, stringSerdeType);
   registry.registerStreamErrorType(StreamIds.LOCAL_SCHEDULE, errorSerdeType);
   registry.registerStreamValueType(StreamIds.TEMPORAL_SCHEDULE, stringSerdeType);
@@ -59,6 +61,11 @@ function registerGeneratedSerdes(registry: SerdeRegistry): void {
 }
 
 export interface ServiceMakers {
+  durablePause: (
+    context: MessageContext,
+    environment: ServiceEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime").DelayStreamConfig,
+  ) => DurablePause;
   localSchedule: (
     context: MessageContext,
     environment: ServiceEnvironment,
@@ -78,6 +85,7 @@ export interface ServiceMakers {
 
 function defaultMakers(): ServiceMakers {
   return {
+    durablePause: makeDurablePause,
     localSchedule: makeLocalSchedule,
     processDurableJob: makeProcessDurableJob,
     temporalSchedule: makeTemporalSchedule,
@@ -91,6 +99,7 @@ function initFunctions(
   makers: ServiceMakers,
 ) {
   return {
+    durablePause: makers.durablePause(context, environment, config.named.streams.durablePause),
     localSchedule: makers.localSchedule(context, environment, config.named.endpoints.localSchedule),
     processDurableJob: makers.processDurableJob(context, environment, config.named.streams.processDurableJob),
     temporalSchedule: makers.temporalSchedule(context, environment, config.named.endpoints.temporalSchedule),
@@ -116,14 +125,16 @@ function initStreams(
   functions: ServiceFunctions,
 ) {
   const consumeDurableJob = makeInputStream<string, string, Error>(config.named.streams.consumeDurableJob, environment);
+  const durablePause = makeDelayStream<string>(config.named.streams.durablePause, consumeDurableJob, functions.durablePause);
   const localSchedule = makeInputStream<string, unknown, Error>(config.named.streams.localSchedule, environment);
   const temporalSchedule = makeInputStream<string, unknown, Error>(config.named.streams.temporalSchedule, environment);
   const mergeJobSubmissions = makeMergeStream<string>(config.named.streams.mergeJobSubmissions, localSchedule, temporalSchedule);
-  const processDurableJob = makeMapStream<string, string>(config.named.streams.processDurableJob, consumeDurableJob, functions.processDurableJob);
+  const processDurableJob = makeMapStream<string, string>(config.named.streams.processDurableJob, durablePause, functions.processDurableJob);
   const submitDurableJob = makeSinkStream<string, Error>(config.named.streams.submitDurableJob, mergeJobSubmissions);
   consumeDurableJob.setSource(processDurableJob);
   return {
     consumeDurableJob,
+    durablePause,
     localSchedule,
     temporalSchedule,
     mergeJobSubmissions,

@@ -12,6 +12,9 @@ import {
   requireCronEndpointConfig,
   type CronEndpointConfig,
   type CronEndpointConfigDocument,
+  requireDelayStreamConfig,
+  type DelayStreamConfig,
+  type DelayStreamConfigDocument,
   requireInputStreamConfig,
   type InputStreamConfig,
   type InputStreamConfigDocument,
@@ -45,11 +48,12 @@ export const ServiceIds = {
 
 export const StreamIds = {
   CONSUME_DURABLE_JOB: 1,
-  LOCAL_SCHEDULE: 2,
-  MERGE_JOB_SUBMISSIONS: 3,
-  PROCESS_DURABLE_JOB: 4,
-  SUBMIT_DURABLE_JOB: 5,
-  TEMPORAL_SCHEDULE: 6,
+  DURABLE_PAUSE: 2,
+  LOCAL_SCHEDULE: 3,
+  MERGE_JOB_SUBMISSIONS: 4,
+  PROCESS_DURABLE_JOB: 5,
+  SUBMIT_DURABLE_JOB: 6,
+  TEMPORAL_SCHEDULE: 7,
 } as const;
 
 export const DataConnectorIds = {
@@ -69,6 +73,7 @@ export interface NamedConfig {
   };
   readonly streams: {
     readonly consumeDurableJob: InputStreamConfig;
+    readonly durablePause: DelayStreamConfig;
     readonly localSchedule: InputStreamConfig;
     readonly mergeJobSubmissions: MergeStreamConfig;
     readonly processDurableJob: MapStreamConfig;
@@ -102,6 +107,7 @@ interface DefaultConfig {
   };
   readonly streams: {
     readonly "consumeDurableJob": InputStreamConfigDocument;
+    readonly "durablePause": DelayStreamConfigDocument;
     readonly "localSchedule": InputStreamConfigDocument;
     readonly "mergeJobSubmissions": MergeStreamConfigDocument;
     readonly "processDurableJob": MapStreamConfigDocument;
@@ -120,7 +126,7 @@ interface DefaultConfig {
   readonly pools: {
   };
   readonly links: {
-    readonly "consumeDurableJobToProcessDurableJob": LinkConfigDocument;
+    readonly "consumeDurableJobToDurablePause": LinkConfigDocument;
   };
   readonly modules: {
     readonly "inventoryServiceApi": ModuleConfigDocument;
@@ -161,7 +167,7 @@ const DEFAULT_CONFIG = {
       "id": 1,
       "idEndpoint": 2,
       "idService": 1,
-      "idSource": 4,
+      "idSource": 5,
       "name": "Consume Durable Job",
       "pipeline": "automation",
       "type": 1,
@@ -169,8 +175,24 @@ const DEFAULT_CONFIG = {
       "xPos": -130,
       "yPos": -330
     },
-    "localSchedule": {
+    "durablePause": {
+      "duration": 250,
+      "functionDescription": "Suspend a DurableCall through a Temporal timer, then resume the pipeline without occupying an Activity slot.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "DurablePause",
+      "functionPackage": "",
       "id": 2,
+      "idService": 1,
+      "idSource": 1,
+      "name": "Durable Pause",
+      "pipeline": "automation",
+      "type": 16,
+      "xPos": 90,
+      "yPos": -330
+    },
+    "localSchedule": {
+      "id": 3,
       "idEndpoint": 1,
       "idService": 1,
       "idSource": 0,
@@ -182,12 +204,12 @@ const DEFAULT_CONFIG = {
       "yPos": -480
     },
     "mergeJobSubmissions": {
-      "id": 3,
+      "id": 4,
       "idService": 1,
       "idSource": 0,
       "idSources": [
-        2,
-        6
+        3,
+        7
       ],
       "name": "Merge Job Submissions",
       "pipeline": "automation",
@@ -201,21 +223,21 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "ProcessDurableJob",
       "functionPackage": "",
-      "id": 4,
+      "id": 5,
       "idService": 1,
-      "idSource": 1,
+      "idSource": 2,
       "name": "Process Durable Job",
       "pipeline": "automation",
       "type": 2,
       "valueType": "string",
-      "xPos": 140,
+      "xPos": 330,
       "yPos": -330
     },
     "submitDurableJob": {
-      "id": 5,
+      "id": 6,
       "idEndpoint": 2,
       "idService": 1,
-      "idSource": 3,
+      "idSource": 4,
       "name": "Submit Durable Job",
       "pipeline": "automation",
       "type": 13,
@@ -224,7 +246,7 @@ const DEFAULT_CONFIG = {
       "yPos": -330
     },
     "temporalSchedule": {
-      "id": 6,
+      "id": 7,
       "idEndpoint": 3,
       "idService": 1,
       "idSource": 0,
@@ -300,7 +322,7 @@ const DEFAULT_CONFIG = {
   },
   "pools": {},
   "links": {
-    "consumeDurableJobToProcessDurableJob": {
+    "consumeDurableJobToDurablePause": {
       "activityHeartbeatTimeout": 5000,
       "activityStartToCloseTimeout": 30000,
       "callSemantics": 6,
@@ -308,7 +330,7 @@ const DEFAULT_CONFIG = {
       "idDataConnector": 2,
       "maximumAttempts": 3,
       "taskQueue": "automation-durable-calls",
-      "to": 4,
+      "to": 2,
       "workflowExecutionTimeout": 60000
     }
   },
@@ -374,6 +396,7 @@ const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
   { environment: "AUTOMATION_SERVICE_HTTP_HOST", path: ["services", "automationService", "httpHost", ], parse: parseStringEnvironment },
   { environment: "AUTOMATION_SERVICE_HTTP_PORT", path: ["services", "automationService", "httpPort", ], parse: parseIntegerEnvironment },
   { environment: "DURABLE_JOB_ENABLED", path: ["endpoints", "durableJob", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "DURABLE_PAUSE_DURATION", path: ["streams", "durablePause", "duration", ], parse: parseIntegerEnvironment },
   { environment: "LOCAL_SCHEDULE_ENABLED", path: ["endpoints", "localSchedule", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "TEMPORAL_ADDRESS", path: ["dataConnectors", "temporal", "address", ], parse: parseStringEnvironment },
   { environment: "TEMPORAL_SCHEDULE_ENABLED", path: ["endpoints", "temporalSchedule", "enabled", ], parse: parseBooleanEnvironment },
@@ -391,6 +414,7 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
     },
     streams: {
       consumeDurableJob: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_DURABLE_JOB)),
+      durablePause: requireDelayStreamConfig(runtime.streamById(StreamIds.DURABLE_PAUSE)),
       localSchedule: requireInputStreamConfig(runtime.streamById(StreamIds.LOCAL_SCHEDULE)),
       mergeJobSubmissions: requireMergeStreamConfig(runtime.streamById(StreamIds.MERGE_JOB_SUBMISSIONS)),
       processDurableJob: requireMapStreamConfig(runtime.streamById(StreamIds.PROCESS_DURABLE_JOB)),

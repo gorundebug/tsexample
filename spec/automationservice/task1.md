@@ -1,19 +1,19 @@
-# Task 1/3: `LocalSchedule`
+# Task 1/4: `DurablePause`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `schedule-source` |
-| File | `automationservice/src/internal/functions/local-schedule.ts` |
-| Test | `automationservice/test/functions/local-schedule.test.ts` |
+| Kind | `delay` |
+| File | `automationservice/src/internal/functions/durable-pause.ts` |
+| Test | `automationservice/test/functions/durable-pause.test.ts` |
 | Service | `Automation Service` |
 
 
 ## Behaviour
 
-Create a job message identifying the local scheduled firing.
+Suspend a DurableCall through a Temporal timer, then resume the pipeline without occupying an Activity slot.
 
 
 
@@ -23,7 +23,7 @@ Create a job message identifying the local scheduled firing.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/local-schedule.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/local-schedule.test.ts`
+- [ ] Open `automationservice/src/internal/functions/durable-pause.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/durable-pause.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task1.md — LocalSchedule — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task1.md — DurablePause — TypeScript — done`
