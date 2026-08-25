@@ -6,78 +6,27 @@ import {
   parseConfigArguments,
   type EnvironmentPatch,
   type RuntimeConfig,
-  requireGrpcDataConnectorConfig,
-  type GrpcDataConnectorConfig,
   type GrpcDataConnectorConfigDocument,
-  requireGrpcEndpointConfig,
-  type GrpcEndpointConfig,
   type GrpcEndpointConfigDocument,
-  requireInputStreamConfig,
-  type InputStreamConfig,
   type InputStreamConfigDocument,
   type LinkConfigDocument,
-  requireMergeStreamConfig,
-  type MergeStreamConfig,
   type MergeStreamConfigDocument,
-  type ModuleConfig,
   type ModuleConfigDocument,
-  type PoolConfig,
   type PoolConfigDocument,
-  requireProcessStreamConfig,
-  type ProcessStreamConfig,
   type ProcessStreamConfigDocument,
-  type ServiceConfig,
   type ServiceConfigDocument,
-  type TypeConfig,
   type TypeConfigDocument,
 } from "@gorundebug/tsservicelib/runtime/config";
 
-export const ServiceIds = {
-  INVENTORY_SERVICE: 1,
-} as const;
+import { ConfigSnapshot } from "./config-snapshot.generated.js";
 
-export const StreamIds = {
-  GET_INVENTORY_ITEM_DATA: 1,
-  MERGE_INVENTORY_RESULT: 2,
-  PROCESS_INVENTORY_ITEM: 3,
-} as const;
-
-export const DataConnectorIds = {
-  INVENTORY_SERVICE_API: 1,
-} as const;
-
-export const EndpointIds = {
-  PROCESS_ORDER_ITEM: 1,
-} as const;
-
-export interface NamedConfig {
-  readonly services: {
-    readonly inventoryService: ServiceConfig;
-  };
-  readonly streams: {
-    readonly getInventoryItemData: ProcessStreamConfig;
-    readonly mergeInventoryResult: MergeStreamConfig;
-    readonly processInventoryItem: InputStreamConfig;
-  };
-  readonly dataConnectors: {
-    readonly inventoryServiceApi: GrpcDataConnectorConfig;
-  };
-  readonly endpoints: {
-    readonly processOrderItem: GrpcEndpointConfig;
-  };
-  readonly pools: {
-    readonly inventoryPriorityWorkers: PoolConfig;
-  };
-  readonly modules: {
-    readonly inventoryServiceApi: ModuleConfig;
-    readonly model: ModuleConfig;
-    readonly orderServiceApi: ModuleConfig;
-  };
-  readonly types: {
-    readonly orderItem: TypeConfig;
-    readonly orderItemResult: TypeConfig;
-  };
-}
+export {
+  DataConnectorIds,
+  EndpointIds,
+  ServiceIds,
+  StreamIds,
+  type NamedConfig,
+} from "./config-snapshot.generated.js";
 
 interface DefaultConfig {
   readonly services: {
@@ -297,48 +246,7 @@ const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
   { environment: "INVENTORY_SERVICE_HTTP_PORT", path: ["services", "inventoryService", "httpPort", ], parse: parseIntegerEnvironment },
 ];
 
-function required<T>(value: T | undefined, description: string): T {
-  if (value === undefined) throw new Error(`missing ${description}`);
-  return value;
-}
-
-function namedConfig(runtime: RuntimeConfig): NamedConfig {
-  return {
-    services: {
-      inventoryService: required(runtime.serviceById(ServiceIds.INVENTORY_SERVICE), "Inventory Service"),
-    },
-    streams: {
-      getInventoryItemData: requireProcessStreamConfig(runtime.streamById(StreamIds.GET_INVENTORY_ITEM_DATA)),
-      mergeInventoryResult: requireMergeStreamConfig(runtime.streamById(StreamIds.MERGE_INVENTORY_RESULT)),
-      processInventoryItem: requireInputStreamConfig(runtime.streamById(StreamIds.PROCESS_INVENTORY_ITEM)),
-    },
-    dataConnectors: {
-      inventoryServiceApi: requireGrpcDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.INVENTORY_SERVICE_API)),
-    },
-    endpoints: {
-      processOrderItem: requireGrpcEndpointConfig(runtime.endpointById(EndpointIds.PROCESS_ORDER_ITEM)),
-    },
-    pools: {
-      inventoryPriorityWorkers: required(runtime.poolByName("Inventory Priority Workers"), "Inventory Priority Workers"),
-    },
-    modules: {
-      inventoryServiceApi: required(runtime.moduleByName("inventory_service_api"), "inventory_service_api"),
-      model: required(runtime.moduleByName("model"), "model"),
-      orderServiceApi: required(runtime.moduleByName("order_service_api"), "order_service_api"),
-    },
-    types: {
-      orderItem: required(runtime.typeByName("OrderItem"), "OrderItem"),
-      orderItemResult: required(runtime.typeByName("OrderItemResult"), "OrderItemResult"),
-    }
-  };
-}
-
-export class ConfigGenerated {
-  public readonly named: NamedConfig;
-
-  public constructor(public readonly runtime: RuntimeConfig) {
-    this.named = namedConfig(runtime);
-  }
+export class ConfigGenerated extends ConfigSnapshot {
 
   public static configPaths(arguments_: readonly string[]) {
     return parseConfigArguments(arguments_);

@@ -2,11 +2,15 @@ dataConnectors:
   temporal:
     address: temporal:7233
 endpoints:
-  durableJob:
+  activityJob:
     enabled: true
   localSchedule:
     enabled: true
-  temporalSchedule:
+  temporalActivitySchedule:
+    enabled: true
+  temporalWorkflowSchedule:
+    enabled: true
+  workflowJob:
     enabled: true
 services:
   automationService:
@@ -17,5 +21,11 @@ services:
     httpHost: 0.0.0.0
     httpPort: 9094
 streams:
-  durablePause:
+  activityPause:
+    duration: 250
+  scheduledActivityPause:
+    duration: 250
+  scheduledWorkflowPause:
+    duration: 250
+  workflowPause:
     duration: 250

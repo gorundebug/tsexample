@@ -6,129 +6,35 @@ import {
   parseConfigArguments,
   type EnvironmentPatch,
   type RuntimeConfig,
-  requireDelayStreamConfig,
-  type DelayStreamConfig,
   type DelayStreamConfigDocument,
-  requireFlatMapStreamConfig,
-  type FlatMapStreamConfig,
   type FlatMapStreamConfigDocument,
-  requireGrpcDataConnectorConfig,
-  type GrpcDataConnectorConfig,
   type GrpcDataConnectorConfigDocument,
-  requireGrpcEndpointConfig,
-  type GrpcEndpointConfig,
   type GrpcEndpointConfigDocument,
-  requireHttpDataConnectorConfig,
-  type HttpDataConnectorConfig,
   type HttpDataConnectorConfigDocument,
-  requireHttpEndpointConfig,
-  type HttpEndpointConfig,
   type HttpEndpointConfigDocument,
-  requireInputStreamConfig,
-  type InputStreamConfig,
   type InputStreamConfigDocument,
-  requireKafkaDataConnectorConfig,
-  type KafkaDataConnectorConfig,
   type KafkaDataConnectorConfigDocument,
-  requireKafkaEndpointConfig,
-  type KafkaEndpointConfig,
   type KafkaEndpointConfigDocument,
   type LinkConfigDocument,
-  requireMapStreamConfig,
-  type MapStreamConfig,
   type MapStreamConfigDocument,
-  requireMergeStreamConfig,
-  type MergeStreamConfig,
   type MergeStreamConfigDocument,
-  type ModuleConfig,
   type ModuleConfigDocument,
-  type PoolConfig,
   type PoolConfigDocument,
-  type ServiceConfig,
   type ServiceConfigDocument,
-  requireSinkStreamConfig,
-  type SinkStreamConfig,
   type SinkStreamConfigDocument,
-  requireSplitStreamConfig,
-  type SplitStreamConfig,
   type SplitStreamConfigDocument,
-  type TypeConfig,
   type TypeConfigDocument,
 } from "@gorundebug/tsservicelib/runtime/config";
 
-export const ServiceIds = {
-  ORDER_SERVICE: 1,
-} as const;
+import { ConfigSnapshot } from "./config-snapshot.generated.js";
 
-export const StreamIds = {
-  MAP_ORDER_ITEM_RESULT_TO_ORDER_STATE: 1,
-  MAP_TO_ORDER_PROCESSED: 2,
-  MAP_TO_ORDER_STATE: 3,
-  MERGE_RESULTS: 4,
-  PROCESS_ORDER: 5,
-  PROCESS_ORDER_ITEM: 6,
-  PROCESS_ORDER_ITEMS: 7,
-  PUBLISH_ORDER_PROCESSED: 8,
-  SOFT_DEADLINE: 9,
-  SPLIT_ORDER_RESULT: 10,
-  SPLIT_PIPELINE: 11,
-} as const;
-
-export const DataConnectorIds = {
-  INVENTORY_SERVICE_API: 1,
-  ORDER_EVENTS: 2,
-  ORDER_SERVICE_API: 3,
-} as const;
-
-export const EndpointIds = {
-  ORDER_PROCESSED: 2,
-  PROCESS_ORDER: 3,
-  PROCESS_ORDER_ITEM: 1,
-} as const;
-
-export interface NamedConfig {
-  readonly services: {
-    readonly orderService: ServiceConfig;
-  };
-  readonly streams: {
-    readonly mapOrderItemResultToOrderState: MapStreamConfig;
-    readonly mapToOrderProcessed: MapStreamConfig;
-    readonly mapToOrderState: MapStreamConfig;
-    readonly mergeResults: MergeStreamConfig;
-    readonly processOrder: InputStreamConfig;
-    readonly processOrderItem: SinkStreamConfig;
-    readonly processOrderItems: FlatMapStreamConfig;
-    readonly publishOrderProcessed: SinkStreamConfig;
-    readonly softDeadline: DelayStreamConfig;
-    readonly splitOrderResult: SplitStreamConfig;
-    readonly splitPipeline: SplitStreamConfig;
-  };
-  readonly dataConnectors: {
-    readonly inventoryServiceApi: GrpcDataConnectorConfig;
-    readonly orderEvents: KafkaDataConnectorConfig;
-    readonly orderServiceApi: HttpDataConnectorConfig;
-  };
-  readonly endpoints: {
-    readonly orderProcessed: KafkaEndpointConfig;
-    readonly processOrder: HttpEndpointConfig;
-    readonly processOrderItem: GrpcEndpointConfig;
-  };
-  readonly pools: {
-    readonly defaultPool: PoolConfig;
-  };
-  readonly modules: {
-    readonly inventoryServiceApi: ModuleConfig;
-    readonly model: ModuleConfig;
-    readonly orderServiceApi: ModuleConfig;
-  };
-  readonly types: {
-    readonly order: TypeConfig;
-    readonly orderItem: TypeConfig;
-    readonly orderItemResult: TypeConfig;
-    readonly orderProcessed: TypeConfig;
-    readonly orderState: TypeConfig;
-  };
-}
+export {
+  DataConnectorIds,
+  EndpointIds,
+  ServiceIds,
+  StreamIds,
+  type NamedConfig,
+} from "./config-snapshot.generated.js";
 
 interface DefaultConfig {
   readonly services: {
@@ -563,63 +469,7 @@ const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
   { environment: "SOFT_DEADLINE_DURATION", path: ["streams", "softDeadline", "duration", ], parse: parseIntegerEnvironment },
 ];
 
-function required<T>(value: T | undefined, description: string): T {
-  if (value === undefined) throw new Error(`missing ${description}`);
-  return value;
-}
-
-function namedConfig(runtime: RuntimeConfig): NamedConfig {
-  return {
-    services: {
-      orderService: required(runtime.serviceById(ServiceIds.ORDER_SERVICE), "Order Service"),
-    },
-    streams: {
-      mapOrderItemResultToOrderState: requireMapStreamConfig(runtime.streamById(StreamIds.MAP_ORDER_ITEM_RESULT_TO_ORDER_STATE)),
-      mapToOrderProcessed: requireMapStreamConfig(runtime.streamById(StreamIds.MAP_TO_ORDER_PROCESSED)),
-      mapToOrderState: requireMapStreamConfig(runtime.streamById(StreamIds.MAP_TO_ORDER_STATE)),
-      mergeResults: requireMergeStreamConfig(runtime.streamById(StreamIds.MERGE_RESULTS)),
-      processOrder: requireInputStreamConfig(runtime.streamById(StreamIds.PROCESS_ORDER)),
-      processOrderItem: requireSinkStreamConfig(runtime.streamById(StreamIds.PROCESS_ORDER_ITEM)),
-      processOrderItems: requireFlatMapStreamConfig(runtime.streamById(StreamIds.PROCESS_ORDER_ITEMS)),
-      publishOrderProcessed: requireSinkStreamConfig(runtime.streamById(StreamIds.PUBLISH_ORDER_PROCESSED)),
-      softDeadline: requireDelayStreamConfig(runtime.streamById(StreamIds.SOFT_DEADLINE)),
-      splitOrderResult: requireSplitStreamConfig(runtime.streamById(StreamIds.SPLIT_ORDER_RESULT)),
-      splitPipeline: requireSplitStreamConfig(runtime.streamById(StreamIds.SPLIT_PIPELINE)),
-    },
-    dataConnectors: {
-      inventoryServiceApi: requireGrpcDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.INVENTORY_SERVICE_API)),
-      orderEvents: requireKafkaDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.ORDER_EVENTS)),
-      orderServiceApi: requireHttpDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.ORDER_SERVICE_API)),
-    },
-    endpoints: {
-      orderProcessed: requireKafkaEndpointConfig(runtime.endpointById(EndpointIds.ORDER_PROCESSED)),
-      processOrder: requireHttpEndpointConfig(runtime.endpointById(EndpointIds.PROCESS_ORDER)),
-      processOrderItem: requireGrpcEndpointConfig(runtime.endpointById(EndpointIds.PROCESS_ORDER_ITEM)),
-    },
-    pools: {
-      defaultPool: required(runtime.poolByName("Default Pool"), "Default Pool"),
-    },
-    modules: {
-      inventoryServiceApi: required(runtime.moduleByName("inventory_service_api"), "inventory_service_api"),
-      model: required(runtime.moduleByName("model"), "model"),
-      orderServiceApi: required(runtime.moduleByName("order_service_api"), "order_service_api"),
-    },
-    types: {
-      order: required(runtime.typeByName("Order"), "Order"),
-      orderItem: required(runtime.typeByName("OrderItem"), "OrderItem"),
-      orderItemResult: required(runtime.typeByName("OrderItemResult"), "OrderItemResult"),
-      orderProcessed: required(runtime.typeByName("OrderProcessed"), "OrderProcessed"),
-      orderState: required(runtime.typeByName("OrderState"), "OrderState"),
-    }
-  };
-}
-
-export class ConfigGenerated {
-  public readonly named: NamedConfig;
-
-  public constructor(public readonly runtime: RuntimeConfig) {
-    this.named = namedConfig(runtime);
-  }
+export class ConfigGenerated extends ConfigSnapshot {
 
   public static configPaths(arguments_: readonly string[]) {
     return parseConfigArguments(arguments_);

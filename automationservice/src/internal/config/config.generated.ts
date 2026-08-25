@@ -6,127 +6,71 @@ import {
   parseConfigArguments,
   type EnvironmentPatch,
   type RuntimeConfig,
-  requireCronDataConnectorConfig,
-  type CronDataConnectorConfig,
   type CronDataConnectorConfigDocument,
-  requireCronEndpointConfig,
-  type CronEndpointConfig,
   type CronEndpointConfigDocument,
-  requireDelayStreamConfig,
-  type DelayStreamConfig,
   type DelayStreamConfigDocument,
-  requireInputStreamConfig,
-  type InputStreamConfig,
   type InputStreamConfigDocument,
   type LinkConfigDocument,
-  requireMapStreamConfig,
-  type MapStreamConfig,
   type MapStreamConfigDocument,
-  requireMergeStreamConfig,
-  type MergeStreamConfig,
-  type MergeStreamConfigDocument,
-  type ModuleConfig,
   type ModuleConfigDocument,
-  type ServiceConfig,
   type ServiceConfigDocument,
-  requireSinkStreamConfig,
-  type SinkStreamConfig,
   type SinkStreamConfigDocument,
-  requireTemporalDataConnectorConfig,
-  type TemporalDataConnectorConfig,
+  type SplitStreamConfigDocument,
   type TemporalDataConnectorConfigDocument,
-  requireTemporalEndpointConfig,
-  type TemporalEndpointConfig,
   type TemporalEndpointConfigDocument,
-  type TypeConfig,
   type TypeConfigDocument,
 } from "@gorundebug/tsservicelib/runtime/config";
 
-export const ServiceIds = {
-  AUTOMATION_SERVICE: 1,
-} as const;
+import { ConfigSnapshot } from "./config-snapshot.generated.js";
 
-export const StreamIds = {
-  CONSUME_DURABLE_JOB: 1,
-  DURABLE_PAUSE: 2,
-  LOCAL_SCHEDULE: 3,
-  MERGE_JOB_SUBMISSIONS: 4,
-  PROCESS_DURABLE_JOB: 5,
-  SUBMIT_DURABLE_JOB: 6,
-  TEMPORAL_SCHEDULE: 7,
-} as const;
-
-export const DataConnectorIds = {
-  LOCAL_CRON: 1,
-  TEMPORAL: 2,
-} as const;
-
-export const EndpointIds = {
-  DURABLE_JOB: 2,
-  LOCAL_SCHEDULE: 1,
-  TEMPORAL_SCHEDULE: 3,
-} as const;
-
-export interface NamedConfig {
-  readonly services: {
-    readonly automationService: ServiceConfig;
-  };
-  readonly streams: {
-    readonly consumeDurableJob: InputStreamConfig;
-    readonly durablePause: DelayStreamConfig;
-    readonly localSchedule: InputStreamConfig;
-    readonly mergeJobSubmissions: MergeStreamConfig;
-    readonly processDurableJob: MapStreamConfig;
-    readonly submitDurableJob: SinkStreamConfig;
-    readonly temporalSchedule: InputStreamConfig;
-  };
-  readonly dataConnectors: {
-    readonly localCron: CronDataConnectorConfig;
-    readonly temporal: TemporalDataConnectorConfig;
-  };
-  readonly endpoints: {
-    readonly durableJob: TemporalEndpointConfig;
-    readonly localSchedule: CronEndpointConfig;
-    readonly temporalSchedule: TemporalEndpointConfig;
-  };
-  readonly pools: {
-  };
-  readonly modules: {
-    readonly inventoryServiceApi: ModuleConfig;
-    readonly model: ModuleConfig;
-    readonly orderServiceApi: ModuleConfig;
-  };
-  readonly types: {
-    readonly string_: TypeConfig;
-  };
-}
+export {
+  DataConnectorIds,
+  EndpointIds,
+  ServiceIds,
+  StreamIds,
+  type NamedConfig,
+} from "./config-snapshot.generated.js";
 
 interface DefaultConfig {
   readonly services: {
     readonly "automationService": ServiceConfigDocument;
   };
   readonly streams: {
-    readonly "consumeDurableJob": InputStreamConfigDocument;
-    readonly "durablePause": DelayStreamConfigDocument;
+    readonly "activityPause": DelayStreamConfigDocument;
+    readonly "consumeActivityJob": InputStreamConfigDocument;
+    readonly "consumeWorkflowJob": InputStreamConfigDocument;
     readonly "localSchedule": InputStreamConfigDocument;
-    readonly "mergeJobSubmissions": MergeStreamConfigDocument;
-    readonly "processDurableJob": MapStreamConfigDocument;
-    readonly "submitDurableJob": SinkStreamConfigDocument;
-    readonly "temporalSchedule": InputStreamConfigDocument;
+    readonly "observeActivityResult": MapStreamConfigDocument;
+    readonly "observeWorkflowResult": MapStreamConfigDocument;
+    readonly "processActivityJob": MapStreamConfigDocument;
+    readonly "processScheduledActivity": MapStreamConfigDocument;
+    readonly "processScheduledWorkflow": MapStreamConfigDocument;
+    readonly "processWorkflowJob": MapStreamConfigDocument;
+    readonly "scheduledActivityPause": DelayStreamConfigDocument;
+    readonly "scheduledWorkflowPause": DelayStreamConfigDocument;
+    readonly "splitOnDemandJobs": SplitStreamConfigDocument;
+    readonly "submitActivityJob": SinkStreamConfigDocument;
+    readonly "submitWorkflowJob": SinkStreamConfigDocument;
+    readonly "temporalActivitySchedule": InputStreamConfigDocument;
+    readonly "temporalWorkflowSchedule": InputStreamConfigDocument;
+    readonly "workflowPause": DelayStreamConfigDocument;
   };
   readonly dataConnectors: {
     readonly "localCron": CronDataConnectorConfigDocument;
     readonly "temporal": TemporalDataConnectorConfigDocument;
   };
   readonly endpoints: {
-    readonly "durableJob": TemporalEndpointConfigDocument;
+    readonly "activityJob": TemporalEndpointConfigDocument;
     readonly "localSchedule": CronEndpointConfigDocument;
-    readonly "temporalSchedule": TemporalEndpointConfigDocument;
+    readonly "temporalActivitySchedule": TemporalEndpointConfigDocument;
+    readonly "temporalWorkflowSchedule": TemporalEndpointConfigDocument;
+    readonly "workflowJob": TemporalEndpointConfigDocument;
   };
   readonly pools: {
   };
   readonly links: {
-    readonly "consumeDurableJobToDurablePause": LinkConfigDocument;
+    readonly "consumeActivityJobToActivityPause": LinkConfigDocument;
+    readonly "consumeWorkflowJobToWorkflowPause": LinkConfigDocument;
   };
   readonly modules: {
     readonly "inventoryServiceApi": ModuleConfigDocument;
@@ -163,36 +107,48 @@ const DEFAULT_CONFIG = {
     }
   },
   "streams": {
-    "consumeDurableJob": {
+    "activityPause": {
+      "duration": 250,
+      "functionDescription": "Apply the ordinary local Delay while processing an on-demand Temporal Activity.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ActivityPause",
+      "functionPackage": "",
       "id": 1,
+      "idService": 1,
+      "idSource": 2,
+      "name": "Activity Pause",
+      "pipeline": "automation",
+      "type": 16,
+      "xPos": -250,
+      "yPos": -720
+    },
+    "consumeActivityJob": {
+      "id": 2,
       "idEndpoint": 2,
       "idService": 1,
-      "idSource": 5,
-      "name": "Consume Durable Job",
+      "idSource": 7,
+      "name": "Consume Activity Job",
       "pipeline": "automation",
       "type": 1,
       "valueType": "string",
-      "xPos": -130,
-      "yPos": -330
+      "xPos": -500,
+      "yPos": -720
     },
-    "durablePause": {
-      "duration": 250,
-      "functionDescription": "Suspend a DurableCall through a Temporal timer, then resume the pipeline without occupying an Activity slot.\n",
-      "functionInitializerGroup": "",
-      "functionModule": "",
-      "functionName": "DurablePause",
-      "functionPackage": "",
-      "id": 2,
+    "consumeWorkflowJob": {
+      "id": 3,
+      "idEndpoint": 5,
       "idService": 1,
-      "idSource": 1,
-      "name": "Durable Pause",
+      "idSource": 10,
+      "name": "Consume Workflow Job",
       "pipeline": "automation",
-      "type": 16,
-      "xPos": 90,
-      "yPos": -330
+      "type": 1,
+      "valueType": "string",
+      "xPos": -500,
+      "yPos": -420
     },
     "localSchedule": {
-      "id": 3,
+      "id": 4,
       "idEndpoint": 1,
       "idService": 1,
       "idSource": 0,
@@ -200,62 +156,210 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 1,
       "valueType": "string",
-      "xPos": -1050,
-      "yPos": -480
+      "xPos": -1250,
+      "yPos": -570
     },
-    "mergeJobSubmissions": {
-      "id": 4,
-      "idService": 1,
-      "idSource": 0,
-      "idSources": [
-        3,
-        7
-      ],
-      "name": "Merge Job Submissions",
-      "pipeline": "automation",
-      "type": 10,
-      "xPos": -570,
-      "yPos": -330
-    },
-    "processDurableJob": {
-      "functionDescription": "Process one accepted automation job and return its result.\n",
+    "observeActivityResult": {
+      "functionDescription": "Preserve the result returned through the on-demand Activity endpoint.\n",
       "functionInitializerGroup": "",
       "functionModule": "",
-      "functionName": "ProcessDurableJob",
+      "functionName": "ObserveActivityResult",
       "functionPackage": "",
       "id": 5,
       "idService": 1,
-      "idSource": 2,
-      "name": "Process Durable Job",
+      "idSource": 14,
+      "name": "Observe Activity Result",
       "pipeline": "automation",
       "type": 2,
       "valueType": "string",
-      "xPos": 330,
-      "yPos": -330
+      "xPos": -500,
+      "yPos": -570
     },
-    "submitDurableJob": {
+    "observeWorkflowResult": {
+      "functionDescription": "Preserve the result returned through the on-demand Workflow endpoint.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ObserveWorkflowResult",
+      "functionPackage": "",
       "id": 6,
-      "idEndpoint": 2,
+      "idService": 1,
+      "idSource": 15,
+      "name": "Observe Workflow Result",
+      "pipeline": "automation",
+      "type": 2,
+      "valueType": "string",
+      "xPos": -500,
+      "yPos": -270
+    },
+    "processActivityJob": {
+      "functionDescription": "Record Activity progress with DurableCallHeartbeat and return the processed job result.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ProcessActivityJob",
+      "functionPackage": "",
+      "id": 7,
+      "idService": 1,
+      "idSource": 1,
+      "name": "Process Activity Job",
+      "pipeline": "automation",
+      "type": 2,
+      "valueType": "string",
+      "xPos": 10,
+      "yPos": -720
+    },
+    "processScheduledActivity": {
+      "functionDescription": "Return the visible result of one scheduled Activity execution.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ProcessScheduledActivity",
+      "functionPackage": "",
+      "id": 8,
+      "idService": 1,
+      "idSource": 11,
+      "name": "Process Scheduled Activity",
+      "pipeline": "automation",
+      "type": 2,
+      "valueType": "string",
+      "xPos": -250,
+      "yPos": -60
+    },
+    "processScheduledWorkflow": {
+      "functionDescription": "Return the visible result of one scheduled Workflow execution.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ProcessScheduledWorkflow",
+      "functionPackage": "",
+      "id": 9,
+      "idService": 1,
+      "idSource": 12,
+      "name": "Process Scheduled Workflow",
+      "pipeline": "automation",
+      "type": 2,
+      "valueType": "string",
+      "xPos": -250,
+      "yPos": 240
+    },
+    "processWorkflowJob": {
+      "functionDescription": "Continue the Workflow as new once, then return its final result.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ProcessWorkflowJob",
+      "functionPackage": "",
+      "id": 10,
+      "idService": 1,
+      "idSource": 18,
+      "name": "Process Workflow Job",
+      "pipeline": "automation",
+      "type": 2,
+      "valueType": "string",
+      "xPos": 10,
+      "yPos": -420
+    },
+    "scheduledActivityPause": {
+      "duration": 250,
+      "functionDescription": "Apply the ordinary local Delay inside an Activity started by Temporal Schedule.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ScheduledActivityPause",
+      "functionPackage": "",
+      "id": 11,
+      "idService": 1,
+      "idSource": 16,
+      "name": "Scheduled Activity Pause",
+      "pipeline": "automation",
+      "type": 16,
+      "xPos": -500,
+      "yPos": -60
+    },
+    "scheduledWorkflowPause": {
+      "duration": 250,
+      "functionDescription": "Use the official Temporal Workflow timer for a scheduled Workflow.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ScheduledWorkflowPause",
+      "functionPackage": "",
+      "id": 12,
+      "idService": 1,
+      "idSource": 17,
+      "name": "Scheduled Workflow Pause",
+      "pipeline": "automation",
+      "type": 16,
+      "xPos": -500,
+      "yPos": 240
+    },
+    "splitOnDemandJobs": {
+      "id": 13,
       "idService": 1,
       "idSource": 4,
-      "name": "Submit Durable Job",
+      "name": "Split On-Demand Jobs",
+      "pipeline": "automation",
+      "type": 11,
+      "xPos": -1010,
+      "yPos": -570
+    },
+    "submitActivityJob": {
+      "id": 14,
+      "idEndpoint": 2,
+      "idService": 1,
+      "idSource": 13,
+      "name": "Submit Activity Job",
       "pipeline": "automation",
       "type": 13,
       "valueType": "string",
-      "xPos": -360,
-      "yPos": -330
+      "xPos": -760,
+      "yPos": -720
     },
-    "temporalSchedule": {
-      "id": 7,
+    "submitWorkflowJob": {
+      "id": 15,
+      "idEndpoint": 5,
+      "idService": 1,
+      "idSource": 13,
+      "name": "Submit Workflow Job",
+      "pipeline": "automation",
+      "type": 13,
+      "valueType": "string",
+      "xPos": -760,
+      "yPos": -420
+    },
+    "temporalActivitySchedule": {
+      "id": 16,
       "idEndpoint": 3,
       "idService": 1,
-      "idSource": 0,
-      "name": "Temporal Schedule",
+      "idSource": 8,
+      "name": "Temporal Activity Schedule",
       "pipeline": "automation",
       "type": 1,
       "valueType": "string",
-      "xPos": -1050,
-      "yPos": -180
+      "xPos": -760,
+      "yPos": -60
+    },
+    "temporalWorkflowSchedule": {
+      "id": 17,
+      "idEndpoint": 4,
+      "idService": 1,
+      "idSource": 9,
+      "name": "Temporal Workflow Schedule",
+      "pipeline": "automation",
+      "type": 1,
+      "valueType": "string",
+      "xPos": -760,
+      "yPos": 240
+    },
+    "workflowPause": {
+      "duration": 250,
+      "functionDescription": "Use the same Delay contract backed by the Temporal Workflow timer.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "WorkflowPause",
+      "functionPackage": "",
+      "id": 18,
+      "idService": 1,
+      "idSource": 3,
+      "name": "Workflow Pause",
+      "pipeline": "automation",
+      "type": 16,
+      "xPos": -250,
+      "yPos": -420
     }
   },
   "dataConnectors": {
@@ -278,15 +382,16 @@ const DEFAULT_CONFIG = {
     }
   },
   "endpoints": {
-    "durableJob": {
+    "activityJob": {
       "activityHeartbeatTimeout": 5000,
       "activityStartToCloseTimeout": 30000,
       "enabled": true,
       "id": 2,
       "idDataConnector": 2,
       "maximumAttempts": 3,
-      "name": "Durable Job",
-      "taskQueue": "automation-jobs",
+      "name": "Activity Job",
+      "taskQueue": "automation-activity-jobs",
+      "temporalExecutionType": "Activity",
       "workflowExecutionTimeout": 60000
     },
     "localSchedule": {
@@ -301,37 +406,64 @@ const DEFAULT_CONFIG = {
       "schedule": "*/5 * * * *",
       "timezone": "UTC"
     },
-    "temporalSchedule": {
+    "temporalActivitySchedule": {
       "activityHeartbeatTimeout": 5000,
       "activityStartToCloseTimeout": 30000,
       "enabled": true,
-      "functionDescription": "Create a job message identifying the durable scheduled firing.\n",
-      "functionName": "TemporalSchedule",
+      "functionDescription": "Create an Activity job message identifying the durable scheduled firing.\n",
+      "functionName": "TemporalActivitySchedule",
       "id": 3,
       "idDataConnector": 2,
       "maximumAttempts": 3,
       "missedRunPolicy": "FireOnce",
-      "name": "Temporal Schedule",
+      "name": "Temporal Activity Schedule",
       "overlapPolicy": "Skip",
       "schedule": "*/10 * * * *",
-      "scheduleId": "example-automation-schedule",
-      "taskQueue": "automation-schedules",
+      "scheduleId": "example-automation-activity-schedule",
+      "taskQueue": "automation-activity-schedules",
+      "temporalExecutionType": "Activity",
       "timezone": "UTC",
+      "workflowExecutionTimeout": 60000
+    },
+    "temporalWorkflowSchedule": {
+      "enabled": true,
+      "functionDescription": "Create a Workflow job message identifying the durable scheduled firing.\n",
+      "functionName": "TemporalWorkflowSchedule",
+      "id": 4,
+      "idDataConnector": 2,
+      "maximumAttempts": 3,
+      "missedRunPolicy": "FireOnce",
+      "name": "Temporal Workflow Schedule",
+      "overlapPolicy": "Skip",
+      "schedule": "*/10 * * * *",
+      "scheduleId": "example-automation-workflow-schedule",
+      "taskQueue": "automation-workflow-schedules",
+      "temporalExecutionType": "Workflow",
+      "timezone": "UTC",
+      "workflowExecutionTimeout": 60000
+    },
+    "workflowJob": {
+      "enabled": true,
+      "id": 5,
+      "idDataConnector": 2,
+      "maximumAttempts": 3,
+      "name": "Workflow Job",
+      "taskQueue": "automation-workflow-jobs",
+      "temporalExecutionType": "Workflow",
       "workflowExecutionTimeout": 60000
     }
   },
   "pools": {},
   "links": {
-    "consumeDurableJobToDurablePause": {
-      "activityHeartbeatTimeout": 5000,
-      "activityStartToCloseTimeout": 30000,
-      "callSemantics": 6,
-      "from": 1,
-      "idDataConnector": 2,
-      "maximumAttempts": 3,
-      "taskQueue": "automation-durable-calls",
-      "to": 2,
-      "workflowExecutionTimeout": 60000
+    "consumeActivityJobToActivityPause": {
+      "callSemantics": 2,
+      "from": 2,
+      "to": 1
+    },
+    "consumeWorkflowJobToWorkflowPause": {
+      "callSemantics": 2,
+      "from": 3,
+      "to": 18
     }
   },
   "modules": {
@@ -389,66 +521,25 @@ export function parseIntegerListEnvironment(value: string): readonly number[] {
 }
 
 const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
+  { environment: "ACTIVITY_JOB_ENABLED", path: ["endpoints", "activityJob", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "ACTIVITY_PAUSE_DURATION", path: ["streams", "activityPause", "duration", ], parse: parseIntegerEnvironment },
   { environment: "AUTOMATION_SERVICE_DEFAULT_GRPC_TIMEOUT", path: ["services", "automationService", "defaultGrpcTimeout", ], parse: parseIntegerEnvironment },
   { environment: "AUTOMATION_SERVICE_ENVIRONMENT", path: ["services", "automationService", "environment", ], parse: parseStringEnvironment },
   { environment: "AUTOMATION_SERVICE_GRPC_HOST", path: ["services", "automationService", "grpcHost", ], parse: parseStringEnvironment },
   { environment: "AUTOMATION_SERVICE_GRPC_PORT", path: ["services", "automationService", "grpcPort", ], parse: parseIntegerEnvironment },
   { environment: "AUTOMATION_SERVICE_HTTP_HOST", path: ["services", "automationService", "httpHost", ], parse: parseStringEnvironment },
   { environment: "AUTOMATION_SERVICE_HTTP_PORT", path: ["services", "automationService", "httpPort", ], parse: parseIntegerEnvironment },
-  { environment: "DURABLE_JOB_ENABLED", path: ["endpoints", "durableJob", "enabled", ], parse: parseBooleanEnvironment },
-  { environment: "DURABLE_PAUSE_DURATION", path: ["streams", "durablePause", "duration", ], parse: parseIntegerEnvironment },
   { environment: "LOCAL_SCHEDULE_ENABLED", path: ["endpoints", "localSchedule", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "SCHEDULED_ACTIVITY_PAUSE_DURATION", path: ["streams", "scheduledActivityPause", "duration", ], parse: parseIntegerEnvironment },
+  { environment: "SCHEDULED_WORKFLOW_PAUSE_DURATION", path: ["streams", "scheduledWorkflowPause", "duration", ], parse: parseIntegerEnvironment },
+  { environment: "TEMPORAL_ACTIVITY_SCHEDULE_ENABLED", path: ["endpoints", "temporalActivitySchedule", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "TEMPORAL_ADDRESS", path: ["dataConnectors", "temporal", "address", ], parse: parseStringEnvironment },
-  { environment: "TEMPORAL_SCHEDULE_ENABLED", path: ["endpoints", "temporalSchedule", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "TEMPORAL_WORKFLOW_SCHEDULE_ENABLED", path: ["endpoints", "temporalWorkflowSchedule", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "WORKFLOW_JOB_ENABLED", path: ["endpoints", "workflowJob", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "WORKFLOW_PAUSE_DURATION", path: ["streams", "workflowPause", "duration", ], parse: parseIntegerEnvironment },
 ];
 
-function required<T>(value: T | undefined, description: string): T {
-  if (value === undefined) throw new Error(`missing ${description}`);
-  return value;
-}
-
-function namedConfig(runtime: RuntimeConfig): NamedConfig {
-  return {
-    services: {
-      automationService: required(runtime.serviceById(ServiceIds.AUTOMATION_SERVICE), "Automation Service"),
-    },
-    streams: {
-      consumeDurableJob: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_DURABLE_JOB)),
-      durablePause: requireDelayStreamConfig(runtime.streamById(StreamIds.DURABLE_PAUSE)),
-      localSchedule: requireInputStreamConfig(runtime.streamById(StreamIds.LOCAL_SCHEDULE)),
-      mergeJobSubmissions: requireMergeStreamConfig(runtime.streamById(StreamIds.MERGE_JOB_SUBMISSIONS)),
-      processDurableJob: requireMapStreamConfig(runtime.streamById(StreamIds.PROCESS_DURABLE_JOB)),
-      submitDurableJob: requireSinkStreamConfig(runtime.streamById(StreamIds.SUBMIT_DURABLE_JOB)),
-      temporalSchedule: requireInputStreamConfig(runtime.streamById(StreamIds.TEMPORAL_SCHEDULE)),
-    },
-    dataConnectors: {
-      localCron: requireCronDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.LOCAL_CRON)),
-      temporal: requireTemporalDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.TEMPORAL)),
-    },
-    endpoints: {
-      durableJob: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.DURABLE_JOB)),
-      localSchedule: requireCronEndpointConfig(runtime.endpointById(EndpointIds.LOCAL_SCHEDULE)),
-      temporalSchedule: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.TEMPORAL_SCHEDULE)),
-    },
-    pools: {
-    },
-    modules: {
-      inventoryServiceApi: required(runtime.moduleByName("inventory_service_api"), "inventory_service_api"),
-      model: required(runtime.moduleByName("model"), "model"),
-      orderServiceApi: required(runtime.moduleByName("order_service_api"), "order_service_api"),
-    },
-    types: {
-      string_: required(runtime.typeByName("string"), "string"),
-    }
-  };
-}
-
-export class ConfigGenerated {
-  public readonly named: NamedConfig;
-
-  public constructor(public readonly runtime: RuntimeConfig) {
-    this.named = namedConfig(runtime);
-  }
+export class ConfigGenerated extends ConfigSnapshot {
 
   public static configPaths(arguments_: readonly string[]) {
     return parseConfigArguments(arguments_);

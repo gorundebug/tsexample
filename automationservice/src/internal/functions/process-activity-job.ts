@@ -7,28 +7,30 @@ import type {
   Stream,
   MapStreamConfig
 } from "@gorundebug/tsservicelib/runtime";
+import { durableCallHeartbeat } from "@gorundebug/tsservicelib/runtime";
 import type { MapFunction } from "@gorundebug/tsservicelib/transformation";
 
-/** Process one accepted automation job and return its result. */
-export class ProcessDurableJob implements MapFunction<string, string> {
+/** Record Activity progress with DurableCallHeartbeat and return the processed job result. */
+export class ProcessActivityJob implements MapFunction<string, string> {
   public async map(
     context: MessageContext,
     _stream: Stream,
     value: Readonly<string>,
     out: Collector<string>
   ): Promise<void> {
-    await out.out(context, `processed:${value}`);
+    durableCallHeartbeat(context, `processing:${value}`);
+    await out.out(context, `activity:processed:${value}`);
   }
 }
 
-/** Construct ProcessDurableJob once while the service graph is initialized. */
-export function makeProcessDurableJob(
+/** Construct ProcessActivityJob once while the service graph is initialized. */
+export function makeProcessActivityJob(
   context: MessageContext,
   environment: RuntimeEnvironment,
   config: MapStreamConfig
-): ProcessDurableJob {
+): ProcessActivityJob {
   void context;
   void environment;
   void config;
-  return new ProcessDurableJob();
+  return new ProcessActivityJob();
 }

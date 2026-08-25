@@ -7,14 +7,14 @@ local lib = import '_lib.libsonnet';
 
 local sdkFilter = 'telemetry_source="temporal-sdk", job=~"$sdk_job"';
 local queueFilter = '%s, task_queue=~"$task_queue"' % sdkFilter;
-local durableFilter = '%s, activity_type=~"servicegen\\.durable\\..*"' % queueFilter;
+local endpointFilter = '%s, activity_type=~".+\\.endpoint\\..+\\.v1"' % queueFilter;
 local serverFilter = 'telemetry_source="temporal-server", job=~"$server_job"';
 local graphFilter = 'service=~"$service", from=~"$from", to=~"$to"';
 
 lib.dashboard(
-  title='%s / Temporal & DurableCall' % lib.svc,
+  title='%s / Temporal Endpoints' % lib.svc,
   uid='%s-temporal' % lib.svc,
-  tags=['temporal', 'durable-call'],
+  tags=['temporal', 'endpoint'],
   variables=[
     lib.dsVar,
     lib.labelVar('server_job', 'job', 'service_requests', 'telemetry_source="temporal-server"'),
@@ -80,14 +80,14 @@ lib.dashboard(
       unit='s',
     ),
 
-    lib.row('DurableCall — Temporal-owned latency'),
+    lib.row('Temporal endpoint — Temporal-owned latency'),
 
     lib.ts(
       title='Queue Wait p50 / p95 / p99',
       targets=[
-        lib.hQuantileBy(0.50, 'temporal_activity_schedule_to_start_latency', 'activity_type, task_queue', durableFilter, 'p50 {{activity_type}}'),
-        lib.hQuantileBy(0.95, 'temporal_activity_schedule_to_start_latency', 'activity_type, task_queue', durableFilter, 'p95 {{activity_type}}'),
-        lib.hQuantileBy(0.99, 'temporal_activity_schedule_to_start_latency', 'activity_type, task_queue', durableFilter, 'p99 {{activity_type}}'),
+        lib.hQuantileBy(0.50, 'temporal_activity_schedule_to_start_latency', 'activity_type, task_queue', endpointFilter, 'p50 {{activity_type}}'),
+        lib.hQuantileBy(0.95, 'temporal_activity_schedule_to_start_latency', 'activity_type, task_queue', endpointFilter, 'p95 {{activity_type}}'),
+        lib.hQuantileBy(0.99, 'temporal_activity_schedule_to_start_latency', 'activity_type, task_queue', endpointFilter, 'p99 {{activity_type}}'),
       ],
       w=12, h=8,
       unit='s',
@@ -96,9 +96,9 @@ lib.dashboard(
     lib.ts(
       title='Activity Execution p50 / p95 / p99',
       targets=[
-        lib.hQuantileBy(0.50, 'temporal_activity_execution_latency', 'activity_type, task_queue', durableFilter, 'p50 {{activity_type}}'),
-        lib.hQuantileBy(0.95, 'temporal_activity_execution_latency', 'activity_type, task_queue', durableFilter, 'p95 {{activity_type}}'),
-        lib.hQuantileBy(0.99, 'temporal_activity_execution_latency', 'activity_type, task_queue', durableFilter, 'p99 {{activity_type}}'),
+        lib.hQuantileBy(0.50, 'temporal_activity_execution_latency', 'activity_type, task_queue', endpointFilter, 'p50 {{activity_type}}'),
+        lib.hQuantileBy(0.95, 'temporal_activity_execution_latency', 'activity_type, task_queue', endpointFilter, 'p95 {{activity_type}}'),
+        lib.hQuantileBy(0.99, 'temporal_activity_execution_latency', 'activity_type, task_queue', endpointFilter, 'p99 {{activity_type}}'),
       ],
       w=12, h=8,
       unit='s',
@@ -107,8 +107,8 @@ lib.dashboard(
     lib.ts(
       title='Activity Failures and Cancellations',
       targets=[
-        lib.rate('temporal_activity_execution_failed', durableFilter, 'failed {{activity_type}}'),
-        lib.rate('temporal_activity_execution_cancelled', durableFilter, 'cancelled {{activity_type}}'),
+        lib.rate('temporal_activity_execution_failed', endpointFilter, 'failed {{activity_type}}'),
+        lib.rate('temporal_activity_execution_cancelled', endpointFilter, 'cancelled {{activity_type}}'),
       ],
       w=24, h=8,
       unit='ops',

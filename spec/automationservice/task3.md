@@ -1,4 +1,4 @@
-# Task 3/4: `ProcessDurableJob`
+# Task 3/13: `ObserveActivityResult`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
@@ -6,14 +6,14 @@
 |-------|-------|
 | Language | `TypeScript` |
 | Kind | `map` |
-| File | `automationservice/src/internal/functions/process-durable-job.ts` |
-| Test | `automationservice/test/functions/process-durable-job.test.ts` |
+| File | `automationservice/src/internal/functions/observe-activity-result.ts` |
+| Test | `automationservice/test/functions/observe-activity-result.test.ts` |
 | Service | `Automation Service` |
 
 
 ## Behaviour
 
-Process one accepted automation job and return its result.
+Preserve the result returned through the on-demand Activity endpoint.
 
 
 
@@ -23,7 +23,7 @@ Process one accepted automation job and return its result.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/process-durable-job.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/process-durable-job.test.ts`
+- [ ] Open `automationservice/src/internal/functions/observe-activity-result.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/observe-activity-result.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task3.md — ProcessDurableJob — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task3.md — ObserveActivityResult — TypeScript — done`

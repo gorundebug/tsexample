@@ -6,68 +6,24 @@ import {
   parseConfigArguments,
   type EnvironmentPatch,
   type RuntimeConfig,
-  requireInputStreamConfig,
-  type InputStreamConfig,
   type InputStreamConfigDocument,
-  requireKafkaDataConnectorConfig,
-  type KafkaDataConnectorConfig,
   type KafkaDataConnectorConfigDocument,
-  requireKafkaEndpointConfig,
-  type KafkaEndpointConfig,
   type KafkaEndpointConfigDocument,
-  type ModuleConfig,
   type ModuleConfigDocument,
-  requireProcessStreamConfig,
-  type ProcessStreamConfig,
   type ProcessStreamConfigDocument,
-  type ServiceConfig,
   type ServiceConfigDocument,
-  type TypeConfig,
   type TypeConfigDocument,
 } from "@gorundebug/tsservicelib/runtime/config";
 
-export const ServiceIds = {
-  ANALYTICS_SERVICE: 1,
-} as const;
+import { ConfigSnapshot } from "./config-snapshot.generated.js";
 
-export const StreamIds = {
-  CONSUME_ORDER_PROCESSED: 1,
-  COUNT_ORDER_PROCESSED: 2,
-} as const;
-
-export const DataConnectorIds = {
-  ORDER_EVENTS: 1,
-} as const;
-
-export const EndpointIds = {
-  ORDER_PROCESSED: 1,
-} as const;
-
-export interface NamedConfig {
-  readonly services: {
-    readonly analyticsService: ServiceConfig;
-  };
-  readonly streams: {
-    readonly consumeOrderProcessed: InputStreamConfig;
-    readonly countOrderProcessed: ProcessStreamConfig;
-  };
-  readonly dataConnectors: {
-    readonly orderEvents: KafkaDataConnectorConfig;
-  };
-  readonly endpoints: {
-    readonly orderProcessed: KafkaEndpointConfig;
-  };
-  readonly pools: {
-  };
-  readonly modules: {
-    readonly inventoryServiceApi: ModuleConfig;
-    readonly model: ModuleConfig;
-    readonly orderServiceApi: ModuleConfig;
-  };
-  readonly types: {
-    readonly orderProcessed: TypeConfig;
-  };
-}
+export {
+  DataConnectorIds,
+  EndpointIds,
+  ServiceIds,
+  StreamIds,
+  type NamedConfig,
+} from "./config-snapshot.generated.js";
 
 interface DefaultConfig {
   readonly services: {
@@ -255,45 +211,7 @@ const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
   { environment: "ORDER_PROCESSED_ENABLED", path: ["endpoints", "orderProcessed", "enabled", ], parse: parseBooleanEnvironment },
 ];
 
-function required<T>(value: T | undefined, description: string): T {
-  if (value === undefined) throw new Error(`missing ${description}`);
-  return value;
-}
-
-function namedConfig(runtime: RuntimeConfig): NamedConfig {
-  return {
-    services: {
-      analyticsService: required(runtime.serviceById(ServiceIds.ANALYTICS_SERVICE), "Analytics Service"),
-    },
-    streams: {
-      consumeOrderProcessed: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_ORDER_PROCESSED)),
-      countOrderProcessed: requireProcessStreamConfig(runtime.streamById(StreamIds.COUNT_ORDER_PROCESSED)),
-    },
-    dataConnectors: {
-      orderEvents: requireKafkaDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.ORDER_EVENTS)),
-    },
-    endpoints: {
-      orderProcessed: requireKafkaEndpointConfig(runtime.endpointById(EndpointIds.ORDER_PROCESSED)),
-    },
-    pools: {
-    },
-    modules: {
-      inventoryServiceApi: required(runtime.moduleByName("inventory_service_api"), "inventory_service_api"),
-      model: required(runtime.moduleByName("model"), "model"),
-      orderServiceApi: required(runtime.moduleByName("order_service_api"), "order_service_api"),
-    },
-    types: {
-      orderProcessed: required(runtime.typeByName("OrderProcessed"), "OrderProcessed"),
-    }
-  };
-}
-
-export class ConfigGenerated {
-  public readonly named: NamedConfig;
-
-  public constructor(public readonly runtime: RuntimeConfig) {
-    this.named = namedConfig(runtime);
-  }
+export class ConfigGenerated extends ConfigSnapshot {
 
   public static configPaths(arguments_: readonly string[]) {
     return parseConfigArguments(arguments_);
