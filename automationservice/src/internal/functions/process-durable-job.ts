@@ -7,14 +7,16 @@ import type {
   Stream,
   MapStreamConfig,
 } from "@gorundebug/tsservicelib/runtime";
+import { durableCallSuccess } from "@gorundebug/tsservicelib/runtime";
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
 
 /** Process one accepted automation job and return its result. */
 export class ProcessDurableJob implements MapFunction<string, string> {
-  public map(context: MessageContext, _stream: Stream, value: Readonly<string>, out: Collector<string>): void | Promise<void> {
-    return out.out(context, `processed:${value}`);
+  public async map(context: MessageContext, _stream: Stream, value: Readonly<string>, out: Collector<string>): Promise<void> {
+    await out.out(context, `processed:${value}`);
+    durableCallSuccess(context);
   }
 }
 
