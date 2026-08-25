@@ -16,17 +16,37 @@ export class Service extends ServiceGenerated {
    */
   protected override customMakersInit(context: MessageContext): void {
     void context;
+    // this.makers.activityPause = customActivityPauseMaker;
     // this.makers.localSchedule = customLocalScheduleMaker;
-    // this.makers.processDurableJob = customProcessDurableJobMaker;
-    // this.makers.temporalSchedule = customTemporalScheduleMaker;
+    // this.makers.observeActivityResult = customObserveActivityResultMaker;
+    // this.makers.observeWorkflowResult = customObserveWorkflowResultMaker;
+    // this.makers.processActivityJob = customProcessActivityJobMaker;
+    // this.makers.processScheduledActivity = customProcessScheduledActivityMaker;
+    // this.makers.processScheduledWorkflow = customProcessScheduledWorkflowMaker;
+    // this.makers.processWorkflowJob = customProcessWorkflowJobMaker;
+    // this.makers.scheduledActivityPause = customScheduledActivityPauseMaker;
+    // this.makers.scheduledWorkflowPause = customScheduledWorkflowPauseMaker;
+    // this.makers.temporalActivitySchedule = customTemporalActivityScheduleMaker;
+    // this.makers.temporalWorkflowSchedule = customTemporalWorkflowScheduleMaker;
+    // this.makers.workflowPause = customWorkflowPauseMaker;
   }
 
   /** Called after every function is constructed and before the graph is wired. */
   protected override customFunctionsInit(context: MessageContext): void {
     void context;
+    // Configure this.functions.activityPause here when post-construction setup is needed.
     // Configure this.functions.localSchedule here when post-construction setup is needed.
-    // Configure this.functions.processDurableJob here when post-construction setup is needed.
-    // Configure this.functions.temporalSchedule here when post-construction setup is needed.
+    // Configure this.functions.observeActivityResult here when post-construction setup is needed.
+    // Configure this.functions.observeWorkflowResult here when post-construction setup is needed.
+    // Configure this.functions.processActivityJob here when post-construction setup is needed.
+    // Configure this.functions.processScheduledActivity here when post-construction setup is needed.
+    // Configure this.functions.processScheduledWorkflow here when post-construction setup is needed.
+    // Configure this.functions.processWorkflowJob here when post-construction setup is needed.
+    // Configure this.functions.scheduledActivityPause here when post-construction setup is needed.
+    // Configure this.functions.scheduledWorkflowPause here when post-construction setup is needed.
+    // Configure this.functions.temporalActivitySchedule here when post-construction setup is needed.
+    // Configure this.functions.temporalWorkflowSchedule here when post-construction setup is needed.
+    // Configure this.functions.workflowPause here when post-construction setup is needed.
   }
 
   protected override createServiceAppOptions(config: ServiceConfig): ServiceAppOptions {
