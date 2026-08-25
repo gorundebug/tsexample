@@ -11,7 +11,6 @@ import {
   makeDefaultSerdeRegistry, makeStreamSerde, runeSerdeType,
   stringSerdeType,
   uint8SerdeType, uint16SerdeType, uint32SerdeType, uint64SerdeType, uintSerdeType,
-  makeTemporalConnector,
 } from "@gorundebug/tsservicelib/runtime";
 import {
   makeCaseStream, makeDelayStream, makeFilterStream, makeFlatMapIterableStream,
@@ -21,6 +20,7 @@ import {
   makeSinkStreamWithResult, makeSplitStream, makeWhenStream,
 } from "@gorundebug/tsservicelib/operators";
 import { makeCronEndpointConsumer } from "@gorundebug/tsservicelib/datasource/cron";
+import { makeTemporalConnector } from "@gorundebug/tsservicelib/datasource/temporal";
 import {
   makeTemporalEndpointConsumer,
   makeTemporalScheduleEndpointConsumer,
