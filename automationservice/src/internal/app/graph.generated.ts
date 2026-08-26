@@ -18,8 +18,10 @@ import {
   makeSinkStreamWithResult, makeSplitStream, makeWhenStream,
 } from "@gorundebug/tsservicelib/operators";
 import type { String } from "../types/index.generated.js";
-import type { ConfigSnapshot } from "../config/config-snapshot.generated.js";
-import { StreamIds } from "../config/config.generated.js";
+import {
+  StreamIds,
+  type ConfigSnapshot,
+} from "../config/config-snapshot.generated.js";
 import {
   ActivityPause, makeActivityPause,
   LocalSchedule, makeLocalSchedule,
