@@ -159,8 +159,8 @@ const DEFAULT_CONFIG = {
       "name": "Activity Pause",
       "pipeline": "automation",
       "type": 16,
-      "xPos": -250,
-      "yPos": 350
+      "xPos": -251,
+      "yPos": 219
     },
     "callFanOutActivityA": {
       "id": 2,
@@ -171,8 +171,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 13,
       "valueType": "AutomationJob",
-      "xPos": -250,
-      "yPos": 1870
+      "xPos": -271,
+      "yPos": 1284
     },
     "callFanOutActivityB": {
       "id": 3,
@@ -183,8 +183,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 13,
       "valueType": "AutomationJob",
-      "xPos": 270,
-      "yPos": 1790
+      "xPos": 7,
+      "yPos": 990
     },
     "callFanOutActivityC": {
       "id": 4,
@@ -195,8 +195,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 13,
       "valueType": "AutomationJob",
-      "xPos": 270,
-      "yPos": 1950
+      "xPos": 317,
+      "yPos": 1313
     },
     "callSequentialActivityA": {
       "id": 5,
@@ -207,8 +207,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 13,
       "valueType": "AutomationJob",
-      "xPos": 10,
-      "yPos": 650
+      "xPos": 49,
+      "yPos": 473
     },
     "callSequentialActivityB": {
       "id": 6,
@@ -243,8 +243,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 1,
       "valueType": "AutomationJob",
-      "xPos": -500,
-      "yPos": 2120
+      "xPos": -277,
+      "yPos": 1051
     },
     "consumeFanOutActivityB": {
       "id": 9,
@@ -255,8 +255,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 1,
       "valueType": "AutomationJob",
-      "xPos": -500,
-      "yPos": 2270
+      "xPos": 295,
+      "yPos": 996
     },
     "consumeFanOutActivityC": {
       "id": 10,
@@ -267,8 +267,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 1,
       "valueType": "AutomationJob",
-      "xPos": -500,
-      "yPos": 2420
+      "xPos": 553,
+      "yPos": 1503
     },
     "consumeFanOutWorkflowJob": {
       "id": 11,
@@ -279,8 +279,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 1,
       "valueType": "AutomationJob",
-      "xPos": -500,
-      "yPos": 1870
+      "xPos": -635,
+      "yPos": 1287
     },
     "consumeSequentialActivityA": {
       "id": 12,
@@ -291,8 +291,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 1,
       "valueType": "AutomationJob",
-      "xPos": -500,
-      "yPos": 1570
+      "xPos": 302,
+      "yPos": 489
     },
     "consumeSequentialActivityB": {
       "id": 13,
@@ -303,8 +303,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 1,
       "valueType": "AutomationJob",
-      "xPos": -500,
-      "yPos": 1720
+      "xPos": 503,
+      "yPos": 658
     },
     "consumeWorkflowJob": {
       "id": 14,
@@ -315,8 +315,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 1,
       "valueType": "AutomationJob",
-      "xPos": -500,
-      "yPos": 650
+      "xPos": -515,
+      "yPos": 635
     },
     "localSchedule": {
       "id": 15,
@@ -359,8 +359,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 2,
       "valueType": "AutomationJob",
-      "xPos": 530,
-      "yPos": 1790
+      "xPos": -11,
+      "yPos": 793
     },
     "observeFanOutActivityC": {
       "functionDescription": "Observe the typed result returned by the Activity C fan-out branch.\n",
@@ -375,8 +375,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 2,
       "valueType": "AutomationJob",
-      "xPos": 530,
-      "yPos": 1950
+      "xPos": 587,
+      "yPos": 1121
     },
     "observeWorkflowResult": {
       "functionDescription": "Preserve the result returned through the on-demand Workflow endpoint.\n",
@@ -391,8 +391,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 2,
       "valueType": "AutomationJob",
-      "xPos": -500,
-      "yPos": 800
+      "xPos": -650,
+      "yPos": 788
     },
     "processActivityJob": {
       "functionDescription": "Record Activity progress with DurableCallHeartbeat and return the processed job result.\n",
@@ -423,8 +423,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 2,
       "valueType": "AutomationJob",
-      "xPos": -250,
-      "yPos": 2120
+      "xPos": -268,
+      "yPos": 819
     },
     "processFanOutActivityB": {
       "functionDescription": "Return Activity B's typed fan-out result.\n",
@@ -439,8 +439,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 2,
       "valueType": "AutomationJob",
-      "xPos": -250,
-      "yPos": 2270
+      "xPos": 705,
+      "yPos": 1001
     },
     "processFanOutActivityC": {
       "functionDescription": "Return Activity C's typed fan-out result.\n",
@@ -455,8 +455,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 2,
       "valueType": "AutomationJob",
-      "xPos": -250,
-      "yPos": 2420
+      "xPos": 931,
+      "yPos": 1493
     },
     "processScheduledActivity": {
       "functionDescription": "Return the visible result of one scheduled Activity execution.\n",
@@ -471,8 +471,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 2,
       "valueType": "AutomationJob",
-      "xPos": -250,
-      "yPos": 1010
+      "xPos": -1442,
+      "yPos": 655
     },
     "processScheduledWorkflow": {
       "functionDescription": "Return the visible result of one scheduled Workflow execution.\n",
@@ -487,8 +487,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 2,
       "valueType": "AutomationJob",
-      "xPos": -250,
-      "yPos": 1310
+      "xPos": -1411,
+      "yPos": 856
     },
     "processSequentialActivityA": {
       "functionDescription": "Return sequential Activity A's typed result to its Temporal sink.\n",
@@ -503,8 +503,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 2,
       "valueType": "AutomationJob",
-      "xPos": -250,
-      "yPos": 1570
+      "xPos": 568,
+      "yPos": 486
     },
     "processSequentialActivityB": {
       "functionDescription": "Return sequential Activity B's typed result to its Temporal sink.\n",
@@ -519,8 +519,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 2,
       "valueType": "AutomationJob",
-      "xPos": -250,
-      "yPos": 1720
+      "xPos": 804,
+      "yPos": 660
     },
     "processWorkflowJob": {
       "functionDescription": "Continue the Workflow as new once, then return its final result.\n",
@@ -535,8 +535,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 2,
       "valueType": "AutomationJob",
-      "xPos": 530,
-      "yPos": 650
+      "xPos": -59,
+      "yPos": 654
     },
     "scheduledActivityPause": {
       "duration": 250,
@@ -551,8 +551,8 @@ const DEFAULT_CONFIG = {
       "name": "Scheduled Activity Pause",
       "pipeline": "automation",
       "type": 16,
-      "xPos": -500,
-      "yPos": 1010
+      "xPos": -1661,
+      "yPos": 402
     },
     "scheduledWorkflowPause": {
       "duration": 250,
@@ -567,8 +567,8 @@ const DEFAULT_CONFIG = {
       "name": "Scheduled Workflow Pause",
       "pipeline": "automation",
       "type": 16,
-      "xPos": -500,
-      "yPos": 1310
+      "xPos": -1684,
+      "yPos": 1167
     },
     "splitActivityAResult": {
       "id": 31,
@@ -577,8 +577,8 @@ const DEFAULT_CONFIG = {
       "name": "Split Activity A Result",
       "pipeline": "automation",
       "type": 11,
-      "xPos": 10,
-      "yPos": 1870
+      "xPos": 40,
+      "yPos": 1312
     },
     "splitOnDemandJobs": {
       "id": 32,
@@ -611,8 +611,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 13,
       "valueType": "AutomationJob",
-      "xPos": -760,
-      "yPos": 1870
+      "xPos": -967,
+      "yPos": 1034
     },
     "submitWorkflowJob": {
       "id": 35,
@@ -623,8 +623,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 13,
       "valueType": "AutomationJob",
-      "xPos": -760,
-      "yPos": 650
+      "xPos": -807,
+      "yPos": 629
     },
     "temporalActivitySchedule": {
       "id": 36,
@@ -635,8 +635,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 1,
       "valueType": "AutomationJob",
-      "xPos": -760,
-      "yPos": 1010
+      "xPos": -1917,
+      "yPos": 639
     },
     "temporalWorkflowSchedule": {
       "id": 37,
@@ -647,8 +647,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 1,
       "valueType": "AutomationJob",
-      "xPos": -760,
-      "yPos": 1310
+      "xPos": -1906,
+      "yPos": 846
     },
     "workflowPause": {
       "duration": 250,
@@ -663,8 +663,8 @@ const DEFAULT_CONFIG = {
       "name": "Workflow Pause",
       "pipeline": "automation",
       "type": 16,
-      "xPos": -250,
-      "yPos": 650
+      "xPos": -233,
+      "yPos": 504
     }
   },
   "dataConnectors": {
@@ -676,6 +676,7 @@ const DEFAULT_CONFIG = {
     },
     "temporal": {
       "address": "temporal:7233",
+      "apiKey": "",
       "id": 2,
       "identity": "example-automation",
       "implementation": "temporal/typescript",
@@ -683,6 +684,7 @@ const DEFAULT_CONFIG = {
       "maxConcurrentWorkflows": 4,
       "name": "Temporal",
       "namespace": "default",
+      "tlsEnabled": false,
       "type": 6
     }
   },
@@ -691,94 +693,168 @@ const DEFAULT_CONFIG = {
       "activityHeartbeatTimeout": 5000,
       "activityStartToCloseTimeout": 30000,
       "enabled": true,
+      "functionDescription": "",
+      "functionInitializerGroup": "",
+      "functionPackage": "",
       "id": 2,
       "idDataConnector": 2,
       "maximumAttempts": 3,
+      "missedRunPolicy": "FireOnce",
       "name": "Activity Job",
+      "overlapPolicy": "Skip",
+      "publicFunction": false,
+      "schedule": "",
+      "scheduleId": "",
       "taskQueue": "automation-activity-jobs",
       "temporalExecutionType": "Activity",
+      "timezone": "UTC",
+      "tracingEnabled": false,
       "workflowExecutionTimeout": 60000
     },
     "fanOutActivityA": {
       "activityHeartbeatTimeout": 5000,
       "activityStartToCloseTimeout": 30000,
       "enabled": true,
+      "functionDescription": "",
+      "functionInitializerGroup": "",
+      "functionPackage": "",
       "id": 3,
       "idDataConnector": 2,
       "maximumAttempts": 3,
+      "missedRunPolicy": "FireOnce",
       "name": "Fan-Out Activity A",
+      "overlapPolicy": "Skip",
+      "publicFunction": false,
+      "schedule": "",
+      "scheduleId": "",
       "taskQueue": "automation-activity-jobs",
       "temporalExecutionType": "Activity",
+      "timezone": "UTC",
+      "tracingEnabled": false,
       "workflowExecutionTimeout": 60000
     },
     "fanOutActivityB": {
       "activityHeartbeatTimeout": 5000,
       "activityStartToCloseTimeout": 30000,
       "enabled": true,
+      "functionDescription": "",
+      "functionInitializerGroup": "",
+      "functionPackage": "",
       "id": 4,
       "idDataConnector": 2,
       "maximumAttempts": 3,
+      "missedRunPolicy": "FireOnce",
       "name": "Fan-Out Activity B",
+      "overlapPolicy": "Skip",
+      "publicFunction": false,
+      "schedule": "",
+      "scheduleId": "",
       "taskQueue": "automation-activity-jobs",
       "temporalExecutionType": "Activity",
+      "timezone": "UTC",
+      "tracingEnabled": false,
       "workflowExecutionTimeout": 60000
     },
     "fanOutActivityC": {
       "activityHeartbeatTimeout": 5000,
       "activityStartToCloseTimeout": 30000,
       "enabled": true,
+      "functionDescription": "",
+      "functionInitializerGroup": "",
+      "functionPackage": "",
       "id": 5,
       "idDataConnector": 2,
       "maximumAttempts": 3,
+      "missedRunPolicy": "FireOnce",
       "name": "Fan-Out Activity C",
+      "overlapPolicy": "Skip",
+      "publicFunction": false,
+      "schedule": "",
+      "scheduleId": "",
       "taskQueue": "automation-activity-jobs",
       "temporalExecutionType": "Activity",
+      "timezone": "UTC",
+      "tracingEnabled": false,
       "workflowExecutionTimeout": 60000
     },
     "fanOutWorkflowJob": {
       "enabled": true,
+      "functionDescription": "",
+      "functionInitializerGroup": "",
+      "functionPackage": "",
       "id": 6,
       "idDataConnector": 2,
       "maximumAttempts": 3,
+      "missedRunPolicy": "FireOnce",
       "name": "Fan-Out Workflow Job",
+      "overlapPolicy": "Skip",
+      "publicFunction": false,
+      "schedule": "",
+      "scheduleId": "",
       "taskQueue": "automation-workflow-jobs",
       "temporalExecutionType": "Workflow",
+      "timezone": "UTC",
+      "tracingEnabled": false,
       "workflowExecutionTimeout": 60000
     },
     "localSchedule": {
       "enabled": true,
       "functionDescription": "Create a job message identifying the local scheduled firing.\n",
+      "functionInitializerGroup": "",
       "functionName": "LocalSchedule",
+      "functionPackage": "",
       "id": 1,
       "idDataConnector": 1,
       "missedRunPolicy": "FireOnce",
       "name": "Local Schedule",
       "overlapPolicy": "Skip",
+      "publicFunction": false,
       "schedule": "*/5 * * * *",
-      "timezone": "UTC"
+      "timezone": "UTC",
+      "tracingEnabled": false
     },
     "sequentialActivityA": {
       "activityHeartbeatTimeout": 5000,
       "activityStartToCloseTimeout": 30000,
       "enabled": true,
+      "functionDescription": "",
+      "functionInitializerGroup": "",
+      "functionPackage": "",
       "id": 7,
       "idDataConnector": 2,
       "maximumAttempts": 3,
+      "missedRunPolicy": "FireOnce",
       "name": "Sequential Activity A",
+      "overlapPolicy": "Skip",
+      "publicFunction": false,
+      "schedule": "",
+      "scheduleId": "",
       "taskQueue": "automation-activity-jobs",
       "temporalExecutionType": "Activity",
+      "timezone": "UTC",
+      "tracingEnabled": false,
       "workflowExecutionTimeout": 60000
     },
     "sequentialActivityB": {
       "activityHeartbeatTimeout": 5000,
       "activityStartToCloseTimeout": 30000,
       "enabled": true,
+      "functionDescription": "",
+      "functionInitializerGroup": "",
+      "functionPackage": "",
       "id": 8,
       "idDataConnector": 2,
       "maximumAttempts": 3,
+      "missedRunPolicy": "FireOnce",
       "name": "Sequential Activity B",
+      "overlapPolicy": "Skip",
+      "publicFunction": false,
+      "schedule": "",
+      "scheduleId": "",
       "taskQueue": "automation-activity-jobs",
       "temporalExecutionType": "Activity",
+      "timezone": "UTC",
+      "tracingEnabled": false,
       "workflowExecutionTimeout": 60000
     },
     "temporalActivitySchedule": {
@@ -786,45 +862,63 @@ const DEFAULT_CONFIG = {
       "activityStartToCloseTimeout": 30000,
       "enabled": true,
       "functionDescription": "Create an Activity job message identifying the durable scheduled firing.\n",
+      "functionInitializerGroup": "",
       "functionName": "TemporalActivitySchedule",
+      "functionPackage": "",
       "id": 9,
       "idDataConnector": 2,
       "maximumAttempts": 3,
       "missedRunPolicy": "FireOnce",
       "name": "Temporal Activity Schedule",
       "overlapPolicy": "Skip",
+      "publicFunction": false,
       "schedule": "*/10 * * * *",
       "scheduleId": "example-automation-activity-schedule",
       "taskQueue": "automation-activity-schedules",
       "temporalExecutionType": "Activity",
       "timezone": "UTC",
+      "tracingEnabled": false,
       "workflowExecutionTimeout": 60000
     },
     "temporalWorkflowSchedule": {
       "enabled": true,
       "functionDescription": "Create a Workflow job message identifying the durable scheduled firing.\n",
+      "functionInitializerGroup": "",
       "functionName": "TemporalWorkflowSchedule",
+      "functionPackage": "",
       "id": 10,
       "idDataConnector": 2,
       "maximumAttempts": 3,
       "missedRunPolicy": "FireOnce",
       "name": "Temporal Workflow Schedule",
       "overlapPolicy": "Skip",
+      "publicFunction": false,
       "schedule": "*/10 * * * *",
       "scheduleId": "example-automation-workflow-schedule",
       "taskQueue": "automation-workflow-schedules",
       "temporalExecutionType": "Workflow",
       "timezone": "UTC",
+      "tracingEnabled": false,
       "workflowExecutionTimeout": 60000
     },
     "workflowJob": {
       "enabled": true,
+      "functionDescription": "",
+      "functionInitializerGroup": "",
+      "functionPackage": "",
       "id": 11,
       "idDataConnector": 2,
       "maximumAttempts": 3,
+      "missedRunPolicy": "FireOnce",
       "name": "Workflow Job",
+      "overlapPolicy": "Skip",
+      "publicFunction": false,
+      "schedule": "",
+      "scheduleId": "",
       "taskQueue": "automation-workflow-jobs",
       "temporalExecutionType": "Workflow",
+      "timezone": "UTC",
+      "tracingEnabled": false,
       "workflowExecutionTimeout": 60000
     }
   },
@@ -966,6 +1060,7 @@ export function parseIntegerListEnvironment(value: string): readonly number[] {
 
 const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
   { environment: "ACTIVITY_JOB_ENABLED", path: ["endpoints", "activityJob", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "ACTIVITY_JOB_TRACING_ENABLED", path: ["endpoints", "activityJob", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "ACTIVITY_PAUSE_DURATION", path: ["streams", "activityPause", "duration", ], parse: parseIntegerEnvironment },
   { environment: "AUTOMATION_SERVICE_DEFAULT_GRPC_TIMEOUT", path: ["services", "automationService", "defaultGrpcTimeout", ], parse: parseIntegerEnvironment },
   { environment: "AUTOMATION_SERVICE_ENVIRONMENT", path: ["services", "automationService", "environment", ], parse: parseStringEnvironment },
@@ -975,18 +1070,28 @@ const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
   { environment: "AUTOMATION_SERVICE_HTTP_PORT", path: ["services", "automationService", "httpPort", ], parse: parseIntegerEnvironment },
   { environment: "DEFAULT_POOL_EXECUTORS_COUNT", path: ["pools", "defaultPool", "executorsCount", ], parse: parseIntegerEnvironment },
   { environment: "FAN_OUT_ACTIVITY_A_ENABLED", path: ["endpoints", "fanOutActivityA", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "FAN_OUT_ACTIVITY_A_TRACING_ENABLED", path: ["endpoints", "fanOutActivityA", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "FAN_OUT_ACTIVITY_B_ENABLED", path: ["endpoints", "fanOutActivityB", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "FAN_OUT_ACTIVITY_B_TRACING_ENABLED", path: ["endpoints", "fanOutActivityB", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "FAN_OUT_ACTIVITY_C_ENABLED", path: ["endpoints", "fanOutActivityC", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "FAN_OUT_ACTIVITY_C_TRACING_ENABLED", path: ["endpoints", "fanOutActivityC", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "FAN_OUT_WORKFLOW_JOB_ENABLED", path: ["endpoints", "fanOutWorkflowJob", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "FAN_OUT_WORKFLOW_JOB_TRACING_ENABLED", path: ["endpoints", "fanOutWorkflowJob", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "LOCAL_SCHEDULE_ENABLED", path: ["endpoints", "localSchedule", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "LOCAL_SCHEDULE_TRACING_ENABLED", path: ["endpoints", "localSchedule", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "SCHEDULED_ACTIVITY_PAUSE_DURATION", path: ["streams", "scheduledActivityPause", "duration", ], parse: parseIntegerEnvironment },
   { environment: "SCHEDULED_WORKFLOW_PAUSE_DURATION", path: ["streams", "scheduledWorkflowPause", "duration", ], parse: parseIntegerEnvironment },
   { environment: "SEQUENTIAL_ACTIVITY_A_ENABLED", path: ["endpoints", "sequentialActivityA", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "SEQUENTIAL_ACTIVITY_A_TRACING_ENABLED", path: ["endpoints", "sequentialActivityA", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "SEQUENTIAL_ACTIVITY_B_ENABLED", path: ["endpoints", "sequentialActivityB", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "SEQUENTIAL_ACTIVITY_B_TRACING_ENABLED", path: ["endpoints", "sequentialActivityB", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "TEMPORAL_ACTIVITY_SCHEDULE_ENABLED", path: ["endpoints", "temporalActivitySchedule", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "TEMPORAL_ACTIVITY_SCHEDULE_TRACING_ENABLED", path: ["endpoints", "temporalActivitySchedule", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "TEMPORAL_ADDRESS", path: ["dataConnectors", "temporal", "address", ], parse: parseStringEnvironment },
   { environment: "TEMPORAL_WORKFLOW_SCHEDULE_ENABLED", path: ["endpoints", "temporalWorkflowSchedule", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "TEMPORAL_WORKFLOW_SCHEDULE_TRACING_ENABLED", path: ["endpoints", "temporalWorkflowSchedule", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "WORKFLOW_JOB_ENABLED", path: ["endpoints", "workflowJob", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "WORKFLOW_JOB_TRACING_ENABLED", path: ["endpoints", "workflowJob", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "WORKFLOW_PAUSE_DURATION", path: ["streams", "workflowPause", "duration", ], parse: parseIntegerEnvironment },
 ];
 

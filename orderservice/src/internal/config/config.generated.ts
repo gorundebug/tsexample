@@ -91,7 +91,7 @@ const DEFAULT_CONFIG = {
     "orderService": {
       "color": "#FF5C00",
       "defaultCallSemantics": 2,
-      "defaultGrpcTimeout": 5000,
+      "defaultGrpcTimeout": 0,
       "environment": "",
       "golangVersion": "1.25.4",
       "grpcHost": "0.0.0.0",
@@ -226,7 +226,7 @@ const DEFAULT_CONFIG = {
       "yPos": -255
     },
     "softDeadline": {
-      "duration": 1000,
+      "duration": 0,
       "functionDescription": "Trigger the timeout branch shortly before the request deadline, leaving the configured duration to assemble a response.\nWhen no request deadline exists, use the configured duration itself. Never wait past an existing deadline.\n",
       "functionInitializerGroup": "",
       "functionModule": "",
@@ -274,6 +274,7 @@ const DEFAULT_CONFIG = {
     },
     "orderEvents": {
       "brokers": "redpanda:9092",
+      "dialTimeout": 5000,
       "id": 2,
       "implementation": "confluent/kafka-javascript",
       "name": "Order Events",

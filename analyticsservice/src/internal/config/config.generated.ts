@@ -109,6 +109,7 @@ const DEFAULT_CONFIG = {
   "dataConnectors": {
     "orderEvents": {
       "brokers": "redpanda:9092",
+      "dialTimeout": 5000,
       "id": 1,
       "implementation": "confluent/kafka-javascript",
       "name": "Order Events",
