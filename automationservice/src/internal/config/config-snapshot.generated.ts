@@ -13,6 +13,7 @@ import {
   requireMapStreamConfig,
   type MapStreamConfig,
   type ModuleConfig,
+  type PoolConfig,
   type ServiceConfig,
   requireSinkStreamConfig,
   type SinkStreamConfig,
@@ -151,6 +152,7 @@ export interface NamedConfig {
     readonly workflowJob: TemporalEndpointConfig;
   };
   readonly pools: {
+    readonly defaultPool: PoolConfig;
   };
   readonly modules: {
     readonly inventoryServiceApi: ModuleConfig;
@@ -230,6 +232,7 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       workflowJob: requireTemporalEndpointConfig(runtime.endpointById(EndpointIds.WORKFLOW_JOB)),
     },
     pools: {
+      defaultPool: required(runtime.poolByName("Default Pool"), "Default Pool"),
     },
     modules: {
       inventoryServiceApi: required(runtime.moduleByName("inventory_service_api"), "inventory_service_api"),

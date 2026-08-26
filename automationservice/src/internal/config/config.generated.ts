@@ -13,6 +13,7 @@ import {
   type LinkConfigDocument,
   type MapStreamConfigDocument,
   type ModuleConfigDocument,
+  type PoolConfigDocument,
   type ServiceConfigDocument,
   type SinkStreamConfigDocument,
   type SplitStreamConfigDocument,
@@ -93,15 +94,22 @@ interface DefaultConfig {
     readonly "workflowJob": TemporalEndpointConfigDocument;
   };
   readonly pools: {
+    readonly "defaultPool": PoolConfigDocument;
   };
   readonly links: {
+    readonly "callSequentialActivityAToCallSequentialActivityB": LinkConfigDocument;
+    readonly "callSequentialActivityBToProcessWorkflowJob": LinkConfigDocument;
     readonly "consumeActivityJobToActivityPause": LinkConfigDocument;
     readonly "consumeFanOutActivityAToProcessFanOutActivityA": LinkConfigDocument;
     readonly "consumeFanOutActivityBToProcessFanOutActivityB": LinkConfigDocument;
     readonly "consumeFanOutActivityCToProcessFanOutActivityC": LinkConfigDocument;
+    readonly "consumeFanOutWorkflowJobToCallFanOutActivityA": LinkConfigDocument;
     readonly "consumeSequentialActivityAToProcessSequentialActivityA": LinkConfigDocument;
     readonly "consumeSequentialActivityBToProcessSequentialActivityB": LinkConfigDocument;
     readonly "consumeWorkflowJobToWorkflowPause": LinkConfigDocument;
+    readonly "splitActivityAResultToCallFanOutActivityB": LinkConfigDocument;
+    readonly "splitActivityAResultToCallFanOutActivityC": LinkConfigDocument;
+    readonly "workflowPauseToCallSequentialActivityA": LinkConfigDocument;
   };
   readonly modules: {
     readonly "inventoryServiceApi": ModuleConfigDocument;
@@ -820,8 +828,23 @@ const DEFAULT_CONFIG = {
       "workflowExecutionTimeout": 60000
     }
   },
-  "pools": {},
+  "pools": {
+    "defaultPool": {
+      "executorsCount": 2,
+      "name": "Default Pool"
+    }
+  },
   "links": {
+    "callSequentialActivityAToCallSequentialActivityB": {
+      "callSemantics": 2,
+      "from": 5,
+      "to": 6
+    },
+    "callSequentialActivityBToProcessWorkflowJob": {
+      "callSemantics": 2,
+      "from": 6,
+      "to": 28
+    },
     "consumeActivityJobToActivityPause": {
       "callSemantics": 2,
       "from": 7,
@@ -842,6 +865,11 @@ const DEFAULT_CONFIG = {
       "from": 10,
       "to": 23
     },
+    "consumeFanOutWorkflowJobToCallFanOutActivityA": {
+      "callSemantics": 2,
+      "from": 11,
+      "to": 2
+    },
     "consumeSequentialActivityAToProcessSequentialActivityA": {
       "callSemantics": 2,
       "from": 12,
@@ -856,6 +884,21 @@ const DEFAULT_CONFIG = {
       "callSemantics": 2,
       "from": 14,
       "to": 38
+    },
+    "splitActivityAResultToCallFanOutActivityB": {
+      "callSemantics": 2,
+      "from": 31,
+      "to": 3
+    },
+    "splitActivityAResultToCallFanOutActivityC": {
+      "callSemantics": 2,
+      "from": 31,
+      "to": 4
+    },
+    "workflowPauseToCallSequentialActivityA": {
+      "callSemantics": 2,
+      "from": 38,
+      "to": 5
     }
   },
   "modules": {
@@ -921,6 +964,7 @@ const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
   { environment: "AUTOMATION_SERVICE_GRPC_PORT", path: ["services", "automationService", "grpcPort", ], parse: parseIntegerEnvironment },
   { environment: "AUTOMATION_SERVICE_HTTP_HOST", path: ["services", "automationService", "httpHost", ], parse: parseStringEnvironment },
   { environment: "AUTOMATION_SERVICE_HTTP_PORT", path: ["services", "automationService", "httpPort", ], parse: parseIntegerEnvironment },
+  { environment: "DEFAULT_POOL_EXECUTORS_COUNT", path: ["pools", "defaultPool", "executorsCount", ], parse: parseIntegerEnvironment },
   { environment: "FAN_OUT_ACTIVITY_A_ENABLED", path: ["endpoints", "fanOutActivityA", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "FAN_OUT_ACTIVITY_B_ENABLED", path: ["endpoints", "fanOutActivityB", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "FAN_OUT_ACTIVITY_C_ENABLED", path: ["endpoints", "fanOutActivityC", "enabled", ], parse: parseBooleanEnvironment },
