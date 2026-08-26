@@ -23,9 +23,10 @@ user-owned extension points.
 
 | Service | Language | Directory |
 |---------|----------|-----------|
-| `Analytics Service` | `unknown` | `analyticsservice/` |
-| `Inventory Service` | `unknown` | `inventoryservice/` |
-| `Order Service` | `unknown` | `orderservice/` |
+| `Analytics Service` | `TypeScript` | `analyticsservice/` |
+| `Automation Service` | `TypeScript` | `automationservice/` |
+| `Inventory Service` | `TypeScript` | `inventoryservice/` |
+| `Order Service` | `TypeScript` | `orderservice/` |
 
 
 
@@ -35,6 +36,44 @@ user-owned extension points.
 
 
 
+
+
+
+## TypeScript rules
+
+- Business functions are user-owned classes implementing the generated
+  interfaces. Keep their method and maker signatures unchanged.
+- Propagate `MessageContext`, await collectors and senders, and do not create
+  detached promises for graph work whose completion belongs to the request.
+- Use the generated workspace commands:
+  - build and strict type checking: `corepack pnpm build`
+  - tests: `corepack pnpm test`
+  - lint and formatting checks: `corepack pnpm lint` and `corepack pnpm format:check`
+- Implement the generated `test/functions/*.test.ts` files.
+- Do not modify `*.generated.ts`, generated protobuf/OpenAPI sources, or
+  generated package manifests.
+
+
+
+## Temporal Workflow determinism
+
+- A function reached from a `temporalExecutionType: Workflow` endpoint is
+  replayed by Temporal. It must be deterministic even when the same code is
+  also reachable from an ordinary process-side endpoint.
+- Do not perform network or filesystem I/O, read process environment or wall
+  clocks, generate unrestricted random values, access process-side stores, or
+  start native threads, executors, goroutines, asyncio tasks, or detached
+  promises from Workflow business code.
+- Use the existing generated graph APIs. `Delay` selects the official Temporal
+  Workflow timer automatically; `TaskPool` and `PriorityTaskPool` select the
+  generated deterministic workflow-local schedulers.
+- Emit logs, metrics and traces only through the framework interfaces supplied
+  to the Workflow. They are backed by the official replay-safe SDK APIs; never
+  call process exporters from Workflow code.
+- Go Workflow code must pass the generated `golang-workflowcheck` target.
+  Python Workflows run in the official default sandbox. TypeScript Workflows
+  are bundled by the official SDK, but deterministic user code remains the
+  author's responsibility.
 
 
 ## Endpoint and serialization rules
