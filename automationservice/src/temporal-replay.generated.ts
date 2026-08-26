@@ -13,7 +13,12 @@ if (historyPath === undefined) {
 const history = JSON.parse(await readFile(historyPath, "utf8")) as unknown;
 await replayTemporalWorkflowHistory(
   fileURLToPath(
-    new URL("./internal/app/temporal-workflows.generated.js", import.meta.url),
+    new URL(
+      import.meta.url.endsWith(".ts")
+        ? "./internal/app/temporal-workflows.generated.ts"
+        : "./internal/app/temporal-workflows.generated.js",
+      import.meta.url,
+    ),
   ),
   history,
   process.argv[3] ?? "servicegen-replay",

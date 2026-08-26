@@ -34,7 +34,12 @@ export type ServiceClients = ReturnType<typeof initClients>;
 function initRuntimeConnectors(environment: ServiceEnvironment): void {
   makeTemporalConnector(DataConnectorIds.TEMPORAL, environment, {
     workflowsPath: fileURLToPath(
-      new URL("./temporal-workflows.generated.js", import.meta.url),
+      new URL(
+        import.meta.url.endsWith(".ts")
+          ? "./temporal-workflows.generated.ts"
+          : "./temporal-workflows.generated.js",
+        import.meta.url,
+      ),
     ),
   });
 }
