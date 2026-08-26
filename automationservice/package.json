@@ -8,6 +8,7 @@
   "packageManager": "pnpm@11.18.0",
   "scripts": {
     "build": "tsc --build",
+    "temporal:replay": "node dist/temporal-replay.generated.js",
     "typecheck": "tsc --build --pretty false",
     "test": "tsc --build tsconfig.test.json --clean && tsc --build tsconfig.test.json && node --test --enable-source-maps dist-test/test/**/*.test.js",
     "test:coverage": "tsc --build tsconfig.test.json --clean && tsc --build tsconfig.test.json && node --test --experimental-test-coverage --enable-source-maps dist-test/test/**/*.test.js"
