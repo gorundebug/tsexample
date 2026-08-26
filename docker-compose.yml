@@ -27,8 +27,11 @@ services:
       - /workspace/inventoryservice/node_modules
       - /workspace/orderservice/node_modules
       - /workspace/inventory_service_api/node_modules
+      - /workspace/inventory_service_api/dist
       - /workspace/model/node_modules
+      - /workspace/model/dist
       - /workspace/order_service_api/node_modules
+      - /workspace/order_service_api/dist
     restart: unless-stopped
     environment:
       - DEBUG=${ANALYTICS_SERVICE_DEBUG:-0}
@@ -72,8 +75,11 @@ services:
       - /workspace/inventoryservice/node_modules
       - /workspace/orderservice/node_modules
       - /workspace/inventory_service_api/node_modules
+      - /workspace/inventory_service_api/dist
       - /workspace/model/node_modules
+      - /workspace/model/dist
       - /workspace/order_service_api/node_modules
+      - /workspace/order_service_api/dist
     restart: unless-stopped
     environment:
       - DEBUG=${AUTOMATION_SERVICE_DEBUG:-0}
@@ -121,8 +127,11 @@ services:
       - /workspace/inventoryservice/node_modules
       - /workspace/orderservice/node_modules
       - /workspace/inventory_service_api/node_modules
+      - /workspace/inventory_service_api/dist
       - /workspace/model/node_modules
+      - /workspace/model/dist
       - /workspace/order_service_api/node_modules
+      - /workspace/order_service_api/dist
     restart: unless-stopped
     environment:
       - DEBUG=${INVENTORY_SERVICE_DEBUG:-0}
@@ -166,8 +175,11 @@ services:
       - /workspace/inventoryservice/node_modules
       - /workspace/orderservice/node_modules
       - /workspace/inventory_service_api/node_modules
+      - /workspace/inventory_service_api/dist
       - /workspace/model/node_modules
+      - /workspace/model/dist
       - /workspace/order_service_api/node_modules
+      - /workspace/order_service_api/dist
     restart: unless-stopped
     environment:
       - DEBUG=${ORDER_SERVICE_DEBUG:-0}

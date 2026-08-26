@@ -50,11 +50,11 @@ function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
 }
 
 const serdeTypes = {
-  automationJob: new SerdeType<AutomationJob>("AutomationJob", (value): value is AutomationJob => isRecord(value)),
+  automationJob: new SerdeType<AutomationJob>("AutomationJob", (value): value is AutomationJob => typeof value === "string"),
 } as const;
 
 export function registerGeneratedSerdes(registry: SerdeRegistry): void {
-  registry.register(serdeTypes.automationJob, makeStreamSerde(new JsonSerde(serdeTypes.automationJob)));
+  registry.register(serdeTypes.automationJob, registry.require(stringSerdeType));
   registry.registerStreamValueType(StreamIds.CONSUME_ACTIVITY_JOB, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CONSUME_ACTIVITY_JOB, errorSerdeType);
   registry.registerStreamValueType(StreamIds.ACTIVITY_PAUSE, serdeTypes.automationJob);
