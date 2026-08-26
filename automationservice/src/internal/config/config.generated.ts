@@ -117,7 +117,7 @@ interface DefaultConfig {
     readonly "orderServiceApi": ModuleConfigDocument;
   };
   readonly types: {
-    readonly "string": TypeConfigDocument;
+    readonly "automationJob": TypeConfigDocument;
   };
 }
 
@@ -160,7 +160,7 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 16,
       "xPos": -250,
-      "yPos": -720
+      "yPos": 350
     },
     "callFanOutActivityA": {
       "id": 2,
@@ -170,9 +170,9 @@ const DEFAULT_CONFIG = {
       "name": "Call Fan-Out Activity A",
       "pipeline": "automation",
       "type": 13,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -250,
-      "yPos": 800
+      "yPos": 1870
     },
     "callFanOutActivityB": {
       "id": 3,
@@ -182,9 +182,9 @@ const DEFAULT_CONFIG = {
       "name": "Call Fan-Out Activity B",
       "pipeline": "automation",
       "type": 13,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": 270,
-      "yPos": 720
+      "yPos": 1790
     },
     "callFanOutActivityC": {
       "id": 4,
@@ -194,9 +194,9 @@ const DEFAULT_CONFIG = {
       "name": "Call Fan-Out Activity C",
       "pipeline": "automation",
       "type": 13,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": 270,
-      "yPos": 880
+      "yPos": 1950
     },
     "callSequentialActivityA": {
       "id": 5,
@@ -206,9 +206,9 @@ const DEFAULT_CONFIG = {
       "name": "Call Sequential Activity A",
       "pipeline": "automation",
       "type": 13,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": 10,
-      "yPos": -420
+      "yPos": 650
     },
     "callSequentialActivityB": {
       "id": 6,
@@ -218,9 +218,9 @@ const DEFAULT_CONFIG = {
       "name": "Call Sequential Activity B",
       "pipeline": "automation",
       "type": 13,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": 270,
-      "yPos": -420
+      "yPos": 650
     },
     "consumeActivityJob": {
       "id": 7,
@@ -230,9 +230,9 @@ const DEFAULT_CONFIG = {
       "name": "Consume Activity Job",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -500,
-      "yPos": -720
+      "yPos": 350
     },
     "consumeFanOutActivityA": {
       "id": 8,
@@ -242,9 +242,9 @@ const DEFAULT_CONFIG = {
       "name": "Consume Fan-Out Activity A",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -500,
-      "yPos": 1050
+      "yPos": 2120
     },
     "consumeFanOutActivityB": {
       "id": 9,
@@ -254,9 +254,9 @@ const DEFAULT_CONFIG = {
       "name": "Consume Fan-Out Activity B",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -500,
-      "yPos": 1200
+      "yPos": 2270
     },
     "consumeFanOutActivityC": {
       "id": 10,
@@ -266,9 +266,9 @@ const DEFAULT_CONFIG = {
       "name": "Consume Fan-Out Activity C",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -500,
-      "yPos": 1350
+      "yPos": 2420
     },
     "consumeFanOutWorkflowJob": {
       "id": 11,
@@ -278,9 +278,9 @@ const DEFAULT_CONFIG = {
       "name": "Consume Fan-Out Workflow Job",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -500,
-      "yPos": 800
+      "yPos": 1870
     },
     "consumeSequentialActivityA": {
       "id": 12,
@@ -290,9 +290,9 @@ const DEFAULT_CONFIG = {
       "name": "Consume Sequential Activity A",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -500,
-      "yPos": 500
+      "yPos": 1570
     },
     "consumeSequentialActivityB": {
       "id": 13,
@@ -302,9 +302,9 @@ const DEFAULT_CONFIG = {
       "name": "Consume Sequential Activity B",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -500,
-      "yPos": 650
+      "yPos": 1720
     },
     "consumeWorkflowJob": {
       "id": 14,
@@ -314,9 +314,9 @@ const DEFAULT_CONFIG = {
       "name": "Consume Workflow Job",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -500,
-      "yPos": -420
+      "yPos": 650
     },
     "localSchedule": {
       "id": 15,
@@ -326,9 +326,9 @@ const DEFAULT_CONFIG = {
       "name": "Local Schedule",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -1250,
-      "yPos": -570
+      "yPos": 500
     },
     "observeActivityResult": {
       "functionDescription": "Preserve the result returned through the on-demand Activity endpoint.\n",
@@ -342,9 +342,9 @@ const DEFAULT_CONFIG = {
       "name": "Observe Activity Result",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -500,
-      "yPos": -570
+      "yPos": 500
     },
     "observeFanOutActivityB": {
       "functionDescription": "Observe the typed result returned by the Activity B fan-out branch.\n",
@@ -358,9 +358,9 @@ const DEFAULT_CONFIG = {
       "name": "Observe Fan-Out Activity B",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": 530,
-      "yPos": 720
+      "yPos": 1790
     },
     "observeFanOutActivityC": {
       "functionDescription": "Observe the typed result returned by the Activity C fan-out branch.\n",
@@ -374,9 +374,9 @@ const DEFAULT_CONFIG = {
       "name": "Observe Fan-Out Activity C",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": 530,
-      "yPos": 880
+      "yPos": 1950
     },
     "observeWorkflowResult": {
       "functionDescription": "Preserve the result returned through the on-demand Workflow endpoint.\n",
@@ -390,9 +390,9 @@ const DEFAULT_CONFIG = {
       "name": "Observe Workflow Result",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -500,
-      "yPos": -270
+      "yPos": 800
     },
     "processActivityJob": {
       "functionDescription": "Record Activity progress with DurableCallHeartbeat and return the processed job result.\n",
@@ -406,9 +406,9 @@ const DEFAULT_CONFIG = {
       "name": "Process Activity Job",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": 10,
-      "yPos": -720
+      "yPos": 350
     },
     "processFanOutActivityA": {
       "functionDescription": "Return Activity A's typed result before the Workflow Split.\n",
@@ -422,9 +422,9 @@ const DEFAULT_CONFIG = {
       "name": "Process Fan-Out Activity A",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -250,
-      "yPos": 1050
+      "yPos": 2120
     },
     "processFanOutActivityB": {
       "functionDescription": "Return Activity B's typed fan-out result.\n",
@@ -438,9 +438,9 @@ const DEFAULT_CONFIG = {
       "name": "Process Fan-Out Activity B",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -250,
-      "yPos": 1200
+      "yPos": 2270
     },
     "processFanOutActivityC": {
       "functionDescription": "Return Activity C's typed fan-out result.\n",
@@ -454,9 +454,9 @@ const DEFAULT_CONFIG = {
       "name": "Process Fan-Out Activity C",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -250,
-      "yPos": 1350
+      "yPos": 2420
     },
     "processScheduledActivity": {
       "functionDescription": "Return the visible result of one scheduled Activity execution.\n",
@@ -470,9 +470,9 @@ const DEFAULT_CONFIG = {
       "name": "Process Scheduled Activity",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -250,
-      "yPos": -60
+      "yPos": 1010
     },
     "processScheduledWorkflow": {
       "functionDescription": "Return the visible result of one scheduled Workflow execution.\n",
@@ -486,9 +486,9 @@ const DEFAULT_CONFIG = {
       "name": "Process Scheduled Workflow",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -250,
-      "yPos": 240
+      "yPos": 1310
     },
     "processSequentialActivityA": {
       "functionDescription": "Return sequential Activity A's typed result to its Temporal sink.\n",
@@ -502,9 +502,9 @@ const DEFAULT_CONFIG = {
       "name": "Process Sequential Activity A",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -250,
-      "yPos": 500
+      "yPos": 1570
     },
     "processSequentialActivityB": {
       "functionDescription": "Return sequential Activity B's typed result to its Temporal sink.\n",
@@ -518,9 +518,9 @@ const DEFAULT_CONFIG = {
       "name": "Process Sequential Activity B",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -250,
-      "yPos": 650
+      "yPos": 1720
     },
     "processWorkflowJob": {
       "functionDescription": "Continue the Workflow as new once, then return its final result.\n",
@@ -534,9 +534,9 @@ const DEFAULT_CONFIG = {
       "name": "Process Workflow Job",
       "pipeline": "automation",
       "type": 2,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": 530,
-      "yPos": -420
+      "yPos": 650
     },
     "scheduledActivityPause": {
       "duration": 250,
@@ -552,7 +552,7 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 16,
       "xPos": -500,
-      "yPos": -60
+      "yPos": 1010
     },
     "scheduledWorkflowPause": {
       "duration": 250,
@@ -568,7 +568,7 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 16,
       "xPos": -500,
-      "yPos": 240
+      "yPos": 1310
     },
     "splitActivityAResult": {
       "id": 31,
@@ -578,7 +578,7 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 11,
       "xPos": 10,
-      "yPos": 800
+      "yPos": 1870
     },
     "splitOnDemandJobs": {
       "id": 32,
@@ -588,7 +588,7 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 11,
       "xPos": -1010,
-      "yPos": -570
+      "yPos": 500
     },
     "submitActivityJob": {
       "id": 33,
@@ -598,9 +598,9 @@ const DEFAULT_CONFIG = {
       "name": "Submit Activity Job",
       "pipeline": "automation",
       "type": 13,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -760,
-      "yPos": -720
+      "yPos": 350
     },
     "submitFanOutWorkflowJob": {
       "id": 34,
@@ -610,9 +610,9 @@ const DEFAULT_CONFIG = {
       "name": "Submit Fan-Out Workflow Job",
       "pipeline": "automation",
       "type": 13,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -760,
-      "yPos": 800
+      "yPos": 1870
     },
     "submitWorkflowJob": {
       "id": 35,
@@ -622,9 +622,9 @@ const DEFAULT_CONFIG = {
       "name": "Submit Workflow Job",
       "pipeline": "automation",
       "type": 13,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -760,
-      "yPos": -420
+      "yPos": 650
     },
     "temporalActivitySchedule": {
       "id": 36,
@@ -634,9 +634,9 @@ const DEFAULT_CONFIG = {
       "name": "Temporal Activity Schedule",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -760,
-      "yPos": -60
+      "yPos": 1010
     },
     "temporalWorkflowSchedule": {
       "id": 37,
@@ -646,9 +646,9 @@ const DEFAULT_CONFIG = {
       "name": "Temporal Workflow Schedule",
       "pipeline": "automation",
       "type": 1,
-      "valueType": "string",
+      "valueType": "AutomationJob",
       "xPos": -760,
-      "yPos": 240
+      "yPos": 1310
     },
     "workflowPause": {
       "duration": 250,
@@ -664,7 +664,7 @@ const DEFAULT_CONFIG = {
       "pipeline": "automation",
       "type": 16,
       "xPos": -250,
-      "yPos": -420
+      "yPos": 650
     }
   },
   "dataConnectors": {
@@ -916,11 +916,11 @@ const DEFAULT_CONFIG = {
     }
   },
   "types": {
-    "string": {
-      "name": "string",
+    "automationJob": {
+      "name": "AutomationJob",
       "type": "string",
       "typeDefinition": "string",
-      "typeImport": "./internal/types/string.js"
+      "typeImport": "./internal/types/automation-job.js"
     }
   }
 } as const satisfies DefaultConfig;

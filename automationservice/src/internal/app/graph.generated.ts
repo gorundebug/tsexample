@@ -17,7 +17,7 @@ import {
   makeMultiJoinStream, makeProcessStream, makeSinkStream,
   makeSinkStreamWithResult, makeSplitStream, makeWhenStream,
 } from "@gorundebug/tsservicelib/operators";
-import type { String } from "../types/index.generated.js";
+import type { AutomationJob } from "../types/index.generated.js";
 import {
   StreamIds,
   type ConfigSnapshot,
@@ -50,65 +50,67 @@ function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
 }
 
 const serdeTypes = {
+  automationJob: new SerdeType<AutomationJob>("AutomationJob", (value): value is AutomationJob => isRecord(value)),
 } as const;
 
 export function registerGeneratedSerdes(registry: SerdeRegistry): void {
-  registry.registerStreamValueType(StreamIds.CONSUME_ACTIVITY_JOB, stringSerdeType);
+  registry.register(serdeTypes.automationJob, makeStreamSerde(new JsonSerde(serdeTypes.automationJob)));
+  registry.registerStreamValueType(StreamIds.CONSUME_ACTIVITY_JOB, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CONSUME_ACTIVITY_JOB, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.ACTIVITY_PAUSE, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.CONSUME_FAN_OUT_WORKFLOW_JOB, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.ACTIVITY_PAUSE, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.CONSUME_FAN_OUT_WORKFLOW_JOB, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CONSUME_FAN_OUT_WORKFLOW_JOB, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.CALL_FAN_OUT_ACTIVITY_A, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.CALL_FAN_OUT_ACTIVITY_A, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CALL_FAN_OUT_ACTIVITY_A, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.SPLIT_ACTIVITY_A_RESULT, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.CALL_FAN_OUT_ACTIVITY_B, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.SPLIT_ACTIVITY_A_RESULT, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.CALL_FAN_OUT_ACTIVITY_B, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CALL_FAN_OUT_ACTIVITY_B, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.CALL_FAN_OUT_ACTIVITY_C, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.CALL_FAN_OUT_ACTIVITY_C, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CALL_FAN_OUT_ACTIVITY_C, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.CONSUME_WORKFLOW_JOB, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.CONSUME_WORKFLOW_JOB, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CONSUME_WORKFLOW_JOB, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.WORKFLOW_PAUSE, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.CALL_SEQUENTIAL_ACTIVITY_A, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.WORKFLOW_PAUSE, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.CALL_SEQUENTIAL_ACTIVITY_A, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CALL_SEQUENTIAL_ACTIVITY_A, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.CALL_SEQUENTIAL_ACTIVITY_B, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.CALL_SEQUENTIAL_ACTIVITY_B, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CALL_SEQUENTIAL_ACTIVITY_B, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_A, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_A, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_A, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_B, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_B, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_B, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_C, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_C, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CONSUME_FAN_OUT_ACTIVITY_C, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.CONSUME_SEQUENTIAL_ACTIVITY_A, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.CONSUME_SEQUENTIAL_ACTIVITY_A, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CONSUME_SEQUENTIAL_ACTIVITY_A, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.CONSUME_SEQUENTIAL_ACTIVITY_B, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.CONSUME_SEQUENTIAL_ACTIVITY_B, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.CONSUME_SEQUENTIAL_ACTIVITY_B, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.LOCAL_SCHEDULE, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.LOCAL_SCHEDULE, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.LOCAL_SCHEDULE, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.SPLIT_ON_DEMAND_JOBS, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.SUBMIT_ACTIVITY_JOB, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.SPLIT_ON_DEMAND_JOBS, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.SUBMIT_ACTIVITY_JOB, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.SUBMIT_ACTIVITY_JOB, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.OBSERVE_ACTIVITY_RESULT, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.OBSERVE_FAN_OUT_ACTIVITY_B, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.OBSERVE_FAN_OUT_ACTIVITY_C, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.SUBMIT_WORKFLOW_JOB, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.OBSERVE_ACTIVITY_RESULT, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.OBSERVE_FAN_OUT_ACTIVITY_B, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.OBSERVE_FAN_OUT_ACTIVITY_C, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.SUBMIT_WORKFLOW_JOB, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.SUBMIT_WORKFLOW_JOB, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.OBSERVE_WORKFLOW_RESULT, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.PROCESS_ACTIVITY_JOB, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.PROCESS_FAN_OUT_ACTIVITY_A, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.PROCESS_FAN_OUT_ACTIVITY_B, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.PROCESS_FAN_OUT_ACTIVITY_C, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.TEMPORAL_ACTIVITY_SCHEDULE, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.OBSERVE_WORKFLOW_RESULT, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.PROCESS_ACTIVITY_JOB, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.PROCESS_FAN_OUT_ACTIVITY_A, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.PROCESS_FAN_OUT_ACTIVITY_B, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.PROCESS_FAN_OUT_ACTIVITY_C, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.TEMPORAL_ACTIVITY_SCHEDULE, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.TEMPORAL_ACTIVITY_SCHEDULE, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.SCHEDULED_ACTIVITY_PAUSE, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.PROCESS_SCHEDULED_ACTIVITY, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.TEMPORAL_WORKFLOW_SCHEDULE, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.SCHEDULED_ACTIVITY_PAUSE, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.PROCESS_SCHEDULED_ACTIVITY, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.TEMPORAL_WORKFLOW_SCHEDULE, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.TEMPORAL_WORKFLOW_SCHEDULE, errorSerdeType);
-  registry.registerStreamValueType(StreamIds.SCHEDULED_WORKFLOW_PAUSE, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.PROCESS_SCHEDULED_WORKFLOW, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.PROCESS_SEQUENTIAL_ACTIVITY_A, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.PROCESS_SEQUENTIAL_ACTIVITY_B, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.PROCESS_WORKFLOW_JOB, stringSerdeType);
-  registry.registerStreamValueType(StreamIds.SUBMIT_FAN_OUT_WORKFLOW_JOB, stringSerdeType);
+  registry.registerStreamValueType(StreamIds.SCHEDULED_WORKFLOW_PAUSE, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.PROCESS_SCHEDULED_WORKFLOW, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.PROCESS_SEQUENTIAL_ACTIVITY_A, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.PROCESS_SEQUENTIAL_ACTIVITY_B, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.PROCESS_WORKFLOW_JOB, serdeTypes.automationJob);
+  registry.registerStreamValueType(StreamIds.SUBMIT_FAN_OUT_WORKFLOW_JOB, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.SUBMIT_FAN_OUT_WORKFLOW_JOB, errorSerdeType);
 }
 

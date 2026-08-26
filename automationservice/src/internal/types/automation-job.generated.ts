@@ -1,2 +1,2 @@
 /** Automation job payload and result. */
-export type String = string;
+export type AutomationJob = string;

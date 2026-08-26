@@ -160,7 +160,7 @@ export interface NamedConfig {
     readonly orderServiceApi: ModuleConfig;
   };
   readonly types: {
-    readonly string_: TypeConfig;
+    readonly automationJob: TypeConfig;
   };
 }
 
@@ -240,7 +240,7 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       orderServiceApi: required(runtime.moduleByName("order_service_api"), "order_service_api"),
     },
     types: {
-      string_: required(runtime.typeByName("string"), "string"),
+      automationJob: required(runtime.typeByName("AutomationJob"), "AutomationJob"),
     },
   };
 }
