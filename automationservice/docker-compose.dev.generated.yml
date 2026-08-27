@@ -9,6 +9,7 @@ services:
       - -c
       - >-
         prepare-local-build /workspace/source /workspace/service
+        && cd /workspace/service
         && exec ./scripts/run-service.generated.sh ./src/main.generated.ts
         --config ./config/config.yaml
         --values ./config/docker_overrides.yaml
