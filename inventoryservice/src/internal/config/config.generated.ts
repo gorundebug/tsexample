@@ -91,7 +91,7 @@ const DEFAULT_CONFIG = {
       "functionInitializerGroup": "",
       "functionModule": "",
       "functionName": "GetInventoryItemData",
-      "functionPackage": "",
+      "functionPackage": "inventoryItem",
       "id": 1,
       "idService": 1,
       "idSource": 3,
@@ -143,7 +143,7 @@ const DEFAULT_CONFIG = {
       "functionDescription": "Reserve inventory for one order item using its order ID, item ID, SKU, and quantity.\nReturn the available quantity, reservation outcome, and status. The caller combines this response with the original identity, requested quantity, and unit price.\nIf the inventory call fails, the caller returns a non-reserved PROCESSING_ERROR result with the failure message.\n",
       "functionInitializerGroup": "",
       "functionName": "ProcessOrderItem",
-      "functionPackage": "",
+      "functionPackage": "endpoint",
       "grpcMethodType": 1,
       "id": 1,
       "idDataConnector": 1,
@@ -160,14 +160,13 @@ const DEFAULT_CONFIG = {
   },
   "links": {
     "getInventoryItemDataToMergeInventoryResult": {
-      "callSemantics": 5,
+      "callSemantics": 2,
       "from": 1,
       "to": 2
     },
     "processInventoryItemToGetInventoryItemData": {
-      "callSemantics": 3,
+      "callSemantics": 2,
       "from": 3,
-      "poolName": "Inventory Priority Workers",
       "to": 1
     }
   },

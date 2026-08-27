@@ -23,8 +23,8 @@ import {
   type ConfigSnapshot,
 } from "../config/config-snapshot.generated.js";
 import {
+  ProcessOrderItemSource, makeProcessOrderItemSource,
   GetInventoryItemData, makeGetInventoryItemData,
-  ProcessOrderItem, makeProcessOrderItem,
 } from "../functions/index.generated.js";
 
 function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
@@ -47,22 +47,22 @@ export function registerGeneratedSerdes(registry: SerdeRegistry): void {
 }
 
 export interface ServiceMakers {
+  processOrderItemSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
+  ) => ProcessOrderItemSource;
   getInventoryItemData: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
   ) => GetInventoryItemData;
-  processOrderItem: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
-  ) => ProcessOrderItem;
 }
 
 export function defaultMakers(): ServiceMakers {
   return {
+    processOrderItemSource: makeProcessOrderItemSource,
     getInventoryItemData: makeGetInventoryItemData,
-    processOrderItem: makeProcessOrderItem,
   };
 }
 
@@ -73,8 +73,8 @@ export function initFunctions(
   makers: ServiceMakers,
 ) {
   return {
+    processOrderItemSource: makers.processOrderItemSource(context, environment, config.named.endpoints.processOrderItem),
     getInventoryItemData: makers.getInventoryItemData(context, environment, config.named.streams.getInventoryItemData),
-    processOrderItem: makers.processOrderItem(context, environment, config.named.endpoints.processOrderItem),
   };
 }
 

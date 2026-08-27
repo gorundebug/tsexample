@@ -16,15 +16,11 @@ export class Service extends ServiceGenerated {
    */
   protected override customMakersInit(context: MessageContext): void {
     void context;
-    // this.makers.getInventoryItemData = customGetInventoryItemDataMaker;
-    // this.makers.processOrderItem = customProcessOrderItemMaker;
   }
 
   /** Called after every function is constructed and before the graph is wired. */
   protected override customFunctionsInit(context: MessageContext): void {
     void context;
-    // Configure this.functions.getInventoryItemData here when post-construction setup is needed.
-    // Configure this.functions.processOrderItem here when post-construction setup is needed.
   }
 
   protected override createServiceAppOptions(config: ServiceConfig): ServiceAppOptions {

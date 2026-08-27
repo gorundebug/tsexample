@@ -16,27 +16,11 @@ export class Service extends ServiceGenerated {
    */
   protected override customMakersInit(context: MessageContext): void {
     void context;
-    // this.makers.mapOrderItemResultToOrderState = customMapOrderItemResultToOrderStateMaker;
-    // this.makers.mapToOrderProcessed = customMapToOrderProcessedMaker;
-    // this.makers.mapToOrderState = customMapToOrderStateMaker;
-    // this.makers.orderProcessedEndpoint = customOrderProcessedEndpointMaker;
-    // this.makers.processOrder = customProcessOrderMaker;
-    // this.makers.processOrderItem = customProcessOrderItemMaker;
-    // this.makers.processOrderItems = customProcessOrderItemsMaker;
-    // this.makers.softDeadline = customSoftDeadlineMaker;
   }
 
   /** Called after every function is constructed and before the graph is wired. */
   protected override customFunctionsInit(context: MessageContext): void {
     void context;
-    // Configure this.functions.mapOrderItemResultToOrderState here when post-construction setup is needed.
-    // Configure this.functions.mapToOrderProcessed here when post-construction setup is needed.
-    // Configure this.functions.mapToOrderState here when post-construction setup is needed.
-    // Configure this.functions.orderProcessedEndpoint here when post-construction setup is needed.
-    // Configure this.functions.processOrder here when post-construction setup is needed.
-    // Configure this.functions.processOrderItem here when post-construction setup is needed.
-    // Configure this.functions.processOrderItems here when post-construction setup is needed.
-    // Configure this.functions.softDeadline here when post-construction setup is needed.
   }
 
   protected override createServiceAppOptions(config: ServiceConfig): ServiceAppOptions {

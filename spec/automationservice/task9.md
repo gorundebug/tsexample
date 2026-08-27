@@ -1,19 +1,15 @@
-# Task 9/20: `ProcessFanoutActivityB`
+# Task 9/36: `SequentialActivityAEndpointSink`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `map` |
-| File | `automationservice/src/internal/functions/process-fanout-activity-b.ts` |
-| Test | `automationservice/test/functions/process-fanout-activity-b.test.ts` |
+| Kind | `temporal-sink` |
+| File | `automationservice/src/internal/functions/sequential-activity-a-endpoint-sink.ts` |
+| Test | `automationservice/test/functions/sequential-activity-a-endpoint-sink.test.ts` |
 | Service | `Automation Service` |
 
-
-## Behaviour
-
-Return Activity B's typed fan-out result.
 
 
 
@@ -23,7 +19,7 @@ Return Activity B's typed fan-out result.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/process-fanout-activity-b.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/process-fanout-activity-b.test.ts`
+- [ ] Open `automationservice/src/internal/functions/sequential-activity-a-endpoint-sink.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/sequential-activity-a-endpoint-sink.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task9.md — ProcessFanoutActivityB — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task9.md — SequentialActivityAEndpointSink — TypeScript — done`

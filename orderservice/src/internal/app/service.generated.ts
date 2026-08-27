@@ -36,9 +36,9 @@ function initDataConnectors(
   functions: ServiceFunctions,
   clients: ServiceClients,
 ) {
-  const [processOrder, processOrderHandler] = makeNodeHttpSourceEndpointConsumer(streams.processOrder, functions.processOrder);
-  const processOrderItem = makeGrpcNoStreamingSinkEndpointConsumer(streams.processOrderItem, InventoryServiceApi, InventoryServiceApi.method.processOrderItem, functions.processOrderItem);
-  const publishOrderProcessed = makeKafkaSinkEndpointConsumer(streams.publishOrderProcessed, functions.orderProcessedEndpoint);
+  const [processOrder, processOrderHandler] = makeNodeHttpSourceEndpointConsumer(streams.processOrder, functions.processOrderSource);
+  const processOrderItem = makeGrpcNoStreamingSinkEndpointConsumer(streams.processOrderItem, InventoryServiceApi, InventoryServiceApi.method.processOrderItem, functions.processOrderItemSink);
+  const publishOrderProcessed = makeKafkaSinkEndpointConsumer(streams.publishOrderProcessed, functions.orderProcessedEndpointSink);
   return {
     dataConnectors: {
       processOrder,

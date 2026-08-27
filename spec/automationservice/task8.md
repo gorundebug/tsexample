@@ -1,19 +1,15 @@
-# Task 8/20: `ProcessFanoutActivityA`
+# Task 8/36: `FanoutActivityCEndpointSource`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `map` |
-| File | `automationservice/src/internal/functions/process-fanout-activity-a.ts` |
-| Test | `automationservice/test/functions/process-fanout-activity-a.test.ts` |
+| Kind | `temporal-source` |
+| File | `automationservice/src/internal/functions/fanout-activity-c-endpoint-source.ts` |
+| Test | `automationservice/test/functions/fanout-activity-c-endpoint-source.test.ts` |
 | Service | `Automation Service` |
 
-
-## Behaviour
-
-Return Activity A's typed result before the Workflow Split.
 
 
 
@@ -23,7 +19,7 @@ Return Activity A's typed result before the Workflow Split.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/process-fanout-activity-a.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/process-fanout-activity-a.test.ts`
+- [ ] Open `automationservice/src/internal/functions/fanout-activity-c-endpoint-source.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/fanout-activity-c-endpoint-source.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task8.md — ProcessFanoutActivityA — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task8.md — FanoutActivityCEndpointSource — TypeScript — done`

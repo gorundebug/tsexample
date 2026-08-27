@@ -1,19 +1,15 @@
-# Task 12/20: `ProcessScheduledWorkflow`
+# Task 12/36: `SequentialActivityBEndpointSource`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `map` |
-| File | `automationservice/src/internal/functions/process-scheduled-workflow.ts` |
-| Test | `automationservice/test/functions/process-scheduled-workflow.test.ts` |
+| Kind | `temporal-source` |
+| File | `automationservice/src/internal/functions/sequential-activity-b-endpoint-source.ts` |
+| Test | `automationservice/test/functions/sequential-activity-b-endpoint-source.test.ts` |
 | Service | `Automation Service` |
 
-
-## Behaviour
-
-Return the visible result of one scheduled Workflow execution.
 
 
 
@@ -23,7 +19,7 @@ Return the visible result of one scheduled Workflow execution.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/process-scheduled-workflow.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/process-scheduled-workflow.test.ts`
+- [ ] Open `automationservice/src/internal/functions/sequential-activity-b-endpoint-source.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/sequential-activity-b-endpoint-source.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task12.md — ProcessScheduledWorkflow — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task12.md — SequentialActivityBEndpointSource — TypeScript — done`

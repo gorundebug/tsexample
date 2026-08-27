@@ -10,12 +10,12 @@ import {
 import { makeCronEndpointConsumer } from "@gorundebug/tsservicelib/datasource/cron";
 import { makeTemporalConnector } from "@gorundebug/tsservicelib/datasource/temporal";
 import {
-  makeTemporalEndpointConsumer,
+  makeTemporalEndpointConsumerWithHandler,
   makeTemporalScheduleEndpointConsumer,
 } from "@gorundebug/tsservicelib/datasource/temporal";
 import {
-  makeTemporalSinkEndpointConsumer,
-  makeTemporalSinkEndpointConsumerWithResult,
+  makeTemporalSinkEndpointConsumerWithHandler,
+  makeTemporalSinkEndpointConsumerWithResultHandler,
 } from "@gorundebug/tsservicelib/datasink/temporal";
 import { Config } from "../config/config.js";
 import { DataConnectorIds, ServiceIds } from "../config/config.generated.js";
@@ -50,25 +50,25 @@ function initDataConnectors(
   functions: ServiceFunctions,
   clients: ServiceClients,
 ) {
-  const consumeActivityJob = makeTemporalEndpointConsumer(streams.consumeActivityJob);
-  const consumeFanOutWorkflowJob = makeTemporalEndpointConsumer(streams.consumeFanOutWorkflowJob);
-  const callFanOutActivityA = makeTemporalSinkEndpointConsumerWithResult(streams.callFanOutActivityA);
-  const callFanOutActivityB = makeTemporalSinkEndpointConsumerWithResult(streams.callFanOutActivityB);
-  const callFanOutActivityC = makeTemporalSinkEndpointConsumerWithResult(streams.callFanOutActivityC);
-  const consumeWorkflowJob = makeTemporalEndpointConsumer(streams.consumeWorkflowJob);
-  const callSequentialActivityA = makeTemporalSinkEndpointConsumerWithResult(streams.callSequentialActivityA);
-  const callSequentialActivityB = makeTemporalSinkEndpointConsumerWithResult(streams.callSequentialActivityB);
-  const consumeFanOutActivityA = makeTemporalEndpointConsumer(streams.consumeFanOutActivityA);
-  const consumeFanOutActivityB = makeTemporalEndpointConsumer(streams.consumeFanOutActivityB);
-  const consumeFanOutActivityC = makeTemporalEndpointConsumer(streams.consumeFanOutActivityC);
-  const consumeSequentialActivityA = makeTemporalEndpointConsumer(streams.consumeSequentialActivityA);
-  const consumeSequentialActivityB = makeTemporalEndpointConsumer(streams.consumeSequentialActivityB);
-  const localSchedule = makeCronEndpointConsumer(streams.localSchedule, functions.localSchedule);
-  const submitActivityJob = makeTemporalSinkEndpointConsumerWithResult(streams.submitActivityJob);
-  const submitWorkflowJob = makeTemporalSinkEndpointConsumerWithResult(streams.submitWorkflowJob);
-  const temporalActivitySchedule = makeTemporalScheduleEndpointConsumer(streams.temporalActivitySchedule, functions.temporalActivitySchedule);
-  const temporalWorkflowSchedule = makeTemporalScheduleEndpointConsumer(streams.temporalWorkflowSchedule, functions.temporalWorkflowSchedule);
-  const submitFanOutWorkflowJob = makeTemporalSinkEndpointConsumer(streams.submitFanOutWorkflowJob);
+  const consumeActivityJob = makeTemporalEndpointConsumerWithHandler(streams.consumeActivityJob, functions.activityJobEndpointSource);
+  const consumeFanOutWorkflowJob = makeTemporalEndpointConsumerWithHandler(streams.consumeFanOutWorkflowJob, functions.fanoutWorkflowJobEndpointSource);
+  const callFanOutActivityA = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callFanOutActivityA, functions.fanoutActivityAEndpointSink);
+  const callFanOutActivityB = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callFanOutActivityB, functions.fanoutActivityBEndpointSink);
+  const callFanOutActivityC = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callFanOutActivityC, functions.fanoutActivityCEndpointSink);
+  const consumeWorkflowJob = makeTemporalEndpointConsumerWithHandler(streams.consumeWorkflowJob, functions.workflowJobEndpointSource);
+  const callSequentialActivityA = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callSequentialActivityA, functions.sequentialActivityAEndpointSink);
+  const callSequentialActivityB = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callSequentialActivityB, functions.sequentialActivityBEndpointSink);
+  const consumeFanOutActivityA = makeTemporalEndpointConsumerWithHandler(streams.consumeFanOutActivityA, functions.fanoutActivityAEndpointSource);
+  const consumeFanOutActivityB = makeTemporalEndpointConsumerWithHandler(streams.consumeFanOutActivityB, functions.fanoutActivityBEndpointSource);
+  const consumeFanOutActivityC = makeTemporalEndpointConsumerWithHandler(streams.consumeFanOutActivityC, functions.fanoutActivityCEndpointSource);
+  const consumeSequentialActivityA = makeTemporalEndpointConsumerWithHandler(streams.consumeSequentialActivityA, functions.sequentialActivityAEndpointSource);
+  const consumeSequentialActivityB = makeTemporalEndpointConsumerWithHandler(streams.consumeSequentialActivityB, functions.sequentialActivityBEndpointSource);
+  const localSchedule = makeCronEndpointConsumer(streams.localSchedule, functions.localScheduleSource);
+  const submitActivityJob = makeTemporalSinkEndpointConsumerWithResultHandler(streams.submitActivityJob, functions.activityJobEndpointSink);
+  const submitWorkflowJob = makeTemporalSinkEndpointConsumerWithResultHandler(streams.submitWorkflowJob, functions.workflowJobEndpointSink);
+  const temporalActivitySchedule = makeTemporalScheduleEndpointConsumer(streams.temporalActivitySchedule, functions.temporalActivityScheduleSource);
+  const temporalWorkflowSchedule = makeTemporalScheduleEndpointConsumer(streams.temporalWorkflowSchedule, functions.temporalWorkflowScheduleSource);
+  const submitFanOutWorkflowJob = makeTemporalSinkEndpointConsumerWithHandler(streams.submitFanOutWorkflowJob, functions.fanoutWorkflowJobEndpointSink);
   return {
     dataConnectors: {
       consumeActivityJob,

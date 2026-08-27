@@ -1,44 +1,34 @@
-# Task 6/8: `ProcessOrderItem`
+# Task 6/8: `MapToOrderState`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `grpc-sink` |
-| File | `orderservice/src/internal/functions/process-order-item.ts` |
-| Test | `orderservice/test/functions/process-order-item.test.ts` |
+| Kind | `map` |
+| File | `orderservice/src/internal/functions/map-to-order-state.ts` |
+| Test | `orderservice/test/functions/map-to-order-state.test.ts` |
 | Service | `Order Service` |
 
 
 ## Behaviour
 
-Reserve inventory for one order item using its order ID, item ID, SKU, and quantity.
-Return the available quantity, reservation outcome, and status. The caller combines this response with the original identity, requested quantity, and unit price.
-If the inventory call fails, the caller returns a non-reserved PROCESSING_ERROR result with the failure message.
+Produce a TIMED_OUT order result that preserves the order ID and submitted total.
+Do not add item results at this stage; results received before the timeout are included in the final response.
 
 
-
-## External contract
-
-| Field | Value |
-|-------|-------|
-| Format | `proto` |
-| Request | `ProcessOrderItemRequest` |
-| Response | `ProcessOrderItemResponse` |
 
 
 ## Stream types
-- Input: `OrderItem` — `model/src/types/order-item.ts`
-- Output: `OrderItemResult` — `model/src/types/order-item-result.ts`
+- Input: `Order` — `orderservice/src/internal/types/order.ts`
+- Output: `OrderState` — `orderservice/src/internal/types/order-state.ts`
 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `orderservice/src/internal/functions/process-order-item.ts` and preserve its generated contract
-- [ ] Inspect input type `OrderItem` in `model/src/types/order-item.ts`
-- [ ] Inspect output type `OrderItemResult` in `model/src/types/order-item-result.ts`
-- [ ] Implement meaningful assertions in `orderservice/test/functions/process-order-item.test.ts`
-- [ ] Verify the endpoint/result lifecycle, including completion and error paths
+- [ ] Open `orderservice/src/internal/functions/map-to-order-state.ts` and preserve its generated contract
+- [ ] Inspect input type `Order` in `orderservice/src/internal/types/order.ts`
+- [ ] Inspect output type `OrderState` in `orderservice/src/internal/types/order-state.ts`
+- [ ] Implement meaningful assertions in `orderservice/test/functions/map-to-order-state.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] orderservice/task6.md — ProcessOrderItem — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] orderservice/task6.md — MapToOrderState — TypeScript — done`

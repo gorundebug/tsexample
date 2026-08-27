@@ -23,8 +23,20 @@ import {
   type ConfigSnapshot,
 } from "../config/config-snapshot.generated.js";
 import {
+  ActivityJobEndpointSink, makeActivityJobEndpointSink,
+  ActivityJobEndpointSource, makeActivityJobEndpointSource,
+  FanoutActivityAEndpointSink, makeFanoutActivityAEndpointSink,
+  FanoutActivityAEndpointSource, makeFanoutActivityAEndpointSource,
+  FanoutActivityBEndpointSink, makeFanoutActivityBEndpointSink,
+  FanoutActivityBEndpointSource, makeFanoutActivityBEndpointSource,
+  FanoutActivityCEndpointSink, makeFanoutActivityCEndpointSink,
+  FanoutActivityCEndpointSource, makeFanoutActivityCEndpointSource,
+  SequentialActivityAEndpointSink, makeSequentialActivityAEndpointSink,
+  SequentialActivityAEndpointSource, makeSequentialActivityAEndpointSource,
+  SequentialActivityBEndpointSink, makeSequentialActivityBEndpointSink,
+  SequentialActivityBEndpointSource, makeSequentialActivityBEndpointSource,
+  TemporalActivityScheduleSource, makeTemporalActivityScheduleSource,
   ActivityPause, makeActivityPause,
-  LocalSchedule, makeLocalSchedule,
   ObserveActivityResult, makeObserveActivityResult,
   ObserveFanoutActivityB, makeObserveFanoutActivityB,
   ObserveFanoutActivityC, makeObserveFanoutActivityC,
@@ -40,9 +52,13 @@ import {
   ProcessWorkflowJob, makeProcessWorkflowJob,
   ScheduledActivityPause, makeScheduledActivityPause,
   ScheduledWorkflowPause, makeScheduledWorkflowPause,
-  TemporalActivitySchedule, makeTemporalActivitySchedule,
-  TemporalWorkflowSchedule, makeTemporalWorkflowSchedule,
   WorkflowPause, makeWorkflowPause,
+  LocalScheduleSource, makeLocalScheduleSource,
+  FanoutWorkflowJobEndpointSink, makeFanoutWorkflowJobEndpointSink,
+  FanoutWorkflowJobEndpointSource, makeFanoutWorkflowJobEndpointSource,
+  TemporalWorkflowScheduleSource, makeTemporalWorkflowScheduleSource,
+  WorkflowJobEndpointSink, makeWorkflowJobEndpointSink,
+  WorkflowJobEndpointSource, makeWorkflowJobEndpointSource,
 } from "../functions/index.generated.js";
 
 function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
@@ -115,16 +131,76 @@ export function registerGeneratedSerdes(registry: SerdeRegistry): void {
 }
 
 export interface ServiceMakers {
+  activityJobEndpointSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => ActivityJobEndpointSink;
+  activityJobEndpointSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => ActivityJobEndpointSource;
+  fanoutActivityAEndpointSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => FanoutActivityAEndpointSink;
+  fanoutActivityAEndpointSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => FanoutActivityAEndpointSource;
+  fanoutActivityBEndpointSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => FanoutActivityBEndpointSink;
+  fanoutActivityBEndpointSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => FanoutActivityBEndpointSource;
+  fanoutActivityCEndpointSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => FanoutActivityCEndpointSink;
+  fanoutActivityCEndpointSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => FanoutActivityCEndpointSource;
+  sequentialActivityAEndpointSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => SequentialActivityAEndpointSink;
+  sequentialActivityAEndpointSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => SequentialActivityAEndpointSource;
+  sequentialActivityBEndpointSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => SequentialActivityBEndpointSink;
+  sequentialActivityBEndpointSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => SequentialActivityBEndpointSource;
+  temporalActivityScheduleSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => TemporalActivityScheduleSource;
   activityPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
   ) => ActivityPause;
-  localSchedule: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
-  ) => LocalSchedule;
   observeActivityResult: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -200,27 +276,59 @@ export interface ServiceMakers {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
   ) => ScheduledWorkflowPause;
-  temporalActivitySchedule: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => TemporalActivitySchedule;
-  temporalWorkflowSchedule: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => TemporalWorkflowSchedule;
   workflowPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
   ) => WorkflowPause;
+  localScheduleSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
+  ) => LocalScheduleSource;
+  fanoutWorkflowJobEndpointSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => FanoutWorkflowJobEndpointSink;
+  fanoutWorkflowJobEndpointSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => FanoutWorkflowJobEndpointSource;
+  temporalWorkflowScheduleSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => TemporalWorkflowScheduleSource;
+  workflowJobEndpointSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => WorkflowJobEndpointSink;
+  workflowJobEndpointSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
+  ) => WorkflowJobEndpointSource;
 }
 
 export function defaultMakers(): ServiceMakers {
   return {
+    activityJobEndpointSink: makeActivityJobEndpointSink,
+    activityJobEndpointSource: makeActivityJobEndpointSource,
+    fanoutActivityAEndpointSink: makeFanoutActivityAEndpointSink,
+    fanoutActivityAEndpointSource: makeFanoutActivityAEndpointSource,
+    fanoutActivityBEndpointSink: makeFanoutActivityBEndpointSink,
+    fanoutActivityBEndpointSource: makeFanoutActivityBEndpointSource,
+    fanoutActivityCEndpointSink: makeFanoutActivityCEndpointSink,
+    fanoutActivityCEndpointSource: makeFanoutActivityCEndpointSource,
+    sequentialActivityAEndpointSink: makeSequentialActivityAEndpointSink,
+    sequentialActivityAEndpointSource: makeSequentialActivityAEndpointSource,
+    sequentialActivityBEndpointSink: makeSequentialActivityBEndpointSink,
+    sequentialActivityBEndpointSource: makeSequentialActivityBEndpointSource,
+    temporalActivityScheduleSource: makeTemporalActivityScheduleSource,
     activityPause: makeActivityPause,
-    localSchedule: makeLocalSchedule,
     observeActivityResult: makeObserveActivityResult,
     observeFanoutActivityB: makeObserveFanoutActivityB,
     observeFanoutActivityC: makeObserveFanoutActivityC,
@@ -236,9 +344,13 @@ export function defaultMakers(): ServiceMakers {
     processWorkflowJob: makeProcessWorkflowJob,
     scheduledActivityPause: makeScheduledActivityPause,
     scheduledWorkflowPause: makeScheduledWorkflowPause,
-    temporalActivitySchedule: makeTemporalActivitySchedule,
-    temporalWorkflowSchedule: makeTemporalWorkflowSchedule,
     workflowPause: makeWorkflowPause,
+    localScheduleSource: makeLocalScheduleSource,
+    fanoutWorkflowJobEndpointSink: makeFanoutWorkflowJobEndpointSink,
+    fanoutWorkflowJobEndpointSource: makeFanoutWorkflowJobEndpointSource,
+    temporalWorkflowScheduleSource: makeTemporalWorkflowScheduleSource,
+    workflowJobEndpointSink: makeWorkflowJobEndpointSink,
+    workflowJobEndpointSource: makeWorkflowJobEndpointSource,
   };
 }
 
@@ -249,8 +361,20 @@ export function initFunctions(
   makers: ServiceMakers,
 ) {
   return {
+    activityJobEndpointSink: makers.activityJobEndpointSink(context, environment, config.named.endpoints.activityJob),
+    activityJobEndpointSource: makers.activityJobEndpointSource(context, environment, config.named.endpoints.activityJob),
+    fanoutActivityAEndpointSink: makers.fanoutActivityAEndpointSink(context, environment, config.named.endpoints.fanOutActivityA),
+    fanoutActivityAEndpointSource: makers.fanoutActivityAEndpointSource(context, environment, config.named.endpoints.fanOutActivityA),
+    fanoutActivityBEndpointSink: makers.fanoutActivityBEndpointSink(context, environment, config.named.endpoints.fanOutActivityB),
+    fanoutActivityBEndpointSource: makers.fanoutActivityBEndpointSource(context, environment, config.named.endpoints.fanOutActivityB),
+    fanoutActivityCEndpointSink: makers.fanoutActivityCEndpointSink(context, environment, config.named.endpoints.fanOutActivityC),
+    fanoutActivityCEndpointSource: makers.fanoutActivityCEndpointSource(context, environment, config.named.endpoints.fanOutActivityC),
+    sequentialActivityAEndpointSink: makers.sequentialActivityAEndpointSink(context, environment, config.named.endpoints.sequentialActivityA),
+    sequentialActivityAEndpointSource: makers.sequentialActivityAEndpointSource(context, environment, config.named.endpoints.sequentialActivityA),
+    sequentialActivityBEndpointSink: makers.sequentialActivityBEndpointSink(context, environment, config.named.endpoints.sequentialActivityB),
+    sequentialActivityBEndpointSource: makers.sequentialActivityBEndpointSource(context, environment, config.named.endpoints.sequentialActivityB),
+    temporalActivityScheduleSource: makers.temporalActivityScheduleSource(context, environment, config.named.endpoints.temporalActivitySchedule),
     activityPause: makers.activityPause(context, environment, config.named.streams.activityPause),
-    localSchedule: makers.localSchedule(context, environment, config.named.endpoints.localSchedule),
     observeActivityResult: makers.observeActivityResult(context, environment, config.named.streams.observeActivityResult),
     observeFanoutActivityB: makers.observeFanoutActivityB(context, environment, config.named.streams.observeFanOutActivityB),
     observeFanoutActivityC: makers.observeFanoutActivityC(context, environment, config.named.streams.observeFanOutActivityC),
@@ -266,9 +390,13 @@ export function initFunctions(
     processWorkflowJob: makers.processWorkflowJob(context, environment, config.named.streams.processWorkflowJob),
     scheduledActivityPause: makers.scheduledActivityPause(context, environment, config.named.streams.scheduledActivityPause),
     scheduledWorkflowPause: makers.scheduledWorkflowPause(context, environment, config.named.streams.scheduledWorkflowPause),
-    temporalActivitySchedule: makers.temporalActivitySchedule(context, environment, config.named.endpoints.temporalActivitySchedule),
-    temporalWorkflowSchedule: makers.temporalWorkflowSchedule(context, environment, config.named.endpoints.temporalWorkflowSchedule),
     workflowPause: makers.workflowPause(context, environment, config.named.streams.workflowPause),
+    localScheduleSource: makers.localScheduleSource(context, environment, config.named.endpoints.localSchedule),
+    fanoutWorkflowJobEndpointSink: makers.fanoutWorkflowJobEndpointSink(context, environment, config.named.endpoints.fanOutWorkflowJob),
+    fanoutWorkflowJobEndpointSource: makers.fanoutWorkflowJobEndpointSource(context, environment, config.named.endpoints.fanOutWorkflowJob),
+    temporalWorkflowScheduleSource: makers.temporalWorkflowScheduleSource(context, environment, config.named.endpoints.temporalWorkflowSchedule),
+    workflowJobEndpointSink: makers.workflowJobEndpointSink(context, environment, config.named.endpoints.workflowJob),
+    workflowJobEndpointSource: makers.workflowJobEndpointSource(context, environment, config.named.endpoints.workflowJob),
   };
 }
 

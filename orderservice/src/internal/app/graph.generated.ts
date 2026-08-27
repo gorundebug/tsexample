@@ -24,12 +24,12 @@ import {
   type ConfigSnapshot,
 } from "../config/config-snapshot.generated.js";
 import {
+  OrderProcessedEndpointSink, makeOrderProcessedEndpointSink,
+  ProcessOrderItemSink, makeProcessOrderItemSink,
+  ProcessOrderSource, makeProcessOrderSource,
   MapOrderItemResultToOrderState, makeMapOrderItemResultToOrderState,
   MapToOrderProcessed, makeMapToOrderProcessed,
   MapToOrderState, makeMapToOrderState,
-  OrderProcessedEndpoint, makeOrderProcessedEndpoint,
-  ProcessOrder, makeProcessOrder,
-  ProcessOrderItem, makeProcessOrderItem,
   ProcessOrderItems, makeProcessOrderItems,
   SoftDeadline, makeSoftDeadline,
 } from "../functions/index.generated.js";
@@ -69,6 +69,21 @@ export function registerGeneratedSerdes(registry: SerdeRegistry): void {
 }
 
 export interface ServiceMakers {
+  orderProcessedEndpointSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
+  ) => OrderProcessedEndpointSink;
+  processOrderItemSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
+  ) => ProcessOrderItemSink;
+  processOrderSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").HttpEndpointConfig,
+  ) => ProcessOrderSource;
   mapOrderItemResultToOrderState: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -84,21 +99,6 @@ export interface ServiceMakers {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
   ) => MapToOrderState;
-  orderProcessedEndpoint: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
-  ) => OrderProcessedEndpoint;
-  processOrder: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").HttpEndpointConfig,
-  ) => ProcessOrder;
-  processOrderItem: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
-  ) => ProcessOrderItem;
   processOrderItems: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -113,12 +113,12 @@ export interface ServiceMakers {
 
 export function defaultMakers(): ServiceMakers {
   return {
+    orderProcessedEndpointSink: makeOrderProcessedEndpointSink,
+    processOrderItemSink: makeProcessOrderItemSink,
+    processOrderSource: makeProcessOrderSource,
     mapOrderItemResultToOrderState: makeMapOrderItemResultToOrderState,
     mapToOrderProcessed: makeMapToOrderProcessed,
     mapToOrderState: makeMapToOrderState,
-    orderProcessedEndpoint: makeOrderProcessedEndpoint,
-    processOrder: makeProcessOrder,
-    processOrderItem: makeProcessOrderItem,
     processOrderItems: makeProcessOrderItems,
     softDeadline: makeSoftDeadline,
   };
@@ -131,12 +131,12 @@ export function initFunctions(
   makers: ServiceMakers,
 ) {
   return {
+    orderProcessedEndpointSink: makers.orderProcessedEndpointSink(context, environment, config.named.endpoints.orderProcessed),
+    processOrderItemSink: makers.processOrderItemSink(context, environment, config.named.endpoints.processOrderItem),
+    processOrderSource: makers.processOrderSource(context, environment, config.named.endpoints.processOrder),
     mapOrderItemResultToOrderState: makers.mapOrderItemResultToOrderState(context, environment, config.named.streams.mapOrderItemResultToOrderState),
     mapToOrderProcessed: makers.mapToOrderProcessed(context, environment, config.named.streams.mapToOrderProcessed),
     mapToOrderState: makers.mapToOrderState(context, environment, config.named.streams.mapToOrderState),
-    orderProcessedEndpoint: makers.orderProcessedEndpoint(context, environment, config.named.endpoints.orderProcessed),
-    processOrder: makers.processOrder(context, environment, config.named.endpoints.processOrder),
-    processOrderItem: makers.processOrderItem(context, environment, config.named.endpoints.processOrderItem),
     processOrderItems: makers.processOrderItems(context, environment, config.named.streams.processOrderItems),
     softDeadline: makers.softDeadline(context, environment, config.named.streams.softDeadline),
   };

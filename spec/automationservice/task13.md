@@ -1,19 +1,19 @@
-# Task 13/20: `ProcessSequentialActivityA`
+# Task 13/36: `TemporalActivityScheduleSource`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `map` |
-| File | `automationservice/src/internal/functions/process-sequential-activity-a.ts` |
-| Test | `automationservice/test/functions/process-sequential-activity-a.test.ts` |
+| Kind | `schedule-source` |
+| File | `automationservice/src/internal/functions/temporal-activity-schedule-source.ts` |
+| Test | `automationservice/test/functions/temporal-activity-schedule-source.test.ts` |
 | Service | `Automation Service` |
 
 
 ## Behaviour
 
-Return sequential Activity A's typed result to its Temporal sink.
+Create an Activity job message identifying the durable scheduled firing.
 
 
 
@@ -23,7 +23,7 @@ Return sequential Activity A's typed result to its Temporal sink.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/process-sequential-activity-a.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/process-sequential-activity-a.test.ts`
+- [ ] Open `automationservice/src/internal/functions/temporal-activity-schedule-source.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/temporal-activity-schedule-source.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task13.md — ProcessSequentialActivityA — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task13.md — TemporalActivityScheduleSource — TypeScript — done`

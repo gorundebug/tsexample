@@ -1,31 +1,24 @@
-# Task 2/2: `ProcessOrderItem`
+# Task 2/2: `GetInventoryItemData`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `grpc-source` |
-| File | `inventoryservice/src/internal/functions/process-order-item.ts` |
-| Test | `inventoryservice/test/functions/process-order-item.test.ts` |
+| Kind | `process` |
+| File | `inventoryservice/src/internal/functions/get-inventory-item-data.ts` |
+| Test | `inventoryservice/test/functions/get-inventory-item-data.test.ts` |
 | Service | `Inventory Service` |
 
 
 ## Behaviour
 
-Reserve inventory for one order item using its order ID, item ID, SKU, and quantity.
-Return the available quantity, reservation outcome, and status. The caller combines this response with the original identity, requested quantity, and unit price.
-If the inventory call fails, the caller returns a non-reserved PROCESSING_ERROR result with the failure message.
+Reserve the requested quantity without allowing concurrent orders to overdraw stock.
+On success, return CONFIRMED with the requested quantity available. Otherwise return OUT_OF_STOCK with the current available quantity.
+Preserve the order and item identity, requested quantity, and unit price.
+The example starts with SKU-001: 100, SKU-002: 50, and SKU-003: 25.
 
 
-
-## External contract
-
-| Field | Value |
-|-------|-------|
-| Format | `proto` |
-| Request | `ProcessOrderItemRequest` |
-| Response | `ProcessOrderItemResponse` |
 
 
 ## Stream types
@@ -35,10 +28,9 @@ If the inventory call fails, the caller returns a non-reserved PROCESSING_ERROR 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `inventoryservice/src/internal/functions/process-order-item.ts` and preserve its generated contract
+- [ ] Open `inventoryservice/src/internal/functions/get-inventory-item-data.ts` and preserve its generated contract
 - [ ] Inspect input type `OrderItem` in `model/src/types/order-item.ts`
 - [ ] Inspect output type `OrderItemResult` in `model/src/types/order-item-result.ts`
-- [ ] Implement meaningful assertions in `inventoryservice/test/functions/process-order-item.test.ts`
-- [ ] Verify the endpoint/result lifecycle, including completion and error paths
+- [ ] Implement meaningful assertions in `inventoryservice/test/functions/get-inventory-item-data.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] inventoryservice/task2.md — ProcessOrderItem — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] inventoryservice/task2.md — GetInventoryItemData — TypeScript — done`

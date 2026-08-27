@@ -1,19 +1,19 @@
-# Task 14/20: `ProcessSequentialActivityB`
+# Task 14/36: `ActivityPause`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `map` |
-| File | `automationservice/src/internal/functions/process-sequential-activity-b.ts` |
-| Test | `automationservice/test/functions/process-sequential-activity-b.test.ts` |
+| Kind | `delay` |
+| File | `automationservice/src/internal/functions/activity-pause.ts` |
+| Test | `automationservice/test/functions/activity-pause.test.ts` |
 | Service | `Automation Service` |
 
 
 ## Behaviour
 
-Return sequential Activity B's typed result to its Temporal sink.
+Apply the ordinary local Delay while processing an on-demand Temporal Activity.
 
 
 
@@ -23,7 +23,7 @@ Return sequential Activity B's typed result to its Temporal sink.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/process-sequential-activity-b.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/process-sequential-activity-b.test.ts`
+- [ ] Open `automationservice/src/internal/functions/activity-pause.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/activity-pause.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task14.md — ProcessSequentialActivityB — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task14.md — ActivityPause — TypeScript — done`

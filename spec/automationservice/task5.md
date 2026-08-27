@@ -1,19 +1,15 @@
-# Task 5/20: `ObserveFanoutActivityC`
+# Task 5/36: `FanoutActivityBEndpointSink`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `map` |
-| File | `automationservice/src/internal/functions/observe-fanout-activity-c.ts` |
-| Test | `automationservice/test/functions/observe-fanout-activity-c.test.ts` |
+| Kind | `temporal-sink` |
+| File | `automationservice/src/internal/functions/fanout-activity-b-endpoint-sink.ts` |
+| Test | `automationservice/test/functions/fanout-activity-b-endpoint-sink.test.ts` |
 | Service | `Automation Service` |
 
-
-## Behaviour
-
-Observe the typed result returned by the Activity C fan-out branch.
 
 
 
@@ -23,7 +19,7 @@ Observe the typed result returned by the Activity C fan-out branch.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/observe-fanout-activity-c.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/observe-fanout-activity-c.test.ts`
+- [ ] Open `automationservice/src/internal/functions/fanout-activity-b-endpoint-sink.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/fanout-activity-b-endpoint-sink.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task5.md — ObserveFanoutActivityC — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task5.md — FanoutActivityBEndpointSink — TypeScript — done`

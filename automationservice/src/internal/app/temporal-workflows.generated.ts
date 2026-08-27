@@ -108,7 +108,7 @@ async function executeGeneratedWorkflow(
             new Date(envelope.firedAtUnixMillis).toISOString(),
             ScheduleBackend.Temporal,
           );
-          return functions.temporalWorkflowSchedule.onTrigger(
+          return functions.temporalWorkflowScheduleSource.onTrigger(
             messageContext,
             trigger,
             new FunctionCollector((nextContext, value) =>

@@ -31,7 +31,7 @@ function initDataConnectors(
   functions: ServiceFunctions,
   clients: ServiceClients,
 ) {
-  const consumeOrderProcessed = makeKafkaSourceEndpointConsumer(streams.consumeOrderProcessed, functions.orderProcessedEndpoint);
+  const consumeOrderProcessed = makeKafkaSourceEndpointConsumer(streams.consumeOrderProcessed, functions.orderProcessedEndpointSource);
   return {
     dataConnectors: {
       consumeOrderProcessed,

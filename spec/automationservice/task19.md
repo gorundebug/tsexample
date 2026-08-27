@@ -1,19 +1,19 @@
-# Task 19/20: `TemporalWorkflowSchedule`
+# Task 19/36: `ProcessActivityJob`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `schedule-source` |
-| File | `automationservice/src/internal/functions/temporal-workflow-schedule.ts` |
-| Test | `automationservice/test/functions/temporal-workflow-schedule.test.ts` |
+| Kind | `map` |
+| File | `automationservice/src/internal/functions/process-activity-job.ts` |
+| Test | `automationservice/test/functions/process-activity-job.test.ts` |
 | Service | `Automation Service` |
 
 
 ## Behaviour
 
-Create a Workflow job message identifying the durable scheduled firing.
+Record Activity progress with DurableCallHeartbeat and return the processed job result.
 
 
 
@@ -23,7 +23,7 @@ Create a Workflow job message identifying the durable scheduled firing.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/temporal-workflow-schedule.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/temporal-workflow-schedule.test.ts`
+- [ ] Open `automationservice/src/internal/functions/process-activity-job.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/process-activity-job.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task19.md — TemporalWorkflowSchedule — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task19.md — ProcessActivityJob — TypeScript — done`

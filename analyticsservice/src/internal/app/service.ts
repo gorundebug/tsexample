@@ -16,15 +16,11 @@ export class Service extends ServiceGenerated {
    */
   protected override customMakersInit(context: MessageContext): void {
     void context;
-    // this.makers.countOrderProcessed = customCountOrderProcessedMaker;
-    // this.makers.orderProcessedEndpoint = customOrderProcessedEndpointMaker;
   }
 
   /** Called after every function is constructed and before the graph is wired. */
   protected override customFunctionsInit(context: MessageContext): void {
     void context;
-    // Configure this.functions.countOrderProcessed here when post-construction setup is needed.
-    // Configure this.functions.orderProcessedEndpoint here when post-construction setup is needed.
   }
 
   protected override createServiceAppOptions(config: ServiceConfig): ServiceAppOptions {

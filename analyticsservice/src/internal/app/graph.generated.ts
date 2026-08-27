@@ -24,7 +24,7 @@ import {
 } from "../config/config-snapshot.generated.js";
 import {
   CountOrderProcessed, makeCountOrderProcessed,
-  OrderProcessedEndpoint, makeOrderProcessedEndpoint,
+  OrderProcessedEndpointSource, makeOrderProcessedEndpointSource,
 } from "../functions/index.generated.js";
 
 function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
@@ -49,17 +49,17 @@ export interface ServiceMakers {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
   ) => CountOrderProcessed;
-  orderProcessedEndpoint: (
+  orderProcessedEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
-  ) => OrderProcessedEndpoint;
+  ) => OrderProcessedEndpointSource;
 }
 
 export function defaultMakers(): ServiceMakers {
   return {
     countOrderProcessed: makeCountOrderProcessed,
-    orderProcessedEndpoint: makeOrderProcessedEndpoint,
+    orderProcessedEndpointSource: makeOrderProcessedEndpointSource,
   };
 }
 
@@ -71,7 +71,7 @@ export function initFunctions(
 ) {
   return {
     countOrderProcessed: makers.countOrderProcessed(context, environment, config.named.streams.countOrderProcessed),
-    orderProcessedEndpoint: makers.orderProcessedEndpoint(context, environment, config.named.endpoints.orderProcessed),
+    orderProcessedEndpointSource: makers.orderProcessedEndpointSource(context, environment, config.named.endpoints.orderProcessed),
   };
 }
 

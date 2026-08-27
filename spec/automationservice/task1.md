@@ -1,19 +1,15 @@
-# Task 1/20: `ActivityPause`
+# Task 1/36: `ActivityJobEndpointSink`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `delay` |
-| File | `automationservice/src/internal/functions/activity-pause.ts` |
-| Test | `automationservice/test/functions/activity-pause.test.ts` |
+| Kind | `temporal-sink` |
+| File | `automationservice/src/internal/functions/activity-job-endpoint-sink.ts` |
+| Test | `automationservice/test/functions/activity-job-endpoint-sink.test.ts` |
 | Service | `Automation Service` |
 
-
-## Behaviour
-
-Apply the ordinary local Delay while processing an on-demand Temporal Activity.
 
 
 
@@ -23,7 +19,7 @@ Apply the ordinary local Delay while processing an on-demand Temporal Activity.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `automationservice/src/internal/functions/activity-pause.ts` and preserve its generated contract
-- [ ] Implement meaningful assertions in `automationservice/test/functions/activity-pause.test.ts`
+- [ ] Open `automationservice/src/internal/functions/activity-job-endpoint-sink.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `automationservice/test/functions/activity-job-endpoint-sink.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] automationservice/task1.md — ActivityPause — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] automationservice/task1.md — ActivityJobEndpointSink — TypeScript — done`

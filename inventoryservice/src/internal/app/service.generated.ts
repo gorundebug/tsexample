@@ -34,7 +34,7 @@ function initDataConnectors(
   functions: ServiceFunctions,
   clients: ServiceClients,
 ) {
-  const processInventoryItem = makeGrpcNoStreamingSourceEndpointConsumer(streams.processInventoryItem, InventoryServiceApi, InventoryServiceApi.method.processOrderItem, functions.processOrderItem);
+  const processInventoryItem = makeGrpcNoStreamingSourceEndpointConsumer(streams.processInventoryItem, InventoryServiceApi, InventoryServiceApi.method.processOrderItem, functions.processOrderItemSource);
   return {
     dataConnectors: {
       processInventoryItem,
