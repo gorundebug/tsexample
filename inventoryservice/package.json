@@ -15,8 +15,8 @@
   "dependencies": {
     "@gorundebug/tsservicelib": "github:gorundebug/tsservicelib#v0.2.24",
     "@bufbuild/protobuf": "2.14.0",
-    "@gorundebug/inventory-service-api": "workspace:*",
-    "@gorundebug/model": "workspace:*"
+    "@gorundebug/inventory-service-api": "git+https://github.com/gorundebug/tsexample-inventory-service-api.git#v0.2.14",
+    "@gorundebug/model": "git+https://github.com/gorundebug/tsexample-model.git#v0.2.14"
   },
   "devDependencies": {
     "@types/node": "24.13.3",

@@ -9,7 +9,7 @@ services:
         - "host.docker.internal:host-gateway"
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
-        SERVICEGEN_GITHUB_RAW_URL: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}
+        DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
       additional_contexts:
         tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.24}"
     command:
@@ -38,7 +38,7 @@ services:
         - "host.docker.internal:host-gateway"
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
-        SERVICEGEN_GITHUB_RAW_URL: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}
+        DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
       additional_contexts:
         tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.24}"
     command:
@@ -71,7 +71,7 @@ services:
         - "host.docker.internal:host-gateway"
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
-        SERVICEGEN_GITHUB_RAW_URL: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}
+        DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
       additional_contexts:
         tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.24}"
     command:
@@ -100,7 +100,7 @@ services:
         - "host.docker.internal:host-gateway"
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
-        SERVICEGEN_GITHUB_RAW_URL: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}
+        DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
       additional_contexts:
         tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.24}"
     command:

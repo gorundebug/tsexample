@@ -3,30 +3,18 @@
 # service source code. Use it through `make docker-up-dev`.
 services:
   analyticsservice:
-    image: example-typescript-development:latest
-    build:
-      target: development
+    image: analyticsservice-typescript-development:latest
+    build: !reset null
     command:
-      - /workspace/analyticsservice/scripts/run-service.generated.sh
-      - /workspace/analyticsservice/src/main.generated.ts
+      - /workspace/scripts/run-service.generated.sh
+      - /workspace/src/main.generated.ts
       - --config
-      - /workspace/analyticsservice/config/config.yaml
+      - /workspace/config/config.yaml
       - --values
-      - /workspace/analyticsservice/config/docker_overrides.yaml
+      - /workspace/config/docker_overrides.yaml
     volumes:
-      - .:/workspace
-      - /workspace/.tsservicelib
+      - ./analyticsservice:/workspace
       - /workspace/node_modules
-      - /workspace/analyticsservice/node_modules
-      - /workspace/automationservice/node_modules
-      - /workspace/inventoryservice/node_modules
-      - /workspace/orderservice/node_modules
-      - /workspace/inventory_service_api/node_modules
-      - /workspace/inventory_service_api/dist
-      - /workspace/model/node_modules
-      - /workspace/model/dist
-      - /workspace/order_service_api/node_modules
-      - /workspace/order_service_api/dist
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics/analyticsservice
     security_opt:
@@ -34,30 +22,18 @@ services:
     cap_add:
       - SYS_PTRACE
   automationservice:
-    image: example-typescript-development:latest
-    build:
-      target: development
+    image: automationservice-typescript-development:latest
+    build: !reset null
     command:
-      - /workspace/automationservice/scripts/run-service.generated.sh
-      - /workspace/automationservice/src/main.generated.ts
+      - /workspace/scripts/run-service.generated.sh
+      - /workspace/src/main.generated.ts
       - --config
-      - /workspace/automationservice/config/config.yaml
+      - /workspace/config/config.yaml
       - --values
-      - /workspace/automationservice/config/docker_overrides.yaml
+      - /workspace/config/docker_overrides.yaml
     volumes:
-      - .:/workspace
-      - /workspace/.tsservicelib
+      - ./automationservice:/workspace
       - /workspace/node_modules
-      - /workspace/analyticsservice/node_modules
-      - /workspace/automationservice/node_modules
-      - /workspace/inventoryservice/node_modules
-      - /workspace/orderservice/node_modules
-      - /workspace/inventory_service_api/node_modules
-      - /workspace/inventory_service_api/dist
-      - /workspace/model/node_modules
-      - /workspace/model/dist
-      - /workspace/order_service_api/node_modules
-      - /workspace/order_service_api/dist
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics/automationservice
     security_opt:
@@ -65,30 +41,18 @@ services:
     cap_add:
       - SYS_PTRACE
   inventoryservice:
-    image: example-typescript-development:latest
-    build:
-      target: development
+    image: inventoryservice-typescript-development:latest
+    build: !reset null
     command:
-      - /workspace/inventoryservice/scripts/run-service.generated.sh
-      - /workspace/inventoryservice/src/main.generated.ts
+      - /workspace/scripts/run-service.generated.sh
+      - /workspace/src/main.generated.ts
       - --config
-      - /workspace/inventoryservice/config/config.yaml
+      - /workspace/config/config.yaml
       - --values
-      - /workspace/inventoryservice/config/docker_overrides.yaml
+      - /workspace/config/docker_overrides.yaml
     volumes:
-      - .:/workspace
-      - /workspace/.tsservicelib
+      - ./inventoryservice:/workspace
       - /workspace/node_modules
-      - /workspace/analyticsservice/node_modules
-      - /workspace/automationservice/node_modules
-      - /workspace/inventoryservice/node_modules
-      - /workspace/orderservice/node_modules
-      - /workspace/inventory_service_api/node_modules
-      - /workspace/inventory_service_api/dist
-      - /workspace/model/node_modules
-      - /workspace/model/dist
-      - /workspace/order_service_api/node_modules
-      - /workspace/order_service_api/dist
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics/inventoryservice
     security_opt:
@@ -96,30 +60,18 @@ services:
     cap_add:
       - SYS_PTRACE
   orderservice:
-    image: example-typescript-development:latest
-    build:
-      target: development
+    image: orderservice-typescript-development:latest
+    build: !reset null
     command:
-      - /workspace/orderservice/scripts/run-service.generated.sh
-      - /workspace/orderservice/src/main.generated.ts
+      - /workspace/scripts/run-service.generated.sh
+      - /workspace/src/main.generated.ts
       - --config
-      - /workspace/orderservice/config/config.yaml
+      - /workspace/config/config.yaml
       - --values
-      - /workspace/orderservice/config/docker_overrides.yaml
+      - /workspace/config/docker_overrides.yaml
     volumes:
-      - .:/workspace
-      - /workspace/.tsservicelib
+      - ./orderservice:/workspace
       - /workspace/node_modules
-      - /workspace/analyticsservice/node_modules
-      - /workspace/automationservice/node_modules
-      - /workspace/inventoryservice/node_modules
-      - /workspace/orderservice/node_modules
-      - /workspace/inventory_service_api/node_modules
-      - /workspace/inventory_service_api/dist
-      - /workspace/model/node_modules
-      - /workspace/model/dist
-      - /workspace/order_service_api/node_modules
-      - /workspace/order_service_api/dist
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics/orderservice
     security_opt:
@@ -132,5 +84,3 @@ volumes:
   go-dev-build-cache:
   rust-dev-cargo-registry:
   rust-dev-cargo-git:
-  rust-dev-target:
-  cpp-dev-cmake-build:

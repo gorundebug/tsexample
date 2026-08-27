@@ -9,8 +9,8 @@ fi
 service_dir="${1%/}"
 output_dir="${2%/}"
 
-for file in package.json package.standalone.generated.json tsconfig.json \
-  Dockerfile.standalone.generated docker-compose.standalone.generated.yml \
+for file in package.json tsconfig.json \
+  Dockerfile docker-compose.standalone.generated.yml \
   Makefile make.generated.mk .gitignore README.md; do
   if [[ ! -f "${service_dir}/${file}" ]]; then
     echo "TypeScript service publishing file is missing: ${service_dir}/${file}" >&2
@@ -25,11 +25,8 @@ fi
 
 mkdir -p "${output_dir}"
 cp -R "${service_dir}/." "${output_dir}/"
-cp "${service_dir}/package.standalone.generated.json" "${output_dir}/package.json"
-cp "${service_dir}/Dockerfile.standalone.generated" "${output_dir}/Dockerfile"
-awk '{gsub(/Dockerfile\.standalone\.generated/, "Dockerfile"); print}' \
-  "${service_dir}/docker-compose.standalone.generated.yml" \
-  > "${output_dir}/docker-compose.yml"
+cp "${service_dir}/docker-compose.standalone.generated.yml" \
+  "${output_dir}/docker-compose.yml"
 for file in .dockerignore .prettierignore .prettierrc.json eslint.config.js; do
   if [[ -f "${file}" ]]; then
     cp "${file}" "${output_dir}/${file}"
@@ -37,9 +34,7 @@ for file in .dockerignore .prettierignore .prettierrc.json eslint.config.js; do
 done
 rm -rf "${output_dir}/dist" "${output_dir}/dist-test" \
   "${output_dir}/node_modules" "${output_dir}/.cache"
-rm -f "${output_dir}/package.standalone.generated.json" \
-  "${output_dir}/Dockerfile.standalone.generated" \
-  "${output_dir}/docker-compose.standalone.generated.yml" \
+rm -f "${output_dir}/docker-compose.standalone.generated.yml" \
   "${output_dir}/tsconfig.tsbuildinfo"
 
 echo "Packaged standalone TypeScript service $(basename "${service_dir}") in ${output_dir}"

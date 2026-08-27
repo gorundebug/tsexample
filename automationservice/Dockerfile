@@ -2,10 +2,20 @@
 FROM node:24.19.0-bookworm-slim AS development
 ARG TARGETARCH
 ARG NPM_CONFIG_REGISTRY=https://registry.npmjs.org/
-ARG SERVICEGEN_GITHUB_RAW_URL=https://github.com
+ARG GIT_CONFIG_COUNT=0
+ARG GIT_CONFIG_KEY_0=
+ARG GIT_CONFIG_VALUE_0=
+ARG GIT_CONFIG_KEY_1=
+ARG GIT_CONFIG_VALUE_1=
+ARG DEPENDENCY_GITHUB_RAW_URL=https://github.com
 ENV CI=true \
-    NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY}
-ENV SERVICEGEN_GITHUB_RAW_URL=${SERVICEGEN_GITHUB_RAW_URL}
+    NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY} \
+    GIT_CONFIG_COUNT=${GIT_CONFIG_COUNT} \
+    GIT_CONFIG_KEY_0=${GIT_CONFIG_KEY_0} \
+    GIT_CONFIG_VALUE_0=${GIT_CONFIG_VALUE_0} \
+    GIT_CONFIG_KEY_1=${GIT_CONFIG_KEY_1} \
+    GIT_CONFIG_VALUE_1=${GIT_CONFIG_VALUE_1}
+ENV DEPENDENCY_GITHUB_RAW_URL=${DEPENDENCY_GITHUB_RAW_URL}
 COPY dependency-download-mirrors.generated.env /etc/servicegen/dependency-download-mirrors.generated.env
 COPY dependency-download-mirrors.env /etc/servicegen/dependency-download-mirrors.env
 COPY dependency-download-env.generated.sh /usr/local/bin/servicegen-download-env
@@ -16,9 +26,6 @@ WORKDIR /workspace
 COPY package*.json ./
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
     corepack pnpm config set store-dir /pnpm/store \
-    && if [ -f package.standalone.generated.json ]; then \
-         cp package.standalone.generated.json package.json; \
-       fi \
     && if [ -f pnpm-lock.yaml ]; then \
          corepack pnpm install --frozen-lockfile; \
        else \

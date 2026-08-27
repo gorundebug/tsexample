@@ -7,6 +7,10 @@ packages:
   - "model"
   - "order_service_api"
 
+overrides:
+  "@gorundebug/inventory-service-api": "workspace:*"
+  "@gorundebug/model": "workspace:*"
+  "@gorundebug/order-service-api": "workspace:*"
 allowBuilds:
   '@confluentinc/kafka-javascript': true
   '@swc/core': true

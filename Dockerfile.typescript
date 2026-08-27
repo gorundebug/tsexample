@@ -2,10 +2,10 @@
 FROM node:24.19.0-bookworm-slim AS development
 ARG TARGETARCH
 ARG NPM_CONFIG_REGISTRY=https://registry.npmjs.org/
-ARG SERVICEGEN_GITHUB_RAW_URL=https://github.com
+ARG DEPENDENCY_GITHUB_RAW_URL=https://github.com
 ENV CI=true \
     NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY} \
-    SERVICEGEN_GITHUB_RAW_URL=${SERVICEGEN_GITHUB_RAW_URL}
+    DEPENDENCY_GITHUB_RAW_URL=${DEPENDENCY_GITHUB_RAW_URL}
 COPY dependency-download-mirrors.generated.env /etc/servicegen/dependency-download-mirrors.generated.env
 COPY dependency-download-mirrors.env /etc/servicegen/dependency-download-mirrors.env
 COPY dependency-download-env.generated.sh /usr/local/bin/servicegen-download-env
@@ -31,8 +31,8 @@ RUN set -eu; \
     mkdir -p /workspace/.tsservicelib; \
     cp -a "$source_dir/." /workspace/.tsservicelib/; \
     rm -rf /tmp/tsservicelib-source
-RUN sed -i '/^allowBuilds:/i\  - ".tsservicelib"' pnpm-workspace.yaml \
-    && printf '\noverrides:\n  "@gorundebug/tsservicelib": "workspace:*"\n' >> pnpm-workspace.yaml
+RUN sed -i '/^overrides:/i\  - ".tsservicelib"' pnpm-workspace.yaml \
+    && sed -i '/^overrides:/a\  "@gorundebug/tsservicelib": "workspace:*"' pnpm-workspace.yaml
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
     corepack pnpm config set store-dir /pnpm/store \
     && corepack pnpm install --no-frozen-lockfile \

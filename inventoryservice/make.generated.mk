@@ -3,28 +3,22 @@
 .DEFAULT_GOAL := build
 SERVICEGEN_DOCKER_TARGET := runtime
 SERVICEGEN_DOCKER_DEV_TARGET := development
-STANDALONE_DOCKERFILE := $(if $(wildcard Dockerfile),Dockerfile,Dockerfile.standalone.generated)
+STANDALONE_DOCKERFILE := Dockerfile
 STANDALONE_COMPOSE := $(if $(wildcard docker-compose.yml),docker-compose.yml,docker-compose.standalone.generated.yml)
 PROGRESS := ./scripts/run-with-progress.generated.sh
-SERVICEGEN_GITHUB_RAW_URL ?= https://github.com
-SERVICEGEN_PNPM_REGISTRY_ARG = $(if $(strip $(NPM_CONFIG_REGISTRY)),--config.registry=$(NPM_CONFIG_REGISTRY),)
-SERVICEGEN_DOWNLOAD_MIRROR_ENV := $(or $(wildcard $(abspath ./dependency-download-env.generated.sh)),$(wildcard $(abspath ../dependency-download-env.generated.sh)),/bin/sh)
-SHELL := $(SERVICEGEN_DOWNLOAD_MIRROR_ENV)
+DEPENDENCY_PNPM_REGISTRY_ARG = $(if $(strip $(NPM_CONFIG_REGISTRY)),--config.registry=$(NPM_CONFIG_REGISTRY),)
+DEPENDENCY_DOWNLOAD_ENV := $(or $(wildcard $(abspath ./dependency-download-env.generated.sh)),$(wildcard $(abspath ../dependency-download-env.generated.sh)),/bin/sh)
+SHELL := $(DEPENDENCY_DOWNLOAD_ENV)
 .SHELLFLAGS := -c
 export
-PNPM ?= CI=true \
-	corepack pnpm $(SERVICEGEN_PNPM_REGISTRY_ARG)
-
-ifneq ($(strip $(SERVICEGEN_DEPENDENCY_PROXY_DIR)),)
-SERVICEGEN_DEPENDENCY_PROXY_HOST ?= localhost
-SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST ?= host.docker.internal
-SERVICEGEN_DEPENDENCY_PROXY_PORT ?= 18081
-SERVICEGEN_DEPENDENCY_PROXY_DOCKER_ARGS := --add-host host.docker.internal:host-gateway
-export NPM_CONFIG_REGISTRY := http://$(SERVICEGEN_DEPENDENCY_PROXY_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/npm-proxy/
-export SERVICEGEN_GITHUB_RAW_URL := http://$(SERVICEGEN_DEPENDENCY_PROXY_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/github-raw
-docker-build docker-up docker-build-dev docker-up-dev debug: export NPM_CONFIG_REGISTRY := http://$(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/npm-proxy/
-docker-build docker-up docker-build-dev docker-up-dev debug: export SERVICEGEN_GITHUB_RAW_URL := http://$(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/github-raw
+DEPENDENCY_DOCKER_TARGETS := docker-build docker-up docker-build-dev docker-up-dev debug
+include dependency-proxy.generated.mk
+PNPM_WORKSPACE_ARG := --ignore-workspace
+ifeq ($(strip $(USE_LOCAL_MODULES)),1)
+PNPM_WORKSPACE_ARG :=
 endif
+PNPM ?= CI=true \
+	corepack pnpm $(PNPM_WORKSPACE_ARG) $(DEPENDENCY_PNPM_REGISTRY_ARG)
 
 .PHONY: init install build test coverage typecheck lint fmt clean hooks docker-build \
 	docker-build-dev docker-up docker-up-dev docker-down docker-down-dev docker-clean debug help
@@ -72,9 +66,14 @@ hooks: ## Install repository-local quality gates
 docker-build: ## Build this standalone TypeScript service image
 	@$(PROGRESS) "TypeScript service Docker build and export" \
 	docker build --target "$(SERVICEGEN_DOCKER_TARGET)" \
-		$(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_ARGS) \
+		$(DEPENDENCY_PROXY_DOCKER_ARGS) \
 		--build-arg NPM_CONFIG_REGISTRY="$${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}" \
-		--build-arg SERVICEGEN_GITHUB_RAW_URL="$${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}" \
+		--build-arg GIT_CONFIG_COUNT="$${GIT_CONFIG_COUNT:-0}" \
+		--build-arg GIT_CONFIG_KEY_0="$${GIT_CONFIG_KEY_0:-}" \
+		--build-arg GIT_CONFIG_VALUE_0="$${GIT_CONFIG_VALUE_0:-}" \
+		--build-arg GIT_CONFIG_KEY_1="$${GIT_CONFIG_KEY_1:-}" \
+		--build-arg GIT_CONFIG_VALUE_1="$${GIT_CONFIG_VALUE_1:-}" \
+		--build-arg DEPENDENCY_GITHUB_RAW_URL="$${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}" \
 		-f "$(STANDALONE_DOCKERFILE)" -t "inventoryservice-typescript:latest" .
 
 docker-build-dev: ## Build this standalone TypeScript development image

@@ -2,24 +2,15 @@
 MODULE_DIR := $(abspath .)
 TOOLS_DIR ?= $(MODULE_DIR)/tools
 PROGRESS := ./scripts/run-with-progress.generated.sh
-SERVICEGEN_GITHUB_RAW_URL ?= https://github.com
-SERVICEGEN_PNPM_REGISTRY_ARG = $(if $(strip $(NPM_CONFIG_REGISTRY)),--config.registry=$(NPM_CONFIG_REGISTRY),)
-SERVICEGEN_DOWNLOAD_MIRROR_ENV := $(or $(wildcard $(abspath ./dependency-download-env.generated.sh)),$(wildcard $(abspath ../dependency-download-env.generated.sh)),/bin/sh)
-SHELL := $(SERVICEGEN_DOWNLOAD_MIRROR_ENV)
+DEPENDENCY_PNPM_REGISTRY_ARG = $(if $(strip $(NPM_CONFIG_REGISTRY)),--config.registry=$(NPM_CONFIG_REGISTRY),)
+DEPENDENCY_DOWNLOAD_ENV := $(or $(wildcard $(abspath ./dependency-download-env.generated.sh)),$(wildcard $(abspath ../dependency-download-env.generated.sh)),/bin/sh)
+SHELL := $(DEPENDENCY_DOWNLOAD_ENV)
 .SHELLFLAGS := -c
 export
+DEPENDENCY_DOCKER_TARGETS := docker-build
+include dependency-proxy.generated.mk
 PNPM ?= CI=true \
-	corepack pnpm $(SERVICEGEN_PNPM_REGISTRY_ARG)
-ifneq ($(strip $(SERVICEGEN_DEPENDENCY_PROXY_DIR)),)
-SERVICEGEN_DEPENDENCY_PROXY_HOST ?= localhost
-SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST ?= host.docker.internal
-SERVICEGEN_DEPENDENCY_PROXY_PORT ?= 18081
-SERVICEGEN_DEPENDENCY_PROXY_DOCKER_ARGS := --add-host host.docker.internal:host-gateway
-export NPM_CONFIG_REGISTRY := http://$(SERVICEGEN_DEPENDENCY_PROXY_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/npm-proxy/
-export SERVICEGEN_GITHUB_RAW_URL := http://$(SERVICEGEN_DEPENDENCY_PROXY_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/github-raw
-docker-build: export NPM_CONFIG_REGISTRY := http://$(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/npm-proxy/
-docker-build: export SERVICEGEN_GITHUB_RAW_URL := http://$(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/github-raw
-endif
+	corepack pnpm $(DEPENDENCY_PNPM_REGISTRY_ARG)
 
 .PHONY: install generate build test docker-build clean
 
@@ -45,8 +36,8 @@ test: build
 
 docker-build: ## Verify this independent contract/model package in Docker
 	@$(PROGRESS) "TypeScript package Docker build and export" \
-		docker build $(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_ARGS) --build-arg NPM_CONFIG_REGISTRY="$${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}" \
-		--build-arg SERVICEGEN_GITHUB_RAW_URL="$${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}" \
+		docker build $(DEPENDENCY_PROXY_DOCKER_ARGS) --build-arg NPM_CONFIG_REGISTRY="$${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}" \
+		--build-arg DEPENDENCY_GITHUB_RAW_URL="$${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}" \
 		-f Dockerfile.generated -t "model-typescript-package:latest" .
 
 clean:

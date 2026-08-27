@@ -2,13 +2,13 @@ services:
   analyticsservice:
     build:
       context: .
-      dockerfile: Dockerfile.standalone.generated
+      dockerfile: Dockerfile
       target: ${SERVICEGEN_DOCKER_TARGET:-runtime}
       extra_hosts:
         - "host.docker.internal:host-gateway"
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
-        SERVICEGEN_GITHUB_RAW_URL: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}
+        DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
     image: analyticsservice-typescript:latest
     command: ["--config", "config/config.yaml", "--values", "config/docker_overrides.yaml"]
     environment:
