@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: ${SERVICEGEN_DOCKER_TARGET:-runtime}
+      target: ${DOCKER_TARGET:-runtime}
       extra_hosts:
         - "host.docker.internal:host-gateway"
       args:
