@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.standalone.generated
-      target: ${SERVICEGEN_DOCKER_TARGET:-development}
+      target: ${SERVICEGEN_DOCKER_TARGET:-runtime}
       extra_hosts:
         - "host.docker.internal:host-gateway"
       args:
@@ -13,7 +13,7 @@ services:
     command: ["--config", "config/config.yaml", "--values", "config/docker_overrides.yaml"]
     environment:
       - DEBUG=${DEBUG:-0}
-      - NODE_DIAGNOSTIC_DIR=/workspace/.artifacts/node-diagnostics
+      - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
     ports:
       - "9092:9092"
       - "9202:9202"

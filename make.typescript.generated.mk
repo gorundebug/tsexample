@@ -18,13 +18,14 @@ LANG_FMT_TARGETS += typescript-format
 LANG_GEN_TARGETS += typescript-gen
 LANG_CLEAN_TARGETS += typescript-clean
 LANG_DOCKER_BUILD_TARGETS += typescript-docker-build
+LANG_DOCKER_DEV_BUILD_TARGETS += typescript-docker-dev-build
 LANG_HOST_PREP_TARGETS += typescript-gen typescript-tools
 DOCKER_COMPOSE_RUNTIME_FILES += docker-compose.typescript-runtime.generated.yml
 LANG_TOOL_TARGETS += typescript-tools
 
 .PHONY: typecheck coverage profile benchmark typescript-install typescript-build typescript-test \
 	typescript-typecheck typescript-coverage typescript-lint \
-	typescript-format typescript-gen typescript-clean typescript-docker-build \
+	typescript-format typescript-gen typescript-clean typescript-docker-build typescript-docker-dev-build \
 	typescript-package typescript-package-analyticsservice debug-analyticsservice typescript-package-automationservice debug-automationservice typescript-package-inventoryservice debug-inventoryservice typescript-package-orderservice debug-orderservice typescript-tools
 
 typescript-install:
@@ -75,6 +76,9 @@ typescript-format: typescript-install
 typescript-docker-build: ## Build TypeScript service Docker images
 	@$(TYPESCRIPT_PROGRESS) "TypeScript Docker build and export" \
 		$(DOCKER_COMPOSE) build $(TYPESCRIPT_SERVICES)
+
+typescript-docker-dev-build: ## Build source-mounted TypeScript development image
+	@SERVICEGEN_DOCKER_TARGET=development $(DOCKER_COMPOSE_DEV) build $(TYPESCRIPT_SERVICES)
 
 benchmark: ## Benchmark this TypeScript example and its native baseline
 	@test -f "$(CONFORMANCE_DIR)/benchmarks/examples/run.py" || { \

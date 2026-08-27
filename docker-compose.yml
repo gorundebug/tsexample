@@ -1,10 +1,10 @@
 services:
   analyticsservice:
-    image: example-typescript-development:latest
+    image: analyticsservice-typescript:latest
     build:
       context: .
       dockerfile: Dockerfile.typescript
-      target: ${SERVICEGEN_DOCKER_TARGET:-development}
+      target: runtime-analyticsservice
       extra_hosts:
         - "host.docker.internal:host-gateway"
       args:
@@ -13,47 +13,27 @@ services:
       additional_contexts:
         tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.24}"
     command:
-      - /workspace/analyticsservice/scripts/run-service.generated.sh
-      - /workspace/analyticsservice/src/main.generated.ts
       - --config
-      - /workspace/analyticsservice/config/config.yaml
+      - /app/config/config.yaml
       - --values
-      - /workspace/analyticsservice/config/docker_overrides.yaml
-    volumes:
-      - .:/workspace
-      - /workspace/.tsservicelib
-      - /workspace/node_modules
-      - /workspace/analyticsservice/node_modules
-      - /workspace/automationservice/node_modules
-      - /workspace/inventoryservice/node_modules
-      - /workspace/orderservice/node_modules
-      - /workspace/inventory_service_api/node_modules
-      - /workspace/inventory_service_api/dist
-      - /workspace/model/node_modules
-      - /workspace/model/dist
-      - /workspace/order_service_api/node_modules
-      - /workspace/order_service_api/dist
+      - /app/config/docker_overrides.yaml
     restart: unless-stopped
     environment:
       - DEBUG=${ANALYTICS_SERVICE_DEBUG:-0}
-      - NODE_DIAGNOSTIC_DIR=/workspace/.artifacts/node-diagnostics/analyticsservice
+      - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
     ports:
       - "9093:9093"
       - "9203:9203"
       - "2345:2345"
-    security_opt:
-      - seccomp:unconfined
-    cap_add:
-      - SYS_PTRACE
     networks:
       - app_net
 
   automationservice:
-    image: example-typescript-development:latest
+    image: automationservice-typescript:latest
     build:
       context: .
       dockerfile: Dockerfile.typescript
-      target: ${SERVICEGEN_DOCKER_TARGET:-development}
+      target: runtime-automationservice
       extra_hosts:
         - "host.docker.internal:host-gateway"
       args:
@@ -62,31 +42,15 @@ services:
       additional_contexts:
         tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.24}"
     command:
-      - /workspace/automationservice/scripts/run-service.generated.sh
-      - /workspace/automationservice/src/main.generated.ts
       - --config
-      - /workspace/automationservice/config/config.yaml
+      - /app/config/config.yaml
       - --values
-      - /workspace/automationservice/config/docker_overrides.yaml
-    volumes:
-      - .:/workspace
-      - /workspace/.tsservicelib
-      - /workspace/node_modules
-      - /workspace/analyticsservice/node_modules
-      - /workspace/automationservice/node_modules
-      - /workspace/inventoryservice/node_modules
-      - /workspace/orderservice/node_modules
-      - /workspace/inventory_service_api/node_modules
-      - /workspace/inventory_service_api/dist
-      - /workspace/model/node_modules
-      - /workspace/model/dist
-      - /workspace/order_service_api/node_modules
-      - /workspace/order_service_api/dist
+      - /app/config/docker_overrides.yaml
     restart: unless-stopped
     environment:
       - DEBUG=${AUTOMATION_SERVICE_DEBUG:-0}
       - TEMPORAL_SDK_METRICS_BIND_ADDRESS=0.0.0.0:9464
-      - NODE_DIAGNOSTIC_DIR=/workspace/.artifacts/node-diagnostics/automationservice
+      - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
     ports:
       - "9094:9094"
       - "9204:9204"
@@ -94,19 +58,15 @@ services:
     depends_on:
       temporal-create-namespace:
         condition: service_completed_successfully
-    security_opt:
-      - seccomp:unconfined
-    cap_add:
-      - SYS_PTRACE
     networks:
       - app_net
 
   inventoryservice:
-    image: example-typescript-development:latest
+    image: inventoryservice-typescript:latest
     build:
       context: .
       dockerfile: Dockerfile.typescript
-      target: ${SERVICEGEN_DOCKER_TARGET:-development}
+      target: runtime-inventoryservice
       extra_hosts:
         - "host.docker.internal:host-gateway"
       args:
@@ -115,47 +75,27 @@ services:
       additional_contexts:
         tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.24}"
     command:
-      - /workspace/inventoryservice/scripts/run-service.generated.sh
-      - /workspace/inventoryservice/src/main.generated.ts
       - --config
-      - /workspace/inventoryservice/config/config.yaml
+      - /app/config/config.yaml
       - --values
-      - /workspace/inventoryservice/config/docker_overrides.yaml
-    volumes:
-      - .:/workspace
-      - /workspace/.tsservicelib
-      - /workspace/node_modules
-      - /workspace/analyticsservice/node_modules
-      - /workspace/automationservice/node_modules
-      - /workspace/inventoryservice/node_modules
-      - /workspace/orderservice/node_modules
-      - /workspace/inventory_service_api/node_modules
-      - /workspace/inventory_service_api/dist
-      - /workspace/model/node_modules
-      - /workspace/model/dist
-      - /workspace/order_service_api/node_modules
-      - /workspace/order_service_api/dist
+      - /app/config/docker_overrides.yaml
     restart: unless-stopped
     environment:
       - DEBUG=${INVENTORY_SERVICE_DEBUG:-0}
-      - NODE_DIAGNOSTIC_DIR=/workspace/.artifacts/node-diagnostics/inventoryservice
+      - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
     ports:
       - "9092:9092"
       - "9202:9202"
       - "2347:2345"
-    security_opt:
-      - seccomp:unconfined
-    cap_add:
-      - SYS_PTRACE
     networks:
       - app_net
 
   orderservice:
-    image: example-typescript-development:latest
+    image: orderservice-typescript:latest
     build:
       context: .
       dockerfile: Dockerfile.typescript
-      target: ${SERVICEGEN_DOCKER_TARGET:-development}
+      target: runtime-orderservice
       extra_hosts:
         - "host.docker.internal:host-gateway"
       args:
@@ -164,30 +104,14 @@ services:
       additional_contexts:
         tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.24}"
     command:
-      - /workspace/orderservice/scripts/run-service.generated.sh
-      - /workspace/orderservice/src/main.generated.ts
       - --config
-      - /workspace/orderservice/config/config.yaml
+      - /app/config/config.yaml
       - --values
-      - /workspace/orderservice/config/docker_overrides.yaml
-    volumes:
-      - .:/workspace
-      - /workspace/.tsservicelib
-      - /workspace/node_modules
-      - /workspace/analyticsservice/node_modules
-      - /workspace/automationservice/node_modules
-      - /workspace/inventoryservice/node_modules
-      - /workspace/orderservice/node_modules
-      - /workspace/inventory_service_api/node_modules
-      - /workspace/inventory_service_api/dist
-      - /workspace/model/node_modules
-      - /workspace/model/dist
-      - /workspace/order_service_api/node_modules
-      - /workspace/order_service_api/dist
+      - /app/config/docker_overrides.yaml
     restart: unless-stopped
     environment:
       - DEBUG=${ORDER_SERVICE_DEBUG:-0}
-      - NODE_DIAGNOSTIC_DIR=/workspace/.artifacts/node-diagnostics/orderservice
+      - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
     ports:
       - "9091:9091"
       - "9201:9201"
@@ -197,10 +121,6 @@ services:
         condition: service_started
       inventoryservice:
         condition: service_started
-    security_opt:
-      - seccomp:unconfined
-    cap_add:
-      - SYS_PTRACE
     networks:
       - app_net
 

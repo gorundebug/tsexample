@@ -64,7 +64,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Build independent production images
-        run: make typescript-docker-build RUNTIME_IMAGE=1
+        run: make typescript-docker-build
 
   supply-chain:
     runs-on: ubuntu-latest

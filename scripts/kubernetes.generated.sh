@@ -158,7 +158,7 @@ infra_up() {
 
 build_images() {
   progress "building existing minimal runtime images"
-  make docker-build RUNTIME_IMAGE=1
+  make docker-build
   progress "publishing analyticsservice image"
   docker tag "analyticsservice-typescript:latest" \
     "${HOST_REGISTRY}/tsexample/analyticsservice:${IMAGE_TAG}"
