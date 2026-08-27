@@ -8,11 +8,8 @@ test -f "$source_dir/package.json"
 test -d /workspace/node_modules
 test -d /workspace/.tsservicelib
 
-work_parent="$(dirname "$work_dir")"
-mkdir -p "$work_parent"
-cd "$work_parent"
-rm -rf "$work_dir"
 mkdir -p "$work_dir"
+find "$work_dir" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +
 cp -a "$source_dir/." "$work_dir/"
 
 # Dependency manifests and installations were prepared when the development
