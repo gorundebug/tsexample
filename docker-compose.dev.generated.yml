@@ -13,8 +13,9 @@ services:
       - --values
       - /workspace/config/docker_overrides.yaml
     volumes:
-      - ./analyticsservice:/workspace
+      - ./analyticsservice:/workspace:ro
       - /workspace/node_modules
+      - /workspace/.artifacts
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics/analyticsservice
     security_opt:
@@ -32,8 +33,9 @@ services:
       - --values
       - /workspace/config/docker_overrides.yaml
     volumes:
-      - ./automationservice:/workspace
+      - ./automationservice:/workspace:ro
       - /workspace/node_modules
+      - /workspace/.artifacts
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics/automationservice
     security_opt:
@@ -51,8 +53,9 @@ services:
       - --values
       - /workspace/config/docker_overrides.yaml
     volumes:
-      - ./inventoryservice:/workspace
+      - ./inventoryservice:/workspace:ro
       - /workspace/node_modules
+      - /workspace/.artifacts
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics/inventoryservice
     security_opt:
@@ -70,8 +73,9 @@ services:
       - --values
       - /workspace/config/docker_overrides.yaml
     volumes:
-      - ./orderservice:/workspace
+      - ./orderservice:/workspace:ro
       - /workspace/node_modules
+      - /workspace/.artifacts
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics/orderservice
     security_opt:

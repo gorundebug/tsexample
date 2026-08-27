@@ -11,5 +11,6 @@ services:
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics
     volumes:
-      - .:/workspace
+      - .:/workspace:ro
       - /workspace/node_modules
+      - /workspace/.artifacts
