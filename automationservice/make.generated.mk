@@ -113,4 +113,4 @@ docker-clean: docker-down ## Stop this service and remove volumes
 
 help: ## Show this help
 	@grep -hE '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
-		sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-24s %s\\n", $$1, $$2}'
+		sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-24s %s\n", $$1, $$2}'
