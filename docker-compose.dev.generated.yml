@@ -5,19 +5,20 @@ services:
   analyticsservice:
     image: analyticsservice-typescript-development:latest
     build: !reset null
+    entrypoint: /bin/sh
+    working_dir: /workspace/service
     command:
-      - /workspace/scripts/run-service.generated.sh
-      - /workspace/src/main.generated.ts
-      - --config
-      - /workspace/config/config.yaml
-      - --values
-      - /workspace/config/docker_overrides.yaml
+      - -c
+      - >-
+        prepare-local-build /workspace/source /workspace/service
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts
+        --config ./config/config.yaml
+        --values ./config/docker_overrides.yaml
     volumes:
-      - ./analyticsservice:/workspace:ro
-      - /workspace/node_modules
-      - /workspace/.artifacts
+      - ./analyticsservice:/workspace/source:ro
+      - typescript-dev-artifacts-analyticsservice:/workspace/artifacts
     environment:
-      NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics/analyticsservice
+      NODE_DIAGNOSTIC_DIR: /workspace/service/.artifacts/node-diagnostics
     security_opt:
       - seccomp:unconfined
     cap_add:
@@ -25,19 +26,20 @@ services:
   automationservice:
     image: automationservice-typescript-development:latest
     build: !reset null
+    entrypoint: /bin/sh
+    working_dir: /workspace/service
     command:
-      - /workspace/scripts/run-service.generated.sh
-      - /workspace/src/main.generated.ts
-      - --config
-      - /workspace/config/config.yaml
-      - --values
-      - /workspace/config/docker_overrides.yaml
+      - -c
+      - >-
+        prepare-local-build /workspace/source /workspace/service
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts
+        --config ./config/config.yaml
+        --values ./config/docker_overrides.yaml
     volumes:
-      - ./automationservice:/workspace:ro
-      - /workspace/node_modules
-      - /workspace/.artifacts
+      - ./automationservice:/workspace/source:ro
+      - typescript-dev-artifacts-automationservice:/workspace/artifacts
     environment:
-      NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics/automationservice
+      NODE_DIAGNOSTIC_DIR: /workspace/service/.artifacts/node-diagnostics
     security_opt:
       - seccomp:unconfined
     cap_add:
@@ -45,19 +47,20 @@ services:
   inventoryservice:
     image: inventoryservice-typescript-development:latest
     build: !reset null
+    entrypoint: /bin/sh
+    working_dir: /workspace/service
     command:
-      - /workspace/scripts/run-service.generated.sh
-      - /workspace/src/main.generated.ts
-      - --config
-      - /workspace/config/config.yaml
-      - --values
-      - /workspace/config/docker_overrides.yaml
+      - -c
+      - >-
+        prepare-local-build /workspace/source /workspace/service
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts
+        --config ./config/config.yaml
+        --values ./config/docker_overrides.yaml
     volumes:
-      - ./inventoryservice:/workspace:ro
-      - /workspace/node_modules
-      - /workspace/.artifacts
+      - ./inventoryservice:/workspace/source:ro
+      - typescript-dev-artifacts-inventoryservice:/workspace/artifacts
     environment:
-      NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics/inventoryservice
+      NODE_DIAGNOSTIC_DIR: /workspace/service/.artifacts/node-diagnostics
     security_opt:
       - seccomp:unconfined
     cap_add:
@@ -65,19 +68,20 @@ services:
   orderservice:
     image: orderservice-typescript-development:latest
     build: !reset null
+    entrypoint: /bin/sh
+    working_dir: /workspace/service
     command:
-      - /workspace/scripts/run-service.generated.sh
-      - /workspace/src/main.generated.ts
-      - --config
-      - /workspace/config/config.yaml
-      - --values
-      - /workspace/config/docker_overrides.yaml
+      - -c
+      - >-
+        prepare-local-build /workspace/source /workspace/service
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts
+        --config ./config/config.yaml
+        --values ./config/docker_overrides.yaml
     volumes:
-      - ./orderservice:/workspace:ro
-      - /workspace/node_modules
-      - /workspace/.artifacts
+      - ./orderservice:/workspace/source:ro
+      - typescript-dev-artifacts-orderservice:/workspace/artifacts
     environment:
-      NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics/orderservice
+      NODE_DIAGNOSTIC_DIR: /workspace/service/.artifacts/node-diagnostics
     security_opt:
       - seccomp:unconfined
     cap_add:
@@ -88,3 +92,7 @@ volumes:
   go-dev-build-cache:
   rust-dev-cargo-registry:
   rust-dev-cargo-git:
+  typescript-dev-artifacts-analyticsservice:
+  typescript-dev-artifacts-automationservice:
+  typescript-dev-artifacts-inventoryservice:
+  typescript-dev-artifacts-orderservice:

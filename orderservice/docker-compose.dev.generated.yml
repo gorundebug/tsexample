@@ -1,16 +1,22 @@
 services:
   orderservice:
     image: orderservice-typescript-development:latest
+    build:
+      target: development
+    entrypoint: /bin/sh
+    working_dir: /workspace/service
     command:
-      - /workspace/scripts/run-service.generated.sh
-      - /workspace/src/main.generated.ts
-      - --config
-      - /workspace/config/config.yaml
-      - --values
-      - /workspace/config/docker_overrides.yaml
+      - -c
+      - >-
+        prepare-local-build /workspace/source /workspace/service
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts
+        --config ./config/config.yaml
+        --values ./config/docker_overrides.yaml
     environment:
-      NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics
+      NODE_DIAGNOSTIC_DIR: /workspace/service/.artifacts/node-diagnostics
     volumes:
-      - .:/workspace:ro
-      - /workspace/node_modules
-      - /workspace/.artifacts
+      - .:/workspace/source:ro
+      - typescript-artifacts:/workspace/artifacts
+
+volumes:
+  typescript-artifacts:
