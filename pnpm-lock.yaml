@@ -85,7 +85,7 @@ importers:
         specifier: workspace:*
         version: link:../model
       '@gorundebug/tsservicelib':
-        specifier: github:gorundebug/tsservicelib#v0.2.21
+        specifier: github:gorundebug/tsservicelib#v0.2.22
         version: https://codeload.github.com/gorundebug/tsservicelib/tar.gz/87318df5173fdf3676f17696bfa74af90d636485
     devDependencies:
       '@types/node':
@@ -101,7 +101,7 @@ importers:
         specifier: 2.14.0
         version: 2.14.0
       '@gorundebug/tsservicelib':
-        specifier: github:gorundebug/tsservicelib#v0.2.21
+        specifier: github:gorundebug/tsservicelib#v0.2.22
         version: https://codeload.github.com/gorundebug/tsservicelib/tar.gz/12e5746fe099f02221afd7d133965b66c0335510
       '@temporalio/activity':
         specifier: 1.21.1
@@ -163,7 +163,7 @@ importers:
         specifier: workspace:*
         version: link:../model
       '@gorundebug/tsservicelib':
-        specifier: github:gorundebug/tsservicelib#v0.2.21
+        specifier: github:gorundebug/tsservicelib#v0.2.22
         version: https://codeload.github.com/gorundebug/tsservicelib/tar.gz/87318df5173fdf3676f17696bfa74af90d636485
     devDependencies:
       '@types/node':
@@ -222,7 +222,7 @@ importers:
         specifier: workspace:*
         version: link:../order_service_api
       '@gorundebug/tsservicelib':
-        specifier: github:gorundebug/tsservicelib#v0.2.21
+        specifier: github:gorundebug/tsservicelib#v0.2.22
         version: https://codeload.github.com/gorundebug/tsservicelib/tar.gz/87318df5173fdf3676f17696bfa74af90d636485
     devDependencies:
       '@types/node':
