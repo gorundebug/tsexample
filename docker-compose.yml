@@ -11,7 +11,7 @@ services:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         SERVICEGEN_GITHUB_RAW_URL: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.22}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.23}"
     command:
       - /workspace/analyticsservice/scripts/run-service.generated.sh
       - /workspace/analyticsservice/src/main.generated.ts
@@ -60,7 +60,7 @@ services:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         SERVICEGEN_GITHUB_RAW_URL: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.22}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.23}"
     command:
       - /workspace/automationservice/scripts/run-service.generated.sh
       - /workspace/automationservice/src/main.generated.ts
@@ -113,7 +113,7 @@ services:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         SERVICEGEN_GITHUB_RAW_URL: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.22}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.23}"
     command:
       - /workspace/inventoryservice/scripts/run-service.generated.sh
       - /workspace/inventoryservice/src/main.generated.ts
@@ -162,7 +162,7 @@ services:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         SERVICEGEN_GITHUB_RAW_URL: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.22}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.23}"
     command:
       - /workspace/orderservice/scripts/run-service.generated.sh
       - /workspace/orderservice/src/main.generated.ts
