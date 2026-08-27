@@ -9,6 +9,7 @@ services:
         - "host.docker.internal:host-gateway"
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
+        CONFLUENT_KAFKA_JAVASCRIPT_BINARY_HOST_MIRROR: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}/confluentinc/confluent-kafka-javascript/releases/download/
       additional_contexts:
         tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.18}"
     command:
@@ -57,6 +58,7 @@ services:
         - "host.docker.internal:host-gateway"
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
+        CONFLUENT_KAFKA_JAVASCRIPT_BINARY_HOST_MIRROR: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}/confluentinc/confluent-kafka-javascript/releases/download/
       additional_contexts:
         tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.18}"
     command:
@@ -109,6 +111,7 @@ services:
         - "host.docker.internal:host-gateway"
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
+        CONFLUENT_KAFKA_JAVASCRIPT_BINARY_HOST_MIRROR: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}/confluentinc/confluent-kafka-javascript/releases/download/
       additional_contexts:
         tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.18}"
     command:
@@ -157,6 +160,7 @@ services:
         - "host.docker.internal:host-gateway"
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
+        CONFLUENT_KAFKA_JAVASCRIPT_BINARY_HOST_MIRROR: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}/confluentinc/confluent-kafka-javascript/releases/download/
       additional_contexts:
         tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.18}"
     command:

@@ -2,9 +2,14 @@
 FROM node:24.19.0-bookworm-slim AS development
 ARG TARGETARCH
 ARG NPM_CONFIG_REGISTRY=https://registry.npmjs.org/
+ARG CONFLUENT_KAFKA_JAVASCRIPT_BINARY_HOST_MIRROR=https://github.com/confluentinc/confluent-kafka-javascript/releases/download/
+# node-pre-gyp replaces only the first '-' in binary.module_name, hence the
+# deliberately unusual environment key below.
 ENV CI=true \
-    NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY}
-RUN corepack enable
+    NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY} \
+    npm_config_confluent_kafka-javascript_binary_host_mirror=${CONFLUENT_KAFKA_JAVASCRIPT_BINARY_HOST_MIRROR}
+RUN corepack enable \
+    && corepack pnpm config set registry "${NPM_CONFIG_REGISTRY}"
 WORKDIR /workspace
 COPY package*.json ./
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \

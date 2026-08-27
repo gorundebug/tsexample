@@ -67,9 +67,10 @@ hooks: ## Install repository-local quality gates
 
 docker-build: ## Build this standalone TypeScript service image
 	@$(PROGRESS) "TypeScript service Docker build and export" \
-		docker build --target "$(SERVICEGEN_DOCKER_TARGET)" \
+	docker build --target "$(SERVICEGEN_DOCKER_TARGET)" \
 		$(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_ARGS) \
 		--build-arg NPM_CONFIG_REGISTRY="$${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}" \
+		--build-arg CONFLUENT_KAFKA_JAVASCRIPT_BINARY_HOST_MIRROR="$${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}/confluentinc/confluent-kafka-javascript/releases/download/" \
 		-f "$(STANDALONE_DOCKERFILE)" -t "orderservice-typescript:latest" .
 
 docker-up: docker-build ## Start this service through Docker Compose

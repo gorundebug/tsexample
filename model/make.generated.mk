@@ -39,6 +39,7 @@ test: build
 docker-build: ## Verify this independent contract/model package in Docker
 	@$(PROGRESS) "TypeScript package Docker build and export" \
 		docker build $(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_ARGS) --build-arg NPM_CONFIG_REGISTRY="$${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}" \
+		--build-arg CONFLUENT_KAFKA_JAVASCRIPT_BINARY_HOST_MIRROR="$${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}/confluentinc/confluent-kafka-javascript/releases/download/" \
 		-f Dockerfile.generated -t "model-typescript-package:latest" .
 
 clean:

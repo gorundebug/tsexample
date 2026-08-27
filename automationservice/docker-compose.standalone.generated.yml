@@ -8,6 +8,7 @@ services:
         - "host.docker.internal:host-gateway"
       args:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
+        CONFLUENT_KAFKA_JAVASCRIPT_BINARY_HOST_MIRROR: ${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}/confluentinc/confluent-kafka-javascript/releases/download/
     image: automationservice-typescript:latest
     command: ["--config", "config/config.yaml", "--values", "config/docker_overrides.yaml"]
     environment:
