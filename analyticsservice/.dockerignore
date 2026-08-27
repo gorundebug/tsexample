@@ -1,0 +1,15 @@
+.git
+.github
+.gitlab-ci.yml
+.env
+.env.local
+.env.*.local
+.idea/
+.vscode/
+.DS_Store
+.artifacts/
+node_modules/
+dist/
+dist-test/
+coverage/
+*.tsbuildinfo
