@@ -10,6 +10,7 @@ ARG GIT_CONFIG_VALUE_1=
 ARG DEPENDENCY_GITHUB_RAW_URL=https://github.com
 ENV CI=true \
     NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY} \
+    COREPACK_NPM_REGISTRY=${NPM_CONFIG_REGISTRY} \
     GIT_CONFIG_COUNT=${GIT_CONFIG_COUNT} \
     GIT_CONFIG_KEY_0=${GIT_CONFIG_KEY_0} \
     GIT_CONFIG_VALUE_0=${GIT_CONFIG_VALUE_0} \
@@ -22,6 +23,7 @@ COPY dependency-download-env.generated.sh /usr/local/bin/servicegen-download-env
 COPY prepare-local-build.generated.sh /usr/local/bin/prepare-local-build
 SHELL ["/usr/local/bin/servicegen-download-env", "/bin/sh", "-c"]
 RUN corepack enable \
+    && corepack prepare pnpm@11.18.0 --activate \
     && corepack pnpm config set registry "${NPM_CONFIG_REGISTRY}"
 WORKDIR /workspace
 COPY package*.json ./
