@@ -61,7 +61,9 @@ NODE
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
     corepack pnpm config set store-dir /pnpm/store \
     && corepack pnpm install --no-frozen-lockfile \
-    && corepack pnpm --filter @gorundebug/tsservicelib run buildENTRYPOINT ["scripts/run-service.generated.sh", "src/main.generated.ts"]
+    && corepack pnpm --filter @gorundebug/tsservicelib run build
+
+ENTRYPOINT ["scripts/run-service.generated.sh", "src/main.generated.ts"]
 
 FROM development AS builder
 RUN corepack pnpm build && corepack pnpm prune --prod
