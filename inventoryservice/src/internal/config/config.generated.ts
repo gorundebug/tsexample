@@ -160,13 +160,14 @@ const DEFAULT_CONFIG = {
   },
   "links": {
     "getInventoryItemDataToMergeInventoryResult": {
-      "callSemantics": 2,
+      "callSemantics": 5,
       "from": 1,
       "to": 2
     },
     "processInventoryItemToGetInventoryItemData": {
-      "callSemantics": 2,
+      "callSemantics": 3,
       "from": 3,
+      "poolName": "Inventory Priority Workers",
       "to": 1
     }
   },

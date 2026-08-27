@@ -4,8 +4,15 @@
 RUNTIME_IMAGE ?= 0
 STANDALONE_DOCKERFILE := $(if $(wildcard Dockerfile),Dockerfile,Dockerfile.standalone.generated)
 STANDALONE_COMPOSE := $(if $(wildcard docker-compose.yml),docker-compose.yml,docker-compose.standalone.generated.yml)
-PNPM ?= env CI=true corepack pnpm
 PROGRESS := ./scripts/run-with-progress.generated.sh
+SERVICEGEN_GITHUB_RAW_URL ?= https://github.com
+SERVICEGEN_PNPM_REGISTRY_ARG = $(if $(strip $(NPM_CONFIG_REGISTRY)),--config.registry=$(NPM_CONFIG_REGISTRY),)
+SERVICEGEN_DOWNLOAD_MIRROR_ENV := $(or $(wildcard $(abspath ./dependency-download-env.generated.sh)),$(wildcard $(abspath ../dependency-download-env.generated.sh)),/bin/sh)
+SHELL := $(SERVICEGEN_DOWNLOAD_MIRROR_ENV)
+.SHELLFLAGS := -c
+export
+PNPM ?= CI=true \
+	corepack pnpm $(SERVICEGEN_PNPM_REGISTRY_ARG)
 
 ifneq ($(strip $(SERVICEGEN_DEPENDENCY_PROXY_DIR)),)
 SERVICEGEN_DEPENDENCY_PROXY_HOST ?= localhost
@@ -13,7 +20,9 @@ SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST ?= host.docker.internal
 SERVICEGEN_DEPENDENCY_PROXY_PORT ?= 18081
 SERVICEGEN_DEPENDENCY_PROXY_DOCKER_ARGS := --add-host host.docker.internal:host-gateway
 export NPM_CONFIG_REGISTRY := http://$(SERVICEGEN_DEPENDENCY_PROXY_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/npm-proxy/
+export SERVICEGEN_GITHUB_RAW_URL := http://$(SERVICEGEN_DEPENDENCY_PROXY_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/github-raw
 docker-build docker-up debug: export NPM_CONFIG_REGISTRY := http://$(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/npm-proxy/
+docker-build docker-up debug: export SERVICEGEN_GITHUB_RAW_URL := http://$(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_HOST):$(SERVICEGEN_DEPENDENCY_PROXY_PORT)/repository/github-raw
 endif
 
 ifeq ($(RUNTIME_IMAGE),1)
@@ -70,7 +79,7 @@ docker-build: ## Build this standalone TypeScript service image
 	docker build --target "$(SERVICEGEN_DOCKER_TARGET)" \
 		$(SERVICEGEN_DEPENDENCY_PROXY_DOCKER_ARGS) \
 		--build-arg NPM_CONFIG_REGISTRY="$${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}" \
-		--build-arg CONFLUENT_KAFKA_JAVASCRIPT_BINARY_HOST_MIRROR="$${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}/confluentinc/confluent-kafka-javascript/releases/download/" \
+		--build-arg SERVICEGEN_GITHUB_RAW_URL="$${SERVICEGEN_GITHUB_RAW_URL:-https://github.com}" \
 		-f "$(STANDALONE_DOCKERFILE)" -t "orderservice-typescript:latest" .
 
 docker-up: docker-build ## Start this service through Docker Compose
