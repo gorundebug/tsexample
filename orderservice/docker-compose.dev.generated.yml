@@ -1,0 +1,15 @@
+services:
+  orderservice:
+    image: orderservice-typescript-development:latest
+    command:
+      - /workspace/scripts/run-service.generated.sh
+      - /workspace/src/main.generated.ts
+      - --config
+      - /workspace/config/config.yaml
+      - --values
+      - /workspace/config/docker_overrides.yaml
+    environment:
+      NODE_DIAGNOSTIC_DIR: /workspace/.artifacts/node-diagnostics
+    volumes:
+      - .:/workspace
+      - /workspace/node_modules
