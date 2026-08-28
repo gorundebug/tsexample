@@ -51,7 +51,7 @@ clean:
 $(BUF):
 	@mkdir -p "$(TOOLS_DIR)"
 	@$(PROGRESS) "Download buf $(BUF_VERSION)" \
-		curl --fail --location --silent --show-error \
+		curl --fail --location --silent --show-error --connect-timeout 15 --speed-limit 1024 --speed-time 60 --retry 8 --retry-delay 2 --retry-max-time 600 --retry-all-errors \
 		"$(DEPENDENCY_GITHUB_RAW_URL)/bufbuild/buf/releases/download/$(BUF_VERSION)/buf-$(OS)-$(ARCH)" \
 		-o "$(BUF)"
 	@chmod +x "$(BUF)"

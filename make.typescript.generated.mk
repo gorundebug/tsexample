@@ -48,18 +48,18 @@ typescript-modules-build: typescript-gen
 	@for module in $(TYPESCRIPT_MODULES); do $(MAKE) -C "$$module" build SKIP_INSTALL=1 || exit $$?; done
 
 typescript-build: typescript-modules-build
-	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" build USE_LOCAL_MODULES=1 || exit $$?; done
+	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" build USE_LOCAL_MODULES="$(USE_LOCAL_MODULES)" || exit $$?; done
 
 typescript-test: typescript-build
-	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" test USE_LOCAL_MODULES=1 || exit $$?; done
+	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" test USE_LOCAL_MODULES="$(USE_LOCAL_MODULES)" || exit $$?; done
 
 typescript-typecheck: typescript-modules-build
-	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" typecheck USE_LOCAL_MODULES=1 || exit $$?; done
+	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" typecheck USE_LOCAL_MODULES="$(USE_LOCAL_MODULES)" || exit $$?; done
 
 typecheck: typescript-typecheck ## Type-check every TypeScript workspace package
 
 typescript-coverage: typescript-build
-	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" coverage USE_LOCAL_MODULES=1 || exit $$?; done
+	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" coverage USE_LOCAL_MODULES="$(USE_LOCAL_MODULES)" || exit $$?; done
 
 coverage: typescript-coverage ## Run TypeScript service tests with Node coverage
 
@@ -78,10 +78,10 @@ typescript-format: typescript-install
 		'eslint.config.js'
 
 typescript-docker-build: ## Build TypeScript service Docker images
-	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" docker-build USE_LOCAL_MODULES=1 || exit $$?; done
+	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" docker-build USE_LOCAL_MODULES="$(USE_LOCAL_MODULES)" || exit $$?; done
 
 typescript-docker-dev-build: ## Build source-mounted TypeScript development image
-	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" docker-build-dev USE_LOCAL_MODULES=1 || exit $$?; done
+	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" docker-build-dev USE_LOCAL_MODULES="$(USE_LOCAL_MODULES)" || exit $$?; done
 
 benchmark: ## Benchmark this TypeScript example and its native baseline
 	@test -f "$(CONFORMANCE_DIR)/benchmarks/examples/run.py" || { \
@@ -144,7 +144,7 @@ typescript-clean:
 $(TYPESCRIPT_BUF):
 	@mkdir -p "$(TOOLS_DIR)"
 	@$(TYPESCRIPT_PROGRESS) "Download buf $(TYPESCRIPT_BUF_VERSION)" \
-		curl --fail --location --silent --show-error \
+		curl --fail --location --silent --show-error --connect-timeout 15 --speed-limit 1024 --speed-time 60 --retry 8 --retry-delay 2 --retry-max-time 600 --retry-all-errors \
 		"$(DEPENDENCY_GITHUB_RAW_URL)/bufbuild/buf/releases/download/$(TYPESCRIPT_BUF_VERSION)/buf-$(OS)-$(ARCH)" \
 		-o "$(TYPESCRIPT_BUF)"
 	@chmod +x "$(TYPESCRIPT_BUF)"
