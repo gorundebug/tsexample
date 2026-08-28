@@ -18,6 +18,7 @@ SHELL := $(DEPENDENCY_DOWNLOAD_ENV)
 export
 DEPENDENCY_DOCKER_TARGETS := docker-build docker-up docker-build-dev docker-up-dev debug
 include dependency-proxy.generated.mk
+USE_LOCAL_MODULES ?= 0
 PNPM_WORKSPACE_ARG := --ignore-workspace
 ifeq ($(strip $(USE_LOCAL_MODULES)),1)
 PNPM_WORKSPACE_ARG :=
