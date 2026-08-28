@@ -47,10 +47,10 @@ init install:
 		$(PROGRESS) "TypeScript dependency install" $(PNPM) install; \
 	fi
 
-build: install
+build: install ## [host] Compile this service
 	@$(PROGRESS) "TypeScript service build" $(PNPM) build
 
-test: install
+test: install ## [host] Run this service's tests
 	@$(PROGRESS) "TypeScript service tests" $(PNPM) test
 
 coverage: install
@@ -80,7 +80,7 @@ hooks: ## Install repository-local quality gates
 	@chmod +x .git/hooks/pre-push
 	@echo "Git hooks installed."
 
-docker-build: ## Build this standalone TypeScript service image
+docker-build: ## [Docker] Build the autonomous copied-source runtime image
 	@$(PROGRESS) "TypeScript service Docker build and export" \
 	docker build --target "$(DOCKER_TARGET)" \
 		$(DEPENDENCY_PROXY_DOCKER_ARGS) \

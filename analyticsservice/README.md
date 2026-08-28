@@ -3,22 +3,22 @@
 Generated TypeScript service package.
 
 ```sh
-make init            # install pinned dependencies
-make build           # compile the service
-make test            # run Node tests
-make coverage        # run tests with Node coverage
-make typecheck       # strict TypeScript project-reference check
-make lint            # typecheck and ESLint
-make fmt             # format sources with Prettier
-make docker-build    # build the autonomous runtime image from copied sources
-make docker-up       # build and start only this service
-make docker-up-dev   # start with this directory mounted read-only
-make debug DEBUG_PORT=2345 # start Node inspector using this host port
-make docker-down
-make docker-down-dev
-make docker-clean    # stop the service and remove its volumes
-make clean           # remove TypeScript build/cache artifacts
-make help
+make init            # [host] install pinned dependencies
+make build           # [host] compile the service
+make test            # [host] run Node tests
+make coverage        # [host] run tests with Node coverage
+make typecheck       # [host] strict TypeScript project-reference check
+make lint            # [host] typecheck and ESLint
+make fmt             # [host] format sources with Prettier
+make docker-build    # [Docker] build the autonomous runtime image from copied sources
+make docker-up       # [Docker] build and start only this service
+make docker-up-dev   # [Docker] start with this directory mounted read-only
+make debug DEBUG_PORT=2345 # [Docker] start Node inspector using this host port
+make docker-down     # [Docker] stop the standalone runtime stack
+make docker-down-dev # [Docker] stop the standalone development stack
+make docker-clean    # [Docker] stop the service and remove its volumes
+make clean           # [host] remove TypeScript build/cache artifacts
+make help            # [host] list generated targets
 ```
 
 Direct commands default to pinned registry packages (`USE_LOCAL_MODULES=0`) and

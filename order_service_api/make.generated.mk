@@ -28,13 +28,13 @@ generate:
 			env "$$script"; \
 	done
 
-build: generate
+build: generate ## [host] Compile this standalone package
 	@$(PROGRESS) "TypeScript package build" $(PNPM) build
 
-test: build
+test: build ## [host] Run this standalone package's tests
 	@$(PROGRESS) "TypeScript package tests" $(PNPM) test
 
-docker-build: ## Verify this independent contract/model package in Docker
+docker-build: ## [Docker] Verify this independent contract/model package
 	@$(PROGRESS) "TypeScript package Docker build and export" \
 		docker build $(DEPENDENCY_PROXY_DOCKER_ARGS) \
 		--build-arg DEPENDENCY_DOCKER_REGISTRY="$${DEPENDENCY_DOCKER_REGISTRY:-docker.io}" \

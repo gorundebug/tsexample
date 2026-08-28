@@ -47,10 +47,10 @@ typescript-gen: typescript-install $(TYPESCRIPT_BUF)
 typescript-modules-build: typescript-gen
 	@for module in $(TYPESCRIPT_MODULES); do $(MAKE) -C "$$module" build SKIP_INSTALL=1 || exit $$?; done
 
-typescript-build: typescript-modules-build
+typescript-build: typescript-modules-build ## [host] Build every TypeScript package
 	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" build USE_LOCAL_MODULES="$(USE_LOCAL_MODULES)" || exit $$?; done
 
-typescript-test: typescript-build
+typescript-test: typescript-build ## [host] Test every TypeScript service
 	@for service in $(TYPESCRIPT_SERVICES); do $(MAKE) -C "$$service" test USE_LOCAL_MODULES="$(USE_LOCAL_MODULES)" || exit $$?; done
 
 typescript-typecheck: typescript-modules-build
