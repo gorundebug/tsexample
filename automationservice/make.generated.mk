@@ -19,6 +19,8 @@ export
 DEPENDENCY_DOCKER_TARGETS := docker-build docker-up docker-build-dev docker-up-dev debug
 include dependency-proxy.generated.mk
 USE_LOCAL_MODULES ?= 0
+DEBUG_PORT ?= 2345
+export DEBUG_PORT
 PNPM_WORKSPACE_ARG := --ignore-workspace
 ifeq ($(strip $(USE_LOCAL_MODULES)),1)
 PNPM_WORKSPACE_ARG :=
@@ -105,7 +107,7 @@ docker-up: docker-build ## Start this service through Docker Compose
 docker-up-dev: docker-build-dev ## Start this service with its source directory mounted
 	docker compose -f "$(STANDALONE_COMPOSE)" -f docker-compose.dev.generated.yml up -d --no-build
 
-debug: docker-build-dev ## Start this service with source mounts and the Node inspector on localhost:2345
+debug: docker-build-dev ## Start Node inspector on host port $(DEBUG_PORT), container port 2345
 	DEBUG=1 DOCKER_TARGET=development \
 		docker compose -f "$(STANDALONE_COMPOSE)" -f docker-compose.dev.generated.yml \
 		up -d --no-build --force-recreate
