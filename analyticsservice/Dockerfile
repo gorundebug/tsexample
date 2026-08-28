@@ -27,7 +27,23 @@ RUN corepack enable \
     && corepack pnpm config set registry "${NPM_CONFIG_REGISTRY}"
 WORKDIR /workspace
 COPY package*.json ./
-COPY --from=tsservicelib-source . /workspace/.tsservicelib
+COPY --from=tsservicelib-source . /tmp/tsservicelib-source
+RUN set -eu; \
+    source_dir=/tmp/tsservicelib-source; \
+    archive=$(find "$source_dir" -mindepth 1 -maxdepth 1 -type f \( -name context -o -name '*.tar' -o -name '*.tar.gz' -o -name '*.tgz' -o -name '*.tar.xz' \) -print -quit); \
+    if [ -n "$archive" ]; then \
+      mkdir -p /tmp/tsservicelib-archive; \
+      tar -xf "$archive" -C /tmp/tsservicelib-archive; \
+      source_dir=/tmp/tsservicelib-archive; \
+    fi; \
+    manifest="$source_dir/package.json"; \
+    if [ ! -f "$manifest" ]; then manifest=$(find "$source_dir" -mindepth 2 -maxdepth 2 -type f -name package.json -print -quit); fi; \
+    if [ -z "$manifest" ] || [ ! -f "$manifest" ]; then echo "tsservicelib source context has no package.json" >&2; exit 1; fi; \
+    source_dir=${manifest%/package.json}; \
+    if [ -z "$source_dir" ] || [ "$source_dir" = "/" ]; then echo "unsafe tsservicelib source directory" >&2; exit 1; fi; \
+    mkdir -p /workspace/.tsservicelib; \
+    cp -a "$source_dir/." /workspace/.tsservicelib/; \
+    rm -rf /tmp/tsservicelib-source /tmp/tsservicelib-archive
 COPY --from=module-model_ts-source / /tmp/module-model_ts-source
 RUN set -eu; \
     source_dir=/tmp/module-model_ts-source; \
