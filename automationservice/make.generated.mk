@@ -21,7 +21,9 @@ ifeq ($(strip $(USE_LOCAL_MODULES)),1)
 PNPM_WORKSPACE_ARG :=
 endif
 ifneq ($(strip $(DEPENDENCY_PROXY_DIR)),)
+ifeq ($(origin TSSERVICELIB_SOURCE_CONTEXT),undefined)
 TSSERVICELIB_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsservicelib.git\#v0.2.25
+endif
 ifneq ($(strip $(USE_LOCAL_MODULES)),1)
 endif
 endif
