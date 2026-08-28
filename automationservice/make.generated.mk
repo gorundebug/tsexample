@@ -6,7 +6,7 @@ DOCKER_DEV_TARGET := development
 STANDALONE_DOCKERFILE := Dockerfile
 STANDALONE_COMPOSE := $(if $(wildcard docker-compose.yml),docker-compose.yml,docker-compose.standalone.generated.yml)
 MODULE_CONTEXT_ARGS =
-TSSERVICELIB_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsservicelib.git\#v0.2.24
+TSSERVICELIB_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsservicelib.git\#v0.2.25
 MODULE_CONTEXT_ARGS += --build-context tsservicelib-source="$(TSSERVICELIB_SOURCE_CONTEXT)"
 PROGRESS := ./scripts/run-with-progress.generated.sh
 DEPENDENCY_PNPM_REGISTRY_ARG = $(if $(strip $(NPM_CONFIG_REGISTRY)),--config.registry=$(NPM_CONFIG_REGISTRY),)
@@ -21,7 +21,7 @@ ifeq ($(strip $(USE_LOCAL_MODULES)),1)
 PNPM_WORKSPACE_ARG :=
 endif
 ifneq ($(strip $(DEPENDENCY_PROXY_DIR)),)
-TSSERVICELIB_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsservicelib.git\#v0.2.24
+TSSERVICELIB_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsservicelib.git\#v0.2.25
 ifneq ($(strip $(USE_LOCAL_MODULES)),1)
 endif
 endif

@@ -28,7 +28,23 @@ RUN corepack enable \
 WORKDIR /workspace
 COPY package*.json ./
 COPY --from=tsservicelib-source . /workspace/.tsservicelib
-COPY --from=module-model-source . /workspace/modules/model
+COPY --from=module-model-source / /tmp/module-model-source
+RUN set -eu; \
+    source_dir=/tmp/module-model-source; \
+    archive=$(find "$source_dir" -mindepth 1 -maxdepth 1 -type f \( -name context -o -name '*.tar' -o -name '*.tar.gz' -o -name '*.tgz' -o -name '*.tar.xz' \) -print -quit); \
+    if [ -n "$archive" ]; then \
+      mkdir -p /tmp/module-model-archive; \
+      tar -xf "$archive" -C /tmp/module-model-archive; \
+      source_dir=/tmp/module-model-archive; \
+    fi; \
+    manifest=$(find "$source_dir" -type f -path '*/model/package.json' -print -quit); \
+    if [ -z "$manifest" ]; then manifest="$source_dir/package.json"; fi; \
+    if [ ! -f "$manifest" ]; then manifest=$(find "$source_dir" -mindepth 2 -maxdepth 2 -type f -name package.json -print -quit); fi; \
+    if [ -z "$manifest" ] || [ ! -f "$manifest" ]; then echo "module model source context has no package.json" >&2; exit 1; fi; \
+    source_dir=${manifest%/package.json}; \
+    mkdir -p /workspace/modules/model; \
+    cp -a "$source_dir/." /workspace/modules/model/; \
+    rm -rf /tmp/module-model-source /tmp/module-model-archive
 COPY . .
 RUN node - <<'NODE'
 const fs = require('node:fs');
@@ -65,6 +81,8 @@ RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},targe
     && corepack pnpm install --no-frozen-lockfile \
     && corepack pnpm --filter @gorundebug/tsservicelib run build \
     && corepack pnpm --recursive --filter './modules/**' run build
+
+
 ENTRYPOINT ["scripts/run-service.generated.sh", "src/main.generated.ts"]
 
 FROM development AS builder

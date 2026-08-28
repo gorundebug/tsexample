@@ -6,13 +6,13 @@ DOCKER_DEV_TARGET := development
 STANDALONE_DOCKERFILE := Dockerfile
 STANDALONE_COMPOSE := $(if $(wildcard docker-compose.yml),docker-compose.yml,docker-compose.standalone.generated.yml)
 MODULE_CONTEXT_ARGS =
-TSSERVICELIB_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsservicelib.git\#v0.2.24
+TSSERVICELIB_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsservicelib.git\#v0.2.25
 MODULE_CONTEXT_ARGS += --build-context tsservicelib-source="$(TSSERVICELIB_SOURCE_CONTEXT)"
-INVENTORY_SERVICE_API_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample-inventory-service-api.git\#v0.2.14
+INVENTORY_SERVICE_API_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample.git\#v0.2.14
 MODULE_CONTEXT_ARGS += --build-context module-inventory_service_api-source="$(INVENTORY_SERVICE_API_SOURCE_CONTEXT)"
-MODEL_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample-model.git\#v0.2.14
+MODEL_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample.git\#v0.2.14
 MODULE_CONTEXT_ARGS += --build-context module-model-source="$(MODEL_SOURCE_CONTEXT)"
-ORDER_SERVICE_API_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample-order-service-api.git\#v0.2.14
+ORDER_SERVICE_API_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample.git\#v0.2.14
 MODULE_CONTEXT_ARGS += --build-context module-order_service_api-source="$(ORDER_SERVICE_API_SOURCE_CONTEXT)"
 PROGRESS := ./scripts/run-with-progress.generated.sh
 DEPENDENCY_PNPM_REGISTRY_ARG = $(if $(strip $(NPM_CONFIG_REGISTRY)),--config.registry=$(NPM_CONFIG_REGISTRY),)
@@ -30,11 +30,11 @@ MODEL_SOURCE_CONTEXT := ../model
 ORDER_SERVICE_API_SOURCE_CONTEXT := ../order_service_api
 endif
 ifneq ($(strip $(DEPENDENCY_PROXY_DIR)),)
-TSSERVICELIB_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsservicelib.git\#v0.2.24
+TSSERVICELIB_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsservicelib.git\#v0.2.25
 ifneq ($(strip $(USE_LOCAL_MODULES)),1)
-INVENTORY_SERVICE_API_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample-inventory-service-api.git\#v0.2.14
-MODEL_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample-model.git\#v0.2.14
-ORDER_SERVICE_API_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample-order-service-api.git\#v0.2.14
+INVENTORY_SERVICE_API_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample.git\#v0.2.14
+MODEL_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample.git\#v0.2.14
+ORDER_SERVICE_API_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample.git\#v0.2.14
 endif
 endif
 PNPM ?= CI=true \
