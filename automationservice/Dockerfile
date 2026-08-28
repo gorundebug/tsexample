@@ -1,5 +1,5 @@
-# syntax=docker/dockerfile:1.7
-FROM node:24.19.0-bookworm-slim AS development
+ARG DEPENDENCY_DOCKER_REGISTRY=docker.io
+FROM ${DEPENDENCY_DOCKER_REGISTRY}/library/node:24.19.0-bookworm-slim AS development
 ARG TARGETARCH
 ARG NPM_CONFIG_REGISTRY=https://registry.npmjs.org/
 ARG GIT_CONFIG_COUNT=0
@@ -68,7 +68,7 @@ ENTRYPOINT ["scripts/run-service.generated.sh", "src/main.generated.ts"]
 FROM development AS builder
 RUN corepack pnpm build && corepack pnpm prune --prod
 
-FROM node:24.19.0-bookworm-slim AS runtime
+FROM ${DEPENDENCY_DOCKER_REGISTRY}/library/node:24.19.0-bookworm-slim AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
 RUN mkdir -p /tmp/node-diagnostics && chown node:node /tmp/node-diagnostics

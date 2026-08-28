@@ -80,6 +80,7 @@ docker-build: ## Build this standalone TypeScript service image
 	docker build --target "$(DOCKER_TARGET)" \
 		$(DEPENDENCY_PROXY_DOCKER_ARGS) \
 		$(MODULE_CONTEXT_ARGS) \
+		--build-arg DEPENDENCY_DOCKER_REGISTRY="$${DEPENDENCY_DOCKER_REGISTRY:-docker.io}" \
 		--build-arg NPM_CONFIG_REGISTRY="$${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}" \
 		--build-arg GIT_CONFIG_COUNT="$${GIT_CONFIG_COUNT:-0}" \
 		--build-arg GIT_CONFIG_KEY_0="$${GIT_CONFIG_KEY_0:-}" \

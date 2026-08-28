@@ -36,7 +36,9 @@ test: build
 
 docker-build: ## Verify this independent contract/model package in Docker
 	@$(PROGRESS) "TypeScript package Docker build and export" \
-		docker build $(DEPENDENCY_PROXY_DOCKER_ARGS) --build-arg NPM_CONFIG_REGISTRY="$${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}" \
+		docker build $(DEPENDENCY_PROXY_DOCKER_ARGS) \
+		--build-arg DEPENDENCY_DOCKER_REGISTRY="$${DEPENDENCY_DOCKER_REGISTRY:-docker.io}" \
+		--build-arg NPM_CONFIG_REGISTRY="$${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}" \
 		--build-arg DEPENDENCY_GITHUB_RAW_URL="$${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}" \
 		-f Dockerfile.generated -t "model-typescript-package:latest" .
 
