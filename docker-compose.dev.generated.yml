@@ -12,9 +12,7 @@ services:
       - >-
         prepare-local-build /workspace/source /workspace/service
         && cd /workspace/service
-        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts
-        --config ./config/config.yaml
-        --values ./config/docker_overrides.yaml
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts --config ./config/config.yaml --values ./config/docker_overrides.yaml
     volumes:
       - ./analyticsservice:/workspace/source:ro
       - typescript-dev-artifacts-analyticsservice:/workspace/artifacts
@@ -34,9 +32,7 @@ services:
       - >-
         prepare-local-build /workspace/source /workspace/service
         && cd /workspace/service
-        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts
-        --config ./config/config.yaml
-        --values ./config/docker_overrides.yaml
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts --config ./config/config.yaml --values ./config/docker_overrides.yaml
     volumes:
       - ./automationservice:/workspace/source:ro
       - typescript-dev-artifacts-automationservice:/workspace/artifacts
@@ -56,9 +52,7 @@ services:
       - >-
         prepare-local-build /workspace/source /workspace/service
         && cd /workspace/service
-        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts
-        --config ./config/config.yaml
-        --values ./config/docker_overrides.yaml
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts --config ./config/config.yaml --values ./config/docker_overrides.yaml
     volumes:
       - ./inventoryservice:/workspace/source:ro
       - typescript-dev-artifacts-inventoryservice:/workspace/artifacts
@@ -78,9 +72,7 @@ services:
       - >-
         prepare-local-build /workspace/source /workspace/service
         && cd /workspace/service
-        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts
-        --config ./config/config.yaml
-        --values ./config/docker_overrides.yaml
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts --config ./config/config.yaml --values ./config/docker_overrides.yaml
     volumes:
       - ./orderservice:/workspace/source:ro
       - typescript-dev-artifacts-orderservice:/workspace/artifacts
