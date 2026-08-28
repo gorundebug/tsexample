@@ -41,8 +41,7 @@ for (const manifest of manifests) {
   for (const field of ['dependencies', 'devDependencies', 'optionalDependencies']) {
     for (const module of modules) {
       if (pkg[field]?.[module.name] !== undefined) {
-        const target = path.relative(path.dirname(manifest), module.source);
-        pkg[field][module.name] = `file:${target || '.'}`;
+        pkg[field][module.name] = 'workspace:*';
       }
     }
   }
