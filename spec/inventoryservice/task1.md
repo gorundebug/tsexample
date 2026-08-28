@@ -29,15 +29,15 @@ If the inventory call fails, the caller returns a non-reserved PROCESSING_ERROR 
 
 
 ## Stream types
-- Input: `OrderItem` — `model/src/types/order-item.ts`
-- Output: `OrderItemResult` — `model/src/types/order-item-result.ts`
+- Input: `OrderItem` — `model_ts/src/types/order-item.ts`
+- Output: `OrderItemResult` — `model_ts/src/types/order-item-result.ts`
 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `inventoryservice/src/internal/functions/process-order-item-source.ts` and preserve its generated contract
-- [ ] Inspect input type `OrderItem` in `model/src/types/order-item.ts`
-- [ ] Inspect output type `OrderItemResult` in `model/src/types/order-item-result.ts`
+- [ ] Inspect input type `OrderItem` in `model_ts/src/types/order-item.ts`
+- [ ] Inspect output type `OrderItemResult` in `model_ts/src/types/order-item-result.ts`
 - [ ] Implement meaningful assertions in `inventoryservice/test/functions/process-order-item-source.test.ts`
 - [ ] Verify the endpoint/result lifecycle, including completion and error paths
 - [ ] Re-read this checklist

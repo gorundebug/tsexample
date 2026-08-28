@@ -1022,7 +1022,9 @@ const DEFAULT_CONFIG = {
       "name": "AutomationJob",
       "type": "string",
       "typeDefinition": "string",
-      "typeImport": "./internal/types/automation-job.js"
+      "typeImport": "@gorundebug/model/types/automation-job.js",
+      "module": "model",
+      "publicType": true
     }
   }
 } as const satisfies DefaultConfig;

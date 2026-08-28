@@ -1,35 +1,29 @@
-# Task 2/2: `OrderProcessedEndpointSource`
+# Task 2/3: `AnalyticsScheduleSource`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `kafka-source` |
-| File | `analyticsservice/src/internal/functions/order-processed-endpoint-source.ts` |
-| Test | `analyticsservice/test/functions/order-processed-endpoint-source.test.ts` |
+| Kind | `schedule-source` |
+| File | `analyticsservice/src/internal/functions/analytics-schedule-source.ts` |
+| Test | `analyticsservice/test/functions/analytics-schedule-source.test.ts` |
 | Service | `Analytics Service` |
 
 
 ## Behaviour
 
-Exchange OrderProcessed events keyed by order ID.
-Producers include the final status, processing time, total and confirmed item counts, and a failure reason for unsuccessful orders.
-Consumers decode the event and mark its Kafka message processed only after the pipeline handles it successfully.
+Create an analytics job message identifying the local scheduled firing.
 
 
 
 
 ## Stream types
-- Input: `OrderProcessed` — `model/src/types/order-processed.ts`
-- Output: `OrderProcessed` — `model/src/types/order-processed.ts`
 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `analyticsservice/src/internal/functions/order-processed-endpoint-source.ts` and preserve its generated contract
-- [ ] Inspect input type `OrderProcessed` in `model/src/types/order-processed.ts`
-- [ ] Inspect output type `OrderProcessed` in `model/src/types/order-processed.ts`
-- [ ] Implement meaningful assertions in `analyticsservice/test/functions/order-processed-endpoint-source.test.ts`
+- [ ] Open `analyticsservice/src/internal/functions/analytics-schedule-source.ts` and preserve its generated contract
+- [ ] Implement meaningful assertions in `analyticsservice/test/functions/analytics-schedule-source.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task2.md — OrderProcessedEndpointSource — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task2.md — AnalyticsScheduleSource — TypeScript — done`

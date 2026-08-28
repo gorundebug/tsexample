@@ -2,6 +2,10 @@
 
 import {
   type RuntimeConfig,
+  requireCronDataConnectorConfig,
+  type CronDataConnectorConfig,
+  requireCronEndpointConfig,
+  type CronEndpointConfig,
   requireInputStreamConfig,
   type InputStreamConfig,
   requireKafkaDataConnectorConfig,
@@ -20,16 +24,19 @@ export const ServiceIds = {
 } as const;
 
 export const StreamIds = {
-  CONSUME_ORDER_PROCESSED: 1,
-  COUNT_ORDER_PROCESSED: 2,
+  ANALYTICS_SCHEDULE: 1,
+  CONSUME_ORDER_PROCESSED: 2,
+  COUNT_ORDER_PROCESSED: 3,
 } as const;
 
 export const DataConnectorIds = {
-  ORDER_EVENTS: 1,
+  LOCAL_CRON: 1,
+  ORDER_EVENTS: 2,
 } as const;
 
 export const EndpointIds = {
-  ORDER_PROCESSED: 1,
+  ANALYTICS_SCHEDULE: 1,
+  ORDER_PROCESSED: 2,
 } as const;
 
 export interface NamedConfig {
@@ -37,13 +44,16 @@ export interface NamedConfig {
     readonly analyticsService: ServiceConfig;
   };
   readonly streams: {
+    readonly analyticsSchedule: InputStreamConfig;
     readonly consumeOrderProcessed: InputStreamConfig;
     readonly countOrderProcessed: ProcessStreamConfig;
   };
   readonly dataConnectors: {
+    readonly localCron: CronDataConnectorConfig;
     readonly orderEvents: KafkaDataConnectorConfig;
   };
   readonly endpoints: {
+    readonly analyticsSchedule: CronEndpointConfig;
     readonly orderProcessed: KafkaEndpointConfig;
   };
   readonly pools: {
@@ -54,6 +64,7 @@ export interface NamedConfig {
     readonly orderServiceApi: ModuleConfig;
   };
   readonly types: {
+    readonly automationJob: TypeConfig;
     readonly orderProcessed: TypeConfig;
   };
 }
@@ -69,13 +80,16 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       analyticsService: required(runtime.serviceById(ServiceIds.ANALYTICS_SERVICE), "Analytics Service"),
     },
     streams: {
+      analyticsSchedule: requireInputStreamConfig(runtime.streamById(StreamIds.ANALYTICS_SCHEDULE)),
       consumeOrderProcessed: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_ORDER_PROCESSED)),
       countOrderProcessed: requireProcessStreamConfig(runtime.streamById(StreamIds.COUNT_ORDER_PROCESSED)),
     },
     dataConnectors: {
+      localCron: requireCronDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.LOCAL_CRON)),
       orderEvents: requireKafkaDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.ORDER_EVENTS)),
     },
     endpoints: {
+      analyticsSchedule: requireCronEndpointConfig(runtime.endpointById(EndpointIds.ANALYTICS_SCHEDULE)),
       orderProcessed: requireKafkaEndpointConfig(runtime.endpointById(EndpointIds.ORDER_PROCESSED)),
     },
     pools: {
@@ -86,6 +100,7 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       orderServiceApi: required(runtime.moduleByName("order_service_api"), "order_service_api"),
     },
     types: {
+      automationJob: required(runtime.typeByName("AutomationJob"), "AutomationJob"),
       orderProcessed: required(runtime.typeByName("OrderProcessed"), "OrderProcessed"),
     },
   };

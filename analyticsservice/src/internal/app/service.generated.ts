@@ -7,6 +7,7 @@ import {
   makeDefaultSerdeRegistry,
 } from "@gorundebug/tsservicelib/runtime";
 import { makeKafkaEndpointConsumer as makeKafkaSourceEndpointConsumer } from "@gorundebug/tsservicelib/datasource/kafka";
+import { makeCronEndpointConsumer } from "@gorundebug/tsservicelib/datasource/cron";
 import { Config } from "../config/config.js";
 import { DataConnectorIds, ServiceIds } from "../config/config.generated.js";
 import {
@@ -31,9 +32,11 @@ function initDataConnectors(
   functions: ServiceFunctions,
   clients: ServiceClients,
 ) {
+  const analyticsSchedule = makeCronEndpointConsumer(streams.analyticsSchedule, functions.analyticsScheduleSource);
   const consumeOrderProcessed = makeKafkaSourceEndpointConsumer(streams.consumeOrderProcessed, functions.orderProcessedEndpointSource);
   return {
     dataConnectors: {
+      analyticsSchedule,
       consumeOrderProcessed,
     },
     handlers: {

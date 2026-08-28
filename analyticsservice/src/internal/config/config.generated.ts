@@ -6,6 +6,8 @@ import {
   parseConfigArguments,
   type EnvironmentPatch,
   type RuntimeConfig,
+  type CronDataConnectorConfigDocument,
+  type CronEndpointConfigDocument,
   type InputStreamConfigDocument,
   type KafkaDataConnectorConfigDocument,
   type KafkaEndpointConfigDocument,
@@ -30,13 +32,16 @@ interface DefaultConfig {
     readonly "analyticsService": ServiceConfigDocument;
   };
   readonly streams: {
+    readonly "analyticsSchedule": InputStreamConfigDocument;
     readonly "consumeOrderProcessed": InputStreamConfigDocument;
     readonly "countOrderProcessed": ProcessStreamConfigDocument;
   };
   readonly dataConnectors: {
+    readonly "localCron": CronDataConnectorConfigDocument;
     readonly "orderEvents": KafkaDataConnectorConfigDocument;
   };
   readonly endpoints: {
+    readonly "analyticsSchedule": CronEndpointConfigDocument;
     readonly "orderProcessed": KafkaEndpointConfigDocument;
   };
   readonly pools: {
@@ -49,6 +54,7 @@ interface DefaultConfig {
     readonly "orderServiceApi": ModuleConfigDocument;
   };
   readonly types: {
+    readonly "automationJob": TypeConfigDocument;
     readonly "orderProcessed": TypeConfigDocument;
   };
 }
@@ -78,11 +84,23 @@ const DEFAULT_CONFIG = {
     }
   },
   "streams": {
-    "consumeOrderProcessed": {
+    "analyticsSchedule": {
       "id": 1,
       "idEndpoint": 1,
       "idService": 1,
-      "idSource": 2,
+      "idSource": 0,
+      "name": "Analytics Schedule",
+      "pipeline": "analytics",
+      "type": 1,
+      "valueType": "AutomationJob",
+      "xPos": -1600,
+      "yPos": -205
+    },
+    "consumeOrderProcessed": {
+      "id": 2,
+      "idEndpoint": 2,
+      "idService": 1,
+      "idSource": 3,
       "name": "Consume Order Processed",
       "pipeline": "analytics",
       "type": 1,
@@ -96,9 +114,9 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "CountOrderProcessed",
       "functionPackage": "analytics",
-      "id": 2,
+      "id": 3,
       "idService": 1,
-      "idSource": 1,
+      "idSource": 2,
       "name": "Count Order Processed",
       "pipeline": "analytics",
       "type": 6,
@@ -107,10 +125,16 @@ const DEFAULT_CONFIG = {
     }
   },
   "dataConnectors": {
+    "localCron": {
+      "id": 1,
+      "implementation": "node/croner",
+      "name": "Local Cron",
+      "type": 5
+    },
     "orderEvents": {
       "brokers": "redpanda:9092",
       "dialTimeout": 5000,
-      "id": 1,
+      "id": 2,
       "implementation": "confluent/kafka-javascript",
       "name": "Order Events",
       "password": "",
@@ -122,6 +146,22 @@ const DEFAULT_CONFIG = {
     }
   },
   "endpoints": {
+    "analyticsSchedule": {
+      "enabled": true,
+      "functionDescription": "Create an analytics job message identifying the local scheduled firing.\n",
+      "functionInitializerGroup": "",
+      "functionName": "AnalyticsSchedule",
+      "functionPackage": "cron",
+      "id": 1,
+      "idDataConnector": 1,
+      "missedRunPolicy": "FireOnce",
+      "name": "Analytics Schedule",
+      "overlapPolicy": "Skip",
+      "publicFunction": false,
+      "schedule": "*/5 * * * *",
+      "timezone": "UTC",
+      "tracingEnabled": false
+    },
     "orderProcessed": {
       "consumerGroup": "analytics-service",
       "createTopic": true,
@@ -130,8 +170,8 @@ const DEFAULT_CONFIG = {
       "functionInitializerGroup": "",
       "functionName": "OrderProcessedEndpoint",
       "functionPackage": "endpoint",
-      "id": 1,
-      "idDataConnector": 1,
+      "id": 2,
+      "idDataConnector": 2,
       "name": "Order Processed",
       "partitions": 1,
       "publicFunction": false,
@@ -156,6 +196,14 @@ const DEFAULT_CONFIG = {
     }
   },
   "types": {
+    "automationJob": {
+      "name": "AutomationJob",
+      "type": "string",
+      "typeDefinition": "string",
+      "typeImport": "@gorundebug/model/types/automation-job.js",
+      "module": "model",
+      "publicType": true
+    },
     "orderProcessed": {
       "name": "OrderProcessed",
       "type": "struct",
@@ -198,6 +246,8 @@ export function parseIntegerListEnvironment(value: string): readonly number[] {
 }
 
 const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
+  { environment: "ANALYTICS_SCHEDULE_ENABLED", path: ["endpoints", "analyticsSchedule", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "ANALYTICS_SCHEDULE_TRACING_ENABLED", path: ["endpoints", "analyticsSchedule", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "ANALYTICS_SERVICE_DEFAULT_GRPC_TIMEOUT", path: ["services", "analyticsService", "defaultGrpcTimeout", ], parse: parseIntegerEnvironment },
   { environment: "ANALYTICS_SERVICE_ENVIRONMENT", path: ["services", "analyticsService", "environment", ], parse: parseStringEnvironment },
   { environment: "ANALYTICS_SERVICE_GRPC_HOST", path: ["services", "analyticsService", "grpcHost", ], parse: parseStringEnvironment },

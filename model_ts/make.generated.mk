@@ -9,7 +9,7 @@ SHELL := $(DEPENDENCY_DOWNLOAD_ENV)
 export
 DEPENDENCY_DOCKER_TARGETS := docker-build
 include dependency-proxy.generated.mk
-PNPM ?= CI=true \
+PNPM ?= env CI=true \
 	corepack pnpm $(DEPENDENCY_PNPM_REGISTRY_ARG)
 
 .PHONY: install generate build test docker-build clean
@@ -40,7 +40,7 @@ docker-build: ## Verify this independent contract/model package in Docker
 		--build-arg DEPENDENCY_DOCKER_REGISTRY="$${DEPENDENCY_DOCKER_REGISTRY:-docker.io}" \
 		--build-arg NPM_CONFIG_REGISTRY="$${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}" \
 		--build-arg DEPENDENCY_GITHUB_RAW_URL="$${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}" \
-		-f Dockerfile.generated -t "model-typescript-package:latest" .
+		-f Dockerfile.generated -t "model_ts-typescript-package:latest" .
 
 clean:
 	@rm -rf dist tsconfig.tsbuildinfo

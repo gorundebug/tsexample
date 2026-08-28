@@ -28,12 +28,30 @@ RUN corepack enable \
 WORKDIR /workspace
 COPY package*.json ./
 COPY --from=tsservicelib-source . /workspace/.tsservicelib
+COPY --from=module-model_ts-source / /tmp/module-model_ts-source
+RUN set -eu; \
+    source_dir=/tmp/module-model_ts-source; \
+    archive=$(find "$source_dir" -mindepth 1 -maxdepth 1 -type f \( -name context -o -name '*.tar' -o -name '*.tar.gz' -o -name '*.tgz' -o -name '*.tar.xz' \) -print -quit); \
+    if [ -n "$archive" ]; then \
+      mkdir -p /tmp/module-model_ts-archive; \
+      tar -xf "$archive" -C /tmp/module-model_ts-archive; \
+      source_dir=/tmp/module-model_ts-archive; \
+    fi; \
+    manifest=$(find "$source_dir" -type f -path '*/model_ts/package.json' -print -quit); \
+    if [ -z "$manifest" ]; then manifest="$source_dir/package.json"; fi; \
+    if [ ! -f "$manifest" ]; then manifest=$(find "$source_dir" -mindepth 2 -maxdepth 2 -type f -name package.json -print -quit); fi; \
+    if [ -z "$manifest" ] || [ ! -f "$manifest" ]; then echo "module model_ts source context has no package.json" >&2; exit 1; fi; \
+    source_dir=${manifest%/package.json}; \
+    mkdir -p /workspace/modules/model_ts; \
+    cp -a "$source_dir/." /workspace/modules/model_ts/; \
+    rm -rf /tmp/module-model_ts-source /tmp/module-model_ts-archive
 COPY . .
 RUN node - <<'NODE'
 const fs = require('node:fs');
 const path = require('node:path');
 const modules = [
   { name: "@gorundebug/tsservicelib", source: '.tsservicelib' },
+  { name: "@gorundebug/model", source: "modules/model_ts" },
 ];
 const manifests = ['package.json', ...modules.map(({ source }) => path.join(source, 'package.json'))];
 for (const manifest of manifests) {
@@ -60,7 +78,9 @@ NODE
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
     corepack pnpm config set store-dir /pnpm/store \
     && corepack pnpm install --no-frozen-lockfile \
-    && corepack pnpm --filter @gorundebug/tsservicelib run build
+    && corepack pnpm --filter @gorundebug/tsservicelib run build \
+    && corepack pnpm --recursive --filter './modules/**' run build
+
 
 ENTRYPOINT ["scripts/run-service.generated.sh", "src/main.generated.ts"]
 
@@ -74,6 +94,7 @@ RUN mkdir -p /tmp/node-diagnostics && chown node:node /tmp/node-diagnostics
 COPY --from=builder /workspace/package.json ./
 COPY --from=builder /workspace/node_modules ./node_modules
 COPY --from=builder /workspace/.tsservicelib ./.tsservicelib
+COPY --from=builder /workspace/modules ./modules
 COPY --from=builder /workspace/dist ./dist
 COPY --from=builder /workspace/config ./config
 COPY --from=builder /workspace/scripts/node-diagnostics.generated.mjs ./scripts/node-diagnostics.generated.mjs

@@ -17,13 +17,14 @@ import {
   makeMultiJoinStream, makeProcessStream, makeSinkStream,
   makeSinkStreamWithResult, makeSplitStream, makeWhenStream,
 } from "@gorundebug/tsservicelib/operators";
-import type { OrderProcessed } from "@gorundebug/model";
+import type { AutomationJob, OrderProcessed } from "@gorundebug/model";
 import {
   StreamIds,
   type ConfigSnapshot,
 } from "../config/config-snapshot.generated.js";
 import {
   CountOrderProcessed, makeCountOrderProcessed,
+  AnalyticsScheduleSource, makeAnalyticsScheduleSource,
   OrderProcessedEndpointSource, makeOrderProcessedEndpointSource,
 } from "../functions/index.generated.js";
 
@@ -32,11 +33,15 @@ function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
 }
 
 const serdeTypes = {
+  automationJob: new SerdeType<AutomationJob>("AutomationJob", (value): value is AutomationJob => typeof value === "string"),
   orderProcessed: new SerdeType<OrderProcessed>("OrderProcessed", (value): value is OrderProcessed => isRecord(value)),
 } as const;
 
 export function registerGeneratedSerdes(registry: SerdeRegistry): void {
+  registry.register(serdeTypes.automationJob, registry.require(stringSerdeType));
   registry.register(serdeTypes.orderProcessed, makeStreamSerde(new JsonSerde(serdeTypes.orderProcessed)));
+  registry.registerStreamValueType(StreamIds.ANALYTICS_SCHEDULE, serdeTypes.automationJob);
+  registry.registerStreamErrorType(StreamIds.ANALYTICS_SCHEDULE, errorSerdeType);
   registry.registerStreamValueType(StreamIds.CONSUME_ORDER_PROCESSED, serdeTypes.orderProcessed);
   registry.registerStreamErrorType(StreamIds.CONSUME_ORDER_PROCESSED, errorSerdeType);
   registry.registerStreamValueType(StreamIds.COUNT_ORDER_PROCESSED, serdeTypes.orderProcessed);
@@ -49,6 +54,11 @@ export interface ServiceMakers {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
   ) => CountOrderProcessed;
+  analyticsScheduleSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
+  ) => AnalyticsScheduleSource;
   orderProcessedEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -59,6 +69,7 @@ export interface ServiceMakers {
 export function defaultMakers(): ServiceMakers {
   return {
     countOrderProcessed: makeCountOrderProcessed,
+    analyticsScheduleSource: makeAnalyticsScheduleSource,
     orderProcessedEndpointSource: makeOrderProcessedEndpointSource,
   };
 }
@@ -71,6 +82,7 @@ export function initFunctions(
 ) {
   return {
     countOrderProcessed: makers.countOrderProcessed(context, environment, config.named.streams.countOrderProcessed),
+    analyticsScheduleSource: makers.analyticsScheduleSource(context, environment, config.named.endpoints.analyticsSchedule),
     orderProcessedEndpointSource: makers.orderProcessedEndpointSource(context, environment, config.named.endpoints.orderProcessed),
   };
 }
@@ -82,10 +94,12 @@ export function initStreams(
   environment: RuntimeEnvironment,
   functions: ServiceFunctions,
 ) {
+  const analyticsSchedule = makeInputStream<string, unknown, Error>(config.named.streams.analyticsSchedule, environment);
   const consumeOrderProcessed = makeInputStream<OrderProcessed, OrderProcessed, Error>(config.named.streams.consumeOrderProcessed, environment);
   const countOrderProcessed = makeProcessStream<OrderProcessed, OrderProcessed, Error>(config.named.streams.countOrderProcessed, consumeOrderProcessed, functions.countOrderProcessed);
   consumeOrderProcessed.setSource(countOrderProcessed);
   return {
+    analyticsSchedule,
     consumeOrderProcessed,
     countOrderProcessed,
   };

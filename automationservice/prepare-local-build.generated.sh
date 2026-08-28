@@ -19,5 +19,6 @@ cp /workspace/package.json "$work_dir/package.json"
 cp /workspace/pnpm-workspace.yaml "$work_dir/pnpm-workspace.yaml"
 ln -s /workspace/node_modules "$work_dir/node_modules"
 ln -s /workspace/.tsservicelib "$work_dir/.tsservicelib"
+ln -s /workspace/modules "$work_dir/modules"
 mkdir -p /workspace/artifacts
 ln -s /workspace/artifacts "$work_dir/.artifacts"

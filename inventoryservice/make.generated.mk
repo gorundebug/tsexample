@@ -6,12 +6,12 @@ DOCKER_DEV_TARGET := development
 STANDALONE_DOCKERFILE := Dockerfile
 STANDALONE_COMPOSE := $(if $(wildcard docker-compose.yml),docker-compose.yml,docker-compose.standalone.generated.yml)
 MODULE_CONTEXT_ARGS =
-TSSERVICELIB_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsservicelib.git\#v0.2.25
+TSSERVICELIB_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsservicelib.git\#v0.2.27
 MODULE_CONTEXT_ARGS += --build-context tsservicelib-source="$(TSSERVICELIB_SOURCE_CONTEXT)"
 INVENTORY_SERVICE_API_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample.git\#v0.2.14
 MODULE_CONTEXT_ARGS += --build-context module-inventory_service_api-source="$(INVENTORY_SERVICE_API_SOURCE_CONTEXT)"
-MODEL_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample.git\#v0.2.14
-MODULE_CONTEXT_ARGS += --build-context module-model-source="$(MODEL_SOURCE_CONTEXT)"
+MODEL_TS_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample.git\#v0.2.14
+MODULE_CONTEXT_ARGS += --build-context module-model_ts-source="$(MODEL_TS_SOURCE_CONTEXT)"
 PROGRESS := ./scripts/run-with-progress.generated.sh
 DEPENDENCY_PNPM_REGISTRY_ARG = $(if $(strip $(NPM_CONFIG_REGISTRY)),--config.registry=$(NPM_CONFIG_REGISTRY),)
 DEPENDENCY_DOWNLOAD_ENV := $(or $(wildcard $(abspath ./dependency-download-env.generated.sh)),$(wildcard $(abspath ../dependency-download-env.generated.sh)),/bin/sh)
@@ -24,18 +24,18 @@ PNPM_WORKSPACE_ARG := --ignore-workspace
 ifeq ($(strip $(USE_LOCAL_MODULES)),1)
 PNPM_WORKSPACE_ARG :=
 INVENTORY_SERVICE_API_SOURCE_CONTEXT := ../inventory_service_api
-MODEL_SOURCE_CONTEXT := ../model
+MODEL_TS_SOURCE_CONTEXT := ../model_ts
 endif
 ifneq ($(strip $(DEPENDENCY_PROXY_DIR)),)
 ifeq ($(origin TSSERVICELIB_SOURCE_CONTEXT),undefined)
-TSSERVICELIB_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsservicelib.git\#v0.2.25
+TSSERVICELIB_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsservicelib.git\#v0.2.27
 endif
 ifneq ($(strip $(USE_LOCAL_MODULES)),1)
 INVENTORY_SERVICE_API_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample.git\#v0.2.14
-MODEL_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample.git\#v0.2.14
+MODEL_TS_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample.git\#v0.2.14
 endif
 endif
-PNPM ?= CI=true \
+PNPM ?= env CI=true \
 	corepack pnpm $(PNPM_WORKSPACE_ARG) $(DEPENDENCY_PNPM_REGISTRY_ARG)
 
 .PHONY: init install build test coverage typecheck lint fmt clean hooks docker-build \

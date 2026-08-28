@@ -9,7 +9,7 @@ SHELL := $(DEPENDENCY_DOWNLOAD_ENV)
 export
 DEPENDENCY_DOCKER_TARGETS := docker-build
 include dependency-proxy.generated.mk
-PNPM ?= CI=true \
+PNPM ?= env CI=true \
 	corepack pnpm $(DEPENDENCY_PNPM_REGISTRY_ARG)
 
 .PHONY: install generate build test docker-build clean

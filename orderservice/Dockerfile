@@ -45,23 +45,23 @@ RUN set -eu; \
     mkdir -p /workspace/modules/inventory_service_api; \
     cp -a "$source_dir/." /workspace/modules/inventory_service_api/; \
     rm -rf /tmp/module-inventory_service_api-source /tmp/module-inventory_service_api-archive
-COPY --from=module-model-source / /tmp/module-model-source
+COPY --from=module-model_ts-source / /tmp/module-model_ts-source
 RUN set -eu; \
-    source_dir=/tmp/module-model-source; \
+    source_dir=/tmp/module-model_ts-source; \
     archive=$(find "$source_dir" -mindepth 1 -maxdepth 1 -type f \( -name context -o -name '*.tar' -o -name '*.tar.gz' -o -name '*.tgz' -o -name '*.tar.xz' \) -print -quit); \
     if [ -n "$archive" ]; then \
-      mkdir -p /tmp/module-model-archive; \
-      tar -xf "$archive" -C /tmp/module-model-archive; \
-      source_dir=/tmp/module-model-archive; \
+      mkdir -p /tmp/module-model_ts-archive; \
+      tar -xf "$archive" -C /tmp/module-model_ts-archive; \
+      source_dir=/tmp/module-model_ts-archive; \
     fi; \
-    manifest=$(find "$source_dir" -type f -path '*/model/package.json' -print -quit); \
+    manifest=$(find "$source_dir" -type f -path '*/model_ts/package.json' -print -quit); \
     if [ -z "$manifest" ]; then manifest="$source_dir/package.json"; fi; \
     if [ ! -f "$manifest" ]; then manifest=$(find "$source_dir" -mindepth 2 -maxdepth 2 -type f -name package.json -print -quit); fi; \
-    if [ -z "$manifest" ] || [ ! -f "$manifest" ]; then echo "module model source context has no package.json" >&2; exit 1; fi; \
+    if [ -z "$manifest" ] || [ ! -f "$manifest" ]; then echo "module model_ts source context has no package.json" >&2; exit 1; fi; \
     source_dir=${manifest%/package.json}; \
-    mkdir -p /workspace/modules/model; \
-    cp -a "$source_dir/." /workspace/modules/model/; \
-    rm -rf /tmp/module-model-source /tmp/module-model-archive
+    mkdir -p /workspace/modules/model_ts; \
+    cp -a "$source_dir/." /workspace/modules/model_ts/; \
+    rm -rf /tmp/module-model_ts-source /tmp/module-model_ts-archive
 COPY --from=module-order_service_api-source / /tmp/module-order_service_api-source
 RUN set -eu; \
     source_dir=/tmp/module-order_service_api-source; \
@@ -86,7 +86,7 @@ const path = require('node:path');
 const modules = [
   { name: "@gorundebug/tsservicelib", source: '.tsservicelib' },
   { name: "@gorundebug/inventory-service-api", source: "modules/inventory_service_api" },
-  { name: "@gorundebug/model", source: "modules/model" },
+  { name: "@gorundebug/model", source: "modules/model_ts" },
   { name: "@gorundebug/order-service-api", source: "modules/order_service_api" },
 ];
 const manifests = ['package.json', ...modules.map(({ source }) => path.join(source, 'package.json'))];

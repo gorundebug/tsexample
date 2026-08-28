@@ -4,7 +4,7 @@ packages:
   - "inventoryservice"
   - "orderservice"
   - "inventory_service_api"
-  - "model"
+  - "model_ts"
   - "order_service_api"
 
 overrides:

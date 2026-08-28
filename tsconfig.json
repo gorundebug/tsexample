@@ -2,7 +2,7 @@
   "files": [],
   "references": [
     { "path": "./inventory_service_api" },
-    { "path": "./model" },
+    { "path": "./model_ts" },
     { "path": "./order_service_api" },
     { "path": "./analyticsservice" },
     { "path": "./automationservice" },

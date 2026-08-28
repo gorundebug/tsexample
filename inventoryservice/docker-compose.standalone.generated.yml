@@ -15,7 +15,9 @@ services:
     environment:
       - DEBUG=${DEBUG:-0}
       - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
+      - INVENTORY_SERVICE_HTTP_PORT
+      - INVENTORY_SERVICE_GRPC_PORT
     ports:
-      - "9092:9092"
-      - "9202:9202"
+      - "${INVENTORY_SERVICE_HTTP_PORT:-9092}:${INVENTORY_SERVICE_HTTP_PORT:-9092}"
+      - "${INVENTORY_SERVICE_GRPC_PORT:-9202}:${INVENTORY_SERVICE_GRPC_PORT:-9202}"
       - "2345:2345"

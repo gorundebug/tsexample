@@ -1,14 +1,14 @@
-# Task 1/8: `OrderProcessedEndpointSink`
+# Task 3/3: `OrderProcessedEndpointSource`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `kafka-sink` |
-| File | `orderservice/src/internal/functions/order-processed-endpoint-sink.ts` |
-| Test | `orderservice/test/functions/order-processed-endpoint-sink.test.ts` |
-| Service | `Order Service` |
+| Kind | `kafka-source` |
+| File | `analyticsservice/src/internal/functions/order-processed-endpoint-source.ts` |
+| Test | `analyticsservice/test/functions/order-processed-endpoint-source.test.ts` |
+| Service | `Analytics Service` |
 
 
 ## Behaviour
@@ -27,9 +27,9 @@ Consumers decode the event and mark its Kafka message processed only after the p
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `orderservice/src/internal/functions/order-processed-endpoint-sink.ts` and preserve its generated contract
+- [ ] Open `analyticsservice/src/internal/functions/order-processed-endpoint-source.ts` and preserve its generated contract
 - [ ] Inspect input type `OrderProcessed` in `model_ts/src/types/order-processed.ts`
 - [ ] Inspect output type `OrderProcessed` in `model_ts/src/types/order-processed.ts`
-- [ ] Implement meaningful assertions in `orderservice/test/functions/order-processed-endpoint-sink.test.ts`
+- [ ] Implement meaningful assertions in `analyticsservice/test/functions/order-processed-endpoint-source.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] orderservice/task1.md — OrderProcessedEndpointSink — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task3.md — OrderProcessedEndpointSource — TypeScript — done`

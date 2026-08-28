@@ -10,8 +10,8 @@ services:
     security_opt: !reset []
     cap_add: !reset []
     ports: !override
-      - "9093:9093"
-      - "9203:9203"
+      - "${ANALYTICS_SERVICE_HTTP_PORT:-9093}:${ANALYTICS_SERVICE_HTTP_PORT:-9093}"
+      - "${ANALYTICS_SERVICE_GRPC_PORT:-9203}:${ANALYTICS_SERVICE_GRPC_PORT:-9203}"
   automationservice:
     image: automationservice-typescript:latest
     build:
@@ -23,8 +23,8 @@ services:
     security_opt: !reset []
     cap_add: !reset []
     ports: !override
-      - "9094:9094"
-      - "9204:9204"
+      - "${AUTOMATION_SERVICE_HTTP_PORT:-9094}:${AUTOMATION_SERVICE_HTTP_PORT:-9094}"
+      - "${AUTOMATION_SERVICE_GRPC_PORT:-9204}:${AUTOMATION_SERVICE_GRPC_PORT:-9204}"
   inventoryservice:
     image: inventoryservice-typescript:latest
     build:
@@ -36,8 +36,8 @@ services:
     security_opt: !reset []
     cap_add: !reset []
     ports: !override
-      - "9092:9092"
-      - "9202:9202"
+      - "${INVENTORY_SERVICE_HTTP_PORT:-9092}:${INVENTORY_SERVICE_HTTP_PORT:-9092}"
+      - "${INVENTORY_SERVICE_GRPC_PORT:-9202}:${INVENTORY_SERVICE_GRPC_PORT:-9202}"
   orderservice:
     image: orderservice-typescript:latest
     build:
@@ -49,5 +49,5 @@ services:
     security_opt: !reset []
     cap_add: !reset []
     ports: !override
-      - "9091:9091"
-      - "9201:9201"
+      - "${ORDER_SERVICE_HTTP_PORT:-9091}:${ORDER_SERVICE_HTTP_PORT:-9091}"
+      - "${ORDER_SERVICE_GRPC_PORT:-9201}:${ORDER_SERVICE_GRPC_PORT:-9201}"

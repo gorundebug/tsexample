@@ -21,14 +21,14 @@ Record the time when this result is produced.
 
 
 ## Stream types
-- Input: `OrderItemResult` — `model/src/types/order-item-result.ts`
+- Input: `OrderItemResult` — `model_ts/src/types/order-item-result.ts`
 - Output: `OrderState` — `orderservice/src/internal/types/order-state.ts`
 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `orderservice/src/internal/functions/map-order-item-result-to-order-state.ts` and preserve its generated contract
-- [ ] Inspect input type `OrderItemResult` in `model/src/types/order-item-result.ts`
+- [ ] Inspect input type `OrderItemResult` in `model_ts/src/types/order-item-result.ts`
 - [ ] Inspect output type `OrderState` in `orderservice/src/internal/types/order-state.ts`
 - [ ] Implement meaningful assertions in `orderservice/test/functions/map-order-item-result-to-order-state.test.ts`
 - [ ] Re-read this checklist
