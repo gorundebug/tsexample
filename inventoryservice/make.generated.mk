@@ -30,7 +30,7 @@ INVENTORY_SERVICE_API_SOURCE_CONTEXT := ../inventory_service_api
 MODEL_TS_SOURCE_CONTEXT := ../model_ts
 endif
 ifneq ($(strip $(DEPENDENCY_PROXY_DIR)),)
-ifeq ($(origin TSSERVICELIB_SOURCE_CONTEXT),undefined)
+ifeq ($(origin TSSERVICELIB_SOURCE_CONTEXT),file)
 TSSERVICELIB_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsservicelib.git\#v0.2.27
 endif
 ifneq ($(strip $(USE_LOCAL_MODULES)),1)
