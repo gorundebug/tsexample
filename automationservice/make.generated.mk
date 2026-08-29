@@ -40,7 +40,9 @@ PNPM ?= env CI=true \
 .PHONY: init install build test coverage typecheck lint fmt clean hooks docker-build \
 	docker-build-dev docker-up docker-up-dev docker-down docker-down-dev docker-clean debug help
 
-init install:
+init: install ## [host] Install pinned dependencies
+
+install: ## [host] Install pinned dependencies
 	@if [ -f pnpm-lock.yaml ] || [ -f ../pnpm-lock.yaml ]; then \
 		$(PROGRESS) "TypeScript dependency install" $(PNPM) install --frozen-lockfile; \
 	else \
@@ -53,23 +55,23 @@ build: install ## [host] Compile this service
 test: install ## [host] Run this service's tests
 	@$(PROGRESS) "TypeScript service tests" $(PNPM) test
 
-coverage: install
+coverage: install ## [host] Run tests with Node coverage
 	@$(PROGRESS) "TypeScript service coverage" $(PNPM) test:coverage
 
-typecheck: install
+typecheck: install ## [host] Run the strict TypeScript build check
 	@$(PROGRESS) "TypeScript service typecheck" $(PNPM) exec tsc --build --pretty false
 
-lint: typecheck
+lint: typecheck ## [host] Run typecheck and ESLint
 	@if [ -f eslint.config.js ]; then \
 		$(PROGRESS) "TypeScript service lint" $(PNPM) exec eslint . --max-warnings 0; \
 	fi
 
-fmt: install
+fmt: install ## [host] Format sources with Prettier
 	@if [ -f .prettierrc.json ]; then \
 		$(PROGRESS) "TypeScript service format" $(PNPM) exec prettier --write .; \
 	fi
 
-clean:
+clean: ## [host] Remove TypeScript build and dependency artifacts
 	rm -rf dist dist-test node_modules *.tsbuildinfo
 
 hooks: ## Install repository-local quality gates
