@@ -18,6 +18,8 @@ services:
       - typescript-dev-artifacts-analyticsservice:/workspace/artifacts
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/service/.artifacts/node-diagnostics
+    ports:
+      - "${ANALYTICS_SERVICE_DEBUG_PORT:-2345}:2345"
     security_opt:
       - seccomp:unconfined
     cap_add:
@@ -38,6 +40,8 @@ services:
       - typescript-dev-artifacts-automationservice:/workspace/artifacts
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/service/.artifacts/node-diagnostics
+    ports:
+      - "${AUTOMATION_SERVICE_DEBUG_PORT:-2346}:2345"
     security_opt:
       - seccomp:unconfined
     cap_add:
@@ -58,6 +62,8 @@ services:
       - typescript-dev-artifacts-inventoryservice:/workspace/artifacts
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/service/.artifacts/node-diagnostics
+    ports:
+      - "${INVENTORY_SERVICE_DEBUG_PORT:-2347}:2345"
     security_opt:
       - seccomp:unconfined
     cap_add:
@@ -78,6 +84,8 @@ services:
       - typescript-dev-artifacts-orderservice:/workspace/artifacts
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/service/.artifacts/node-diagnostics
+    ports:
+      - "${ORDER_SERVICE_DEBUG_PORT:-2348}:2345"
     security_opt:
       - seccomp:unconfined
     cap_add:
