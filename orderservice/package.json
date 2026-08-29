@@ -13,11 +13,11 @@
     "test:coverage": "tsc --build tsconfig.test.json --clean && tsc --build tsconfig.test.json && node --test --experimental-test-coverage --enable-source-maps dist-test/test/**/*.test.js"
   },
   "dependencies": {
-    "@gorundebug/tsservicelib": "github:gorundebug/tsservicelib#v0.2.29",
+    "@gorundebug/tsservicelib": "github:gorundebug/tsservicelib#v0.2.30",
     "@bufbuild/protobuf": "2.14.0",
-    "@gorundebug/inventory-service-api": "git+https://github.com/gorundebug/tsexample.git#v0.2.29&path:inventory_service_api",
-    "@gorundebug/model": "git+https://github.com/gorundebug/tsexample.git#v0.2.29&path:model_ts",
-    "@gorundebug/order-service-api": "git+https://github.com/gorundebug/tsexample.git#v0.2.29&path:order_service_api"
+    "@gorundebug/inventory-service-api": "git+https://github.com/gorundebug/tsexample.git#v0.2.30&path:inventory_service_api",
+    "@gorundebug/model": "git+https://github.com/gorundebug/tsexample.git#v0.2.30&path:model_ts",
+    "@gorundebug/order-service-api": "git+https://github.com/gorundebug/tsexample.git#v0.2.30&path:order_service_api"
   },
   "devDependencies": {
     "@types/node": "24.13.3",
