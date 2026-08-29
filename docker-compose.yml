@@ -12,7 +12,7 @@ services:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.28}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.29}"
     command:
       - --config
       - /app/config/config.yaml
@@ -44,7 +44,7 @@ services:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.28}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.29}"
     command:
       - --config
       - /app/config/config.yaml
@@ -80,7 +80,7 @@ services:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.28}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.29}"
     command:
       - --config
       - /app/config/config.yaml
@@ -112,7 +112,7 @@ services:
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.28}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.29}"
     command:
       - --config
       - /app/config/config.yaml
