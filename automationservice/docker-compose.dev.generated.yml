@@ -1,6 +1,6 @@
 services:
   automationservice:
-    image: automationservice-typescript-development:latest
+    image: automationservice-typescript-development:local
     build:
       target: development
     entrypoint: /bin/sh
@@ -12,7 +12,8 @@ services:
         && cd /workspace/service
         && exec ./scripts/run-service.generated.sh ./src/main.generated.ts
         --config ./config/config.yaml
-        --values ./config/docker_overrides.yaml
+        --values ./config/overrides.yaml
+        --overrides ./config/docker_overrides.yaml
     environment:
       NODE_DIAGNOSTIC_DIR: /workspace/service/.artifacts/node-diagnostics
     ports:

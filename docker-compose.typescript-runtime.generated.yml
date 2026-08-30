@@ -1,9 +1,9 @@
 services:
   analyticsservice:
-    image: analyticsservice-typescript:latest
+    image: analyticsservice-typescript:local
     build:
       target: runtime-analyticsservice
-    command: ["--config", "/app/config/config.yaml", "--values", "/app/config/docker_overrides.yaml"]
+    command: ["--config", "/app/config/config.yaml", "--values", "/app/config/overrides.yaml", "--overrides", "/app/config/docker_overrides.yaml"]
     environment:
       - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
     volumes: !reset []
@@ -13,10 +13,10 @@ services:
       - "${ANALYTICS_SERVICE_HOST_HTTP_PORT:-9093}:${ANALYTICS_SERVICE_HTTP_PORT:-9093}"
       - "${ANALYTICS_SERVICE_HOST_GRPC_PORT:-9203}:${ANALYTICS_SERVICE_GRPC_PORT:-9203}"
   automationservice:
-    image: automationservice-typescript:latest
+    image: automationservice-typescript:local
     build:
       target: runtime-automationservice
-    command: ["--config", "/app/config/config.yaml", "--values", "/app/config/docker_overrides.yaml"]
+    command: ["--config", "/app/config/config.yaml", "--values", "/app/config/overrides.yaml", "--overrides", "/app/config/docker_overrides.yaml"]
     environment:
       - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
     volumes: !reset []
@@ -26,10 +26,10 @@ services:
       - "${AUTOMATION_SERVICE_HOST_HTTP_PORT:-9094}:${AUTOMATION_SERVICE_HTTP_PORT:-9094}"
       - "${AUTOMATION_SERVICE_HOST_GRPC_PORT:-9204}:${AUTOMATION_SERVICE_GRPC_PORT:-9204}"
   inventoryservice:
-    image: inventoryservice-typescript:latest
+    image: inventoryservice-typescript:local
     build:
       target: runtime-inventoryservice
-    command: ["--config", "/app/config/config.yaml", "--values", "/app/config/docker_overrides.yaml"]
+    command: ["--config", "/app/config/config.yaml", "--values", "/app/config/overrides.yaml", "--overrides", "/app/config/docker_overrides.yaml"]
     environment:
       - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
     volumes: !reset []
@@ -39,10 +39,10 @@ services:
       - "${INVENTORY_SERVICE_HOST_HTTP_PORT:-9092}:${INVENTORY_SERVICE_HTTP_PORT:-9092}"
       - "${INVENTORY_SERVICE_HOST_GRPC_PORT:-9202}:${INVENTORY_SERVICE_GRPC_PORT:-9202}"
   orderservice:
-    image: orderservice-typescript:latest
+    image: orderservice-typescript:local
     build:
       target: runtime-orderservice
-    command: ["--config", "/app/config/config.yaml", "--values", "/app/config/docker_overrides.yaml"]
+    command: ["--config", "/app/config/config.yaml", "--values", "/app/config/overrides.yaml", "--overrides", "/app/config/docker_overrides.yaml"]
     environment:
       - NODE_DIAGNOSTIC_DIR=/tmp/node-diagnostics
     volumes: !reset []

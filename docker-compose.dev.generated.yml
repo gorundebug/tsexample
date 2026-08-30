@@ -3,7 +3,7 @@
 # service source code. Use it through `make docker-up-dev`.
 services:
   analyticsservice:
-    image: analyticsservice-typescript-development:latest
+    image: analyticsservice-typescript-development:local
     build: !reset null
     entrypoint: /bin/sh
     working_dir: /workspace/service
@@ -12,7 +12,7 @@ services:
       - >-
         prepare-local-build /workspace/source /workspace/service
         && cd /workspace/service
-        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts --config ./config/config.yaml --values ./config/docker_overrides.yaml
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts --config ./config/config.yaml --values ./config/overrides.yaml --overrides ./config/docker_overrides.yaml
     volumes:
       - ./analyticsservice:/workspace/source:ro
       - typescript-dev-artifacts-analyticsservice:/workspace/artifacts
@@ -25,7 +25,7 @@ services:
     cap_add:
       - SYS_PTRACE
   automationservice:
-    image: automationservice-typescript-development:latest
+    image: automationservice-typescript-development:local
     build: !reset null
     entrypoint: /bin/sh
     working_dir: /workspace/service
@@ -34,7 +34,7 @@ services:
       - >-
         prepare-local-build /workspace/source /workspace/service
         && cd /workspace/service
-        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts --config ./config/config.yaml --values ./config/docker_overrides.yaml
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts --config ./config/config.yaml --values ./config/overrides.yaml --overrides ./config/docker_overrides.yaml
     volumes:
       - ./automationservice:/workspace/source:ro
       - typescript-dev-artifacts-automationservice:/workspace/artifacts
@@ -47,7 +47,7 @@ services:
     cap_add:
       - SYS_PTRACE
   inventoryservice:
-    image: inventoryservice-typescript-development:latest
+    image: inventoryservice-typescript-development:local
     build: !reset null
     entrypoint: /bin/sh
     working_dir: /workspace/service
@@ -56,7 +56,7 @@ services:
       - >-
         prepare-local-build /workspace/source /workspace/service
         && cd /workspace/service
-        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts --config ./config/config.yaml --values ./config/docker_overrides.yaml
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts --config ./config/config.yaml --values ./config/overrides.yaml --overrides ./config/docker_overrides.yaml
     volumes:
       - ./inventoryservice:/workspace/source:ro
       - typescript-dev-artifacts-inventoryservice:/workspace/artifacts
@@ -69,7 +69,7 @@ services:
     cap_add:
       - SYS_PTRACE
   orderservice:
-    image: orderservice-typescript-development:latest
+    image: orderservice-typescript-development:local
     build: !reset null
     entrypoint: /bin/sh
     working_dir: /workspace/service
@@ -78,7 +78,7 @@ services:
       - >-
         prepare-local-build /workspace/source /workspace/service
         && cd /workspace/service
-        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts --config ./config/config.yaml --values ./config/docker_overrides.yaml
+        && exec ./scripts/run-service.generated.sh ./src/main.generated.ts --config ./config/config.yaml --values ./config/overrides.yaml --overrides ./config/docker_overrides.yaml
     volumes:
       - ./orderservice:/workspace/source:ro
       - typescript-dev-artifacts-orderservice:/workspace/artifacts

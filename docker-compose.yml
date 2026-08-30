@@ -1,6 +1,6 @@
 services:
   analyticsservice:
-    image: analyticsservice-typescript:latest
+    image: analyticsservice-typescript:local
     build:
       context: .
       dockerfile: Dockerfile.typescript
@@ -17,6 +17,8 @@ services:
       - --config
       - /app/config/config.yaml
       - --values
+      - /app/config/overrides.yaml
+      - --overrides
       - /app/config/docker_overrides.yaml
     restart: unless-stopped
     environment:
@@ -31,7 +33,7 @@ services:
       - app_net
 
   automationservice:
-    image: automationservice-typescript:latest
+    image: automationservice-typescript:local
     build:
       context: .
       dockerfile: Dockerfile.typescript
@@ -48,6 +50,8 @@ services:
       - --config
       - /app/config/config.yaml
       - --values
+      - /app/config/overrides.yaml
+      - --overrides
       - /app/config/docker_overrides.yaml
     restart: unless-stopped
     environment:
@@ -66,7 +70,7 @@ services:
       - app_net
 
   inventoryservice:
-    image: inventoryservice-typescript:latest
+    image: inventoryservice-typescript:local
     build:
       context: .
       dockerfile: Dockerfile.typescript
@@ -83,6 +87,8 @@ services:
       - --config
       - /app/config/config.yaml
       - --values
+      - /app/config/overrides.yaml
+      - --overrides
       - /app/config/docker_overrides.yaml
     restart: unless-stopped
     environment:
@@ -97,7 +103,7 @@ services:
       - app_net
 
   orderservice:
-    image: orderservice-typescript:latest
+    image: orderservice-typescript:local
     build:
       context: .
       dockerfile: Dockerfile.typescript
@@ -114,6 +120,8 @@ services:
       - --config
       - /app/config/config.yaml
       - --values
+      - /app/config/overrides.yaml
+      - --overrides
       - /app/config/docker_overrides.yaml
     restart: unless-stopped
     environment:
@@ -247,7 +255,7 @@ services:
       - app_net
 
   prometheus:
-    image: ${DEPENDENCY_DOCKER_REGISTRY:-docker.io}/prom/prometheus:latest
+    image: ${DEPENDENCY_DOCKER_REGISTRY:-docker.io}/prom/prometheus:v3.14.0
     restart: unless-stopped
     ports:
       - "${PROMETHEUS_PORT:-9090}:9090"
@@ -257,7 +265,7 @@ services:
       - app_net
 
   grafana:
-    image: ${DEPENDENCY_DOCKER_REGISTRY:-docker.io}/grafana/grafana:latest
+    image: ${DEPENDENCY_DOCKER_REGISTRY:-docker.io}/grafana/grafana:13.2.0
     restart: unless-stopped
     ports:
       - "${GRAFANA_PORT:-3000}:3000"

@@ -88,7 +88,7 @@ benchmark: ## Benchmark this TypeScript example and its native baseline
 		echo "ERROR: conformance checkout not found at $(CONFORMANCE_DIR); set CONFORMANCE_DIR" >&2; \
 		exit 1; \
 	}
-	@BENCHMARK_DEPENDENCIES_DIR="$(abspath $(PROJECT_DIR)/..)" \
+	@DEPENDENCIES_DIR="$(abspath $(PROJECT_DIR)/..)" \
 		python3 "$(CONFORMANCE_DIR)/benchmarks/examples/run.py" \
 		--language typescript --language typescript-native $(BENCHMARK_ARGS)
 
@@ -97,7 +97,7 @@ profile: ## Profile this TypeScript example and its native baseline
 		echo "ERROR: conformance checkout not found at $(CONFORMANCE_DIR); set CONFORMANCE_DIR" >&2; \
 		exit 1; \
 	}
-	@PROFILING_DEPENDENCIES_DIR="$(abspath $(PROJECT_DIR)/..)" \
+	@DEPENDENCIES_DIR="$(abspath $(PROJECT_DIR)/..)" \
 		python3 "$(CONFORMANCE_DIR)/profiling/examples/run.py" \
 		--language typescript --language typescript-native $(PROFILING_ARGS)
 

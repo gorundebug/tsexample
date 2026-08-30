@@ -160,22 +160,22 @@ build_images() {
   progress "building existing minimal runtime images"
   make docker-build
   progress "publishing analyticsservice image"
-  docker tag "analyticsservice-typescript:latest" \
+  docker tag "analyticsservice-typescript:local" \
     "${HOST_REGISTRY}/tsexample/analyticsservice:${IMAGE_TAG}"
   docker push \
     "${HOST_REGISTRY}/tsexample/analyticsservice:${IMAGE_TAG}"
   progress "publishing automationservice image"
-  docker tag "automationservice-typescript:latest" \
+  docker tag "automationservice-typescript:local" \
     "${HOST_REGISTRY}/tsexample/automationservice:${IMAGE_TAG}"
   docker push \
     "${HOST_REGISTRY}/tsexample/automationservice:${IMAGE_TAG}"
   progress "publishing inventoryservice image"
-  docker tag "inventoryservice-typescript:latest" \
+  docker tag "inventoryservice-typescript:local" \
     "${HOST_REGISTRY}/tsexample/inventoryservice:${IMAGE_TAG}"
   docker push \
     "${HOST_REGISTRY}/tsexample/inventoryservice:${IMAGE_TAG}"
   progress "publishing orderservice image"
-  docker tag "orderservice-typescript:latest" \
+  docker tag "orderservice-typescript:local" \
     "${HOST_REGISTRY}/tsexample/orderservice:${IMAGE_TAG}"
   docker push \
     "${HOST_REGISTRY}/tsexample/orderservice:${IMAGE_TAG}"

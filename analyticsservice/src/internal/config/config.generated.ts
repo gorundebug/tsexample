@@ -273,6 +273,7 @@ export class ConfigGenerated extends ConfigSnapshot {
     const runtime = await loadRuntimeConfig({
       configPath: paths.configPath,
       valuesPath: paths.valuesPath,
+      overridesPath: paths.overridesPath,
       defaults: DEFAULT_CONFIG,
       patches: ENVIRONMENT_PATCHES,
       schema: canonicalConfigSchema

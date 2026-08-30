@@ -99,12 +99,12 @@ docker-build: ## [Docker] Build the autonomous copied-source runtime image
 		--build-arg GIT_CONFIG_KEY_1="$${GIT_CONFIG_KEY_1:-}" \
 		--build-arg GIT_CONFIG_VALUE_1="$${GIT_CONFIG_VALUE_1:-}" \
 		--build-arg DEPENDENCY_GITHUB_RAW_URL="$${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}" \
-		-f "$(STANDALONE_DOCKERFILE)" -t "inventoryservice-typescript:latest" .
+		-f "$(STANDALONE_DOCKERFILE)" -t "inventoryservice-typescript:local" .
 
 docker-build-dev: ## Build this standalone TypeScript development image
 	@$(MAKE) docker-build DOCKER_TARGET="$(DOCKER_DEV_TARGET)"
-	@docker tag "inventoryservice-typescript:latest" \
-		"inventoryservice-typescript-development:latest"
+	@docker tag "inventoryservice-typescript:local" \
+		"inventoryservice-typescript-development:local"
 
 docker-up: docker-build ## Start this service through Docker Compose
 	DOCKER_TARGET="$(DOCKER_TARGET)" \

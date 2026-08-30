@@ -1,6 +1,6 @@
 {
   "name": "@gorundebug/tsexample-inventoryservice",
-  "version": "0.0.1",
+  "version": "0.2.31",
   "private": true,
   "type": "module",
   "files": ["dist", "config"],

@@ -40,7 +40,7 @@ docker-build: ## [Docker] Verify this independent contract/model package
 		--build-arg DEPENDENCY_DOCKER_REGISTRY="$${DEPENDENCY_DOCKER_REGISTRY:-docker.io}" \
 		--build-arg NPM_CONFIG_REGISTRY="$${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}" \
 		--build-arg DEPENDENCY_GITHUB_RAW_URL="$${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}" \
-		-f Dockerfile.generated -t "model_ts-typescript-package:latest" .
+		-f Dockerfile.generated -t "model_ts-typescript-package:local" .
 
 clean:
 	@rm -rf dist tsconfig.tsbuildinfo
