@@ -3,7 +3,7 @@ import test from "node:test";
 
 import { FunctionCollector, MessageContext } from "@gorundebug/tsservicelib/runtime";
 
-import { MapToOrderState } from "../../../src/internal/functions/order/map-to-order-state.js";
+import { MapToOrderState } from "#internal/functions/order/map-to-order-state.js";
 import type { OrderState } from "../../../src/internal/types/index.generated.js";
 import { TestStream } from "../../support/stream.js";
 

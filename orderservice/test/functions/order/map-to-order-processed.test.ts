@@ -4,7 +4,7 @@ import test from "node:test";
 import type { OrderProcessed } from "@gorundebug/model";
 import { FunctionCollector, MessageContext } from "@gorundebug/tsservicelib/runtime";
 
-import { MapToOrderProcessed } from "../../../src/internal/functions/order/map-to-order-processed.js";
+import { MapToOrderProcessed } from "#internal/functions/order/map-to-order-processed.js";
 import { TestStream } from "../../support/stream.js";
 
 void test("MapToOrderProcessed preserves state and counts reserved items", async () => {

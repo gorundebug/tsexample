@@ -25,7 +25,7 @@ import {
   type ProcessOrderRequest,
   type ProcessOrderResponse,
 } from "@gorundebug/order-service-api";
-import type { Order, OrderState } from "../../types/index.generated.js";
+import type { Order, OrderState } from "#internal/types/index.generated.js";
 
 export interface ProcessOrderSourceHandlerState {
   readonly request: ProcessOrderRequest;

@@ -7,7 +7,7 @@ import {
   makeScheduleTrigger
 } from "@gorundebug/tsservicelib/runtime";
 
-import { TemporalWorkflowScheduleSource } from "../../../src/internal/functions/workflow/temporal-workflow-schedule-source.js";
+import { TemporalWorkflowScheduleSource } from "#internal/functions/workflow/temporal-workflow-schedule-source.js";
 
 void test("TemporalWorkflowScheduleSource converts the trigger to a Workflow input", async () => {
   const function_ = new TemporalWorkflowScheduleSource();

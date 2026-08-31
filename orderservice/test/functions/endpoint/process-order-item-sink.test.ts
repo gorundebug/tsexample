@@ -13,7 +13,7 @@ import type {
   Sender,
 } from "@gorundebug/tsservicelib/datasink/grpc";
 
-import { ProcessOrderItemSink } from "../../../src/internal/functions/endpoint/process-order-item-sink.js";
+import { ProcessOrderItemSink } from "#internal/functions/endpoint/process-order-item-sink.js";
 import type { OrderState } from "../../../src/internal/types/index.generated.js";
 import { makeTestSinkStreamContext } from "../../support/stream.js";
 

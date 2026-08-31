@@ -12,7 +12,7 @@ import type {
   ResultContext,
 } from "@gorundebug/tsservicelib/datasource/http";
 
-import { ProcessOrderSource } from "../../../src/internal/functions/endpoint/process-order-source.js";
+import { ProcessOrderSource } from "#internal/functions/endpoint/process-order-source.js";
 import type { Order, OrderState } from "../../../src/internal/types/index.generated.js";
 import { makeTestStreamContext } from "../../support/stream.js";
 

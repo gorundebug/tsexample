@@ -11,7 +11,7 @@ import {
   type ResultContext,
 } from "@gorundebug/tsservicelib/datasource/kafka";
 
-import { OrderProcessedEndpointSource } from "../../../src/internal/functions/endpoint/order-processed-endpoint-source.js";
+import { OrderProcessedEndpointSource } from "#internal/functions/endpoint/order-processed-endpoint-source.js";
 import { makeTestStreamContext } from "../../support/stream.js";
 
 void test("OrderProcessedEndpointSource decodes an event and acknowledges it after the result", async () => {

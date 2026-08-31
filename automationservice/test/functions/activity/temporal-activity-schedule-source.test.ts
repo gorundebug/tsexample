@@ -7,7 +7,7 @@ import {
   makeScheduleTrigger
 } from "@gorundebug/tsservicelib/runtime";
 
-import { TemporalActivityScheduleSource } from "../../../src/internal/functions/activity/temporal-activity-schedule-source.js";
+import { TemporalActivityScheduleSource } from "#internal/functions/activity/temporal-activity-schedule-source.js";
 
 void test("TemporalActivityScheduleSource converts the trigger to an Activity input", async () => {
   const function_ = new TemporalActivityScheduleSource();

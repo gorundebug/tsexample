@@ -14,7 +14,7 @@ import type {
   Sender,
 } from "@gorundebug/tsservicelib/datasource/grpc";
 
-import { ProcessOrderItemSource } from "../../../src/internal/functions/endpoint/process-order-item-source.js";
+import { ProcessOrderItemSource } from "#internal/functions/endpoint/process-order-item-source.js";
 import { makeTestStreamContext } from "../../support/stream.js";
 
 void test("ProcessOrderItemSource maps a request and sends the correlated result", async () => {

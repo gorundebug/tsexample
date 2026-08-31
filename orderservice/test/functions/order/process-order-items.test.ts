@@ -4,7 +4,7 @@ import test from "node:test";
 import type { OrderItem } from "@gorundebug/model";
 import { FunctionCollector, MessageContext } from "@gorundebug/tsservicelib/runtime";
 
-import { ProcessOrderItems } from "../../../src/internal/functions/order/process-order-items.js";
+import { ProcessOrderItems } from "#internal/functions/order/process-order-items.js";
 import { TestStream } from "../../support/stream.js";
 
 void test("ProcessOrderItems emits every item with its parent order ID", async () => {

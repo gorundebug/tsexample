@@ -4,7 +4,7 @@ import test from "node:test";
 import type { OrderItemResult } from "@gorundebug/model";
 import { FunctionCollector, MessageContext } from "@gorundebug/tsservicelib/runtime";
 
-import { GetInventoryItemData } from "../../../src/internal/functions/inventory-item/get-inventory-item-data.js";
+import { GetInventoryItemData } from "#internal/functions/inventory-item/get-inventory-item-data.js";
 import { TestTypedStream } from "../../support/stream.js";
 
 void test("GetInventoryItemData reserves available stock", async () => {

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { ScheduledActivityPause } from "../../../src/internal/functions/automation/scheduled-activity-pause.js";
+import { ScheduledActivityPause } from "#internal/functions/automation/scheduled-activity-pause.js";
 
 void test("ScheduledActivityPause exposes its canonical function contract", () => {
   const function_ = new ScheduledActivityPause();

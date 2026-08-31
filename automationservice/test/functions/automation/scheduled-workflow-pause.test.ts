@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { ScheduledWorkflowPause } from "../../../src/internal/functions/automation/scheduled-workflow-pause.js";
+import { ScheduledWorkflowPause } from "#internal/functions/automation/scheduled-workflow-pause.js";
 
 void test("ScheduledWorkflowPause exposes its canonical function contract", () => {
   const function_ = new ScheduledWorkflowPause();

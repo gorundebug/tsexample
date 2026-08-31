@@ -10,7 +10,7 @@ import type {
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
-import type { OrderState } from "../../types/index.generated.js";
+import type { OrderState } from "#internal/types/index.generated.js";
 import type { OrderProcessed } from "@gorundebug/model";
 
 /** Create an OrderProcessed event from the final order state.

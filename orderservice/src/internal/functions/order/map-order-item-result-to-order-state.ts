@@ -10,7 +10,7 @@ import type {
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
-import type { OrderState } from "../../types/index.generated.js";
+import type { OrderState } from "#internal/types/index.generated.js";
 import type { OrderItemResult } from "@gorundebug/model";
 
 /** Produce an order result containing one inventory result and preserving its order ID.

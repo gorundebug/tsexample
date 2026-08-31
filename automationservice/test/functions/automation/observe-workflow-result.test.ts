@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { ObserveWorkflowResult } from "../../../src/internal/functions/automation/observe-workflow-result.js";
+import { ObserveWorkflowResult } from "#internal/functions/automation/observe-workflow-result.js";
 
 void test("ObserveWorkflowResult exposes its canonical function contract", () => {
   const function_ = new ObserveWorkflowResult();

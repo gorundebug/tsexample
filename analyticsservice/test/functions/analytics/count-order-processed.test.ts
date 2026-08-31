@@ -11,7 +11,7 @@ import {
 } from "@gorundebug/tsservicelib/runtime";
 import { TestMetrics } from "@gorundebug/tsservicelib/runtime/testmetrics";
 
-import { CountOrderProcessed } from "../../../src/internal/functions/analytics/count-order-processed.js";
+import { CountOrderProcessed } from "#internal/functions/analytics/count-order-processed.js";
 
 void test("CountOrderProcessed counts successful and unsuccessful orders independently", async () => {
   const metrics = new TestMetrics();

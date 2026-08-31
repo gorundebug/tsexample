@@ -8,7 +8,7 @@ import {
   makeScheduleTrigger
 } from "@gorundebug/tsservicelib/runtime";
 
-import { LocalScheduleSource } from "../../../src/internal/functions/cron/local-schedule-source.js";
+import { LocalScheduleSource } from "#internal/functions/cron/local-schedule-source.js";
 
 void test("LocalScheduleSource converts the trigger to the input value", async () => {
   const function_ = new LocalScheduleSource();

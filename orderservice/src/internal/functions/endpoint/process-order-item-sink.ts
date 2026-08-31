@@ -12,7 +12,7 @@ import type {
   ResultContext as GrpcSinkResultContext,
   Sender as GrpcRequestSender,
 } from "@gorundebug/tsservicelib/datasink/grpc";
-import type { OrderState } from "../../types/index.generated.js";
+import type { OrderState } from "#internal/types/index.generated.js";
 import type { OrderItem, OrderItemResult } from "@gorundebug/model";
 import {
   ProcessOrderItemRequestSchema,

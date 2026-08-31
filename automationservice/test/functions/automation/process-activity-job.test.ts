@@ -6,7 +6,7 @@ import {
   MessageContext
 } from "@gorundebug/tsservicelib/runtime";
 
-import { ProcessActivityJob } from "../../../src/internal/functions/automation/process-activity-job.js";
+import { ProcessActivityJob } from "#internal/functions/automation/process-activity-job.js";
 
 void test("ProcessActivityJob records progress and returns a result", async () => {
   const function_ = new ProcessActivityJob();

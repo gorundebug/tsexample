@@ -10,7 +10,7 @@ import type {
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
-import type { Order, OrderState } from "../../types/index.generated.js";
+import type { Order, OrderState } from "#internal/types/index.generated.js";
 
 /** Produce a TIMED_OUT order result that preserves the order ID and submitted total.
 Do not add item results at this stage; results received before the timeout are included in the final response. */

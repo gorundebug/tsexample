@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { AnalyticsScheduleSource } from "../../../src/internal/functions/cron/analytics-schedule-source.js";
+import { AnalyticsScheduleSource } from "#internal/functions/cron/analytics-schedule-source.js";
 
 void test("AnalyticsScheduleSource exposes its canonical function contract", () => {
   const function_ = new AnalyticsScheduleSource();

@@ -7,7 +7,7 @@ import {
   TemporalContinueAsNewRequest
 } from "@gorundebug/tsservicelib/runtime";
 
-import { ProcessWorkflowJob } from "../../../src/internal/functions/automation/process-workflow-job.js";
+import { ProcessWorkflowJob } from "#internal/functions/automation/process-workflow-job.js";
 
 void test("ProcessWorkflowJob continues once and returns its final result", async () => {
   const function_ = new ProcessWorkflowJob();

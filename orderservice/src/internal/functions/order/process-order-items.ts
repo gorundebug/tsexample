@@ -10,7 +10,7 @@ import type {
 import type {
   FlatMapFunction,
 } from "@gorundebug/tsservicelib/transformation";
-import type { Order } from "../../types/index.generated.js";
+import type { Order } from "#internal/types/index.generated.js";
 import type { OrderItem } from "@gorundebug/model";
 
 /** Emit every order item independently for inventory processing.

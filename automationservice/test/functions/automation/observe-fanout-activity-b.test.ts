@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { ObserveFanoutActivityB } from "../../../src/internal/functions/automation/observe-fanout-activity-b.js";
+import { ObserveFanoutActivityB } from "#internal/functions/automation/observe-fanout-activity-b.js";
 
 void test("ObserveFanoutActivityB exposes its canonical function contract", () => {
   const function_ = new ObserveFanoutActivityB();

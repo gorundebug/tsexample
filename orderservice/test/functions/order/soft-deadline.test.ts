@@ -3,7 +3,7 @@ import test from "node:test";
 
 import { MessageContext } from "@gorundebug/tsservicelib/runtime";
 
-import { SoftDeadline } from "../../../src/internal/functions/order/soft-deadline.js";
+import { SoftDeadline } from "#internal/functions/order/soft-deadline.js";
 import { delayStream } from "../../support/stream.js";
 
 const order = {
