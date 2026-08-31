@@ -127,7 +127,11 @@ export abstract class ServiceGenerated {
       ...this.createServiceAppOptions(serviceConfig),
       serdeRegistry,
       configReload: {
-        valuesPath: configPaths.valuesPath,
+        paths: [
+          configPaths.configPath,
+          configPaths.valuesPath,
+          configPaths.overridesPath,
+        ].filter((path): path is string => path !== undefined),
         load: async () => (await Config.load(arguments_)).runtime,
       },
     });
