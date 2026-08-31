@@ -33,21 +33,42 @@ RUN set -eu; \
     mkdir -p /workspace/.tsservicelib; \
     cp -a "$source_dir/." /workspace/.tsservicelib/; \
     rm -rf /tmp/tsservicelib-source
-RUN sed -i '/^overrides:/i\  - ".tsservicelib"' pnpm-workspace.yaml \
+RUN sed -i '/^packages:/a\  - ".tsservicelib"' pnpm-workspace.yaml \
     && sed -i '/^overrides:/a\  "@gorundebug/tsservicelib": "workspace:*"' pnpm-workspace.yaml
+RUN node --input-type=module <<'NODE'
+import fs from 'node:fs';
+import path from 'node:path';
+
+const manifests = fs.readdirSync('.', { withFileTypes: true })
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => path.join(entry.name, 'package.json'))
+  .filter((manifest) => fs.existsSync(manifest));
+const localPackages = new Set(manifests.map((manifest) => {
+  return JSON.parse(fs.readFileSync(manifest, 'utf8')).name;
+}));
+for (const manifest of manifests) {
+  const pkg = JSON.parse(fs.readFileSync(manifest, 'utf8'));
+  for (const field of ['dependencies', 'devDependencies', 'optionalDependencies']) {
+    for (const dependency of Object.keys(pkg[field] ?? {})) {
+      if (localPackages.has(dependency)) pkg[field][dependency] = 'workspace:*';
+    }
+  }
+  fs.writeFileSync(manifest, `${JSON.stringify(pkg, null, 2)}\n`);
+}
+NODE
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
     corepack pnpm config set store-dir /pnpm/store \
-    && corepack pnpm install --no-frozen-lockfile \
-    && corepack pnpm --filter @gorundebug/tsservicelib build \
+    && corepack pnpm install --no-frozen-lockfile
+RUN corepack pnpm --filter @gorundebug/tsservicelib build \
     && corepack pnpm --recursive --filter '!@gorundebug/tsservicelib' build
 
 FROM development AS deploy-tsservicelib
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
-    corepack pnpm --filter @gorundebug/tsservicelib deploy --prod --legacy /deploy/tsservicelib
+    corepack pnpm --filter @gorundebug/tsservicelib deploy --prod /deploy/tsservicelib
 
 FROM development AS deploy-analyticsservice
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
-    corepack pnpm --filter @gorundebug/tsexample-analyticsservice deploy --prod --legacy /deploy/analyticsservice \
+    corepack pnpm --filter @gorundebug/tsexample-analyticsservice deploy --prod /deploy/analyticsservice \
     && rm -f /deploy/analyticsservice/node_modules/@gorundebug/tsservicelib \
     && mkdir -p /deploy/analyticsservice/node_modules/@gorundebug/tsservicelib \
     && cp /workspace/.tsservicelib/package.json /workspace/.tsservicelib/LICENSE \
@@ -57,7 +78,7 @@ RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},targe
 
 FROM development AS deploy-automationservice
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
-    corepack pnpm --filter @gorundebug/tsexample-automationservice deploy --prod --legacy /deploy/automationservice \
+    corepack pnpm --filter @gorundebug/tsexample-automationservice deploy --prod /deploy/automationservice \
     && rm -f /deploy/automationservice/node_modules/@gorundebug/tsservicelib \
     && mkdir -p /deploy/automationservice/node_modules/@gorundebug/tsservicelib \
     && cp /workspace/.tsservicelib/package.json /workspace/.tsservicelib/LICENSE \
@@ -67,7 +88,7 @@ RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},targe
 
 FROM development AS deploy-inventoryservice
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
-    corepack pnpm --filter @gorundebug/tsexample-inventoryservice deploy --prod --legacy /deploy/inventoryservice \
+    corepack pnpm --filter @gorundebug/tsexample-inventoryservice deploy --prod /deploy/inventoryservice \
     && rm -f /deploy/inventoryservice/node_modules/@gorundebug/tsservicelib \
     && mkdir -p /deploy/inventoryservice/node_modules/@gorundebug/tsservicelib \
     && cp /workspace/.tsservicelib/package.json /workspace/.tsservicelib/LICENSE \
@@ -77,7 +98,7 @@ RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},targe
 
 FROM development AS deploy-orderservice
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
-    corepack pnpm --filter @gorundebug/tsexample-orderservice deploy --prod --legacy /deploy/orderservice \
+    corepack pnpm --filter @gorundebug/tsexample-orderservice deploy --prod /deploy/orderservice \
     && rm -f /deploy/orderservice/node_modules/@gorundebug/tsservicelib \
     && mkdir -p /deploy/orderservice/node_modules/@gorundebug/tsservicelib \
     && cp /workspace/.tsservicelib/package.json /workspace/.tsservicelib/LICENSE \

@@ -7,6 +7,9 @@ packages:
   - "model_ts"
   - "order_service_api"
 
+injectWorkspacePackages: true
+syncInjectedDepsAfterScripts:
+  - build
 overrides:
   "@gorundebug/inventory-service-api": "workspace:*"
   "@gorundebug/model": "workspace:*"
