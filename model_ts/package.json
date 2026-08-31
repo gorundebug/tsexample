@@ -1,6 +1,6 @@
 {
   "name": "@gorundebug/model",
-  "version": "0.2.46",
+  "version": "0.2.47",
   "type": "module",
   "engines": {
     "node": "24.19.0"
