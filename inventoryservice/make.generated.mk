@@ -6,11 +6,11 @@ DOCKER_DEV_TARGET := development
 STANDALONE_DOCKERFILE := Dockerfile
 STANDALONE_COMPOSE := $(if $(wildcard docker-compose.yml),docker-compose.yml,docker-compose.standalone.generated.yml)
 MODULE_CONTEXT_ARGS =
-TSSERVICELIB_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsservicelib.git\#v0.2.53
+TSSERVICELIB_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsservicelib.git\#v0.2.54
 MODULE_CONTEXT_ARGS += --build-context tsservicelib-source="$(TSSERVICELIB_SOURCE_CONTEXT)"
-INVENTORY_SERVICE_API_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample.git\#v0.2.53
+INVENTORY_SERVICE_API_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample.git\#v0.2.54
 MODULE_CONTEXT_ARGS += --build-context module-inventory_service_api-source="$(INVENTORY_SERVICE_API_SOURCE_CONTEXT)"
-MODEL_TS_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample.git\#v0.2.53
+MODEL_TS_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample.git\#v0.2.54
 MODULE_CONTEXT_ARGS += --build-context module-model_ts-source="$(MODEL_TS_SOURCE_CONTEXT)"
 PROGRESS := ./scripts/run-with-progress.generated.sh
 DEPENDENCY_PNPM_REGISTRY_ARG = $(if $(strip $(NPM_CONFIG_REGISTRY)),--config.registry=$(NPM_CONFIG_REGISTRY),)
@@ -31,11 +31,11 @@ MODEL_TS_SOURCE_CONTEXT := ../model_ts
 endif
 ifneq ($(strip $(DEPENDENCY_PROXY_DIR)),)
 ifeq ($(origin TSSERVICELIB_SOURCE_CONTEXT),file)
-TSSERVICELIB_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsservicelib.git\#v0.2.53
+TSSERVICELIB_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsservicelib.git\#v0.2.54
 endif
 ifneq ($(strip $(USE_LOCAL_MODULES)),1)
-INVENTORY_SERVICE_API_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample.git\#v0.2.53
-MODEL_TS_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample.git\#v0.2.53
+INVENTORY_SERVICE_API_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample.git\#v0.2.54
+MODEL_TS_SOURCE_CONTEXT := $(DEPENDENCY_GIT_MIRROR_DOCKER_BASE)/github.com/gorundebug/tsexample.git\#v0.2.54
 endif
 endif
 PNPM ?= env CI=true \
