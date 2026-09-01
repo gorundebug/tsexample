@@ -20,8 +20,10 @@ ENV DEPENDENCY_GITHUB_RAW_URL=${DEPENDENCY_GITHUB_RAW_URL}
 COPY dependency-download-mirrors.generated.env /etc/servicegen/dependency-download-mirrors.generated.env
 COPY dependency-download-mirrors.env /etc/servicegen/dependency-download-mirrors.env
 COPY dependency-download-env.generated.sh /usr/local/bin/servicegen-download-env
+COPY dependency-download-node-preload.generated.cjs /usr/local/lib/dependency-download-node-preload.generated.cjs
 COPY prepare-local-build.generated.sh /usr/local/bin/prepare-local-build
 SHELL ["/usr/local/bin/servicegen-download-env", "/bin/sh", "-c"]
+ENV NODE_OPTIONS=--require=/usr/local/lib/dependency-download-node-preload.generated.cjs
 RUN corepack enable \
     && corepack prepare pnpm@11.18.0 --activate \
     && corepack pnpm config set registry "${NPM_CONFIG_REGISTRY}"
