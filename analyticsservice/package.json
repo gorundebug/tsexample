@@ -1,6 +1,6 @@
 {
   "name": "@gorundebug/tsexample-analyticsservice",
-  "version": "0.2.60",
+  "version": "0.2.61",
   "private": true,
   "type": "module",
   "imports": {
@@ -21,9 +21,9 @@
   },
   "dependencies": {
     "croner": "10.0.1",
-    "@gorundebug/tsservicelib": "github:gorundebug/tsservicelib#v0.2.60",
+    "@gorundebug/tsservicelib": "github:gorundebug/tsservicelib#v0.2.61",
     "@bufbuild/protobuf": "2.14.0",
-    "@gorundebug/model": "git+https://github.com/gorundebug/tsexample.git#v0.2.60&path:model_ts"
+    "@gorundebug/model": "git+https://github.com/gorundebug/tsexample.git#v0.2.61&path:model_ts"
   },
   "devDependencies": {
     "@types/node": "24.13.3",
