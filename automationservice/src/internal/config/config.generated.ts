@@ -938,13 +938,16 @@ const DEFAULT_CONFIG = {
   },
   "links": {
     "callSequentialActivityAToCallSequentialActivityB": {
-      "callSemantics": 2,
+      "callSemantics": 4,
       "from": 5,
+      "poolName": "Default Pool",
+      "priority": 2,
       "to": 6
     },
     "callSequentialActivityBToProcessWorkflowJob": {
-      "callSemantics": 2,
+      "callSemantics": 3,
       "from": 6,
+      "poolName": "Default Pool",
       "to": 28
     },
     "consumeActivityJobToActivityPause": {
@@ -968,8 +971,9 @@ const DEFAULT_CONFIG = {
       "to": 23
     },
     "consumeFanOutWorkflowJobToCallFanOutActivityA": {
-      "callSemantics": 2,
+      "callSemantics": 3,
       "from": 11,
+      "poolName": "Default Pool",
       "to": 2
     },
     "consumeSequentialActivityAToProcessSequentialActivityA": {
@@ -988,18 +992,23 @@ const DEFAULT_CONFIG = {
       "to": 38
     },
     "splitActivityAResultToCallFanOutActivityB": {
-      "callSemantics": 2,
+      "callSemantics": 4,
       "from": 31,
+      "poolName": "Default Pool",
+      "priority": 2,
       "to": 3
     },
     "splitActivityAResultToCallFanOutActivityC": {
-      "callSemantics": 2,
+      "callSemantics": 4,
       "from": 31,
+      "poolName": "Default Pool",
+      "priority": 7,
       "to": 4
     },
     "workflowPauseToCallSequentialActivityA": {
-      "callSemantics": 2,
+      "callSemantics": 3,
       "from": 38,
+      "poolName": "Default Pool",
       "to": 5
     }
   },
