@@ -685,7 +685,8 @@ const DEFAULT_CONFIG = {
       "name": "Temporal",
       "namespace": "default",
       "tlsEnabled": false,
-      "type": 6
+      "type": 6,
+      "workerStopTimeout": 5000
     }
   },
   "endpoints": {
@@ -1089,6 +1090,7 @@ const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
   { environment: "TEMPORAL_ACTIVITY_SCHEDULE_ENABLED", path: ["endpoints", "temporalActivitySchedule", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "TEMPORAL_ACTIVITY_SCHEDULE_TRACING_ENABLED", path: ["endpoints", "temporalActivitySchedule", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "TEMPORAL_ADDRESS", path: ["dataConnectors", "temporal", "address", ], parse: parseStringEnvironment },
+  { environment: "TEMPORAL_WORKER_STOP_TIMEOUT", path: ["dataConnectors", "temporal", "workerStopTimeout", ], parse: parseIntegerEnvironment },
   { environment: "TEMPORAL_WORKFLOW_SCHEDULE_ENABLED", path: ["endpoints", "temporalWorkflowSchedule", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "TEMPORAL_WORKFLOW_SCHEDULE_TRACING_ENABLED", path: ["endpoints", "temporalWorkflowSchedule", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "WORKFLOW_JOB_ENABLED", path: ["endpoints", "workflowJob", "enabled", ], parse: parseBooleanEnvironment },

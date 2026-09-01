@@ -73,42 +73,42 @@ export interface ServiceMakers {
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
-  ) => OrderProcessedEndpointSink;
+  ) => OrderProcessedEndpointSink | Promise<OrderProcessedEndpointSink>;
   processOrderItemSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
-  ) => ProcessOrderItemSink;
+  ) => ProcessOrderItemSink | Promise<ProcessOrderItemSink>;
   processOrderSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").HttpEndpointConfig,
-  ) => ProcessOrderSource;
+  ) => ProcessOrderSource | Promise<ProcessOrderSource>;
   mapOrderItemResultToOrderState: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => MapOrderItemResultToOrderState;
+  ) => MapOrderItemResultToOrderState | Promise<MapOrderItemResultToOrderState>;
   mapToOrderProcessed: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => MapToOrderProcessed;
+  ) => MapToOrderProcessed | Promise<MapToOrderProcessed>;
   mapToOrderState: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => MapToOrderState;
+  ) => MapToOrderState | Promise<MapToOrderState>;
   processOrderItems: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").FlatMapStreamConfig,
-  ) => ProcessOrderItems;
+  ) => ProcessOrderItems | Promise<ProcessOrderItems>;
   softDeadline: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => SoftDeadline;
+  ) => SoftDeadline | Promise<SoftDeadline>;
 }
 
 export function defaultMakers(): ServiceMakers {
@@ -124,6 +124,24 @@ export function defaultMakers(): ServiceMakers {
   };
 }
 
+function synchronousMakerResult<T>(value: T | Promise<T>, name: string): T {
+  if (value instanceof Promise) {
+    throw new Error(`Temporal Workflow maker ${name} must be synchronous`);
+  }
+  return value;
+}
+
+export interface ServiceFunctions {
+  orderProcessedEndpointSink: OrderProcessedEndpointSink;
+  processOrderItemSink: ProcessOrderItemSink;
+  processOrderSource: ProcessOrderSource;
+  mapOrderItemResultToOrderState: MapOrderItemResultToOrderState;
+  mapToOrderProcessed: MapToOrderProcessed;
+  mapToOrderState: MapToOrderState;
+  processOrderItems: ProcessOrderItems;
+  softDeadline: SoftDeadline;
+}
+
 export function initFunctions(
   context: MessageContext,
   config: ConfigSnapshot,
@@ -131,18 +149,123 @@ export function initFunctions(
   makers: ServiceMakers,
 ) {
   return {
-    orderProcessedEndpointSink: makers.orderProcessedEndpointSink(context, environment, config.named.endpoints.orderProcessed),
-    processOrderItemSink: makers.processOrderItemSink(context, environment, config.named.endpoints.processOrderItem),
-    processOrderSource: makers.processOrderSource(context, environment, config.named.endpoints.processOrder),
-    mapOrderItemResultToOrderState: makers.mapOrderItemResultToOrderState(context, environment, config.named.streams.mapOrderItemResultToOrderState),
-    mapToOrderProcessed: makers.mapToOrderProcessed(context, environment, config.named.streams.mapToOrderProcessed),
-    mapToOrderState: makers.mapToOrderState(context, environment, config.named.streams.mapToOrderState),
-    processOrderItems: makers.processOrderItems(context, environment, config.named.streams.processOrderItems),
-    softDeadline: makers.softDeadline(context, environment, config.named.streams.softDeadline),
+    orderProcessedEndpointSink: synchronousMakerResult(
+      makers.orderProcessedEndpointSink(context, environment, config.named.endpoints.orderProcessed),
+      "orderProcessedEndpointSink",
+    ),
+    processOrderItemSink: synchronousMakerResult(
+      makers.processOrderItemSink(context, environment, config.named.endpoints.processOrderItem),
+      "processOrderItemSink",
+    ),
+    processOrderSource: synchronousMakerResult(
+      makers.processOrderSource(context, environment, config.named.endpoints.processOrder),
+      "processOrderSource",
+    ),
+    mapOrderItemResultToOrderState: synchronousMakerResult(
+      makers.mapOrderItemResultToOrderState(context, environment, config.named.streams.mapOrderItemResultToOrderState),
+      "mapOrderItemResultToOrderState",
+    ),
+    mapToOrderProcessed: synchronousMakerResult(
+      makers.mapToOrderProcessed(context, environment, config.named.streams.mapToOrderProcessed),
+      "mapToOrderProcessed",
+    ),
+    mapToOrderState: synchronousMakerResult(
+      makers.mapToOrderState(context, environment, config.named.streams.mapToOrderState),
+      "mapToOrderState",
+    ),
+    processOrderItems: synchronousMakerResult(
+      makers.processOrderItems(context, environment, config.named.streams.processOrderItems),
+      "processOrderItems",
+    ),
+    softDeadline: synchronousMakerResult(
+      makers.softDeadline(context, environment, config.named.streams.softDeadline),
+      "softDeadline",
+    ),
   };
 }
 
-export type ServiceFunctions = ReturnType<typeof initFunctions>;
+export async function initFunctionsParallel(
+  context: MessageContext,
+  config: ConfigSnapshot,
+  environment: RuntimeEnvironment,
+  makers: ServiceMakers,
+): Promise<ServiceFunctions> {
+  let orderProcessedEndpointSink: OrderProcessedEndpointSink;
+  let processOrderItemSink: ProcessOrderItemSink;
+  let processOrderSource: ProcessOrderSource;
+  let mapOrderItemResultToOrderState: MapOrderItemResultToOrderState;
+  let mapToOrderProcessed: MapToOrderProcessed;
+  let mapToOrderState: MapToOrderState;
+  let processOrderItems: ProcessOrderItems;
+  let softDeadline: SoftDeadline;
+  {
+    const group = await Promise.allSettled([
+      makers.orderProcessedEndpointSink(context, environment, config.named.endpoints.orderProcessed),
+      makers.processOrderItemSink(context, environment, config.named.endpoints.processOrderItem),
+      makers.processOrderSource(context, environment, config.named.endpoints.processOrder),
+      makers.mapOrderItemResultToOrderState(context, environment, config.named.streams.mapOrderItemResultToOrderState),
+      makers.mapToOrderProcessed(context, environment, config.named.streams.mapToOrderProcessed),
+      makers.mapToOrderState(context, environment, config.named.streams.mapToOrderState),
+      makers.processOrderItems(context, environment, config.named.streams.processOrderItems),
+      makers.softDeadline(context, environment, config.named.streams.softDeadline),
+    ] as const);
+    for (const result of group) {
+      if (result.status === "rejected") {
+        throw result.reason;
+      }
+    }
+    const orderProcessedEndpointSinkResult0 = group[0];
+    if (orderProcessedEndpointSinkResult0.status !== "fulfilled") {
+      throw orderProcessedEndpointSinkResult0.reason;
+    }
+    orderProcessedEndpointSink = orderProcessedEndpointSinkResult0.value;
+    const processOrderItemSinkResult0 = group[1];
+    if (processOrderItemSinkResult0.status !== "fulfilled") {
+      throw processOrderItemSinkResult0.reason;
+    }
+    processOrderItemSink = processOrderItemSinkResult0.value;
+    const processOrderSourceResult0 = group[2];
+    if (processOrderSourceResult0.status !== "fulfilled") {
+      throw processOrderSourceResult0.reason;
+    }
+    processOrderSource = processOrderSourceResult0.value;
+    const mapOrderItemResultToOrderStateResult0 = group[3];
+    if (mapOrderItemResultToOrderStateResult0.status !== "fulfilled") {
+      throw mapOrderItemResultToOrderStateResult0.reason;
+    }
+    mapOrderItemResultToOrderState = mapOrderItemResultToOrderStateResult0.value;
+    const mapToOrderProcessedResult0 = group[4];
+    if (mapToOrderProcessedResult0.status !== "fulfilled") {
+      throw mapToOrderProcessedResult0.reason;
+    }
+    mapToOrderProcessed = mapToOrderProcessedResult0.value;
+    const mapToOrderStateResult0 = group[5];
+    if (mapToOrderStateResult0.status !== "fulfilled") {
+      throw mapToOrderStateResult0.reason;
+    }
+    mapToOrderState = mapToOrderStateResult0.value;
+    const processOrderItemsResult0 = group[6];
+    if (processOrderItemsResult0.status !== "fulfilled") {
+      throw processOrderItemsResult0.reason;
+    }
+    processOrderItems = processOrderItemsResult0.value;
+    const softDeadlineResult0 = group[7];
+    if (softDeadlineResult0.status !== "fulfilled") {
+      throw softDeadlineResult0.reason;
+    }
+    softDeadline = softDeadlineResult0.value;
+  }
+  return {
+    orderProcessedEndpointSink,
+    processOrderItemSink,
+    processOrderSource,
+    mapOrderItemResultToOrderState,
+    mapToOrderProcessed,
+    mapToOrderState,
+    processOrderItems,
+    softDeadline,
+  };
+}
 
 export function initStreams(
   config: ConfigSnapshot,

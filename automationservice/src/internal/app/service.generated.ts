@@ -20,7 +20,7 @@ import {
 import { Config } from "../config/config.js";
 import { DataConnectorIds, ServiceIds } from "../config/config.generated.js";
 import {
-  defaultMakers, initFunctions, initStreams, registerGeneratedSerdes,
+  defaultMakers, initFunctionsParallel, initStreams, registerGeneratedSerdes,
   type ServiceFunctions, type ServiceMakers, type ServiceStreams,
 } from "./graph.generated.js";
 
@@ -139,7 +139,9 @@ export abstract class ServiceGenerated {
     const messageContext = new MessageContext();
     this.customMakersInit(messageContext);
     this.clients = initClients();
-    this.functions = initFunctions(messageContext, config, environment, this.makers);
+    this.functions = await initFunctionsParallel(
+      messageContext, config, environment, this.makers,
+    );
     this.customFunctionsInit(messageContext);
     initRuntimeConnectors(environment);
     this.streams = initStreams(config, environment, this.functions);

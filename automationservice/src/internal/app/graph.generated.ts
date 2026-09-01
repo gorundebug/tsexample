@@ -135,182 +135,182 @@ export interface ServiceMakers {
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => ActivityJobEndpointSink;
+  ) => ActivityJobEndpointSink | Promise<ActivityJobEndpointSink>;
   activityJobEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => ActivityJobEndpointSource;
+  ) => ActivityJobEndpointSource | Promise<ActivityJobEndpointSource>;
   fanoutActivityAEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityAEndpointSink;
+  ) => FanoutActivityAEndpointSink | Promise<FanoutActivityAEndpointSink>;
   fanoutActivityAEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityAEndpointSource;
+  ) => FanoutActivityAEndpointSource | Promise<FanoutActivityAEndpointSource>;
   fanoutActivityBEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityBEndpointSink;
+  ) => FanoutActivityBEndpointSink | Promise<FanoutActivityBEndpointSink>;
   fanoutActivityBEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityBEndpointSource;
+  ) => FanoutActivityBEndpointSource | Promise<FanoutActivityBEndpointSource>;
   fanoutActivityCEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityCEndpointSink;
+  ) => FanoutActivityCEndpointSink | Promise<FanoutActivityCEndpointSink>;
   fanoutActivityCEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityCEndpointSource;
+  ) => FanoutActivityCEndpointSource | Promise<FanoutActivityCEndpointSource>;
   sequentialActivityAEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => SequentialActivityAEndpointSink;
+  ) => SequentialActivityAEndpointSink | Promise<SequentialActivityAEndpointSink>;
   sequentialActivityAEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => SequentialActivityAEndpointSource;
+  ) => SequentialActivityAEndpointSource | Promise<SequentialActivityAEndpointSource>;
   sequentialActivityBEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => SequentialActivityBEndpointSink;
+  ) => SequentialActivityBEndpointSink | Promise<SequentialActivityBEndpointSink>;
   sequentialActivityBEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => SequentialActivityBEndpointSource;
+  ) => SequentialActivityBEndpointSource | Promise<SequentialActivityBEndpointSource>;
   temporalActivityScheduleSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => TemporalActivityScheduleSource;
+  ) => TemporalActivityScheduleSource | Promise<TemporalActivityScheduleSource>;
   activityPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => ActivityPause;
+  ) => ActivityPause | Promise<ActivityPause>;
   observeActivityResult: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ObserveActivityResult;
+  ) => ObserveActivityResult | Promise<ObserveActivityResult>;
   observeFanoutActivityB: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ObserveFanoutActivityB;
+  ) => ObserveFanoutActivityB | Promise<ObserveFanoutActivityB>;
   observeFanoutActivityC: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ObserveFanoutActivityC;
+  ) => ObserveFanoutActivityC | Promise<ObserveFanoutActivityC>;
   observeWorkflowResult: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ObserveWorkflowResult;
+  ) => ObserveWorkflowResult | Promise<ObserveWorkflowResult>;
   processActivityJob: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessActivityJob;
+  ) => ProcessActivityJob | Promise<ProcessActivityJob>;
   processFanoutActivityA: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessFanoutActivityA;
+  ) => ProcessFanoutActivityA | Promise<ProcessFanoutActivityA>;
   processFanoutActivityB: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessFanoutActivityB;
+  ) => ProcessFanoutActivityB | Promise<ProcessFanoutActivityB>;
   processFanoutActivityC: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessFanoutActivityC;
+  ) => ProcessFanoutActivityC | Promise<ProcessFanoutActivityC>;
   processScheduledActivity: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessScheduledActivity;
+  ) => ProcessScheduledActivity | Promise<ProcessScheduledActivity>;
   processScheduledWorkflow: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessScheduledWorkflow;
+  ) => ProcessScheduledWorkflow | Promise<ProcessScheduledWorkflow>;
   processSequentialActivityA: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessSequentialActivityA;
+  ) => ProcessSequentialActivityA | Promise<ProcessSequentialActivityA>;
   processSequentialActivityB: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessSequentialActivityB;
+  ) => ProcessSequentialActivityB | Promise<ProcessSequentialActivityB>;
   processWorkflowJob: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessWorkflowJob;
+  ) => ProcessWorkflowJob | Promise<ProcessWorkflowJob>;
   scheduledActivityPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => ScheduledActivityPause;
+  ) => ScheduledActivityPause | Promise<ScheduledActivityPause>;
   scheduledWorkflowPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => ScheduledWorkflowPause;
+  ) => ScheduledWorkflowPause | Promise<ScheduledWorkflowPause>;
   workflowPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => WorkflowPause;
+  ) => WorkflowPause | Promise<WorkflowPause>;
   localScheduleSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
-  ) => LocalScheduleSource;
+  ) => LocalScheduleSource | Promise<LocalScheduleSource>;
   fanoutWorkflowJobEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutWorkflowJobEndpointSink;
+  ) => FanoutWorkflowJobEndpointSink | Promise<FanoutWorkflowJobEndpointSink>;
   fanoutWorkflowJobEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutWorkflowJobEndpointSource;
+  ) => FanoutWorkflowJobEndpointSource | Promise<FanoutWorkflowJobEndpointSource>;
   temporalWorkflowScheduleSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => TemporalWorkflowScheduleSource;
+  ) => TemporalWorkflowScheduleSource | Promise<TemporalWorkflowScheduleSource>;
   workflowJobEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => WorkflowJobEndpointSink;
+  ) => WorkflowJobEndpointSink | Promise<WorkflowJobEndpointSink>;
   workflowJobEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => WorkflowJobEndpointSource;
+  ) => WorkflowJobEndpointSource | Promise<WorkflowJobEndpointSource>;
 }
 
 export function defaultMakers(): ServiceMakers {
@@ -354,6 +354,52 @@ export function defaultMakers(): ServiceMakers {
   };
 }
 
+function synchronousMakerResult<T>(value: T | Promise<T>, name: string): T {
+  if (value instanceof Promise) {
+    throw new Error(`Temporal Workflow maker ${name} must be synchronous`);
+  }
+  return value;
+}
+
+export interface ServiceFunctions {
+  activityJobEndpointSink: ActivityJobEndpointSink;
+  activityJobEndpointSource: ActivityJobEndpointSource;
+  fanoutActivityAEndpointSink: FanoutActivityAEndpointSink;
+  fanoutActivityAEndpointSource: FanoutActivityAEndpointSource;
+  fanoutActivityBEndpointSink: FanoutActivityBEndpointSink;
+  fanoutActivityBEndpointSource: FanoutActivityBEndpointSource;
+  fanoutActivityCEndpointSink: FanoutActivityCEndpointSink;
+  fanoutActivityCEndpointSource: FanoutActivityCEndpointSource;
+  sequentialActivityAEndpointSink: SequentialActivityAEndpointSink;
+  sequentialActivityAEndpointSource: SequentialActivityAEndpointSource;
+  sequentialActivityBEndpointSink: SequentialActivityBEndpointSink;
+  sequentialActivityBEndpointSource: SequentialActivityBEndpointSource;
+  temporalActivityScheduleSource: TemporalActivityScheduleSource;
+  activityPause: ActivityPause;
+  observeActivityResult: ObserveActivityResult;
+  observeFanoutActivityB: ObserveFanoutActivityB;
+  observeFanoutActivityC: ObserveFanoutActivityC;
+  observeWorkflowResult: ObserveWorkflowResult;
+  processActivityJob: ProcessActivityJob;
+  processFanoutActivityA: ProcessFanoutActivityA;
+  processFanoutActivityB: ProcessFanoutActivityB;
+  processFanoutActivityC: ProcessFanoutActivityC;
+  processScheduledActivity: ProcessScheduledActivity;
+  processScheduledWorkflow: ProcessScheduledWorkflow;
+  processSequentialActivityA: ProcessSequentialActivityA;
+  processSequentialActivityB: ProcessSequentialActivityB;
+  processWorkflowJob: ProcessWorkflowJob;
+  scheduledActivityPause: ScheduledActivityPause;
+  scheduledWorkflowPause: ScheduledWorkflowPause;
+  workflowPause: WorkflowPause;
+  localScheduleSource: LocalScheduleSource;
+  fanoutWorkflowJobEndpointSink: FanoutWorkflowJobEndpointSink;
+  fanoutWorkflowJobEndpointSource: FanoutWorkflowJobEndpointSource;
+  temporalWorkflowScheduleSource: TemporalWorkflowScheduleSource;
+  workflowJobEndpointSink: WorkflowJobEndpointSink;
+  workflowJobEndpointSource: WorkflowJobEndpointSource;
+}
+
 export function initFunctions(
   context: MessageContext,
   config: ConfigSnapshot,
@@ -361,46 +407,459 @@ export function initFunctions(
   makers: ServiceMakers,
 ) {
   return {
-    activityJobEndpointSink: makers.activityJobEndpointSink(context, environment, config.named.endpoints.activityJob),
-    activityJobEndpointSource: makers.activityJobEndpointSource(context, environment, config.named.endpoints.activityJob),
-    fanoutActivityAEndpointSink: makers.fanoutActivityAEndpointSink(context, environment, config.named.endpoints.fanOutActivityA),
-    fanoutActivityAEndpointSource: makers.fanoutActivityAEndpointSource(context, environment, config.named.endpoints.fanOutActivityA),
-    fanoutActivityBEndpointSink: makers.fanoutActivityBEndpointSink(context, environment, config.named.endpoints.fanOutActivityB),
-    fanoutActivityBEndpointSource: makers.fanoutActivityBEndpointSource(context, environment, config.named.endpoints.fanOutActivityB),
-    fanoutActivityCEndpointSink: makers.fanoutActivityCEndpointSink(context, environment, config.named.endpoints.fanOutActivityC),
-    fanoutActivityCEndpointSource: makers.fanoutActivityCEndpointSource(context, environment, config.named.endpoints.fanOutActivityC),
-    sequentialActivityAEndpointSink: makers.sequentialActivityAEndpointSink(context, environment, config.named.endpoints.sequentialActivityA),
-    sequentialActivityAEndpointSource: makers.sequentialActivityAEndpointSource(context, environment, config.named.endpoints.sequentialActivityA),
-    sequentialActivityBEndpointSink: makers.sequentialActivityBEndpointSink(context, environment, config.named.endpoints.sequentialActivityB),
-    sequentialActivityBEndpointSource: makers.sequentialActivityBEndpointSource(context, environment, config.named.endpoints.sequentialActivityB),
-    temporalActivityScheduleSource: makers.temporalActivityScheduleSource(context, environment, config.named.endpoints.temporalActivitySchedule),
-    activityPause: makers.activityPause(context, environment, config.named.streams.activityPause),
-    observeActivityResult: makers.observeActivityResult(context, environment, config.named.streams.observeActivityResult),
-    observeFanoutActivityB: makers.observeFanoutActivityB(context, environment, config.named.streams.observeFanOutActivityB),
-    observeFanoutActivityC: makers.observeFanoutActivityC(context, environment, config.named.streams.observeFanOutActivityC),
-    observeWorkflowResult: makers.observeWorkflowResult(context, environment, config.named.streams.observeWorkflowResult),
-    processActivityJob: makers.processActivityJob(context, environment, config.named.streams.processActivityJob),
-    processFanoutActivityA: makers.processFanoutActivityA(context, environment, config.named.streams.processFanOutActivityA),
-    processFanoutActivityB: makers.processFanoutActivityB(context, environment, config.named.streams.processFanOutActivityB),
-    processFanoutActivityC: makers.processFanoutActivityC(context, environment, config.named.streams.processFanOutActivityC),
-    processScheduledActivity: makers.processScheduledActivity(context, environment, config.named.streams.processScheduledActivity),
-    processScheduledWorkflow: makers.processScheduledWorkflow(context, environment, config.named.streams.processScheduledWorkflow),
-    processSequentialActivityA: makers.processSequentialActivityA(context, environment, config.named.streams.processSequentialActivityA),
-    processSequentialActivityB: makers.processSequentialActivityB(context, environment, config.named.streams.processSequentialActivityB),
-    processWorkflowJob: makers.processWorkflowJob(context, environment, config.named.streams.processWorkflowJob),
-    scheduledActivityPause: makers.scheduledActivityPause(context, environment, config.named.streams.scheduledActivityPause),
-    scheduledWorkflowPause: makers.scheduledWorkflowPause(context, environment, config.named.streams.scheduledWorkflowPause),
-    workflowPause: makers.workflowPause(context, environment, config.named.streams.workflowPause),
-    localScheduleSource: makers.localScheduleSource(context, environment, config.named.endpoints.localSchedule),
-    fanoutWorkflowJobEndpointSink: makers.fanoutWorkflowJobEndpointSink(context, environment, config.named.endpoints.fanOutWorkflowJob),
-    fanoutWorkflowJobEndpointSource: makers.fanoutWorkflowJobEndpointSource(context, environment, config.named.endpoints.fanOutWorkflowJob),
-    temporalWorkflowScheduleSource: makers.temporalWorkflowScheduleSource(context, environment, config.named.endpoints.temporalWorkflowSchedule),
-    workflowJobEndpointSink: makers.workflowJobEndpointSink(context, environment, config.named.endpoints.workflowJob),
-    workflowJobEndpointSource: makers.workflowJobEndpointSource(context, environment, config.named.endpoints.workflowJob),
+    activityJobEndpointSink: synchronousMakerResult(
+      makers.activityJobEndpointSink(context, environment, config.named.endpoints.activityJob),
+      "activityJobEndpointSink",
+    ),
+    activityJobEndpointSource: synchronousMakerResult(
+      makers.activityJobEndpointSource(context, environment, config.named.endpoints.activityJob),
+      "activityJobEndpointSource",
+    ),
+    fanoutActivityAEndpointSink: synchronousMakerResult(
+      makers.fanoutActivityAEndpointSink(context, environment, config.named.endpoints.fanOutActivityA),
+      "fanoutActivityAEndpointSink",
+    ),
+    fanoutActivityAEndpointSource: synchronousMakerResult(
+      makers.fanoutActivityAEndpointSource(context, environment, config.named.endpoints.fanOutActivityA),
+      "fanoutActivityAEndpointSource",
+    ),
+    fanoutActivityBEndpointSink: synchronousMakerResult(
+      makers.fanoutActivityBEndpointSink(context, environment, config.named.endpoints.fanOutActivityB),
+      "fanoutActivityBEndpointSink",
+    ),
+    fanoutActivityBEndpointSource: synchronousMakerResult(
+      makers.fanoutActivityBEndpointSource(context, environment, config.named.endpoints.fanOutActivityB),
+      "fanoutActivityBEndpointSource",
+    ),
+    fanoutActivityCEndpointSink: synchronousMakerResult(
+      makers.fanoutActivityCEndpointSink(context, environment, config.named.endpoints.fanOutActivityC),
+      "fanoutActivityCEndpointSink",
+    ),
+    fanoutActivityCEndpointSource: synchronousMakerResult(
+      makers.fanoutActivityCEndpointSource(context, environment, config.named.endpoints.fanOutActivityC),
+      "fanoutActivityCEndpointSource",
+    ),
+    sequentialActivityAEndpointSink: synchronousMakerResult(
+      makers.sequentialActivityAEndpointSink(context, environment, config.named.endpoints.sequentialActivityA),
+      "sequentialActivityAEndpointSink",
+    ),
+    sequentialActivityAEndpointSource: synchronousMakerResult(
+      makers.sequentialActivityAEndpointSource(context, environment, config.named.endpoints.sequentialActivityA),
+      "sequentialActivityAEndpointSource",
+    ),
+    sequentialActivityBEndpointSink: synchronousMakerResult(
+      makers.sequentialActivityBEndpointSink(context, environment, config.named.endpoints.sequentialActivityB),
+      "sequentialActivityBEndpointSink",
+    ),
+    sequentialActivityBEndpointSource: synchronousMakerResult(
+      makers.sequentialActivityBEndpointSource(context, environment, config.named.endpoints.sequentialActivityB),
+      "sequentialActivityBEndpointSource",
+    ),
+    temporalActivityScheduleSource: synchronousMakerResult(
+      makers.temporalActivityScheduleSource(context, environment, config.named.endpoints.temporalActivitySchedule),
+      "temporalActivityScheduleSource",
+    ),
+    activityPause: synchronousMakerResult(
+      makers.activityPause(context, environment, config.named.streams.activityPause),
+      "activityPause",
+    ),
+    observeActivityResult: synchronousMakerResult(
+      makers.observeActivityResult(context, environment, config.named.streams.observeActivityResult),
+      "observeActivityResult",
+    ),
+    observeFanoutActivityB: synchronousMakerResult(
+      makers.observeFanoutActivityB(context, environment, config.named.streams.observeFanOutActivityB),
+      "observeFanoutActivityB",
+    ),
+    observeFanoutActivityC: synchronousMakerResult(
+      makers.observeFanoutActivityC(context, environment, config.named.streams.observeFanOutActivityC),
+      "observeFanoutActivityC",
+    ),
+    observeWorkflowResult: synchronousMakerResult(
+      makers.observeWorkflowResult(context, environment, config.named.streams.observeWorkflowResult),
+      "observeWorkflowResult",
+    ),
+    processActivityJob: synchronousMakerResult(
+      makers.processActivityJob(context, environment, config.named.streams.processActivityJob),
+      "processActivityJob",
+    ),
+    processFanoutActivityA: synchronousMakerResult(
+      makers.processFanoutActivityA(context, environment, config.named.streams.processFanOutActivityA),
+      "processFanoutActivityA",
+    ),
+    processFanoutActivityB: synchronousMakerResult(
+      makers.processFanoutActivityB(context, environment, config.named.streams.processFanOutActivityB),
+      "processFanoutActivityB",
+    ),
+    processFanoutActivityC: synchronousMakerResult(
+      makers.processFanoutActivityC(context, environment, config.named.streams.processFanOutActivityC),
+      "processFanoutActivityC",
+    ),
+    processScheduledActivity: synchronousMakerResult(
+      makers.processScheduledActivity(context, environment, config.named.streams.processScheduledActivity),
+      "processScheduledActivity",
+    ),
+    processScheduledWorkflow: synchronousMakerResult(
+      makers.processScheduledWorkflow(context, environment, config.named.streams.processScheduledWorkflow),
+      "processScheduledWorkflow",
+    ),
+    processSequentialActivityA: synchronousMakerResult(
+      makers.processSequentialActivityA(context, environment, config.named.streams.processSequentialActivityA),
+      "processSequentialActivityA",
+    ),
+    processSequentialActivityB: synchronousMakerResult(
+      makers.processSequentialActivityB(context, environment, config.named.streams.processSequentialActivityB),
+      "processSequentialActivityB",
+    ),
+    processWorkflowJob: synchronousMakerResult(
+      makers.processWorkflowJob(context, environment, config.named.streams.processWorkflowJob),
+      "processWorkflowJob",
+    ),
+    scheduledActivityPause: synchronousMakerResult(
+      makers.scheduledActivityPause(context, environment, config.named.streams.scheduledActivityPause),
+      "scheduledActivityPause",
+    ),
+    scheduledWorkflowPause: synchronousMakerResult(
+      makers.scheduledWorkflowPause(context, environment, config.named.streams.scheduledWorkflowPause),
+      "scheduledWorkflowPause",
+    ),
+    workflowPause: synchronousMakerResult(
+      makers.workflowPause(context, environment, config.named.streams.workflowPause),
+      "workflowPause",
+    ),
+    localScheduleSource: synchronousMakerResult(
+      makers.localScheduleSource(context, environment, config.named.endpoints.localSchedule),
+      "localScheduleSource",
+    ),
+    fanoutWorkflowJobEndpointSink: synchronousMakerResult(
+      makers.fanoutWorkflowJobEndpointSink(context, environment, config.named.endpoints.fanOutWorkflowJob),
+      "fanoutWorkflowJobEndpointSink",
+    ),
+    fanoutWorkflowJobEndpointSource: synchronousMakerResult(
+      makers.fanoutWorkflowJobEndpointSource(context, environment, config.named.endpoints.fanOutWorkflowJob),
+      "fanoutWorkflowJobEndpointSource",
+    ),
+    temporalWorkflowScheduleSource: synchronousMakerResult(
+      makers.temporalWorkflowScheduleSource(context, environment, config.named.endpoints.temporalWorkflowSchedule),
+      "temporalWorkflowScheduleSource",
+    ),
+    workflowJobEndpointSink: synchronousMakerResult(
+      makers.workflowJobEndpointSink(context, environment, config.named.endpoints.workflowJob),
+      "workflowJobEndpointSink",
+    ),
+    workflowJobEndpointSource: synchronousMakerResult(
+      makers.workflowJobEndpointSource(context, environment, config.named.endpoints.workflowJob),
+      "workflowJobEndpointSource",
+    ),
   };
 }
 
-export type ServiceFunctions = ReturnType<typeof initFunctions>;
+export async function initFunctionsParallel(
+  context: MessageContext,
+  config: ConfigSnapshot,
+  environment: RuntimeEnvironment,
+  makers: ServiceMakers,
+): Promise<ServiceFunctions> {
+  let activityJobEndpointSink: ActivityJobEndpointSink;
+  let activityJobEndpointSource: ActivityJobEndpointSource;
+  let fanoutActivityAEndpointSink: FanoutActivityAEndpointSink;
+  let fanoutActivityAEndpointSource: FanoutActivityAEndpointSource;
+  let fanoutActivityBEndpointSink: FanoutActivityBEndpointSink;
+  let fanoutActivityBEndpointSource: FanoutActivityBEndpointSource;
+  let fanoutActivityCEndpointSink: FanoutActivityCEndpointSink;
+  let fanoutActivityCEndpointSource: FanoutActivityCEndpointSource;
+  let sequentialActivityAEndpointSink: SequentialActivityAEndpointSink;
+  let sequentialActivityAEndpointSource: SequentialActivityAEndpointSource;
+  let sequentialActivityBEndpointSink: SequentialActivityBEndpointSink;
+  let sequentialActivityBEndpointSource: SequentialActivityBEndpointSource;
+  let temporalActivityScheduleSource: TemporalActivityScheduleSource;
+  let activityPause: ActivityPause;
+  let observeActivityResult: ObserveActivityResult;
+  let observeFanoutActivityB: ObserveFanoutActivityB;
+  let observeFanoutActivityC: ObserveFanoutActivityC;
+  let observeWorkflowResult: ObserveWorkflowResult;
+  let processActivityJob: ProcessActivityJob;
+  let processFanoutActivityA: ProcessFanoutActivityA;
+  let processFanoutActivityB: ProcessFanoutActivityB;
+  let processFanoutActivityC: ProcessFanoutActivityC;
+  let processScheduledActivity: ProcessScheduledActivity;
+  let processScheduledWorkflow: ProcessScheduledWorkflow;
+  let processSequentialActivityA: ProcessSequentialActivityA;
+  let processSequentialActivityB: ProcessSequentialActivityB;
+  let processWorkflowJob: ProcessWorkflowJob;
+  let scheduledActivityPause: ScheduledActivityPause;
+  let scheduledWorkflowPause: ScheduledWorkflowPause;
+  let workflowPause: WorkflowPause;
+  let localScheduleSource: LocalScheduleSource;
+  let fanoutWorkflowJobEndpointSink: FanoutWorkflowJobEndpointSink;
+  let fanoutWorkflowJobEndpointSource: FanoutWorkflowJobEndpointSource;
+  let temporalWorkflowScheduleSource: TemporalWorkflowScheduleSource;
+  let workflowJobEndpointSink: WorkflowJobEndpointSink;
+  let workflowJobEndpointSource: WorkflowJobEndpointSource;
+  {
+    const group = await Promise.allSettled([
+      makers.activityJobEndpointSink(context, environment, config.named.endpoints.activityJob),
+      makers.activityJobEndpointSource(context, environment, config.named.endpoints.activityJob),
+      makers.fanoutActivityAEndpointSink(context, environment, config.named.endpoints.fanOutActivityA),
+      makers.fanoutActivityAEndpointSource(context, environment, config.named.endpoints.fanOutActivityA),
+      makers.fanoutActivityBEndpointSink(context, environment, config.named.endpoints.fanOutActivityB),
+      makers.fanoutActivityBEndpointSource(context, environment, config.named.endpoints.fanOutActivityB),
+      makers.fanoutActivityCEndpointSink(context, environment, config.named.endpoints.fanOutActivityC),
+      makers.fanoutActivityCEndpointSource(context, environment, config.named.endpoints.fanOutActivityC),
+      makers.sequentialActivityAEndpointSink(context, environment, config.named.endpoints.sequentialActivityA),
+      makers.sequentialActivityAEndpointSource(context, environment, config.named.endpoints.sequentialActivityA),
+      makers.sequentialActivityBEndpointSink(context, environment, config.named.endpoints.sequentialActivityB),
+      makers.sequentialActivityBEndpointSource(context, environment, config.named.endpoints.sequentialActivityB),
+      makers.temporalActivityScheduleSource(context, environment, config.named.endpoints.temporalActivitySchedule),
+      makers.activityPause(context, environment, config.named.streams.activityPause),
+      makers.observeActivityResult(context, environment, config.named.streams.observeActivityResult),
+      makers.observeFanoutActivityB(context, environment, config.named.streams.observeFanOutActivityB),
+      makers.observeFanoutActivityC(context, environment, config.named.streams.observeFanOutActivityC),
+      makers.observeWorkflowResult(context, environment, config.named.streams.observeWorkflowResult),
+      makers.processActivityJob(context, environment, config.named.streams.processActivityJob),
+      makers.processFanoutActivityA(context, environment, config.named.streams.processFanOutActivityA),
+      makers.processFanoutActivityB(context, environment, config.named.streams.processFanOutActivityB),
+      makers.processFanoutActivityC(context, environment, config.named.streams.processFanOutActivityC),
+      makers.processScheduledActivity(context, environment, config.named.streams.processScheduledActivity),
+      makers.processScheduledWorkflow(context, environment, config.named.streams.processScheduledWorkflow),
+      makers.processSequentialActivityA(context, environment, config.named.streams.processSequentialActivityA),
+      makers.processSequentialActivityB(context, environment, config.named.streams.processSequentialActivityB),
+      makers.processWorkflowJob(context, environment, config.named.streams.processWorkflowJob),
+      makers.scheduledActivityPause(context, environment, config.named.streams.scheduledActivityPause),
+      makers.scheduledWorkflowPause(context, environment, config.named.streams.scheduledWorkflowPause),
+      makers.workflowPause(context, environment, config.named.streams.workflowPause),
+      makers.localScheduleSource(context, environment, config.named.endpoints.localSchedule),
+      makers.fanoutWorkflowJobEndpointSink(context, environment, config.named.endpoints.fanOutWorkflowJob),
+      makers.fanoutWorkflowJobEndpointSource(context, environment, config.named.endpoints.fanOutWorkflowJob),
+      makers.temporalWorkflowScheduleSource(context, environment, config.named.endpoints.temporalWorkflowSchedule),
+      makers.workflowJobEndpointSink(context, environment, config.named.endpoints.workflowJob),
+      makers.workflowJobEndpointSource(context, environment, config.named.endpoints.workflowJob),
+    ] as const);
+    for (const result of group) {
+      if (result.status === "rejected") {
+        throw result.reason;
+      }
+    }
+    const activityJobEndpointSinkResult0 = group[0];
+    if (activityJobEndpointSinkResult0.status !== "fulfilled") {
+      throw activityJobEndpointSinkResult0.reason;
+    }
+    activityJobEndpointSink = activityJobEndpointSinkResult0.value;
+    const activityJobEndpointSourceResult0 = group[1];
+    if (activityJobEndpointSourceResult0.status !== "fulfilled") {
+      throw activityJobEndpointSourceResult0.reason;
+    }
+    activityJobEndpointSource = activityJobEndpointSourceResult0.value;
+    const fanoutActivityAEndpointSinkResult0 = group[2];
+    if (fanoutActivityAEndpointSinkResult0.status !== "fulfilled") {
+      throw fanoutActivityAEndpointSinkResult0.reason;
+    }
+    fanoutActivityAEndpointSink = fanoutActivityAEndpointSinkResult0.value;
+    const fanoutActivityAEndpointSourceResult0 = group[3];
+    if (fanoutActivityAEndpointSourceResult0.status !== "fulfilled") {
+      throw fanoutActivityAEndpointSourceResult0.reason;
+    }
+    fanoutActivityAEndpointSource = fanoutActivityAEndpointSourceResult0.value;
+    const fanoutActivityBEndpointSinkResult0 = group[4];
+    if (fanoutActivityBEndpointSinkResult0.status !== "fulfilled") {
+      throw fanoutActivityBEndpointSinkResult0.reason;
+    }
+    fanoutActivityBEndpointSink = fanoutActivityBEndpointSinkResult0.value;
+    const fanoutActivityBEndpointSourceResult0 = group[5];
+    if (fanoutActivityBEndpointSourceResult0.status !== "fulfilled") {
+      throw fanoutActivityBEndpointSourceResult0.reason;
+    }
+    fanoutActivityBEndpointSource = fanoutActivityBEndpointSourceResult0.value;
+    const fanoutActivityCEndpointSinkResult0 = group[6];
+    if (fanoutActivityCEndpointSinkResult0.status !== "fulfilled") {
+      throw fanoutActivityCEndpointSinkResult0.reason;
+    }
+    fanoutActivityCEndpointSink = fanoutActivityCEndpointSinkResult0.value;
+    const fanoutActivityCEndpointSourceResult0 = group[7];
+    if (fanoutActivityCEndpointSourceResult0.status !== "fulfilled") {
+      throw fanoutActivityCEndpointSourceResult0.reason;
+    }
+    fanoutActivityCEndpointSource = fanoutActivityCEndpointSourceResult0.value;
+    const sequentialActivityAEndpointSinkResult0 = group[8];
+    if (sequentialActivityAEndpointSinkResult0.status !== "fulfilled") {
+      throw sequentialActivityAEndpointSinkResult0.reason;
+    }
+    sequentialActivityAEndpointSink = sequentialActivityAEndpointSinkResult0.value;
+    const sequentialActivityAEndpointSourceResult0 = group[9];
+    if (sequentialActivityAEndpointSourceResult0.status !== "fulfilled") {
+      throw sequentialActivityAEndpointSourceResult0.reason;
+    }
+    sequentialActivityAEndpointSource = sequentialActivityAEndpointSourceResult0.value;
+    const sequentialActivityBEndpointSinkResult0 = group[10];
+    if (sequentialActivityBEndpointSinkResult0.status !== "fulfilled") {
+      throw sequentialActivityBEndpointSinkResult0.reason;
+    }
+    sequentialActivityBEndpointSink = sequentialActivityBEndpointSinkResult0.value;
+    const sequentialActivityBEndpointSourceResult0 = group[11];
+    if (sequentialActivityBEndpointSourceResult0.status !== "fulfilled") {
+      throw sequentialActivityBEndpointSourceResult0.reason;
+    }
+    sequentialActivityBEndpointSource = sequentialActivityBEndpointSourceResult0.value;
+    const temporalActivityScheduleSourceResult0 = group[12];
+    if (temporalActivityScheduleSourceResult0.status !== "fulfilled") {
+      throw temporalActivityScheduleSourceResult0.reason;
+    }
+    temporalActivityScheduleSource = temporalActivityScheduleSourceResult0.value;
+    const activityPauseResult0 = group[13];
+    if (activityPauseResult0.status !== "fulfilled") {
+      throw activityPauseResult0.reason;
+    }
+    activityPause = activityPauseResult0.value;
+    const observeActivityResultResult0 = group[14];
+    if (observeActivityResultResult0.status !== "fulfilled") {
+      throw observeActivityResultResult0.reason;
+    }
+    observeActivityResult = observeActivityResultResult0.value;
+    const observeFanoutActivityBResult0 = group[15];
+    if (observeFanoutActivityBResult0.status !== "fulfilled") {
+      throw observeFanoutActivityBResult0.reason;
+    }
+    observeFanoutActivityB = observeFanoutActivityBResult0.value;
+    const observeFanoutActivityCResult0 = group[16];
+    if (observeFanoutActivityCResult0.status !== "fulfilled") {
+      throw observeFanoutActivityCResult0.reason;
+    }
+    observeFanoutActivityC = observeFanoutActivityCResult0.value;
+    const observeWorkflowResultResult0 = group[17];
+    if (observeWorkflowResultResult0.status !== "fulfilled") {
+      throw observeWorkflowResultResult0.reason;
+    }
+    observeWorkflowResult = observeWorkflowResultResult0.value;
+    const processActivityJobResult0 = group[18];
+    if (processActivityJobResult0.status !== "fulfilled") {
+      throw processActivityJobResult0.reason;
+    }
+    processActivityJob = processActivityJobResult0.value;
+    const processFanoutActivityAResult0 = group[19];
+    if (processFanoutActivityAResult0.status !== "fulfilled") {
+      throw processFanoutActivityAResult0.reason;
+    }
+    processFanoutActivityA = processFanoutActivityAResult0.value;
+    const processFanoutActivityBResult0 = group[20];
+    if (processFanoutActivityBResult0.status !== "fulfilled") {
+      throw processFanoutActivityBResult0.reason;
+    }
+    processFanoutActivityB = processFanoutActivityBResult0.value;
+    const processFanoutActivityCResult0 = group[21];
+    if (processFanoutActivityCResult0.status !== "fulfilled") {
+      throw processFanoutActivityCResult0.reason;
+    }
+    processFanoutActivityC = processFanoutActivityCResult0.value;
+    const processScheduledActivityResult0 = group[22];
+    if (processScheduledActivityResult0.status !== "fulfilled") {
+      throw processScheduledActivityResult0.reason;
+    }
+    processScheduledActivity = processScheduledActivityResult0.value;
+    const processScheduledWorkflowResult0 = group[23];
+    if (processScheduledWorkflowResult0.status !== "fulfilled") {
+      throw processScheduledWorkflowResult0.reason;
+    }
+    processScheduledWorkflow = processScheduledWorkflowResult0.value;
+    const processSequentialActivityAResult0 = group[24];
+    if (processSequentialActivityAResult0.status !== "fulfilled") {
+      throw processSequentialActivityAResult0.reason;
+    }
+    processSequentialActivityA = processSequentialActivityAResult0.value;
+    const processSequentialActivityBResult0 = group[25];
+    if (processSequentialActivityBResult0.status !== "fulfilled") {
+      throw processSequentialActivityBResult0.reason;
+    }
+    processSequentialActivityB = processSequentialActivityBResult0.value;
+    const processWorkflowJobResult0 = group[26];
+    if (processWorkflowJobResult0.status !== "fulfilled") {
+      throw processWorkflowJobResult0.reason;
+    }
+    processWorkflowJob = processWorkflowJobResult0.value;
+    const scheduledActivityPauseResult0 = group[27];
+    if (scheduledActivityPauseResult0.status !== "fulfilled") {
+      throw scheduledActivityPauseResult0.reason;
+    }
+    scheduledActivityPause = scheduledActivityPauseResult0.value;
+    const scheduledWorkflowPauseResult0 = group[28];
+    if (scheduledWorkflowPauseResult0.status !== "fulfilled") {
+      throw scheduledWorkflowPauseResult0.reason;
+    }
+    scheduledWorkflowPause = scheduledWorkflowPauseResult0.value;
+    const workflowPauseResult0 = group[29];
+    if (workflowPauseResult0.status !== "fulfilled") {
+      throw workflowPauseResult0.reason;
+    }
+    workflowPause = workflowPauseResult0.value;
+    const localScheduleSourceResult0 = group[30];
+    if (localScheduleSourceResult0.status !== "fulfilled") {
+      throw localScheduleSourceResult0.reason;
+    }
+    localScheduleSource = localScheduleSourceResult0.value;
+    const fanoutWorkflowJobEndpointSinkResult0 = group[31];
+    if (fanoutWorkflowJobEndpointSinkResult0.status !== "fulfilled") {
+      throw fanoutWorkflowJobEndpointSinkResult0.reason;
+    }
+    fanoutWorkflowJobEndpointSink = fanoutWorkflowJobEndpointSinkResult0.value;
+    const fanoutWorkflowJobEndpointSourceResult0 = group[32];
+    if (fanoutWorkflowJobEndpointSourceResult0.status !== "fulfilled") {
+      throw fanoutWorkflowJobEndpointSourceResult0.reason;
+    }
+    fanoutWorkflowJobEndpointSource = fanoutWorkflowJobEndpointSourceResult0.value;
+    const temporalWorkflowScheduleSourceResult0 = group[33];
+    if (temporalWorkflowScheduleSourceResult0.status !== "fulfilled") {
+      throw temporalWorkflowScheduleSourceResult0.reason;
+    }
+    temporalWorkflowScheduleSource = temporalWorkflowScheduleSourceResult0.value;
+    const workflowJobEndpointSinkResult0 = group[34];
+    if (workflowJobEndpointSinkResult0.status !== "fulfilled") {
+      throw workflowJobEndpointSinkResult0.reason;
+    }
+    workflowJobEndpointSink = workflowJobEndpointSinkResult0.value;
+    const workflowJobEndpointSourceResult0 = group[35];
+    if (workflowJobEndpointSourceResult0.status !== "fulfilled") {
+      throw workflowJobEndpointSourceResult0.reason;
+    }
+    workflowJobEndpointSource = workflowJobEndpointSourceResult0.value;
+  }
+  return {
+    activityJobEndpointSink,
+    activityJobEndpointSource,
+    fanoutActivityAEndpointSink,
+    fanoutActivityAEndpointSource,
+    fanoutActivityBEndpointSink,
+    fanoutActivityBEndpointSource,
+    fanoutActivityCEndpointSink,
+    fanoutActivityCEndpointSource,
+    sequentialActivityAEndpointSink,
+    sequentialActivityAEndpointSource,
+    sequentialActivityBEndpointSink,
+    sequentialActivityBEndpointSource,
+    temporalActivityScheduleSource,
+    activityPause,
+    observeActivityResult,
+    observeFanoutActivityB,
+    observeFanoutActivityC,
+    observeWorkflowResult,
+    processActivityJob,
+    processFanoutActivityA,
+    processFanoutActivityB,
+    processFanoutActivityC,
+    processScheduledActivity,
+    processScheduledWorkflow,
+    processSequentialActivityA,
+    processSequentialActivityB,
+    processWorkflowJob,
+    scheduledActivityPause,
+    scheduledWorkflowPause,
+    workflowPause,
+    localScheduleSource,
+    fanoutWorkflowJobEndpointSink,
+    fanoutWorkflowJobEndpointSource,
+    temporalWorkflowScheduleSource,
+    workflowJobEndpointSink,
+    workflowJobEndpointSource,
+  };
+}
 
 export function initStreams(
   config: ConfigSnapshot,

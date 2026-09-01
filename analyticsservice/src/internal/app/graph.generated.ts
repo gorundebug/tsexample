@@ -53,17 +53,17 @@ export interface ServiceMakers {
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
-  ) => CountOrderProcessed;
+  ) => CountOrderProcessed | Promise<CountOrderProcessed>;
   analyticsScheduleSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
-  ) => AnalyticsScheduleSource;
+  ) => AnalyticsScheduleSource | Promise<AnalyticsScheduleSource>;
   orderProcessedEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
-  ) => OrderProcessedEndpointSource;
+  ) => OrderProcessedEndpointSource | Promise<OrderProcessedEndpointSource>;
 }
 
 export function defaultMakers(): ServiceMakers {
@@ -74,6 +74,19 @@ export function defaultMakers(): ServiceMakers {
   };
 }
 
+function synchronousMakerResult<T>(value: T | Promise<T>, name: string): T {
+  if (value instanceof Promise) {
+    throw new Error(`Temporal Workflow maker ${name} must be synchronous`);
+  }
+  return value;
+}
+
+export interface ServiceFunctions {
+  countOrderProcessed: CountOrderProcessed;
+  analyticsScheduleSource: AnalyticsScheduleSource;
+  orderProcessedEndpointSource: OrderProcessedEndpointSource;
+}
+
 export function initFunctions(
   context: MessageContext,
   config: ConfigSnapshot,
@@ -81,13 +94,63 @@ export function initFunctions(
   makers: ServiceMakers,
 ) {
   return {
-    countOrderProcessed: makers.countOrderProcessed(context, environment, config.named.streams.countOrderProcessed),
-    analyticsScheduleSource: makers.analyticsScheduleSource(context, environment, config.named.endpoints.analyticsSchedule),
-    orderProcessedEndpointSource: makers.orderProcessedEndpointSource(context, environment, config.named.endpoints.orderProcessed),
+    countOrderProcessed: synchronousMakerResult(
+      makers.countOrderProcessed(context, environment, config.named.streams.countOrderProcessed),
+      "countOrderProcessed",
+    ),
+    analyticsScheduleSource: synchronousMakerResult(
+      makers.analyticsScheduleSource(context, environment, config.named.endpoints.analyticsSchedule),
+      "analyticsScheduleSource",
+    ),
+    orderProcessedEndpointSource: synchronousMakerResult(
+      makers.orderProcessedEndpointSource(context, environment, config.named.endpoints.orderProcessed),
+      "orderProcessedEndpointSource",
+    ),
   };
 }
 
-export type ServiceFunctions = ReturnType<typeof initFunctions>;
+export async function initFunctionsParallel(
+  context: MessageContext,
+  config: ConfigSnapshot,
+  environment: RuntimeEnvironment,
+  makers: ServiceMakers,
+): Promise<ServiceFunctions> {
+  let countOrderProcessed: CountOrderProcessed;
+  let analyticsScheduleSource: AnalyticsScheduleSource;
+  let orderProcessedEndpointSource: OrderProcessedEndpointSource;
+  {
+    const group = await Promise.allSettled([
+      makers.countOrderProcessed(context, environment, config.named.streams.countOrderProcessed),
+      makers.analyticsScheduleSource(context, environment, config.named.endpoints.analyticsSchedule),
+      makers.orderProcessedEndpointSource(context, environment, config.named.endpoints.orderProcessed),
+    ] as const);
+    for (const result of group) {
+      if (result.status === "rejected") {
+        throw result.reason;
+      }
+    }
+    const countOrderProcessedResult0 = group[0];
+    if (countOrderProcessedResult0.status !== "fulfilled") {
+      throw countOrderProcessedResult0.reason;
+    }
+    countOrderProcessed = countOrderProcessedResult0.value;
+    const analyticsScheduleSourceResult0 = group[1];
+    if (analyticsScheduleSourceResult0.status !== "fulfilled") {
+      throw analyticsScheduleSourceResult0.reason;
+    }
+    analyticsScheduleSource = analyticsScheduleSourceResult0.value;
+    const orderProcessedEndpointSourceResult0 = group[2];
+    if (orderProcessedEndpointSourceResult0.status !== "fulfilled") {
+      throw orderProcessedEndpointSourceResult0.reason;
+    }
+    orderProcessedEndpointSource = orderProcessedEndpointSourceResult0.value;
+  }
+  return {
+    countOrderProcessed,
+    analyticsScheduleSource,
+    orderProcessedEndpointSource,
+  };
+}
 
 export function initStreams(
   config: ConfigSnapshot,

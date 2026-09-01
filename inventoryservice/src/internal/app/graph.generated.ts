@@ -51,12 +51,12 @@ export interface ServiceMakers {
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
-  ) => ProcessOrderItemSource;
+  ) => ProcessOrderItemSource | Promise<ProcessOrderItemSource>;
   getInventoryItemData: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
-  ) => GetInventoryItemData;
+  ) => GetInventoryItemData | Promise<GetInventoryItemData>;
 }
 
 export function defaultMakers(): ServiceMakers {
@@ -66,6 +66,18 @@ export function defaultMakers(): ServiceMakers {
   };
 }
 
+function synchronousMakerResult<T>(value: T | Promise<T>, name: string): T {
+  if (value instanceof Promise) {
+    throw new Error(`Temporal Workflow maker ${name} must be synchronous`);
+  }
+  return value;
+}
+
+export interface ServiceFunctions {
+  processOrderItemSource: ProcessOrderItemSource;
+  getInventoryItemData: GetInventoryItemData;
+}
+
 export function initFunctions(
   context: MessageContext,
   config: ConfigSnapshot,
@@ -73,12 +85,51 @@ export function initFunctions(
   makers: ServiceMakers,
 ) {
   return {
-    processOrderItemSource: makers.processOrderItemSource(context, environment, config.named.endpoints.processOrderItem),
-    getInventoryItemData: makers.getInventoryItemData(context, environment, config.named.streams.getInventoryItemData),
+    processOrderItemSource: synchronousMakerResult(
+      makers.processOrderItemSource(context, environment, config.named.endpoints.processOrderItem),
+      "processOrderItemSource",
+    ),
+    getInventoryItemData: synchronousMakerResult(
+      makers.getInventoryItemData(context, environment, config.named.streams.getInventoryItemData),
+      "getInventoryItemData",
+    ),
   };
 }
 
-export type ServiceFunctions = ReturnType<typeof initFunctions>;
+export async function initFunctionsParallel(
+  context: MessageContext,
+  config: ConfigSnapshot,
+  environment: RuntimeEnvironment,
+  makers: ServiceMakers,
+): Promise<ServiceFunctions> {
+  let processOrderItemSource: ProcessOrderItemSource;
+  let getInventoryItemData: GetInventoryItemData;
+  {
+    const group = await Promise.allSettled([
+      makers.processOrderItemSource(context, environment, config.named.endpoints.processOrderItem),
+      makers.getInventoryItemData(context, environment, config.named.streams.getInventoryItemData),
+    ] as const);
+    for (const result of group) {
+      if (result.status === "rejected") {
+        throw result.reason;
+      }
+    }
+    const processOrderItemSourceResult0 = group[0];
+    if (processOrderItemSourceResult0.status !== "fulfilled") {
+      throw processOrderItemSourceResult0.reason;
+    }
+    processOrderItemSource = processOrderItemSourceResult0.value;
+    const getInventoryItemDataResult0 = group[1];
+    if (getInventoryItemDataResult0.status !== "fulfilled") {
+      throw getInventoryItemDataResult0.reason;
+    }
+    getInventoryItemData = getInventoryItemDataResult0.value;
+  }
+  return {
+    processOrderItemSource,
+    getInventoryItemData,
+  };
+}
 
 export function initStreams(
   config: ConfigSnapshot,
