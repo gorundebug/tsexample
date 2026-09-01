@@ -59,6 +59,19 @@ export interface ServiceMakers {
   ) => GetInventoryItemData | Promise<GetInventoryItemData>;
 }
 
+export type WorkflowServiceMakers = {
+  processOrderItemSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
+  ) => ProcessOrderItemSource | Promise<ProcessOrderItemSource>;
+  getInventoryItemData: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
+  ) => GetInventoryItemData | Promise<GetInventoryItemData>;
+};
+
 export function defaultMakers(): ServiceMakers {
   return {
     processOrderItemSource: makeProcessOrderItemSource,
@@ -66,11 +79,11 @@ export function defaultMakers(): ServiceMakers {
   };
 }
 
-function synchronousMakerResult<T>(value: T | Promise<T>, name: string): T {
-  if (value instanceof Promise) {
-    throw new Error(`Temporal Workflow maker ${name} must be synchronous`);
-  }
-  return value;
+export function defaultWorkflowMakers(): WorkflowServiceMakers {
+  return {
+    processOrderItemSource: makeProcessOrderItemSource,
+    getInventoryItemData: makeGetInventoryItemData,
+  };
 }
 
 export interface ServiceFunctions {
@@ -78,21 +91,54 @@ export interface ServiceFunctions {
   getInventoryItemData: GetInventoryItemData;
 }
 
-export function initFunctions(
+export async function initFunctions(
   context: MessageContext,
   config: ConfigSnapshot,
   environment: RuntimeEnvironment,
-  makers: ServiceMakers,
-) {
+  makers: WorkflowServiceMakers,
+): Promise<ServiceFunctions> {
+  let processOrderItemSource: ProcessOrderItemSource;
+  let getInventoryItemData: GetInventoryItemData;
+  {
+    const controller = new AbortController();
+    const makerContext = context.withExternalCancellation(controller.signal);
+    let firstError: unknown;
+    let failed = false;
+    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+      try {
+        return await maker();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          firstError = error;
+          controller.abort(error);
+        }
+        throw error;
+      }
+    };
+    const group = await Promise.allSettled([
+      invokeMaker(() => makers.processOrderItemSource(
+        makerContext, environment, config.named.endpoints.processOrderItem,
+      )),
+      invokeMaker(() => makers.getInventoryItemData(
+        makerContext, environment, config.named.streams.getInventoryItemData,
+      )),
+    ] as const);
+    if (failed) throw firstError;
+    const processOrderItemSourceResult0 = group[0];
+    if (processOrderItemSourceResult0.status !== "fulfilled") {
+      throw processOrderItemSourceResult0.reason;
+    }
+    processOrderItemSource = processOrderItemSourceResult0.value;
+    const getInventoryItemDataResult0 = group[1];
+    if (getInventoryItemDataResult0.status !== "fulfilled") {
+      throw getInventoryItemDataResult0.reason;
+    }
+    getInventoryItemData = getInventoryItemDataResult0.value;
+  }
   return {
-    processOrderItemSource: synchronousMakerResult(
-      makers.processOrderItemSource(context, environment, config.named.endpoints.processOrderItem),
-      "processOrderItemSource",
-    ),
-    getInventoryItemData: synchronousMakerResult(
-      makers.getInventoryItemData(context, environment, config.named.streams.getInventoryItemData),
-      "getInventoryItemData",
-    ),
+    processOrderItemSource,
+    getInventoryItemData,
   };
 }
 
@@ -105,15 +151,31 @@ export async function initFunctionsParallel(
   let processOrderItemSource: ProcessOrderItemSource;
   let getInventoryItemData: GetInventoryItemData;
   {
-    const group = await Promise.allSettled([
-      makers.processOrderItemSource(context, environment, config.named.endpoints.processOrderItem),
-      makers.getInventoryItemData(context, environment, config.named.streams.getInventoryItemData),
-    ] as const);
-    for (const result of group) {
-      if (result.status === "rejected") {
-        throw result.reason;
+    const controller = new AbortController();
+    const makerContext = context.withExternalCancellation(controller.signal);
+    let firstError: unknown;
+    let failed = false;
+    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+      try {
+        return await maker();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          firstError = error;
+          controller.abort(error);
+        }
+        throw error;
       }
-    }
+    };
+    const group = await Promise.allSettled([
+      invokeMaker(() => makers.processOrderItemSource(
+        makerContext, environment, config.named.endpoints.processOrderItem,
+      )),
+      invokeMaker(() => makers.getInventoryItemData(
+        makerContext, environment, config.named.streams.getInventoryItemData,
+      )),
+    ] as const);
+    if (failed) throw firstError;
     const processOrderItemSourceResult0 = group[0];
     if (processOrderItemSourceResult0.status !== "fulfilled") {
       throw processOrderItemSourceResult0.reason;

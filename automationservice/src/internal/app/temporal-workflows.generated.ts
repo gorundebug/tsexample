@@ -28,7 +28,7 @@ import {
   ServiceIds,
 } from "../config/config-snapshot.generated.js";
 import {
-  defaultMakers,
+  defaultWorkflowMakers,
   initFunctions,
   initStreams,
   registerGeneratedSerdes,
@@ -49,9 +49,9 @@ async function executeGeneratedWorkflow(
     registry,
   );
   const context = new MessageContext();
-  const makers = defaultMakers();
-  customWorkflowMakersInit(context, makers);
-  const functions = initFunctions(context, config, environment, makers);
+  const makers = defaultWorkflowMakers();
+  await customWorkflowMakersInit(context, makers);
+  const functions = await initFunctions(context, config, environment, makers);
   const streams = initStreams(config, environment, functions);
   makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.callFanOutActivityA);
   makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.callFanOutActivityB);

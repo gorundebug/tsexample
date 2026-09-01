@@ -111,6 +111,49 @@ export interface ServiceMakers {
   ) => SoftDeadline | Promise<SoftDeadline>;
 }
 
+export type WorkflowServiceMakers = {
+  orderProcessedEndpointSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
+  ) => OrderProcessedEndpointSink | Promise<OrderProcessedEndpointSink>;
+  processOrderItemSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
+  ) => ProcessOrderItemSink | Promise<ProcessOrderItemSink>;
+  processOrderSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").HttpEndpointConfig,
+  ) => ProcessOrderSource | Promise<ProcessOrderSource>;
+  mapOrderItemResultToOrderState: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => MapOrderItemResultToOrderState | Promise<MapOrderItemResultToOrderState>;
+  mapToOrderProcessed: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => MapToOrderProcessed | Promise<MapToOrderProcessed>;
+  mapToOrderState: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => MapToOrderState | Promise<MapToOrderState>;
+  processOrderItems: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").FlatMapStreamConfig,
+  ) => ProcessOrderItems | Promise<ProcessOrderItems>;
+  softDeadline: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
+  ) => SoftDeadline | Promise<SoftDeadline>;
+};
+
 export function defaultMakers(): ServiceMakers {
   return {
     orderProcessedEndpointSink: makeOrderProcessedEndpointSink,
@@ -124,11 +167,17 @@ export function defaultMakers(): ServiceMakers {
   };
 }
 
-function synchronousMakerResult<T>(value: T | Promise<T>, name: string): T {
-  if (value instanceof Promise) {
-    throw new Error(`Temporal Workflow maker ${name} must be synchronous`);
-  }
-  return value;
+export function defaultWorkflowMakers(): WorkflowServiceMakers {
+  return {
+    orderProcessedEndpointSink: makeOrderProcessedEndpointSink,
+    processOrderItemSink: makeProcessOrderItemSink,
+    processOrderSource: makeProcessOrderSource,
+    mapOrderItemResultToOrderState: makeMapOrderItemResultToOrderState,
+    mapToOrderProcessed: makeMapToOrderProcessed,
+    mapToOrderState: makeMapToOrderState,
+    processOrderItems: makeProcessOrderItems,
+    softDeadline: makeSoftDeadline,
+  };
 }
 
 export interface ServiceFunctions {
@@ -142,45 +191,114 @@ export interface ServiceFunctions {
   softDeadline: SoftDeadline;
 }
 
-export function initFunctions(
+export async function initFunctions(
   context: MessageContext,
   config: ConfigSnapshot,
   environment: RuntimeEnvironment,
-  makers: ServiceMakers,
-) {
+  makers: WorkflowServiceMakers,
+): Promise<ServiceFunctions> {
+  let orderProcessedEndpointSink: OrderProcessedEndpointSink;
+  let processOrderItemSink: ProcessOrderItemSink;
+  let processOrderSource: ProcessOrderSource;
+  let mapOrderItemResultToOrderState: MapOrderItemResultToOrderState;
+  let mapToOrderProcessed: MapToOrderProcessed;
+  let mapToOrderState: MapToOrderState;
+  let processOrderItems: ProcessOrderItems;
+  let softDeadline: SoftDeadline;
+  {
+    const controller = new AbortController();
+    const makerContext = context.withExternalCancellation(controller.signal);
+    let firstError: unknown;
+    let failed = false;
+    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+      try {
+        return await maker();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          firstError = error;
+          controller.abort(error);
+        }
+        throw error;
+      }
+    };
+    const group = await Promise.allSettled([
+      invokeMaker(() => makers.orderProcessedEndpointSink(
+        makerContext, environment, config.named.endpoints.orderProcessed,
+      )),
+      invokeMaker(() => makers.processOrderItemSink(
+        makerContext, environment, config.named.endpoints.processOrderItem,
+      )),
+      invokeMaker(() => makers.processOrderSource(
+        makerContext, environment, config.named.endpoints.processOrder,
+      )),
+      invokeMaker(() => makers.mapOrderItemResultToOrderState(
+        makerContext, environment, config.named.streams.mapOrderItemResultToOrderState,
+      )),
+      invokeMaker(() => makers.mapToOrderProcessed(
+        makerContext, environment, config.named.streams.mapToOrderProcessed,
+      )),
+      invokeMaker(() => makers.mapToOrderState(
+        makerContext, environment, config.named.streams.mapToOrderState,
+      )),
+      invokeMaker(() => makers.processOrderItems(
+        makerContext, environment, config.named.streams.processOrderItems,
+      )),
+      invokeMaker(() => makers.softDeadline(
+        makerContext, environment, config.named.streams.softDeadline,
+      )),
+    ] as const);
+    if (failed) throw firstError;
+    const orderProcessedEndpointSinkResult0 = group[0];
+    if (orderProcessedEndpointSinkResult0.status !== "fulfilled") {
+      throw orderProcessedEndpointSinkResult0.reason;
+    }
+    orderProcessedEndpointSink = orderProcessedEndpointSinkResult0.value;
+    const processOrderItemSinkResult0 = group[1];
+    if (processOrderItemSinkResult0.status !== "fulfilled") {
+      throw processOrderItemSinkResult0.reason;
+    }
+    processOrderItemSink = processOrderItemSinkResult0.value;
+    const processOrderSourceResult0 = group[2];
+    if (processOrderSourceResult0.status !== "fulfilled") {
+      throw processOrderSourceResult0.reason;
+    }
+    processOrderSource = processOrderSourceResult0.value;
+    const mapOrderItemResultToOrderStateResult0 = group[3];
+    if (mapOrderItemResultToOrderStateResult0.status !== "fulfilled") {
+      throw mapOrderItemResultToOrderStateResult0.reason;
+    }
+    mapOrderItemResultToOrderState = mapOrderItemResultToOrderStateResult0.value;
+    const mapToOrderProcessedResult0 = group[4];
+    if (mapToOrderProcessedResult0.status !== "fulfilled") {
+      throw mapToOrderProcessedResult0.reason;
+    }
+    mapToOrderProcessed = mapToOrderProcessedResult0.value;
+    const mapToOrderStateResult0 = group[5];
+    if (mapToOrderStateResult0.status !== "fulfilled") {
+      throw mapToOrderStateResult0.reason;
+    }
+    mapToOrderState = mapToOrderStateResult0.value;
+    const processOrderItemsResult0 = group[6];
+    if (processOrderItemsResult0.status !== "fulfilled") {
+      throw processOrderItemsResult0.reason;
+    }
+    processOrderItems = processOrderItemsResult0.value;
+    const softDeadlineResult0 = group[7];
+    if (softDeadlineResult0.status !== "fulfilled") {
+      throw softDeadlineResult0.reason;
+    }
+    softDeadline = softDeadlineResult0.value;
+  }
   return {
-    orderProcessedEndpointSink: synchronousMakerResult(
-      makers.orderProcessedEndpointSink(context, environment, config.named.endpoints.orderProcessed),
-      "orderProcessedEndpointSink",
-    ),
-    processOrderItemSink: synchronousMakerResult(
-      makers.processOrderItemSink(context, environment, config.named.endpoints.processOrderItem),
-      "processOrderItemSink",
-    ),
-    processOrderSource: synchronousMakerResult(
-      makers.processOrderSource(context, environment, config.named.endpoints.processOrder),
-      "processOrderSource",
-    ),
-    mapOrderItemResultToOrderState: synchronousMakerResult(
-      makers.mapOrderItemResultToOrderState(context, environment, config.named.streams.mapOrderItemResultToOrderState),
-      "mapOrderItemResultToOrderState",
-    ),
-    mapToOrderProcessed: synchronousMakerResult(
-      makers.mapToOrderProcessed(context, environment, config.named.streams.mapToOrderProcessed),
-      "mapToOrderProcessed",
-    ),
-    mapToOrderState: synchronousMakerResult(
-      makers.mapToOrderState(context, environment, config.named.streams.mapToOrderState),
-      "mapToOrderState",
-    ),
-    processOrderItems: synchronousMakerResult(
-      makers.processOrderItems(context, environment, config.named.streams.processOrderItems),
-      "processOrderItems",
-    ),
-    softDeadline: synchronousMakerResult(
-      makers.softDeadline(context, environment, config.named.streams.softDeadline),
-      "softDeadline",
-    ),
+    orderProcessedEndpointSink,
+    processOrderItemSink,
+    processOrderSource,
+    mapOrderItemResultToOrderState,
+    mapToOrderProcessed,
+    mapToOrderState,
+    processOrderItems,
+    softDeadline,
   };
 }
 
@@ -199,21 +317,49 @@ export async function initFunctionsParallel(
   let processOrderItems: ProcessOrderItems;
   let softDeadline: SoftDeadline;
   {
-    const group = await Promise.allSettled([
-      makers.orderProcessedEndpointSink(context, environment, config.named.endpoints.orderProcessed),
-      makers.processOrderItemSink(context, environment, config.named.endpoints.processOrderItem),
-      makers.processOrderSource(context, environment, config.named.endpoints.processOrder),
-      makers.mapOrderItemResultToOrderState(context, environment, config.named.streams.mapOrderItemResultToOrderState),
-      makers.mapToOrderProcessed(context, environment, config.named.streams.mapToOrderProcessed),
-      makers.mapToOrderState(context, environment, config.named.streams.mapToOrderState),
-      makers.processOrderItems(context, environment, config.named.streams.processOrderItems),
-      makers.softDeadline(context, environment, config.named.streams.softDeadline),
-    ] as const);
-    for (const result of group) {
-      if (result.status === "rejected") {
-        throw result.reason;
+    const controller = new AbortController();
+    const makerContext = context.withExternalCancellation(controller.signal);
+    let firstError: unknown;
+    let failed = false;
+    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+      try {
+        return await maker();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          firstError = error;
+          controller.abort(error);
+        }
+        throw error;
       }
-    }
+    };
+    const group = await Promise.allSettled([
+      invokeMaker(() => makers.orderProcessedEndpointSink(
+        makerContext, environment, config.named.endpoints.orderProcessed,
+      )),
+      invokeMaker(() => makers.processOrderItemSink(
+        makerContext, environment, config.named.endpoints.processOrderItem,
+      )),
+      invokeMaker(() => makers.processOrderSource(
+        makerContext, environment, config.named.endpoints.processOrder,
+      )),
+      invokeMaker(() => makers.mapOrderItemResultToOrderState(
+        makerContext, environment, config.named.streams.mapOrderItemResultToOrderState,
+      )),
+      invokeMaker(() => makers.mapToOrderProcessed(
+        makerContext, environment, config.named.streams.mapToOrderProcessed,
+      )),
+      invokeMaker(() => makers.mapToOrderState(
+        makerContext, environment, config.named.streams.mapToOrderState,
+      )),
+      invokeMaker(() => makers.processOrderItems(
+        makerContext, environment, config.named.streams.processOrderItems,
+      )),
+      invokeMaker(() => makers.softDeadline(
+        makerContext, environment, config.named.streams.softDeadline,
+      )),
+    ] as const);
+    if (failed) throw firstError;
     const orderProcessedEndpointSinkResult0 = group[0];
     if (orderProcessedEndpointSinkResult0.status !== "fulfilled") {
       throw orderProcessedEndpointSinkResult0.reason;

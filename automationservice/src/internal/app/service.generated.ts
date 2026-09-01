@@ -107,8 +107,8 @@ export abstract class ServiceGenerated {
   protected dataConnectors!: ServiceDataConnectors;
   protected handlers!: ServiceHandlers;
 
-  protected customMakersInit(_context: MessageContext): void {}
-  protected customFunctionsInit(_context: MessageContext): void {}
+  protected customMakersInit(_context: MessageContext): void | Promise<void> {}
+  protected customFunctionsInit(_context: MessageContext): void | Promise<void> {}
   protected createServiceAppOptions(_config: ServiceConfig): ServiceAppOptions { return {}; }
   protected onStart(_context: Context): Promise<void> { return Promise.resolve(); }
   protected onStop(_context: Context): Promise<void> { return Promise.resolve(); }
@@ -137,12 +137,12 @@ export abstract class ServiceGenerated {
     });
     const environment = app.environment();
     const messageContext = new MessageContext();
-    this.customMakersInit(messageContext);
+    await this.customMakersInit(messageContext);
     this.clients = initClients();
     this.functions = await initFunctionsParallel(
       messageContext, config, environment, this.makers,
     );
-    this.customFunctionsInit(messageContext);
+    await this.customFunctionsInit(messageContext);
     initRuntimeConnectors(environment);
     this.streams = initStreams(config, environment, this.functions);
     const bindings = initDataConnectors(this.streams, this.functions, this.clients);

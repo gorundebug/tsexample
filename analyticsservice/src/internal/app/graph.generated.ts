@@ -66,6 +66,24 @@ export interface ServiceMakers {
   ) => OrderProcessedEndpointSource | Promise<OrderProcessedEndpointSource>;
 }
 
+export type WorkflowServiceMakers = {
+  countOrderProcessed: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
+  ) => CountOrderProcessed | Promise<CountOrderProcessed>;
+  analyticsScheduleSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
+  ) => AnalyticsScheduleSource | Promise<AnalyticsScheduleSource>;
+  orderProcessedEndpointSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
+  ) => OrderProcessedEndpointSource | Promise<OrderProcessedEndpointSource>;
+};
+
 export function defaultMakers(): ServiceMakers {
   return {
     countOrderProcessed: makeCountOrderProcessed,
@@ -74,11 +92,12 @@ export function defaultMakers(): ServiceMakers {
   };
 }
 
-function synchronousMakerResult<T>(value: T | Promise<T>, name: string): T {
-  if (value instanceof Promise) {
-    throw new Error(`Temporal Workflow maker ${name} must be synchronous`);
-  }
-  return value;
+export function defaultWorkflowMakers(): WorkflowServiceMakers {
+  return {
+    countOrderProcessed: makeCountOrderProcessed,
+    analyticsScheduleSource: makeAnalyticsScheduleSource,
+    orderProcessedEndpointSource: makeOrderProcessedEndpointSource,
+  };
 }
 
 export interface ServiceFunctions {
@@ -87,25 +106,64 @@ export interface ServiceFunctions {
   orderProcessedEndpointSource: OrderProcessedEndpointSource;
 }
 
-export function initFunctions(
+export async function initFunctions(
   context: MessageContext,
   config: ConfigSnapshot,
   environment: RuntimeEnvironment,
-  makers: ServiceMakers,
-) {
+  makers: WorkflowServiceMakers,
+): Promise<ServiceFunctions> {
+  let countOrderProcessed: CountOrderProcessed;
+  let analyticsScheduleSource: AnalyticsScheduleSource;
+  let orderProcessedEndpointSource: OrderProcessedEndpointSource;
+  {
+    const controller = new AbortController();
+    const makerContext = context.withExternalCancellation(controller.signal);
+    let firstError: unknown;
+    let failed = false;
+    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+      try {
+        return await maker();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          firstError = error;
+          controller.abort(error);
+        }
+        throw error;
+      }
+    };
+    const group = await Promise.allSettled([
+      invokeMaker(() => makers.countOrderProcessed(
+        makerContext, environment, config.named.streams.countOrderProcessed,
+      )),
+      invokeMaker(() => makers.analyticsScheduleSource(
+        makerContext, environment, config.named.endpoints.analyticsSchedule,
+      )),
+      invokeMaker(() => makers.orderProcessedEndpointSource(
+        makerContext, environment, config.named.endpoints.orderProcessed,
+      )),
+    ] as const);
+    if (failed) throw firstError;
+    const countOrderProcessedResult0 = group[0];
+    if (countOrderProcessedResult0.status !== "fulfilled") {
+      throw countOrderProcessedResult0.reason;
+    }
+    countOrderProcessed = countOrderProcessedResult0.value;
+    const analyticsScheduleSourceResult0 = group[1];
+    if (analyticsScheduleSourceResult0.status !== "fulfilled") {
+      throw analyticsScheduleSourceResult0.reason;
+    }
+    analyticsScheduleSource = analyticsScheduleSourceResult0.value;
+    const orderProcessedEndpointSourceResult0 = group[2];
+    if (orderProcessedEndpointSourceResult0.status !== "fulfilled") {
+      throw orderProcessedEndpointSourceResult0.reason;
+    }
+    orderProcessedEndpointSource = orderProcessedEndpointSourceResult0.value;
+  }
   return {
-    countOrderProcessed: synchronousMakerResult(
-      makers.countOrderProcessed(context, environment, config.named.streams.countOrderProcessed),
-      "countOrderProcessed",
-    ),
-    analyticsScheduleSource: synchronousMakerResult(
-      makers.analyticsScheduleSource(context, environment, config.named.endpoints.analyticsSchedule),
-      "analyticsScheduleSource",
-    ),
-    orderProcessedEndpointSource: synchronousMakerResult(
-      makers.orderProcessedEndpointSource(context, environment, config.named.endpoints.orderProcessed),
-      "orderProcessedEndpointSource",
-    ),
+    countOrderProcessed,
+    analyticsScheduleSource,
+    orderProcessedEndpointSource,
   };
 }
 
@@ -119,16 +177,34 @@ export async function initFunctionsParallel(
   let analyticsScheduleSource: AnalyticsScheduleSource;
   let orderProcessedEndpointSource: OrderProcessedEndpointSource;
   {
-    const group = await Promise.allSettled([
-      makers.countOrderProcessed(context, environment, config.named.streams.countOrderProcessed),
-      makers.analyticsScheduleSource(context, environment, config.named.endpoints.analyticsSchedule),
-      makers.orderProcessedEndpointSource(context, environment, config.named.endpoints.orderProcessed),
-    ] as const);
-    for (const result of group) {
-      if (result.status === "rejected") {
-        throw result.reason;
+    const controller = new AbortController();
+    const makerContext = context.withExternalCancellation(controller.signal);
+    let firstError: unknown;
+    let failed = false;
+    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+      try {
+        return await maker();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          firstError = error;
+          controller.abort(error);
+        }
+        throw error;
       }
-    }
+    };
+    const group = await Promise.allSettled([
+      invokeMaker(() => makers.countOrderProcessed(
+        makerContext, environment, config.named.streams.countOrderProcessed,
+      )),
+      invokeMaker(() => makers.analyticsScheduleSource(
+        makerContext, environment, config.named.endpoints.analyticsSchedule,
+      )),
+      invokeMaker(() => makers.orderProcessedEndpointSource(
+        makerContext, environment, config.named.endpoints.orderProcessed,
+      )),
+    ] as const);
+    if (failed) throw firstError;
     const countOrderProcessedResult0 = group[0];
     if (countOrderProcessedResult0.status !== "fulfilled") {
       throw countOrderProcessedResult0.reason;
