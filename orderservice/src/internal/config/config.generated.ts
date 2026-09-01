@@ -226,7 +226,7 @@ const DEFAULT_CONFIG = {
       "yPos": -255
     },
     "softDeadline": {
-      "duration": 0,
+      "duration": 1000,
       "functionDescription": "Trigger the timeout branch shortly before the request deadline, leaving the configured duration to assemble a response.\nWhen no request deadline exists, use the configured duration itself. Never wait past an existing deadline.\n",
       "functionInitializerGroup": "",
       "functionModule": "",
