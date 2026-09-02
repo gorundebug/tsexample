@@ -43,12 +43,6 @@ go.work.sum
 .DS_Store
 Thumbs.db
 
-# Services (cloned separately via clone.generated.sh)
-/analyticsservice/
-/inventoryservice/
-/orderservice/
+# Go services (cloned separately via clone.generated.sh in all-Go projects)
 
-# Modules (cloned separately via clone.generated.sh)
-/inventory_service_api/
-/model/
-/order_service_api/
+# Go modules (cloned separately via clone.generated.sh in all-Go projects)

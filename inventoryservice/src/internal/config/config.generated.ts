@@ -119,7 +119,7 @@ const DEFAULT_CONFIG = {
       "idEndpoint": 1,
       "idService": 1,
       "idSource": 2,
-      "name": "Process Inventory Item ",
+      "name": "Process Inventory Item",
       "pipeline": "inventoryItem",
       "type": 1,
       "valueType": "OrderItem",
