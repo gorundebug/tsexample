@@ -29,11 +29,11 @@ export class CountOrderProcessed implements ProcessFunction<OrderProcessed, Orde
 }
 
 /** Construct CountOrderProcessed once while the service graph is initialized. */
-export function makeCountOrderProcessed(
+export async function makeCountOrderProcessed(
   _context: MessageContext,
   environment: RuntimeEnvironment,
   _config: ProcessStreamConfig,
-): CountOrderProcessed {
+): Promise<CountOrderProcessed> {
   const counter = environment
     .metrics()
     .scope("analytics")

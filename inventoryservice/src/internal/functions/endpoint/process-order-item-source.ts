@@ -57,10 +57,10 @@ export class ProcessOrderItemSource implements GrpcSourceEndpointHandler<Process
 }
 
 /** Construct ProcessOrderItemSource once while the service graph is initialized. */
-export function makeProcessOrderItemSource(
+export async function makeProcessOrderItemSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: GrpcEndpointConfig,
-): ProcessOrderItemSource {
+): Promise<ProcessOrderItemSource> {
   return new ProcessOrderItemSource();
 }

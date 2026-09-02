@@ -33,10 +33,10 @@ export class MapToOrderProcessed implements MapFunction<OrderState, OrderProcess
 }
 
 /** Construct MapToOrderProcessed once while the service graph is initialized. */
-export function makeMapToOrderProcessed(
+export async function makeMapToOrderProcessed(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: MapStreamConfig,
-): MapToOrderProcessed {
+): Promise<MapToOrderProcessed> {
   return new MapToOrderProcessed();
 }

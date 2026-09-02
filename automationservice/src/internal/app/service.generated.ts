@@ -2,7 +2,7 @@
 import { fileURLToPath } from "node:url";
 import {
   Context, MessageContext, RuntimeConfigStore,
-  ServiceApp, ServiceEnvironment,
+  ServiceApp, ServiceEnvironment, ServiceHTTPServer,
   type ServiceAppOptions, type ServiceConfig,
   errorFromUnknown,
   makeDefaultSerdeRegistry,
@@ -24,12 +24,62 @@ import {
   type ServiceFunctions, type ServiceMakers, type ServiceStreams,
 } from "./graph.generated.js";
 
-function initClients() {
+export interface ServiceInfrastructureMakers {
+  serviceHttpServer: (
+    context: MessageContext,
+    environment: ServiceEnvironment,
+    config: ServiceConfig,
+  ) => Promise<ServiceHTTPServer>;
+}
+
+function defaultInfrastructureMakers(): ServiceInfrastructureMakers {
+  return {
+    serviceHttpServer: async (_context, environment, _config) =>
+      new ServiceHTTPServer(() => environment.serviceConfig()),
+  };
+}
+
+async function initInfrastructure(
+  context: MessageContext,
+  config: Config,
+  environment: ServiceEnvironment,
+  makers: ServiceInfrastructureMakers,
+) {
+  const controller = new AbortController();
+  const makerContext = context.withExternalCancellation(controller.signal);
+  let firstError: unknown;
+  let failed = false;
+  const invokeMaker = async <T>(maker: () => Promise<T>): Promise<T> => {
+    try {
+      return await maker();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        firstError = error;
+        controller.abort(error);
+      }
+      throw error;
+    }
+  };
+  let serviceHttpServer: ServiceHTTPServer | undefined;
+  await Promise.allSettled([
+    invokeMaker(async () => {
+      serviceHttpServer = await makers.serviceHttpServer(
+        makerContext, environment, environment.serviceConfig(),
+      );
+    }),
+  ] as const);
+  controller.abort();
+  if (failed) throw firstError;
+  if (serviceHttpServer === undefined) {
+    throw new Error("service HTTP server maker returned no server");
+  }
+  environment.replaceHttpServer(serviceHttpServer);
   return {
   };
 }
 
-export type ServiceClients = ReturnType<typeof initClients>;
+export type ServiceClients = Awaited<ReturnType<typeof initInfrastructure>>;
 
 function initRuntimeConnectors(environment: ServiceEnvironment): void {
   makeTemporalConnector(DataConnectorIds.TEMPORAL, environment, {
@@ -101,6 +151,8 @@ export type ServiceHandlers = ReturnType<typeof initDataConnectors>["handlers"];
 
 export abstract class ServiceGenerated {
   protected readonly makers: ServiceMakers = defaultMakers();
+  protected readonly infrastructureMakers: ServiceInfrastructureMakers =
+    defaultInfrastructureMakers();
   protected clients!: ServiceClients;
   protected functions!: ServiceFunctions;
   protected streams!: ServiceStreams;
@@ -138,7 +190,9 @@ export abstract class ServiceGenerated {
     const environment = app.environment();
     const messageContext = new MessageContext();
     await this.customMakersInit(messageContext);
-    this.clients = initClients();
+    this.clients = await initInfrastructure(
+      messageContext, config, environment, this.infrastructureMakers,
+    );
     this.functions = await initFunctionsParallel(
       messageContext, config, environment, this.makers,
     );

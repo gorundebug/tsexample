@@ -135,182 +135,182 @@ export interface ServiceMakers {
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => ActivityJobEndpointSink | Promise<ActivityJobEndpointSink>;
+  ) => Promise<ActivityJobEndpointSink>;
   activityJobEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => ActivityJobEndpointSource | Promise<ActivityJobEndpointSource>;
+  ) => Promise<ActivityJobEndpointSource>;
   fanoutActivityAEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityAEndpointSink | Promise<FanoutActivityAEndpointSink>;
+  ) => Promise<FanoutActivityAEndpointSink>;
   fanoutActivityAEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityAEndpointSource | Promise<FanoutActivityAEndpointSource>;
+  ) => Promise<FanoutActivityAEndpointSource>;
   fanoutActivityBEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityBEndpointSink | Promise<FanoutActivityBEndpointSink>;
+  ) => Promise<FanoutActivityBEndpointSink>;
   fanoutActivityBEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityBEndpointSource | Promise<FanoutActivityBEndpointSource>;
+  ) => Promise<FanoutActivityBEndpointSource>;
   fanoutActivityCEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityCEndpointSink | Promise<FanoutActivityCEndpointSink>;
+  ) => Promise<FanoutActivityCEndpointSink>;
   fanoutActivityCEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityCEndpointSource | Promise<FanoutActivityCEndpointSource>;
+  ) => Promise<FanoutActivityCEndpointSource>;
   sequentialActivityAEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => SequentialActivityAEndpointSink | Promise<SequentialActivityAEndpointSink>;
+  ) => Promise<SequentialActivityAEndpointSink>;
   sequentialActivityAEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => SequentialActivityAEndpointSource | Promise<SequentialActivityAEndpointSource>;
+  ) => Promise<SequentialActivityAEndpointSource>;
   sequentialActivityBEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => SequentialActivityBEndpointSink | Promise<SequentialActivityBEndpointSink>;
+  ) => Promise<SequentialActivityBEndpointSink>;
   sequentialActivityBEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => SequentialActivityBEndpointSource | Promise<SequentialActivityBEndpointSource>;
+  ) => Promise<SequentialActivityBEndpointSource>;
   temporalActivityScheduleSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => TemporalActivityScheduleSource | Promise<TemporalActivityScheduleSource>;
+  ) => Promise<TemporalActivityScheduleSource>;
   activityPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => ActivityPause | Promise<ActivityPause>;
+  ) => Promise<ActivityPause>;
   observeActivityResult: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ObserveActivityResult | Promise<ObserveActivityResult>;
+  ) => Promise<ObserveActivityResult>;
   observeFanoutActivityB: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ObserveFanoutActivityB | Promise<ObserveFanoutActivityB>;
+  ) => Promise<ObserveFanoutActivityB>;
   observeFanoutActivityC: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ObserveFanoutActivityC | Promise<ObserveFanoutActivityC>;
+  ) => Promise<ObserveFanoutActivityC>;
   observeWorkflowResult: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ObserveWorkflowResult | Promise<ObserveWorkflowResult>;
+  ) => Promise<ObserveWorkflowResult>;
   processActivityJob: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessActivityJob | Promise<ProcessActivityJob>;
+  ) => Promise<ProcessActivityJob>;
   processFanoutActivityA: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessFanoutActivityA | Promise<ProcessFanoutActivityA>;
+  ) => Promise<ProcessFanoutActivityA>;
   processFanoutActivityB: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessFanoutActivityB | Promise<ProcessFanoutActivityB>;
+  ) => Promise<ProcessFanoutActivityB>;
   processFanoutActivityC: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessFanoutActivityC | Promise<ProcessFanoutActivityC>;
+  ) => Promise<ProcessFanoutActivityC>;
   processScheduledActivity: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessScheduledActivity | Promise<ProcessScheduledActivity>;
+  ) => Promise<ProcessScheduledActivity>;
   processScheduledWorkflow: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessScheduledWorkflow | Promise<ProcessScheduledWorkflow>;
+  ) => Promise<ProcessScheduledWorkflow>;
   processSequentialActivityA: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessSequentialActivityA | Promise<ProcessSequentialActivityA>;
+  ) => Promise<ProcessSequentialActivityA>;
   processSequentialActivityB: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessSequentialActivityB | Promise<ProcessSequentialActivityB>;
+  ) => Promise<ProcessSequentialActivityB>;
   processWorkflowJob: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessWorkflowJob | Promise<ProcessWorkflowJob>;
+  ) => Promise<ProcessWorkflowJob>;
   scheduledActivityPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => ScheduledActivityPause | Promise<ScheduledActivityPause>;
+  ) => Promise<ScheduledActivityPause>;
   scheduledWorkflowPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => ScheduledWorkflowPause | Promise<ScheduledWorkflowPause>;
+  ) => Promise<ScheduledWorkflowPause>;
   workflowPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => WorkflowPause | Promise<WorkflowPause>;
+  ) => Promise<WorkflowPause>;
   localScheduleSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
-  ) => LocalScheduleSource | Promise<LocalScheduleSource>;
+  ) => Promise<LocalScheduleSource>;
   fanoutWorkflowJobEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutWorkflowJobEndpointSink | Promise<FanoutWorkflowJobEndpointSink>;
+  ) => Promise<FanoutWorkflowJobEndpointSink>;
   fanoutWorkflowJobEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutWorkflowJobEndpointSource | Promise<FanoutWorkflowJobEndpointSource>;
+  ) => Promise<FanoutWorkflowJobEndpointSource>;
   temporalWorkflowScheduleSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => TemporalWorkflowScheduleSource | Promise<TemporalWorkflowScheduleSource>;
+  ) => Promise<TemporalWorkflowScheduleSource>;
   workflowJobEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => WorkflowJobEndpointSink | Promise<WorkflowJobEndpointSink>;
+  ) => Promise<WorkflowJobEndpointSink>;
   workflowJobEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => WorkflowJobEndpointSource | Promise<WorkflowJobEndpointSource>;
+  ) => Promise<WorkflowJobEndpointSource>;
 }
 
 export type WorkflowServiceMakers = {
@@ -318,182 +318,182 @@ export type WorkflowServiceMakers = {
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => ActivityJobEndpointSink | Promise<ActivityJobEndpointSink>;
+  ) => Promise<ActivityJobEndpointSink>;
   activityJobEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => ActivityJobEndpointSource | Promise<ActivityJobEndpointSource>;
+  ) => Promise<ActivityJobEndpointSource>;
   fanoutActivityAEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityAEndpointSink | Promise<FanoutActivityAEndpointSink>;
+  ) => Promise<FanoutActivityAEndpointSink>;
   fanoutActivityAEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityAEndpointSource | Promise<FanoutActivityAEndpointSource>;
+  ) => Promise<FanoutActivityAEndpointSource>;
   fanoutActivityBEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityBEndpointSink | Promise<FanoutActivityBEndpointSink>;
+  ) => Promise<FanoutActivityBEndpointSink>;
   fanoutActivityBEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityBEndpointSource | Promise<FanoutActivityBEndpointSource>;
+  ) => Promise<FanoutActivityBEndpointSource>;
   fanoutActivityCEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityCEndpointSink | Promise<FanoutActivityCEndpointSink>;
+  ) => Promise<FanoutActivityCEndpointSink>;
   fanoutActivityCEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutActivityCEndpointSource | Promise<FanoutActivityCEndpointSource>;
+  ) => Promise<FanoutActivityCEndpointSource>;
   sequentialActivityAEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => SequentialActivityAEndpointSink | Promise<SequentialActivityAEndpointSink>;
+  ) => Promise<SequentialActivityAEndpointSink>;
   sequentialActivityAEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => SequentialActivityAEndpointSource | Promise<SequentialActivityAEndpointSource>;
+  ) => Promise<SequentialActivityAEndpointSource>;
   sequentialActivityBEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => SequentialActivityBEndpointSink | Promise<SequentialActivityBEndpointSink>;
+  ) => Promise<SequentialActivityBEndpointSink>;
   sequentialActivityBEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => SequentialActivityBEndpointSource | Promise<SequentialActivityBEndpointSource>;
+  ) => Promise<SequentialActivityBEndpointSource>;
   temporalActivityScheduleSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => TemporalActivityScheduleSource | Promise<TemporalActivityScheduleSource>;
+  ) => Promise<TemporalActivityScheduleSource>;
   activityPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => ActivityPause | Promise<ActivityPause>;
+  ) => Promise<ActivityPause>;
   observeActivityResult: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ObserveActivityResult | Promise<ObserveActivityResult>;
+  ) => Promise<ObserveActivityResult>;
   observeFanoutActivityB: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ObserveFanoutActivityB | Promise<ObserveFanoutActivityB>;
+  ) => Promise<ObserveFanoutActivityB>;
   observeFanoutActivityC: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ObserveFanoutActivityC | Promise<ObserveFanoutActivityC>;
+  ) => Promise<ObserveFanoutActivityC>;
   observeWorkflowResult: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ObserveWorkflowResult | Promise<ObserveWorkflowResult>;
+  ) => Promise<ObserveWorkflowResult>;
   processActivityJob: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessActivityJob | Promise<ProcessActivityJob>;
+  ) => Promise<ProcessActivityJob>;
   processFanoutActivityA: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessFanoutActivityA | Promise<ProcessFanoutActivityA>;
+  ) => Promise<ProcessFanoutActivityA>;
   processFanoutActivityB: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessFanoutActivityB | Promise<ProcessFanoutActivityB>;
+  ) => Promise<ProcessFanoutActivityB>;
   processFanoutActivityC: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessFanoutActivityC | Promise<ProcessFanoutActivityC>;
+  ) => Promise<ProcessFanoutActivityC>;
   processScheduledActivity: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessScheduledActivity | Promise<ProcessScheduledActivity>;
+  ) => Promise<ProcessScheduledActivity>;
   processScheduledWorkflow: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessScheduledWorkflow | Promise<ProcessScheduledWorkflow>;
+  ) => Promise<ProcessScheduledWorkflow>;
   processSequentialActivityA: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessSequentialActivityA | Promise<ProcessSequentialActivityA>;
+  ) => Promise<ProcessSequentialActivityA>;
   processSequentialActivityB: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessSequentialActivityB | Promise<ProcessSequentialActivityB>;
+  ) => Promise<ProcessSequentialActivityB>;
   processWorkflowJob: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => ProcessWorkflowJob | Promise<ProcessWorkflowJob>;
+  ) => Promise<ProcessWorkflowJob>;
   scheduledActivityPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => ScheduledActivityPause | Promise<ScheduledActivityPause>;
+  ) => Promise<ScheduledActivityPause>;
   scheduledWorkflowPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => ScheduledWorkflowPause | Promise<ScheduledWorkflowPause>;
+  ) => Promise<ScheduledWorkflowPause>;
   workflowPause: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => WorkflowPause | Promise<WorkflowPause>;
+  ) => Promise<WorkflowPause>;
   localScheduleSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
-  ) => LocalScheduleSource | Promise<LocalScheduleSource>;
+  ) => Promise<LocalScheduleSource>;
   fanoutWorkflowJobEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutWorkflowJobEndpointSink | Promise<FanoutWorkflowJobEndpointSink>;
+  ) => Promise<FanoutWorkflowJobEndpointSink>;
   fanoutWorkflowJobEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => FanoutWorkflowJobEndpointSource | Promise<FanoutWorkflowJobEndpointSource>;
+  ) => Promise<FanoutWorkflowJobEndpointSource>;
   temporalWorkflowScheduleSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => TemporalWorkflowScheduleSource | Promise<TemporalWorkflowScheduleSource>;
+  ) => Promise<TemporalWorkflowScheduleSource>;
   workflowJobEndpointSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => WorkflowJobEndpointSink | Promise<WorkflowJobEndpointSink>;
+  ) => Promise<WorkflowJobEndpointSink>;
   workflowJobEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").TemporalEndpointConfig,
-  ) => WorkflowJobEndpointSource | Promise<WorkflowJobEndpointSource>;
+  ) => Promise<WorkflowJobEndpointSource>;
 };
 
 export function defaultMakers(): ServiceMakers {
@@ -664,7 +664,7 @@ export async function initFunctions(
     const makerContext = context.withExternalCancellation(controller.signal);
     let firstError: unknown;
     let failed = false;
-    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+    const invokeMaker = async <T>(maker: () => Promise<T>): Promise<T> => {
       try {
         return await maker();
       } catch (error) {
@@ -786,6 +786,7 @@ export async function initFunctions(
         makerContext, environment, config.named.endpoints.workflowJob,
       )),
     ] as const);
+    controller.abort();
     if (failed) throw firstError;
     const activityJobEndpointSinkResult0 = group[0];
     if (activityJobEndpointSinkResult0.status !== "fulfilled") {
@@ -1055,7 +1056,7 @@ export async function initFunctionsParallel(
     const makerContext = context.withExternalCancellation(controller.signal);
     let firstError: unknown;
     let failed = false;
-    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+    const invokeMaker = async <T>(maker: () => Promise<T>): Promise<T> => {
       try {
         return await maker();
       } catch (error) {
@@ -1177,6 +1178,7 @@ export async function initFunctionsParallel(
         makerContext, environment, config.named.endpoints.workflowJob,
       )),
     ] as const);
+    controller.abort();
     if (failed) throw firstError;
     const activityJobEndpointSinkResult0 = group[0];
     if (activityJobEndpointSinkResult0.status !== "fulfilled") {

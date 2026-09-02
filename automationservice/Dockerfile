@@ -44,7 +44,7 @@ RUN set -eu; \
     source_dir=${manifest%/package.json}; \
     if [ -z "$source_dir" ] || [ "$source_dir" = "/" ]; then echo "unsafe tsservicelib source directory" >&2; exit 1; fi; \
     mkdir -p /workspace/.tsservicelib; \
-    cp -a "$source_dir/." /workspace/.tsservicelib/; \
+    cp -R "$source_dir/." /workspace/.tsservicelib/; \
     rm -rf /tmp/tsservicelib-source /tmp/tsservicelib-archive
 COPY --from=module-model_ts-source / /tmp/module-model_ts-source
 RUN set -eu; \
@@ -61,7 +61,7 @@ RUN set -eu; \
     if [ -z "$manifest" ] || [ ! -f "$manifest" ]; then echo "module model_ts source context has no package.json" >&2; exit 1; fi; \
     source_dir=${manifest%/package.json}; \
     mkdir -p /workspace/modules/model_ts; \
-    cp -a "$source_dir/." /workspace/modules/model_ts/; \
+    cp -R "$source_dir/." /workspace/modules/model_ts/; \
     rm -rf /tmp/module-model_ts-source /tmp/module-model_ts-archive
 COPY . .
 RUN node - <<'NODE'

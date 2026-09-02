@@ -24,11 +24,11 @@ export class ProcessScheduledActivity implements MapFunction<string, string> {
 }
 
 /** Construct ProcessScheduledActivity once while the service graph is initialized. */
-export function makeProcessScheduledActivity(
+export async function makeProcessScheduledActivity(
   context: MessageContext,
   environment: RuntimeEnvironment,
   config: MapStreamConfig
-): ProcessScheduledActivity {
+): Promise<ProcessScheduledActivity> {
   void context;
   void environment;
   void config;

@@ -49,10 +49,10 @@ export class GetInventoryItemData implements ProcessFunction<OrderItem, OrderIte
 }
 
 /** Construct GetInventoryItemData once while the service graph is initialized. */
-export function makeGetInventoryItemData(
+export async function makeGetInventoryItemData(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: ProcessStreamConfig,
-): GetInventoryItemData {
+): Promise<GetInventoryItemData> {
   return new GetInventoryItemData();
 }

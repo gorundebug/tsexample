@@ -26,10 +26,10 @@ export class FanoutWorkflowJobEndpointSource implements TemporalEndpointHandler<
 }
 
 /** Construct FanoutWorkflowJobEndpointSource once while the service graph is initialized. */
-export function makeFanoutWorkflowJobEndpointSource(
+export async function makeFanoutWorkflowJobEndpointSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: TemporalEndpointConfig,
-): FanoutWorkflowJobEndpointSource {
+): Promise<FanoutWorkflowJobEndpointSource> {
   return new FanoutWorkflowJobEndpointSource();
 }

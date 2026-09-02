@@ -22,11 +22,11 @@ export class ObserveWorkflowResult implements MapFunction<string, string> {
 }
 
 /** Construct ObserveWorkflowResult once while the service graph is initialized. */
-export function makeObserveWorkflowResult(
+export async function makeObserveWorkflowResult(
   context: MessageContext,
   environment: RuntimeEnvironment,
   config: MapStreamConfig
-): ObserveWorkflowResult {
+): Promise<ObserveWorkflowResult> {
   void context;
   void environment;
   void config;

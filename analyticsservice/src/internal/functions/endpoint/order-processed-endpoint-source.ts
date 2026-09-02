@@ -87,10 +87,10 @@ function requiredDate(value: Record<string, unknown>, name: string): Date {
 }
 
 /** Construct OrderProcessedEndpointSource once while the service graph is initialized. */
-export function makeOrderProcessedEndpointSource(
+export async function makeOrderProcessedEndpointSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: KafkaEndpointConfig,
-): OrderProcessedEndpointSource {
+): Promise<OrderProcessedEndpointSource> {
   return new OrderProcessedEndpointSource();
 }

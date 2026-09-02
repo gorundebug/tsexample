@@ -26,11 +26,11 @@ export class ScheduledWorkflowPause implements DelayFunction<string> {
 }
 
 /** Construct ScheduledWorkflowPause once while the service graph is initialized. */
-export function makeScheduledWorkflowPause(
+export async function makeScheduledWorkflowPause(
   context: MessageContext,
   environment: RuntimeEnvironment,
   config: DelayStreamConfig
-): ScheduledWorkflowPause {
+): Promise<ScheduledWorkflowPause> {
   void context;
   void environment;
   void config;

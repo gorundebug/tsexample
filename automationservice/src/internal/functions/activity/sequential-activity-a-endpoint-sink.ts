@@ -29,10 +29,10 @@ export class SequentialActivityAEndpointSink implements TemporalEndpointHandler<
 }
 
 /** Construct SequentialActivityAEndpointSink once while the service graph is initialized. */
-export function makeSequentialActivityAEndpointSink(
+export async function makeSequentialActivityAEndpointSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: TemporalEndpointConfig,
-): SequentialActivityAEndpointSink {
+): Promise<SequentialActivityAEndpointSink> {
   return new SequentialActivityAEndpointSink();
 }

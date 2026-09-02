@@ -23,10 +23,10 @@ export class TemporalWorkflowScheduleSource implements ScheduleEndpointFunction<
 }
 
 /** Construct TemporalWorkflowScheduleSource once while the service graph is initialized. */
-export function makeTemporalWorkflowScheduleSource(
+export async function makeTemporalWorkflowScheduleSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: TemporalEndpointConfig
-): TemporalWorkflowScheduleSource {
+): Promise<TemporalWorkflowScheduleSource> {
   return new TemporalWorkflowScheduleSource();
 }

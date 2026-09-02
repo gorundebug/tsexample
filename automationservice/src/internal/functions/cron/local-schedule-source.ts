@@ -23,10 +23,10 @@ export class LocalScheduleSource implements ScheduleEndpointFunction<string> {
 }
 
 /** Construct LocalScheduleSource once while the service graph is initialized. */
-export function makeLocalScheduleSource(
+export async function makeLocalScheduleSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: CronEndpointConfig
-): LocalScheduleSource {
+): Promise<LocalScheduleSource> {
   return new LocalScheduleSource();
 }

@@ -42,7 +42,9 @@ user-owned extension points.
 ## TypeScript rules
 
 - Business functions are user-owned classes implementing the generated
-  interfaces. Keep their method and maker signatures unchanged.
+  interfaces. Keep their method signatures unchanged. Function and
+  infrastructure makers always return a `Promise`; synchronous makers are not
+  part of the generated contract.
 - Propagate `MessageContext`, await collectors and senders, and do not create
   detached promises for graph work whose completion belongs to the request.
 - Use the generated workspace commands:

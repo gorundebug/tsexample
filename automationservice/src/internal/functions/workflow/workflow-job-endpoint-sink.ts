@@ -29,10 +29,10 @@ export class WorkflowJobEndpointSink implements TemporalEndpointHandler<Workflow
 }
 
 /** Construct WorkflowJobEndpointSink once while the service graph is initialized. */
-export function makeWorkflowJobEndpointSink(
+export async function makeWorkflowJobEndpointSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: TemporalEndpointConfig,
-): WorkflowJobEndpointSink {
+): Promise<WorkflowJobEndpointSink> {
   return new WorkflowJobEndpointSink();
 }

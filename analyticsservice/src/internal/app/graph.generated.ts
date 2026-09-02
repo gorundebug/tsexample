@@ -53,17 +53,17 @@ export interface ServiceMakers {
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
-  ) => CountOrderProcessed | Promise<CountOrderProcessed>;
+  ) => Promise<CountOrderProcessed>;
   analyticsScheduleSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
-  ) => AnalyticsScheduleSource | Promise<AnalyticsScheduleSource>;
+  ) => Promise<AnalyticsScheduleSource>;
   orderProcessedEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
-  ) => OrderProcessedEndpointSource | Promise<OrderProcessedEndpointSource>;
+  ) => Promise<OrderProcessedEndpointSource>;
 }
 
 export type WorkflowServiceMakers = {
@@ -71,17 +71,17 @@ export type WorkflowServiceMakers = {
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
-  ) => CountOrderProcessed | Promise<CountOrderProcessed>;
+  ) => Promise<CountOrderProcessed>;
   analyticsScheduleSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
-  ) => AnalyticsScheduleSource | Promise<AnalyticsScheduleSource>;
+  ) => Promise<AnalyticsScheduleSource>;
   orderProcessedEndpointSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
-  ) => OrderProcessedEndpointSource | Promise<OrderProcessedEndpointSource>;
+  ) => Promise<OrderProcessedEndpointSource>;
 };
 
 export function defaultMakers(): ServiceMakers {
@@ -120,7 +120,7 @@ export async function initFunctions(
     const makerContext = context.withExternalCancellation(controller.signal);
     let firstError: unknown;
     let failed = false;
-    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+    const invokeMaker = async <T>(maker: () => Promise<T>): Promise<T> => {
       try {
         return await maker();
       } catch (error) {
@@ -143,6 +143,7 @@ export async function initFunctions(
         makerContext, environment, config.named.endpoints.orderProcessed,
       )),
     ] as const);
+    controller.abort();
     if (failed) throw firstError;
     const countOrderProcessedResult0 = group[0];
     if (countOrderProcessedResult0.status !== "fulfilled") {
@@ -181,7 +182,7 @@ export async function initFunctionsParallel(
     const makerContext = context.withExternalCancellation(controller.signal);
     let firstError: unknown;
     let failed = false;
-    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+    const invokeMaker = async <T>(maker: () => Promise<T>): Promise<T> => {
       try {
         return await maker();
       } catch (error) {
@@ -204,6 +205,7 @@ export async function initFunctionsParallel(
         makerContext, environment, config.named.endpoints.orderProcessed,
       )),
     ] as const);
+    controller.abort();
     if (failed) throw firstError;
     const countOrderProcessedResult0 = group[0];
     if (countOrderProcessedResult0.status !== "fulfilled") {

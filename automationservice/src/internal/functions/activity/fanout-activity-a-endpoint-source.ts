@@ -26,10 +26,10 @@ export class FanoutActivityAEndpointSource implements TemporalEndpointHandler<Fa
 }
 
 /** Construct FanoutActivityAEndpointSource once while the service graph is initialized. */
-export function makeFanoutActivityAEndpointSource(
+export async function makeFanoutActivityAEndpointSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: TemporalEndpointConfig,
-): FanoutActivityAEndpointSource {
+): Promise<FanoutActivityAEndpointSource> {
   return new FanoutActivityAEndpointSource();
 }

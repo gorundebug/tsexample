@@ -85,10 +85,10 @@ export class ProcessOrderItemSink implements GrpcSinkEndpointHandler<ProcessOrde
 }
 
 /** Construct ProcessOrderItemSink once while the service graph is initialized. */
-export function makeProcessOrderItemSink(
+export async function makeProcessOrderItemSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: GrpcEndpointConfig,
-): ProcessOrderItemSink {
+): Promise<ProcessOrderItemSink> {
   return new ProcessOrderItemSink();
 }

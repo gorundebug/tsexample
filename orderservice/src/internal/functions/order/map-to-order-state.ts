@@ -27,10 +27,10 @@ export class MapToOrderState implements MapFunction<Order, OrderState> {
 }
 
 /** Construct MapToOrderState once while the service graph is initialized. */
-export function makeMapToOrderState(
+export async function makeMapToOrderState(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: MapStreamConfig,
-): MapToOrderState {
+): Promise<MapToOrderState> {
   return new MapToOrderState();
 }

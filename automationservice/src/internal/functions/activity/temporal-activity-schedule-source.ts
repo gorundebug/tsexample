@@ -23,10 +23,10 @@ export class TemporalActivityScheduleSource implements ScheduleEndpointFunction<
 }
 
 /** Construct TemporalActivityScheduleSource once while the service graph is initialized. */
-export function makeTemporalActivityScheduleSource(
+export async function makeTemporalActivityScheduleSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: TemporalEndpointConfig
-): TemporalActivityScheduleSource {
+): Promise<TemporalActivityScheduleSource> {
   return new TemporalActivityScheduleSource();
 }

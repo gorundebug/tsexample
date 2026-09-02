@@ -22,11 +22,11 @@ export class ProcessFanoutActivityA implements MapFunction<string, string> {
 }
 
 /** Construct ProcessFanoutActivityA once while the service graph is initialized. */
-export function makeProcessFanoutActivityA(
+export async function makeProcessFanoutActivityA(
   context: MessageContext,
   environment: RuntimeEnvironment,
   config: MapStreamConfig
-): ProcessFanoutActivityA {
+): Promise<ProcessFanoutActivityA> {
   void context;
   void environment;
   void config;

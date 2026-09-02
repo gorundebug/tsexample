@@ -22,11 +22,11 @@ export class ObserveFanoutActivityC implements MapFunction<string, string> {
 }
 
 /** Construct ObserveFanoutActivityC once while the service graph is initialized. */
-export function makeObserveFanoutActivityC(
+export async function makeObserveFanoutActivityC(
   context: MessageContext,
   environment: RuntimeEnvironment,
   config: MapStreamConfig
-): ObserveFanoutActivityC {
+): Promise<ObserveFanoutActivityC> {
   void context;
   void environment;
   void config;

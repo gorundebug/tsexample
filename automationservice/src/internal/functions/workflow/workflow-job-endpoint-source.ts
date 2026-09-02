@@ -26,10 +26,10 @@ export class WorkflowJobEndpointSource implements TemporalEndpointHandler<Workfl
 }
 
 /** Construct WorkflowJobEndpointSource once while the service graph is initialized. */
-export function makeWorkflowJobEndpointSource(
+export async function makeWorkflowJobEndpointSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: TemporalEndpointConfig,
-): WorkflowJobEndpointSource {
+): Promise<WorkflowJobEndpointSource> {
   return new WorkflowJobEndpointSource();
 }

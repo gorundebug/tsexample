@@ -24,11 +24,11 @@ export class ProcessActivityJob implements MapFunction<string, string> {
 }
 
 /** Construct ProcessActivityJob once while the service graph is initialized. */
-export function makeProcessActivityJob(
+export async function makeProcessActivityJob(
   context: MessageContext,
   environment: RuntimeEnvironment,
   config: MapStreamConfig
-): ProcessActivityJob {
+): Promise<ProcessActivityJob> {
   void context;
   void environment;
   void config;

@@ -41,10 +41,10 @@ export class OrderProcessedEndpointSink implements KafkaSinkEndpointHandler<Orde
 }
 
 /** Construct OrderProcessedEndpointSink once while the service graph is initialized. */
-export function makeOrderProcessedEndpointSink(
+export async function makeOrderProcessedEndpointSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: KafkaEndpointConfig,
-): OrderProcessedEndpointSink {
+): Promise<OrderProcessedEndpointSink> {
   return new OrderProcessedEndpointSink();
 }

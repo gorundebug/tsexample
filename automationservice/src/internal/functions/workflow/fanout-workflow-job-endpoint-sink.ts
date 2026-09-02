@@ -29,10 +29,10 @@ export class FanoutWorkflowJobEndpointSink implements TemporalEndpointHandler<Fa
 }
 
 /** Construct FanoutWorkflowJobEndpointSink once while the service graph is initialized. */
-export function makeFanoutWorkflowJobEndpointSink(
+export async function makeFanoutWorkflowJobEndpointSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: TemporalEndpointConfig,
-): FanoutWorkflowJobEndpointSink {
+): Promise<FanoutWorkflowJobEndpointSink> {
   return new FanoutWorkflowJobEndpointSink();
 }

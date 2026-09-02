@@ -10,7 +10,7 @@ test -d /workspace/.tsservicelib
 
 mkdir -p "$work_dir"
 find "$work_dir" -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +
-cp -a "$source_dir/." "$work_dir/"
+cp -R "$source_dir/." "$work_dir/"
 
 # Dependency manifests and installations were prepared when the development
 # image was built. Keep live source files from the read-only checkout, but use

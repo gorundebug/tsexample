@@ -26,10 +26,10 @@ export class SequentialActivityAEndpointSource implements TemporalEndpointHandle
 }
 
 /** Construct SequentialActivityAEndpointSource once while the service graph is initialized. */
-export function makeSequentialActivityAEndpointSource(
+export async function makeSequentialActivityAEndpointSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: TemporalEndpointConfig,
-): SequentialActivityAEndpointSource {
+): Promise<SequentialActivityAEndpointSource> {
   return new SequentialActivityAEndpointSource();
 }

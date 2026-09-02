@@ -29,10 +29,10 @@ export class ActivityJobEndpointSink implements TemporalEndpointHandler<Activity
 }
 
 /** Construct ActivityJobEndpointSink once while the service graph is initialized. */
-export function makeActivityJobEndpointSink(
+export async function makeActivityJobEndpointSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: TemporalEndpointConfig,
-): ActivityJobEndpointSink {
+): Promise<ActivityJobEndpointSink> {
   return new ActivityJobEndpointSink();
 }

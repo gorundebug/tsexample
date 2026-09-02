@@ -51,12 +51,12 @@ export interface ServiceMakers {
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
-  ) => ProcessOrderItemSource | Promise<ProcessOrderItemSource>;
+  ) => Promise<ProcessOrderItemSource>;
   getInventoryItemData: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
-  ) => GetInventoryItemData | Promise<GetInventoryItemData>;
+  ) => Promise<GetInventoryItemData>;
 }
 
 export type WorkflowServiceMakers = {
@@ -64,12 +64,12 @@ export type WorkflowServiceMakers = {
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
-  ) => ProcessOrderItemSource | Promise<ProcessOrderItemSource>;
+  ) => Promise<ProcessOrderItemSource>;
   getInventoryItemData: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
-  ) => GetInventoryItemData | Promise<GetInventoryItemData>;
+  ) => Promise<GetInventoryItemData>;
 };
 
 export function defaultMakers(): ServiceMakers {
@@ -104,7 +104,7 @@ export async function initFunctions(
     const makerContext = context.withExternalCancellation(controller.signal);
     let firstError: unknown;
     let failed = false;
-    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+    const invokeMaker = async <T>(maker: () => Promise<T>): Promise<T> => {
       try {
         return await maker();
       } catch (error) {
@@ -124,6 +124,7 @@ export async function initFunctions(
         makerContext, environment, config.named.streams.getInventoryItemData,
       )),
     ] as const);
+    controller.abort();
     if (failed) throw firstError;
     const processOrderItemSourceResult0 = group[0];
     if (processOrderItemSourceResult0.status !== "fulfilled") {
@@ -155,7 +156,7 @@ export async function initFunctionsParallel(
     const makerContext = context.withExternalCancellation(controller.signal);
     let firstError: unknown;
     let failed = false;
-    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+    const invokeMaker = async <T>(maker: () => Promise<T>): Promise<T> => {
       try {
         return await maker();
       } catch (error) {
@@ -175,6 +176,7 @@ export async function initFunctionsParallel(
         makerContext, environment, config.named.streams.getInventoryItemData,
       )),
     ] as const);
+    controller.abort();
     if (failed) throw firstError;
     const processOrderItemSourceResult0 = group[0];
     if (processOrderItemSourceResult0.status !== "fulfilled") {

@@ -23,10 +23,10 @@ export class AnalyticsScheduleSource implements ScheduleEndpointFunction<string>
 }
 
 /** Construct AnalyticsScheduleSource once while the service graph is initialized. */
-export function makeAnalyticsScheduleSource(
+export async function makeAnalyticsScheduleSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: CronEndpointConfig,
-): AnalyticsScheduleSource {
+): Promise<AnalyticsScheduleSource> {
   return new AnalyticsScheduleSource();
 }

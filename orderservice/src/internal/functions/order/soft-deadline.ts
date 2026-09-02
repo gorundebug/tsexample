@@ -26,10 +26,10 @@ export class SoftDeadline implements DelayFunction<Order> {
 }
 
 /** Construct SoftDeadline once while the service graph is initialized. */
-export function makeSoftDeadline(
+export async function makeSoftDeadline(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: DelayStreamConfig,
-): SoftDeadline {
+): Promise<SoftDeadline> {
   return new SoftDeadline();
 }

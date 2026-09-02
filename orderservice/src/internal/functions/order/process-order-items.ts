@@ -24,10 +24,10 @@ export class ProcessOrderItems implements FlatMapFunction<Order, OrderItem> {
 }
 
 /** Construct ProcessOrderItems once while the service graph is initialized. */
-export function makeProcessOrderItems(
+export async function makeProcessOrderItems(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: FlatMapStreamConfig,
-): ProcessOrderItems {
+): Promise<ProcessOrderItems> {
   return new ProcessOrderItems();
 }

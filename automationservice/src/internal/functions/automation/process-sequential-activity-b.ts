@@ -22,11 +22,11 @@ export class ProcessSequentialActivityB implements MapFunction<string, string> {
 }
 
 /** Construct ProcessSequentialActivityB once while the service graph is initialized. */
-export function makeProcessSequentialActivityB(
+export async function makeProcessSequentialActivityB(
   context: MessageContext,
   environment: RuntimeEnvironment,
   config: MapStreamConfig
-): ProcessSequentialActivityB {
+): Promise<ProcessSequentialActivityB> {
   void context;
   void environment;
   void config;

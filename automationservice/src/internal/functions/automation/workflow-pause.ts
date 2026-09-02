@@ -26,11 +26,11 @@ export class WorkflowPause implements DelayFunction<string> {
 }
 
 /** Construct WorkflowPause once while the service graph is initialized. */
-export function makeWorkflowPause(
+export async function makeWorkflowPause(
   context: MessageContext,
   environment: RuntimeEnvironment,
   config: DelayStreamConfig
-): WorkflowPause {
+): Promise<WorkflowPause> {
   void context;
   void environment;
   void config;

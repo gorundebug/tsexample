@@ -73,42 +73,42 @@ export interface ServiceMakers {
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
-  ) => OrderProcessedEndpointSink | Promise<OrderProcessedEndpointSink>;
+  ) => Promise<OrderProcessedEndpointSink>;
   processOrderItemSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
-  ) => ProcessOrderItemSink | Promise<ProcessOrderItemSink>;
+  ) => Promise<ProcessOrderItemSink>;
   processOrderSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").HttpEndpointConfig,
-  ) => ProcessOrderSource | Promise<ProcessOrderSource>;
+  ) => Promise<ProcessOrderSource>;
   mapOrderItemResultToOrderState: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => MapOrderItemResultToOrderState | Promise<MapOrderItemResultToOrderState>;
+  ) => Promise<MapOrderItemResultToOrderState>;
   mapToOrderProcessed: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => MapToOrderProcessed | Promise<MapToOrderProcessed>;
+  ) => Promise<MapToOrderProcessed>;
   mapToOrderState: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => MapToOrderState | Promise<MapToOrderState>;
+  ) => Promise<MapToOrderState>;
   processOrderItems: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").FlatMapStreamConfig,
-  ) => ProcessOrderItems | Promise<ProcessOrderItems>;
+  ) => Promise<ProcessOrderItems>;
   softDeadline: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => SoftDeadline | Promise<SoftDeadline>;
+  ) => Promise<SoftDeadline>;
 }
 
 export type WorkflowServiceMakers = {
@@ -116,42 +116,42 @@ export type WorkflowServiceMakers = {
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
-  ) => OrderProcessedEndpointSink | Promise<OrderProcessedEndpointSink>;
+  ) => Promise<OrderProcessedEndpointSink>;
   processOrderItemSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
-  ) => ProcessOrderItemSink | Promise<ProcessOrderItemSink>;
+  ) => Promise<ProcessOrderItemSink>;
   processOrderSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").HttpEndpointConfig,
-  ) => ProcessOrderSource | Promise<ProcessOrderSource>;
+  ) => Promise<ProcessOrderSource>;
   mapOrderItemResultToOrderState: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => MapOrderItemResultToOrderState | Promise<MapOrderItemResultToOrderState>;
+  ) => Promise<MapOrderItemResultToOrderState>;
   mapToOrderProcessed: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => MapToOrderProcessed | Promise<MapToOrderProcessed>;
+  ) => Promise<MapToOrderProcessed>;
   mapToOrderState: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => MapToOrderState | Promise<MapToOrderState>;
+  ) => Promise<MapToOrderState>;
   processOrderItems: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").FlatMapStreamConfig,
-  ) => ProcessOrderItems | Promise<ProcessOrderItems>;
+  ) => Promise<ProcessOrderItems>;
   softDeadline: (
     context: MessageContext,
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => SoftDeadline | Promise<SoftDeadline>;
+  ) => Promise<SoftDeadline>;
 };
 
 export function defaultMakers(): ServiceMakers {
@@ -210,7 +210,7 @@ export async function initFunctions(
     const makerContext = context.withExternalCancellation(controller.signal);
     let firstError: unknown;
     let failed = false;
-    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+    const invokeMaker = async <T>(maker: () => Promise<T>): Promise<T> => {
       try {
         return await maker();
       } catch (error) {
@@ -248,6 +248,7 @@ export async function initFunctions(
         makerContext, environment, config.named.streams.softDeadline,
       )),
     ] as const);
+    controller.abort();
     if (failed) throw firstError;
     const orderProcessedEndpointSinkResult0 = group[0];
     if (orderProcessedEndpointSinkResult0.status !== "fulfilled") {
@@ -321,7 +322,7 @@ export async function initFunctionsParallel(
     const makerContext = context.withExternalCancellation(controller.signal);
     let firstError: unknown;
     let failed = false;
-    const invokeMaker = async <T>(maker: () => T | Promise<T>): Promise<T> => {
+    const invokeMaker = async <T>(maker: () => Promise<T>): Promise<T> => {
       try {
         return await maker();
       } catch (error) {
@@ -359,6 +360,7 @@ export async function initFunctionsParallel(
         makerContext, environment, config.named.streams.softDeadline,
       )),
     ] as const);
+    controller.abort();
     if (failed) throw firstError;
     const orderProcessedEndpointSinkResult0 = group[0];
     if (orderProcessedEndpointSinkResult0.status !== "fulfilled") {

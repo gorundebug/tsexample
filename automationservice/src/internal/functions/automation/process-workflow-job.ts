@@ -27,11 +27,11 @@ export class ProcessWorkflowJob implements MapFunction<string, string> {
 }
 
 /** Construct ProcessWorkflowJob once while the service graph is initialized. */
-export function makeProcessWorkflowJob(
+export async function makeProcessWorkflowJob(
   context: MessageContext,
   environment: RuntimeEnvironment,
   config: MapStreamConfig
-): ProcessWorkflowJob {
+): Promise<ProcessWorkflowJob> {
   void context;
   void environment;
   void config;

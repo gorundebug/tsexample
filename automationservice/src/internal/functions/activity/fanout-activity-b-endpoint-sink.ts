@@ -29,10 +29,10 @@ export class FanoutActivityBEndpointSink implements TemporalEndpointHandler<Fano
 }
 
 /** Construct FanoutActivityBEndpointSink once while the service graph is initialized. */
-export function makeFanoutActivityBEndpointSink(
+export async function makeFanoutActivityBEndpointSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: TemporalEndpointConfig,
-): FanoutActivityBEndpointSink {
+): Promise<FanoutActivityBEndpointSink> {
   return new FanoutActivityBEndpointSink();
 }

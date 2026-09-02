@@ -148,11 +148,11 @@ function requestHeader(data: HandlerData, name: string): string | undefined {
 }
 
 /** Construct ProcessOrderSource once while the service graph is initialized. */
-export function makeProcessOrderSource(
+export async function makeProcessOrderSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   config: HttpEndpointConfig,
-): ProcessOrderSource {
+): Promise<ProcessOrderSource> {
   const timeout = config.properties["timeout"];
   return new ProcessOrderSource(typeof timeout === "number" && Number.isFinite(timeout) ? timeout : 5_000);
 }

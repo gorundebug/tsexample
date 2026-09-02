@@ -22,11 +22,11 @@ export class ObserveActivityResult implements MapFunction<string, string> {
 }
 
 /** Construct ObserveActivityResult once while the service graph is initialized. */
-export function makeObserveActivityResult(
+export async function makeObserveActivityResult(
   context: MessageContext,
   environment: RuntimeEnvironment,
   config: MapStreamConfig
-): ObserveActivityResult {
+): Promise<ObserveActivityResult> {
   void context;
   void environment;
   void config;

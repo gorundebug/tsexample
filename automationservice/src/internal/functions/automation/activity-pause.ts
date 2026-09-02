@@ -26,11 +26,11 @@ export class ActivityPause implements DelayFunction<string> {
 }
 
 /** Construct ActivityPause once while the service graph is initialized. */
-export function makeActivityPause(
+export async function makeActivityPause(
   context: MessageContext,
   environment: RuntimeEnvironment,
   config: DelayStreamConfig
-): ActivityPause {
+): Promise<ActivityPause> {
   void context;
   void environment;
   void config;

@@ -26,10 +26,10 @@ export class ActivityJobEndpointSource implements TemporalEndpointHandler<Activi
 }
 
 /** Construct ActivityJobEndpointSource once while the service graph is initialized. */
-export function makeActivityJobEndpointSource(
+export async function makeActivityJobEndpointSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
   _config: TemporalEndpointConfig,
-): ActivityJobEndpointSource {
+): Promise<ActivityJobEndpointSource> {
   return new ActivityJobEndpointSource();
 }
