@@ -8,6 +8,7 @@ import type {
   ScheduleEndpointFunction,
   ScheduleTrigger
 } from "@gorundebug/tsservicelib/runtime/graph";
+import { durableCallHeartbeat } from "@gorundebug/tsservicelib/runtime/graph";
 
 export type TemporalActivityScheduleSourceHandlerState = undefined;
 
@@ -18,6 +19,7 @@ export class TemporalActivityScheduleSource implements ScheduleEndpointFunction<
     trigger: Readonly<ScheduleTrigger>,
     out: Collector<string>
   ): void | Promise<void> {
+    durableCallHeartbeat(context, `scheduled:${trigger.triggerId}`);
     return out.out(context, `scheduled-activity:${trigger.scheduleId}:${trigger.triggerId}`);
   }
 }
