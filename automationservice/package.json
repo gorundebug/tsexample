@@ -1,6 +1,6 @@
 {
   "name": "@gorundebug/tsexample-automationservice",
-  "version": "0.2.71",
+  "version": "0.2.72",
   "private": true,
   "type": "module",
   "imports": {
@@ -28,9 +28,9 @@
     "@temporalio/interceptors-opentelemetry": "1.21.1",
     "@temporalio/worker": "1.21.1",
     "@temporalio/workflow": "1.21.1",
-    "@gorundebug/tsservicelib": "github:gorundebug/tsservicelib#v0.2.71",
+    "@gorundebug/tsservicelib": "github:gorundebug/tsservicelib#v0.2.72",
     "@bufbuild/protobuf": "2.14.0",
-    "@gorundebug/model": "git+https://github.com/gorundebug/tsexample.git#v0.2.71&path:model_ts"
+    "@gorundebug/model": "git+https://github.com/gorundebug/tsexample.git#v0.2.72&path:model_ts"
   },
   "devDependencies": {
     "@types/node": "24.13.3",
