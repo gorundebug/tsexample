@@ -14,12 +14,12 @@ export class Service extends ServiceGenerated {
    * Called after generated defaults are installed and before any function is
    * constructed. Replace makers here; this user-owned file survives regeneration.
    */
-  protected override customMakersInit(context: MessageContext): void {
+  protected override customMakersInit(context: MessageContext): void | Promise<void> {
     void context;
   }
 
   /** Called after every function is constructed and before the graph is wired. */
-  protected override customFunctionsInit(context: MessageContext): void {
+  protected override customFunctionsInit(context: MessageContext): void | Promise<void> {
     void context;
   }
 
