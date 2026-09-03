@@ -247,6 +247,10 @@ export function parseIntegerListEnvironment(value: string): readonly number[] {
 
 const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
   { environment: "ANALYTICS_SCHEDULE_ENABLED", path: ["endpoints", "analyticsSchedule", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "ANALYTICS_SCHEDULE_MISSED_RUN_POLICY", path: ["endpoints", "analyticsSchedule", "missedRunPolicy", ], parse: parseStringEnvironment },
+  { environment: "ANALYTICS_SCHEDULE_OVERLAP_POLICY", path: ["endpoints", "analyticsSchedule", "overlapPolicy", ], parse: parseStringEnvironment },
+  { environment: "ANALYTICS_SCHEDULE_SCHEDULE", path: ["endpoints", "analyticsSchedule", "schedule", ], parse: parseStringEnvironment },
+  { environment: "ANALYTICS_SCHEDULE_TIMEZONE", path: ["endpoints", "analyticsSchedule", "timezone", ], parse: parseStringEnvironment },
   { environment: "ANALYTICS_SCHEDULE_TRACING_ENABLED", path: ["endpoints", "analyticsSchedule", "tracingEnabled", ], parse: parseBooleanEnvironment },
   { environment: "ANALYTICS_SERVICE_DEFAULT_GRPC_TIMEOUT", path: ["services", "analyticsService", "defaultGrpcTimeout", ], parse: parseIntegerEnvironment },
   { environment: "ANALYTICS_SERVICE_ENVIRONMENT", path: ["services", "analyticsService", "environment", ], parse: parseStringEnvironment },
