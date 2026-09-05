@@ -165,9 +165,10 @@ const DEFAULT_CONFIG = {
       "to": 2
     },
     "processInventoryItemToGetInventoryItemData": {
-      "callSemantics": 3,
+      "callSemantics": 4,
       "from": 3,
       "poolName": "Inventory Priority Workers",
+      "priority": 10,
       "to": 1
     }
   },
