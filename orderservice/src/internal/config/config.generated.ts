@@ -349,10 +349,9 @@ const DEFAULT_CONFIG = {
       "to": 10
     },
     "processOrderToSplitPipeline": {
-      "callSemantics": 4,
+      "callSemantics": 3,
       "from": 5,
       "poolName": "Default Pool",
-      "priority": 1,
       "to": 11
     },
     "splitPipelineToProcessOrderItems": {
