@@ -4,6 +4,7 @@ import type {
   ServiceAppOptions,
   ServiceConfig,
 } from "@gorundebug/tsservicelib/runtime";
+import { environmentFlagEnabled } from "@gorundebug/tsservicelib/runtime";
 import { opentelemetry } from "@gorundebug/tsservicelib/runtime/telemetry";
 
 import { ServiceGenerated } from "./service.generated.js";
@@ -29,10 +30,8 @@ export class Service extends ServiceGenerated {
     }
     const endpoint = process.env["OTEL_EXPORTER_OTLP_ENDPOINT"]?.trim();
     const exporter = endpoint === undefined || endpoint === "" ? {} : { endpoint };
-    const disabled = (name: string): boolean =>
-      ["1", "true", "yes", "on"].includes(process.env[name]?.trim().toLowerCase() ?? "");
     return {
-      ...(disabled("SERVICELIB_NOOP_LOGS")
+      ...(environmentFlagEnabled("SERVICELIB_NOOP_LOGS")
         ? {}
         : {
             logsEngine: new opentelemetry.OpenTelemetryLogsEngine({
@@ -40,7 +39,7 @@ export class Service extends ServiceGenerated {
               ...exporter,
             }),
           }),
-      ...(disabled("SERVICELIB_NOOP_TRACING")
+      ...(environmentFlagEnabled("SERVICELIB_NOOP_TRACING")
         ? {}
         : {
             tracingEngine: new opentelemetry.OpenTelemetryTracingEngine({
