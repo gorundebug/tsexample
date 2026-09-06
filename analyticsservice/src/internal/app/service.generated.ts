@@ -7,6 +7,8 @@ import {
   makeDefaultSerdeRegistry,
 } from "@gorundebug/tsservicelib/runtime";
 import { makeKafkaEndpointConsumer as makeKafkaSourceEndpointConsumer } from "@gorundebug/tsservicelib/datasource/kafka";
+import { makeCustomEndpointConsumer as makeCustomSourceEndpointConsumer } from "@gorundebug/tsservicelib/datasource/localsource";
+import { makeCustomEndpointConsumer as makeCustomSinkEndpointConsumer } from "@gorundebug/tsservicelib/datasink/localsink";
 import { makeCronEndpointConsumer } from "@gorundebug/tsservicelib/datasource/cron";
 import { Config } from "../config/config.js";
 import { DataConnectorIds, ServiceIds } from "../config/config.generated.js";
@@ -84,10 +86,22 @@ function initDataConnectors(
 ) {
   const analyticsSchedule = makeCronEndpointConsumer(streams.analyticsSchedule, functions.analyticsScheduleSource);
   const consumeOrderProcessed = makeKafkaSourceEndpointConsumer(streams.consumeOrderProcessed, functions.orderProcessedEndpointSource);
+  const analyticsOrders = makeCustomSourceEndpointConsumer(streams.analyticsOrders, functions.analyticsOrdersSource, functions.analyticsOrdersSource);
+  const analyticsPayments = makeCustomSourceEndpointConsumer(streams.analyticsPayments, functions.analyticsPaymentsSource, functions.analyticsPaymentsSource);
+  const analyticsShipments = makeCustomSourceEndpointConsumer(streams.analyticsShipments, functions.analyticsShipmentsSource, functions.analyticsShipmentsSource);
+  const writeJoinedAnalytics = makeCustomSinkEndpointConsumer(streams.writeJoinedAnalytics, functions.joinedAnalyticsSink);
+  const writeHighValueAnalytics = makeCustomSinkEndpointConsumer(streams.writeHighValueAnalytics, functions.highValueAnalyticsSink);
+  const writeStandardAnalytics = makeCustomSinkEndpointConsumer(streams.writeStandardAnalytics, functions.standardAnalyticsSink);
   return {
     dataConnectors: {
       analyticsSchedule,
       consumeOrderProcessed,
+      analyticsOrders,
+      analyticsPayments,
+      analyticsShipments,
+      writeJoinedAnalytics,
+      writeHighValueAnalytics,
+      writeStandardAnalytics,
     },
     handlers: {
     },

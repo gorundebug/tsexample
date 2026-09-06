@@ -1,19 +1,19 @@
-# Task 3/17: `AnalyticsOrdersSource`
+# Task 12/17: `KeyPaymentsForJoin`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `custom-source` |
-| File | `analyticsservice/src/internal/functions/analytics-orders-source.ts` |
-| Test | `analyticsservice/test/functions/analytics-orders-source.test.ts` |
+| Kind | `keyBy` |
+| File | `analyticsservice/src/internal/functions/key-payments-for-join.ts` |
+| Test | `analyticsservice/test/functions/key-payments-for-join.test.ts` |
 | Service | `Analytics Service` |
 
 
 ## Behaviour
 
-Produce a deterministic order analytics event for the canonical join examples.
+Key the payment analytics event by correlation key.
 
 
 
@@ -25,9 +25,9 @@ Produce a deterministic order analytics event for the canonical join examples.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `analyticsservice/src/internal/functions/analytics-orders-source.ts` and preserve its generated contract
+- [ ] Open `analyticsservice/src/internal/functions/key-payments-for-join.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
-- [ ] Implement meaningful assertions in `analyticsservice/test/functions/analytics-orders-source.test.ts`
+- [ ] Implement meaningful assertions in `analyticsservice/test/functions/key-payments-for-join.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task3.md — AnalyticsOrdersSource — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task12.md — KeyPaymentsForJoin — TypeScript — done`

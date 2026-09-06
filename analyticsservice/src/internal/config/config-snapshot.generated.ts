@@ -2,21 +2,39 @@
 
 import {
   type RuntimeConfig,
+  requireCaseStreamConfig,
+  type CaseStreamConfig,
   requireCronDataConnectorConfig,
   type CronDataConnectorConfig,
   requireCronEndpointConfig,
   type CronEndpointConfig,
+  requireCustomDataConnectorConfig,
+  type CustomDataConnectorConfig,
+  requireCustomEndpointConfig,
+  type CustomEndpointConfig,
   requireInputStreamConfig,
   type InputStreamConfig,
+  requireJoinStreamConfig,
+  type JoinStreamConfig,
   requireKafkaDataConnectorConfig,
   type KafkaDataConnectorConfig,
   requireKafkaEndpointConfig,
   type KafkaEndpointConfig,
+  requireKeyByStreamConfig,
+  type KeyByStreamConfig,
   type ModuleConfig,
+  requireMultiJoinStreamConfig,
+  type MultiJoinStreamConfig,
   requireProcessStreamConfig,
   type ProcessStreamConfig,
   type ServiceConfig,
+  requireSinkStreamConfig,
+  type SinkStreamConfig,
+  requireSplitStreamConfig,
+  type SplitStreamConfig,
   type TypeConfig,
+  requireWhenStreamConfig,
+  type WhenStreamConfig,
 } from "@gorundebug/tsservicelib/runtime/config/workflow";
 
 export const ServiceIds = {
@@ -24,19 +42,44 @@ export const ServiceIds = {
 } as const;
 
 export const StreamIds = {
+  ANALYTICS_ORDERS: 4,
+  ANALYTICS_PAYMENTS: 5,
   ANALYTICS_SCHEDULE: 1,
+  ANALYTICS_SHIPMENTS: 6,
   CONSUME_ORDER_PROCESSED: 2,
   COUNT_ORDER_PROCESSED: 3,
+  HIGH_VALUE_ANALYTICS: 13,
+  JOIN_ORDER_PAYMENT_ANALYTICS: 9,
+  KEY_ORDERS_FOR_JOIN: 10,
+  KEY_ORDERS_FOR_MULTI_JOIN: 14,
+  KEY_PAYMENTS_FOR_JOIN: 11,
+  KEY_PAYMENTS_FOR_MULTI_JOIN: 15,
+  KEY_SHIPMENTS_FOR_MULTI_JOIN: 16,
+  MULTI_JOIN_ANALYTICS_EVENTS: 17,
+  ROUTE_ANALYTICS_RESULT: 18,
+  SPLIT_ANALYTICS_ORDERS: 7,
+  SPLIT_ANALYTICS_PAYMENTS: 8,
+  STANDARD_ANALYTICS: 19,
+  WRITE_HIGH_VALUE_ANALYTICS: 20,
+  WRITE_JOINED_ANALYTICS: 12,
+  WRITE_STANDARD_ANALYTICS: 21,
 } as const;
 
 export const DataConnectorIds = {
-  LOCAL_CRON: 1,
-  ORDER_EVENTS: 2,
+  ANALYTICS_FUNCTIONS: 1,
+  LOCAL_CRON: 2,
+  ORDER_EVENTS: 3,
 } as const;
 
 export const EndpointIds = {
-  ANALYTICS_SCHEDULE: 1,
-  ORDER_PROCESSED: 2,
+  ANALYTICS_ORDERS: 1,
+  ANALYTICS_PAYMENTS: 2,
+  ANALYTICS_SCHEDULE: 7,
+  ANALYTICS_SHIPMENTS: 3,
+  HIGH_VALUE_ANALYTICS: 4,
+  JOINED_ANALYTICS: 5,
+  ORDER_PROCESSED: 8,
+  STANDARD_ANALYTICS: 6,
 } as const;
 
 export interface NamedConfig {
@@ -44,17 +87,42 @@ export interface NamedConfig {
     readonly analyticsService: ServiceConfig;
   };
   readonly streams: {
+    readonly analyticsOrders: InputStreamConfig;
+    readonly analyticsPayments: InputStreamConfig;
     readonly analyticsSchedule: InputStreamConfig;
+    readonly analyticsShipments: InputStreamConfig;
     readonly consumeOrderProcessed: InputStreamConfig;
     readonly countOrderProcessed: ProcessStreamConfig;
+    readonly highValueAnalytics: WhenStreamConfig;
+    readonly joinOrderPaymentAnalytics: JoinStreamConfig;
+    readonly keyOrdersForJoin: KeyByStreamConfig;
+    readonly keyOrdersForMultiJoin: KeyByStreamConfig;
+    readonly keyPaymentsForJoin: KeyByStreamConfig;
+    readonly keyPaymentsForMultiJoin: KeyByStreamConfig;
+    readonly keyShipmentsForMultiJoin: KeyByStreamConfig;
+    readonly multiJoinAnalyticsEvents: MultiJoinStreamConfig;
+    readonly routeAnalyticsResult: CaseStreamConfig;
+    readonly splitAnalyticsOrders: SplitStreamConfig;
+    readonly splitAnalyticsPayments: SplitStreamConfig;
+    readonly standardAnalytics: WhenStreamConfig;
+    readonly writeHighValueAnalytics: SinkStreamConfig;
+    readonly writeJoinedAnalytics: SinkStreamConfig;
+    readonly writeStandardAnalytics: SinkStreamConfig;
   };
   readonly dataConnectors: {
+    readonly analyticsFunctions: CustomDataConnectorConfig;
     readonly localCron: CronDataConnectorConfig;
     readonly orderEvents: KafkaDataConnectorConfig;
   };
   readonly endpoints: {
+    readonly analyticsOrders: CustomEndpointConfig;
+    readonly analyticsPayments: CustomEndpointConfig;
     readonly analyticsSchedule: CronEndpointConfig;
+    readonly analyticsShipments: CustomEndpointConfig;
+    readonly highValueAnalytics: CustomEndpointConfig;
+    readonly joinedAnalytics: CustomEndpointConfig;
     readonly orderProcessed: KafkaEndpointConfig;
+    readonly standardAnalytics: CustomEndpointConfig;
   };
   readonly pools: {
   };
@@ -64,6 +132,9 @@ export interface NamedConfig {
     readonly orderServiceApi: ModuleConfig;
   };
   readonly types: {
+    readonly analyticsEvent: TypeConfig;
+    readonly analyticsKey: TypeConfig;
+    readonly analyticsResult: TypeConfig;
     readonly automationJob: TypeConfig;
     readonly orderProcessed: TypeConfig;
   };
@@ -80,17 +151,42 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       analyticsService: required(runtime.serviceById(ServiceIds.ANALYTICS_SERVICE), "Analytics Service"),
     },
     streams: {
+      analyticsOrders: requireInputStreamConfig(runtime.streamById(StreamIds.ANALYTICS_ORDERS)),
+      analyticsPayments: requireInputStreamConfig(runtime.streamById(StreamIds.ANALYTICS_PAYMENTS)),
       analyticsSchedule: requireInputStreamConfig(runtime.streamById(StreamIds.ANALYTICS_SCHEDULE)),
+      analyticsShipments: requireInputStreamConfig(runtime.streamById(StreamIds.ANALYTICS_SHIPMENTS)),
       consumeOrderProcessed: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_ORDER_PROCESSED)),
       countOrderProcessed: requireProcessStreamConfig(runtime.streamById(StreamIds.COUNT_ORDER_PROCESSED)),
+      highValueAnalytics: requireWhenStreamConfig(runtime.streamById(StreamIds.HIGH_VALUE_ANALYTICS)),
+      joinOrderPaymentAnalytics: requireJoinStreamConfig(runtime.streamById(StreamIds.JOIN_ORDER_PAYMENT_ANALYTICS)),
+      keyOrdersForJoin: requireKeyByStreamConfig(runtime.streamById(StreamIds.KEY_ORDERS_FOR_JOIN)),
+      keyOrdersForMultiJoin: requireKeyByStreamConfig(runtime.streamById(StreamIds.KEY_ORDERS_FOR_MULTI_JOIN)),
+      keyPaymentsForJoin: requireKeyByStreamConfig(runtime.streamById(StreamIds.KEY_PAYMENTS_FOR_JOIN)),
+      keyPaymentsForMultiJoin: requireKeyByStreamConfig(runtime.streamById(StreamIds.KEY_PAYMENTS_FOR_MULTI_JOIN)),
+      keyShipmentsForMultiJoin: requireKeyByStreamConfig(runtime.streamById(StreamIds.KEY_SHIPMENTS_FOR_MULTI_JOIN)),
+      multiJoinAnalyticsEvents: requireMultiJoinStreamConfig(runtime.streamById(StreamIds.MULTI_JOIN_ANALYTICS_EVENTS)),
+      routeAnalyticsResult: requireCaseStreamConfig(runtime.streamById(StreamIds.ROUTE_ANALYTICS_RESULT)),
+      splitAnalyticsOrders: requireSplitStreamConfig(runtime.streamById(StreamIds.SPLIT_ANALYTICS_ORDERS)),
+      splitAnalyticsPayments: requireSplitStreamConfig(runtime.streamById(StreamIds.SPLIT_ANALYTICS_PAYMENTS)),
+      standardAnalytics: requireWhenStreamConfig(runtime.streamById(StreamIds.STANDARD_ANALYTICS)),
+      writeHighValueAnalytics: requireSinkStreamConfig(runtime.streamById(StreamIds.WRITE_HIGH_VALUE_ANALYTICS)),
+      writeJoinedAnalytics: requireSinkStreamConfig(runtime.streamById(StreamIds.WRITE_JOINED_ANALYTICS)),
+      writeStandardAnalytics: requireSinkStreamConfig(runtime.streamById(StreamIds.WRITE_STANDARD_ANALYTICS)),
     },
     dataConnectors: {
+      analyticsFunctions: requireCustomDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.ANALYTICS_FUNCTIONS)),
       localCron: requireCronDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.LOCAL_CRON)),
       orderEvents: requireKafkaDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.ORDER_EVENTS)),
     },
     endpoints: {
+      analyticsOrders: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.ANALYTICS_ORDERS)),
+      analyticsPayments: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.ANALYTICS_PAYMENTS)),
       analyticsSchedule: requireCronEndpointConfig(runtime.endpointById(EndpointIds.ANALYTICS_SCHEDULE)),
+      analyticsShipments: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.ANALYTICS_SHIPMENTS)),
+      highValueAnalytics: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.HIGH_VALUE_ANALYTICS)),
+      joinedAnalytics: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.JOINED_ANALYTICS)),
       orderProcessed: requireKafkaEndpointConfig(runtime.endpointById(EndpointIds.ORDER_PROCESSED)),
+      standardAnalytics: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.STANDARD_ANALYTICS)),
     },
     pools: {
     },
@@ -100,6 +196,9 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       orderServiceApi: required(runtime.moduleByName("order_service_api"), "order_service_api"),
     },
     types: {
+      analyticsEvent: required(runtime.typeByName("AnalyticsEvent"), "AnalyticsEvent"),
+      analyticsKey: required(runtime.typeByName("AnalyticsKey"), "AnalyticsKey"),
+      analyticsResult: required(runtime.typeByName("AnalyticsResult"), "AnalyticsResult"),
       automationJob: required(runtime.typeByName("AutomationJob"), "AutomationJob"),
       orderProcessed: required(runtime.typeByName("OrderProcessed"), "OrderProcessed"),
     },

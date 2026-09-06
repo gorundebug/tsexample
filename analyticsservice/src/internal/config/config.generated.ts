@@ -6,15 +6,24 @@ import {
   parseConfigArguments,
   type EnvironmentPatch,
   type RuntimeConfig,
+  type CaseStreamConfigDocument,
   type CronDataConnectorConfigDocument,
   type CronEndpointConfigDocument,
+  type CustomDataConnectorConfigDocument,
+  type CustomEndpointConfigDocument,
   type InputStreamConfigDocument,
+  type JoinStreamConfigDocument,
   type KafkaDataConnectorConfigDocument,
   type KafkaEndpointConfigDocument,
+  type KeyByStreamConfigDocument,
   type ModuleConfigDocument,
+  type MultiJoinStreamConfigDocument,
   type ProcessStreamConfigDocument,
   type ServiceConfigDocument,
+  type SinkStreamConfigDocument,
+  type SplitStreamConfigDocument,
   type TypeConfigDocument,
+  type WhenStreamConfigDocument,
 } from "@gorundebug/tsservicelib/runtime/config";
 
 import { ConfigSnapshot } from "./config-snapshot.generated.js";
@@ -32,17 +41,42 @@ interface DefaultConfig {
     readonly "analyticsService": ServiceConfigDocument;
   };
   readonly streams: {
+    readonly "analyticsOrders": InputStreamConfigDocument;
+    readonly "analyticsPayments": InputStreamConfigDocument;
     readonly "analyticsSchedule": InputStreamConfigDocument;
+    readonly "analyticsShipments": InputStreamConfigDocument;
     readonly "consumeOrderProcessed": InputStreamConfigDocument;
     readonly "countOrderProcessed": ProcessStreamConfigDocument;
+    readonly "highValueAnalytics": WhenStreamConfigDocument;
+    readonly "joinOrderPaymentAnalytics": JoinStreamConfigDocument;
+    readonly "keyOrdersForJoin": KeyByStreamConfigDocument;
+    readonly "keyOrdersForMultiJoin": KeyByStreamConfigDocument;
+    readonly "keyPaymentsForJoin": KeyByStreamConfigDocument;
+    readonly "keyPaymentsForMultiJoin": KeyByStreamConfigDocument;
+    readonly "keyShipmentsForMultiJoin": KeyByStreamConfigDocument;
+    readonly "multiJoinAnalyticsEvents": MultiJoinStreamConfigDocument;
+    readonly "routeAnalyticsResult": CaseStreamConfigDocument;
+    readonly "splitAnalyticsOrders": SplitStreamConfigDocument;
+    readonly "splitAnalyticsPayments": SplitStreamConfigDocument;
+    readonly "standardAnalytics": WhenStreamConfigDocument;
+    readonly "writeHighValueAnalytics": SinkStreamConfigDocument;
+    readonly "writeJoinedAnalytics": SinkStreamConfigDocument;
+    readonly "writeStandardAnalytics": SinkStreamConfigDocument;
   };
   readonly dataConnectors: {
+    readonly "analyticsFunctions": CustomDataConnectorConfigDocument;
     readonly "localCron": CronDataConnectorConfigDocument;
     readonly "orderEvents": KafkaDataConnectorConfigDocument;
   };
   readonly endpoints: {
+    readonly "analyticsOrders": CustomEndpointConfigDocument;
+    readonly "analyticsPayments": CustomEndpointConfigDocument;
     readonly "analyticsSchedule": CronEndpointConfigDocument;
+    readonly "analyticsShipments": CustomEndpointConfigDocument;
+    readonly "highValueAnalytics": CustomEndpointConfigDocument;
+    readonly "joinedAnalytics": CustomEndpointConfigDocument;
     readonly "orderProcessed": KafkaEndpointConfigDocument;
+    readonly "standardAnalytics": CustomEndpointConfigDocument;
   };
   readonly pools: {
   };
@@ -54,6 +88,9 @@ interface DefaultConfig {
     readonly "orderServiceApi": ModuleConfigDocument;
   };
   readonly types: {
+    readonly "analyticsEvent": TypeConfigDocument;
+    readonly "analyticsKey": TypeConfigDocument;
+    readonly "analyticsResult": TypeConfigDocument;
     readonly "automationJob": TypeConfigDocument;
     readonly "orderProcessed": TypeConfigDocument;
   };
@@ -84,9 +121,33 @@ const DEFAULT_CONFIG = {
     }
   },
   "streams": {
+    "analyticsOrders": {
+      "id": 4,
+      "idEndpoint": 1,
+      "idService": 1,
+      "idSource": 0,
+      "name": "Analytics Orders",
+      "pipeline": "analyticsSources",
+      "type": 1,
+      "valueType": "AnalyticsEvent",
+      "xPos": -1600,
+      "yPos": 220
+    },
+    "analyticsPayments": {
+      "id": 5,
+      "idEndpoint": 2,
+      "idService": 1,
+      "idSource": 0,
+      "name": "Analytics Payments",
+      "pipeline": "analyticsSources",
+      "type": 1,
+      "valueType": "AnalyticsEvent",
+      "xPos": -1600,
+      "yPos": 430
+    },
     "analyticsSchedule": {
       "id": 1,
-      "idEndpoint": 1,
+      "idEndpoint": 7,
       "idService": 1,
       "idSource": 0,
       "name": "Analytics Schedule",
@@ -96,9 +157,21 @@ const DEFAULT_CONFIG = {
       "xPos": -1600,
       "yPos": -205
     },
+    "analyticsShipments": {
+      "id": 6,
+      "idEndpoint": 3,
+      "idService": 1,
+      "idSource": 0,
+      "name": "Analytics Shipments",
+      "pipeline": "analyticsSources",
+      "type": 1,
+      "valueType": "AnalyticsEvent",
+      "xPos": -1600,
+      "yPos": 780
+    },
     "consumeOrderProcessed": {
       "id": 2,
-      "idEndpoint": 2,
+      "idEndpoint": 8,
       "idService": 1,
       "idSource": 3,
       "name": "Consume Order Processed",
@@ -122,11 +195,241 @@ const DEFAULT_CONFIG = {
       "type": 6,
       "xPos": -1390,
       "yPos": -19
+    },
+    "highValueAnalytics": {
+      "id": 13,
+      "idService": 1,
+      "idSource": 18,
+      "name": "High Value Analytics",
+      "pipeline": "multiJoinAnalytics",
+      "type": 17,
+      "valueType": "AnalyticsResult",
+      "xPos": -400,
+      "yPos": 650
+    },
+    "joinOrderPaymentAnalytics": {
+      "functionDescription": "Join matching order and payment analytics events and emit their combined total.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "JoinOrderPaymentAnalytics",
+      "functionPackage": "joinanalytics",
+      "id": 9,
+      "idService": 1,
+      "idSource": 10,
+      "idSources": [
+        11
+      ],
+      "joinStorage": 1,
+      "joinType": 1,
+      "name": "Join Order Payment Analytics",
+      "pipeline": "joinAnalytics",
+      "renewTTL": true,
+      "ttl": 60000,
+      "type": 4,
+      "valueType": "AnalyticsResult",
+      "xPos": -900,
+      "yPos": 260
+    },
+    "keyOrdersForJoin": {
+      "functionDescription": "Key the order analytics event by correlation key.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "KeyOrdersForJoin",
+      "functionPackage": "joinanalytics",
+      "id": 10,
+      "idService": 1,
+      "idSource": 7,
+      "keyType": "AnalyticsKey",
+      "name": "Key Orders For Join",
+      "pipeline": "joinAnalytics",
+      "type": 9,
+      "valueType": "AnalyticsEvent",
+      "xPos": -1160,
+      "yPos": 170
+    },
+    "keyOrdersForMultiJoin": {
+      "functionDescription": "Key the order analytics event for the multi-way join.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "KeyOrdersForMultiJoin",
+      "functionPackage": "multijoinanalytics",
+      "id": 14,
+      "idService": 1,
+      "idSource": 7,
+      "keyType": "AnalyticsKey",
+      "name": "Key Orders For Multi Join",
+      "pipeline": "multiJoinAnalytics",
+      "type": 9,
+      "valueType": "AnalyticsEvent",
+      "xPos": -1160,
+      "yPos": 570
+    },
+    "keyPaymentsForJoin": {
+      "functionDescription": "Key the payment analytics event by correlation key.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "KeyPaymentsForJoin",
+      "functionPackage": "joinanalytics",
+      "id": 11,
+      "idService": 1,
+      "idSource": 8,
+      "keyType": "AnalyticsKey",
+      "name": "Key Payments For Join",
+      "pipeline": "joinAnalytics",
+      "type": 9,
+      "valueType": "AnalyticsEvent",
+      "xPos": -1160,
+      "yPos": 350
+    },
+    "keyPaymentsForMultiJoin": {
+      "functionDescription": "Key the payment analytics event for the multi-way join.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "KeyPaymentsForMultiJoin",
+      "functionPackage": "multijoinanalytics",
+      "id": 15,
+      "idService": 1,
+      "idSource": 8,
+      "keyType": "AnalyticsKey",
+      "name": "Key Payments For Multi Join",
+      "pipeline": "multiJoinAnalytics",
+      "type": 9,
+      "valueType": "AnalyticsEvent",
+      "xPos": -1160,
+      "yPos": 740
+    },
+    "keyShipmentsForMultiJoin": {
+      "functionDescription": "Key the shipment analytics event for the multi-way join.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "KeyShipmentsForMultiJoin",
+      "functionPackage": "multijoinanalytics",
+      "id": 16,
+      "idService": 1,
+      "idSource": 6,
+      "keyType": "AnalyticsKey",
+      "name": "Key Shipments For Multi Join",
+      "pipeline": "multiJoinAnalytics",
+      "type": 9,
+      "valueType": "AnalyticsEvent",
+      "xPos": -1160,
+      "yPos": 910
+    },
+    "multiJoinAnalyticsEvents": {
+      "functionDescription": "Combine matching order, payment, and shipment analytics events.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "MultiJoinAnalyticsEvents",
+      "functionPackage": "multijoinanalytics",
+      "id": 17,
+      "idService": 1,
+      "idSource": 14,
+      "idSources": [
+        15,
+        16
+      ],
+      "joinStorage": 1,
+      "name": "Multi Join Analytics Events",
+      "pipeline": "multiJoinAnalytics",
+      "renewTTL": true,
+      "ttl": 60000,
+      "type": 5,
+      "valueType": "AnalyticsResult",
+      "xPos": -900,
+      "yPos": 740
+    },
+    "routeAnalyticsResult": {
+      "functionDescription": "Route high-value analytics results to the first branch and all others to the second branch.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "RouteAnalyticsResult",
+      "functionPackage": "multijoinanalytics",
+      "id": 18,
+      "idService": 1,
+      "idSource": 17,
+      "name": "Route Analytics Result",
+      "pipeline": "multiJoinAnalytics",
+      "type": 12,
+      "xPos": -650,
+      "yPos": 740
+    },
+    "splitAnalyticsOrders": {
+      "id": 7,
+      "idService": 1,
+      "idSource": 4,
+      "name": "Split Analytics Orders",
+      "pipeline": "analyticsSources",
+      "type": 11,
+      "xPos": -1390,
+      "yPos": 220
+    },
+    "splitAnalyticsPayments": {
+      "id": 8,
+      "idService": 1,
+      "idSource": 5,
+      "name": "Split Analytics Payments",
+      "pipeline": "analyticsSources",
+      "type": 11,
+      "xPos": -1390,
+      "yPos": 430
+    },
+    "standardAnalytics": {
+      "id": 19,
+      "idService": 1,
+      "idSource": 18,
+      "name": "Standard Analytics",
+      "pipeline": "multiJoinAnalytics",
+      "type": 17,
+      "valueType": "AnalyticsResult",
+      "xPos": -400,
+      "yPos": 830
+    },
+    "writeHighValueAnalytics": {
+      "id": 20,
+      "idEndpoint": 4,
+      "idService": 1,
+      "idSource": 13,
+      "name": "Write High Value Analytics",
+      "pipeline": "multiJoinAnalytics",
+      "type": 13,
+      "valueType": "AnalyticsResult",
+      "xPos": -130,
+      "yPos": 650
+    },
+    "writeJoinedAnalytics": {
+      "id": 12,
+      "idEndpoint": 5,
+      "idService": 1,
+      "idSource": 9,
+      "name": "Write Joined Analytics",
+      "pipeline": "joinAnalytics",
+      "type": 13,
+      "valueType": "AnalyticsResult",
+      "xPos": -640,
+      "yPos": 260
+    },
+    "writeStandardAnalytics": {
+      "id": 21,
+      "idEndpoint": 6,
+      "idService": 1,
+      "idSource": 19,
+      "name": "Write Standard Analytics",
+      "pipeline": "multiJoinAnalytics",
+      "type": 13,
+      "valueType": "AnalyticsResult",
+      "xPos": -130,
+      "yPos": 830
     }
   },
   "dataConnectors": {
-    "localCron": {
+    "analyticsFunctions": {
       "id": 1,
+      "implementation": "function",
+      "name": "Analytics Functions",
+      "type": 4
+    },
+    "localCron": {
+      "id": 2,
       "implementation": "node/croner",
       "name": "Local Cron",
       "type": 5
@@ -134,7 +437,7 @@ const DEFAULT_CONFIG = {
     "orderEvents": {
       "brokers": "redpanda:9092",
       "dialTimeout": 5000,
-      "id": 2,
+      "id": 3,
       "implementation": "confluent/kafka-javascript",
       "name": "Order Events",
       "password": "",
@@ -146,14 +449,34 @@ const DEFAULT_CONFIG = {
     }
   },
   "endpoints": {
+    "analyticsOrders": {
+      "functionDescription": "Produce a deterministic order analytics event for the canonical join examples.",
+      "functionInitializerGroup": "",
+      "functionName": "AnalyticsOrders",
+      "functionPackage": "endpoint",
+      "id": 1,
+      "idDataConnector": 1,
+      "name": "Analytics Orders",
+      "publicFunction": false
+    },
+    "analyticsPayments": {
+      "functionDescription": "Produce a deterministic payment analytics event for the canonical join examples.",
+      "functionInitializerGroup": "",
+      "functionName": "AnalyticsPayments",
+      "functionPackage": "endpoint",
+      "id": 2,
+      "idDataConnector": 1,
+      "name": "Analytics Payments",
+      "publicFunction": false
+    },
     "analyticsSchedule": {
       "enabled": true,
       "functionDescription": "Create an analytics job message identifying the local scheduled firing.\n",
       "functionInitializerGroup": "",
       "functionName": "AnalyticsSchedule",
       "functionPackage": "cron",
-      "id": 1,
-      "idDataConnector": 1,
+      "id": 7,
+      "idDataConnector": 2,
       "missedRunPolicy": "FireOnce",
       "name": "Analytics Schedule",
       "overlapPolicy": "Skip",
@@ -161,6 +484,36 @@ const DEFAULT_CONFIG = {
       "schedule": "*/5 * * * *",
       "timezone": "UTC",
       "tracingEnabled": false
+    },
+    "analyticsShipments": {
+      "functionDescription": "Produce a deterministic shipment analytics event for the canonical multi-way join example.",
+      "functionInitializerGroup": "",
+      "functionName": "AnalyticsShipments",
+      "functionPackage": "endpoint",
+      "id": 3,
+      "idDataConnector": 1,
+      "name": "Analytics Shipments",
+      "publicFunction": false
+    },
+    "highValueAnalytics": {
+      "functionDescription": "Validate and record analytics results routed to the high-value Case branch.",
+      "functionInitializerGroup": "",
+      "functionName": "HighValueAnalytics",
+      "functionPackage": "endpoint",
+      "id": 4,
+      "idDataConnector": 1,
+      "name": "High Value Analytics",
+      "publicFunction": false
+    },
+    "joinedAnalytics": {
+      "functionDescription": "Validate and record the result of the two-way analytics join.",
+      "functionInitializerGroup": "",
+      "functionName": "JoinedAnalytics",
+      "functionPackage": "endpoint",
+      "id": 5,
+      "idDataConnector": 1,
+      "name": "Joined Analytics",
+      "publicFunction": false
     },
     "orderProcessed": {
       "consumerGroup": "analytics-service",
@@ -170,13 +523,23 @@ const DEFAULT_CONFIG = {
       "functionInitializerGroup": "",
       "functionName": "OrderProcessedEndpoint",
       "functionPackage": "endpoint",
-      "id": 2,
-      "idDataConnector": 2,
+      "id": 8,
+      "idDataConnector": 3,
       "name": "Order Processed",
       "partitions": 1,
       "publicFunction": false,
       "replicationFactor": 1,
       "topic": "order-processed"
+    },
+    "standardAnalytics": {
+      "functionDescription": "Validate and record analytics results routed to the standard Case branch.",
+      "functionInitializerGroup": "",
+      "functionName": "StandardAnalytics",
+      "functionPackage": "endpoint",
+      "id": 6,
+      "idDataConnector": 1,
+      "name": "Standard Analytics",
+      "publicFunction": false
     }
   },
   "pools": {},
@@ -196,6 +559,26 @@ const DEFAULT_CONFIG = {
     }
   },
   "types": {
+    "analyticsEvent": {
+      "name": "AnalyticsEvent",
+      "type": "struct",
+      "typeDefinition": "AnalyticsEvent",
+      "typeImport": "./internal/types/analytics-event.js",
+      "definitionFormat": 1
+    },
+    "analyticsKey": {
+      "name": "AnalyticsKey",
+      "type": "string",
+      "typeDefinition": "string",
+      "typeImport": "./internal/types/analytics-key.js"
+    },
+    "analyticsResult": {
+      "name": "AnalyticsResult",
+      "type": "struct",
+      "typeDefinition": "AnalyticsResult",
+      "typeImport": "./internal/types/analytics-result.js",
+      "definitionFormat": 1
+    },
     "automationJob": {
       "name": "AutomationJob",
       "type": "string",
