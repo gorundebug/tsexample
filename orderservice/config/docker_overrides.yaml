@@ -1,6 +1,6 @@
 dataConnectors:
   inventoryServiceApi:
-    address: dns:///localhost:9202
+    address: dns:///inventoryservice:9202
     connectionsCount: 1
   orderEvents:
     brokers: redpanda:9092
