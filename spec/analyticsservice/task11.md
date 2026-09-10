@@ -1,33 +1,33 @@
-# Task 11/17: `KeyOrdersForJoin`
+# Task 11/22: `HighValueAnalyticsSink`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `keyBy` |
-| File | `analyticsservice/src/internal/functions/key-orders-for-join.ts` |
-| Test | `analyticsservice/test/functions/key-orders-for-join.test.ts` |
+| Kind | `custom-sink` |
+| File | `analyticsservice/src/internal/functions/high-value-analytics-sink.ts` |
+| Test | `analyticsservice/test/functions/high-value-analytics-sink.test.ts` |
 | Service | `Analytics Service` |
 
 
 ## Behaviour
 
-Key the order analytics event by correlation key.
+Validate and record analytics results routed to the high-value Case branch.
 
 
 
 
 ## Stream types
-- Input: `AnalyticsEvent` — `analyticsservice/src/internal/types/analytics-event.ts`
-- Output: `AnalyticsEvent` — `analyticsservice/src/internal/types/analytics-event.ts`
+- Input: `AnalyticsResult` — `analyticsservice/src/internal/types/analytics-result.ts`
+- Output: `AnalyticsResult` — `analyticsservice/src/internal/types/analytics-result.ts`
 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `analyticsservice/src/internal/functions/key-orders-for-join.ts` and preserve its generated contract
-- [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
-- [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
-- [ ] Implement meaningful assertions in `analyticsservice/test/functions/key-orders-for-join.test.ts`
+- [ ] Open `analyticsservice/src/internal/functions/high-value-analytics-sink.ts` and preserve its generated contract
+- [ ] Inspect input type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
+- [ ] Inspect output type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
+- [ ] Implement meaningful assertions in `analyticsservice/test/functions/high-value-analytics-sink.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task11.md — KeyOrdersForJoin — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task11.md — HighValueAnalyticsSink — TypeScript — done`

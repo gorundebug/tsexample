@@ -89,6 +89,8 @@ function initDataConnectors(
   const analyticsOrders = makeCustomSourceEndpointConsumer(streams.analyticsOrders, functions.analyticsOrdersSource, functions.analyticsOrdersSource);
   const analyticsPayments = makeCustomSourceEndpointConsumer(streams.analyticsPayments, functions.analyticsPaymentsSource, functions.analyticsPaymentsSource);
   const analyticsShipments = makeCustomSourceEndpointConsumer(streams.analyticsShipments, functions.analyticsShipmentsSource, functions.analyticsShipmentsSource);
+  const cycleAnalyticsInput = makeCustomSourceEndpointConsumer(streams.cycleAnalyticsInput, functions.cycleAnalyticsInputSource, functions.cycleAnalyticsInputSource);
+  const writeCycleAnalytics = makeCustomSinkEndpointConsumer(streams.writeCycleAnalytics, functions.cycleAnalyticsResultSink);
   const writeJoinedAnalytics = makeCustomSinkEndpointConsumer(streams.writeJoinedAnalytics, functions.joinedAnalyticsSink);
   const writeHighValueAnalytics = makeCustomSinkEndpointConsumer(streams.writeHighValueAnalytics, functions.highValueAnalyticsSink);
   const writeStandardAnalytics = makeCustomSinkEndpointConsumer(streams.writeStandardAnalytics, functions.standardAnalyticsSink);
@@ -99,6 +101,8 @@ function initDataConnectors(
       analyticsOrders,
       analyticsPayments,
       analyticsShipments,
+      cycleAnalyticsInput,
+      writeCycleAnalytics,
       writeJoinedAnalytics,
       writeHighValueAnalytics,
       writeStandardAnalytics,

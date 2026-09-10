@@ -11,11 +11,15 @@ import {
   type CronEndpointConfigDocument,
   type CustomDataConnectorConfigDocument,
   type CustomEndpointConfigDocument,
+  type CycleLinkStreamConfigDocument,
+  type FilterStreamConfigDocument,
   type InputStreamConfigDocument,
   type JoinStreamConfigDocument,
   type KafkaDataConnectorConfigDocument,
   type KafkaEndpointConfigDocument,
   type KeyByStreamConfigDocument,
+  type MapStreamConfigDocument,
+  type MergeStreamConfigDocument,
   type ModuleConfigDocument,
   type MultiJoinStreamConfigDocument,
   type ProcessStreamConfigDocument,
@@ -41,12 +45,17 @@ interface DefaultConfig {
     readonly "analyticsService": ServiceConfigDocument;
   };
   readonly streams: {
+    readonly "advanceCycleAnalytics": MapStreamConfigDocument;
     readonly "analyticsOrders": InputStreamConfigDocument;
     readonly "analyticsPayments": InputStreamConfigDocument;
     readonly "analyticsSchedule": InputStreamConfigDocument;
     readonly "analyticsShipments": InputStreamConfigDocument;
+    readonly "completeCycleAnalytics": FilterStreamConfigDocument;
     readonly "consumeOrderProcessed": InputStreamConfigDocument;
+    readonly "continueCycleAnalytics": FilterStreamConfigDocument;
     readonly "countOrderProcessed": ProcessStreamConfigDocument;
+    readonly "cycleAnalyticsInput": InputStreamConfigDocument;
+    readonly "cycleAnalyticsLink": CycleLinkStreamConfigDocument;
     readonly "highValueAnalytics": WhenStreamConfigDocument;
     readonly "joinOrderPaymentAnalytics": JoinStreamConfigDocument;
     readonly "keyOrdersForJoin": KeyByStreamConfigDocument;
@@ -54,11 +63,14 @@ interface DefaultConfig {
     readonly "keyPaymentsForJoin": KeyByStreamConfigDocument;
     readonly "keyPaymentsForMultiJoin": KeyByStreamConfigDocument;
     readonly "keyShipmentsForMultiJoin": KeyByStreamConfigDocument;
+    readonly "mergeCycleAnalytics": MergeStreamConfigDocument;
     readonly "multiJoinAnalyticsEvents": MultiJoinStreamConfigDocument;
     readonly "routeAnalyticsResult": CaseStreamConfigDocument;
     readonly "splitAnalyticsOrders": SplitStreamConfigDocument;
     readonly "splitAnalyticsPayments": SplitStreamConfigDocument;
+    readonly "splitCycleAnalytics": SplitStreamConfigDocument;
     readonly "standardAnalytics": WhenStreamConfigDocument;
+    readonly "writeCycleAnalytics": SinkStreamConfigDocument;
     readonly "writeHighValueAnalytics": SinkStreamConfigDocument;
     readonly "writeJoinedAnalytics": SinkStreamConfigDocument;
     readonly "writeStandardAnalytics": SinkStreamConfigDocument;
@@ -73,6 +85,8 @@ interface DefaultConfig {
     readonly "analyticsPayments": CustomEndpointConfigDocument;
     readonly "analyticsSchedule": CronEndpointConfigDocument;
     readonly "analyticsShipments": CustomEndpointConfigDocument;
+    readonly "cycleAnalyticsInput": CustomEndpointConfigDocument;
+    readonly "cycleAnalyticsResult": CustomEndpointConfigDocument;
     readonly "highValueAnalytics": CustomEndpointConfigDocument;
     readonly "joinedAnalytics": CustomEndpointConfigDocument;
     readonly "orderProcessed": KafkaEndpointConfigDocument;
@@ -121,6 +135,22 @@ const DEFAULT_CONFIG = {
     }
   },
   "streams": {
+    "advanceCycleAnalytics": {
+      "functionDescription": "Increment the cycle counter while preserving the analytics event identity.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "AdvanceCycleAnalytics",
+      "functionPackage": "cycleanalytics",
+      "id": 9,
+      "idService": 1,
+      "idSource": 14,
+      "name": "Advance Cycle Analytics",
+      "pipeline": "cycleAnalytics",
+      "type": 2,
+      "valueType": "AnalyticsEvent",
+      "xPos": -1100,
+      "yPos": 1160
+    },
     "analyticsOrders": {
       "id": 4,
       "idEndpoint": 1,
@@ -147,7 +177,7 @@ const DEFAULT_CONFIG = {
     },
     "analyticsSchedule": {
       "id": 1,
-      "idEndpoint": 7,
+      "idEndpoint": 9,
       "idService": 1,
       "idSource": 0,
       "name": "Analytics Schedule",
@@ -169,9 +199,24 @@ const DEFAULT_CONFIG = {
       "xPos": -1600,
       "yPos": 780
     },
+    "completeCycleAnalytics": {
+      "functionDescription": "Keep the terminal analytics event once its cycle counter reaches three.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "CompleteCycleAnalytics",
+      "functionPackage": "cycleanalytics",
+      "id": 10,
+      "idService": 1,
+      "idSource": 15,
+      "name": "Complete Cycle Analytics",
+      "pipeline": "cycleAnalytics",
+      "type": 3,
+      "xPos": -600,
+      "yPos": 1260
+    },
     "consumeOrderProcessed": {
       "id": 2,
-      "idEndpoint": 8,
+      "idEndpoint": 10,
       "idService": 1,
       "idSource": 3,
       "name": "Consume Order Processed",
@@ -180,6 +225,21 @@ const DEFAULT_CONFIG = {
       "valueType": "OrderProcessed",
       "xPos": -1190,
       "yPos": -205
+    },
+    "continueCycleAnalytics": {
+      "functionDescription": "Keep intermediate analytics events whose cycle counter is below three.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "ContinueCycleAnalytics",
+      "functionPackage": "cycleanalytics",
+      "id": 11,
+      "idService": 1,
+      "idSource": 15,
+      "name": "Continue Cycle Analytics",
+      "pipeline": "cycleAnalytics",
+      "type": 3,
+      "xPos": -600,
+      "yPos": 1060
     },
     "countOrderProcessed": {
       "functionDescription": "Count successful and unsuccessful orders independently, then return the event unchanged.\n",
@@ -196,10 +256,32 @@ const DEFAULT_CONFIG = {
       "xPos": -1390,
       "yPos": -19
     },
-    "highValueAnalytics": {
+    "cycleAnalyticsInput": {
+      "id": 12,
+      "idEndpoint": 4,
+      "idService": 1,
+      "idSource": 0,
+      "name": "Cycle Analytics Input",
+      "pipeline": "cycleAnalytics",
+      "type": 1,
+      "valueType": "AnalyticsEvent",
+      "xPos": -1600,
+      "yPos": 1160
+    },
+    "cycleAnalyticsLink": {
       "id": 13,
       "idService": 1,
-      "idSource": 18,
+      "idSource": 11,
+      "name": "Cycle Analytics Link",
+      "pipeline": "cycleAnalytics",
+      "type": 14,
+      "xPos": -1100,
+      "yPos": 960
+    },
+    "highValueAnalytics": {
+      "id": 21,
+      "idService": 1,
+      "idSource": 26,
       "name": "High Value Analytics",
       "pipeline": "multiJoinAnalytics",
       "type": 17,
@@ -213,11 +295,11 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "JoinOrderPaymentAnalytics",
       "functionPackage": "joinanalytics",
-      "id": 9,
+      "id": 17,
       "idService": 1,
-      "idSource": 10,
+      "idSource": 18,
       "idSources": [
-        11
+        19
       ],
       "joinStorage": 1,
       "joinType": 1,
@@ -236,7 +318,7 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "KeyOrdersForJoin",
       "functionPackage": "joinanalytics",
-      "id": 10,
+      "id": 18,
       "idService": 1,
       "idSource": 7,
       "keyType": "AnalyticsKey",
@@ -253,7 +335,7 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "KeyOrdersForMultiJoin",
       "functionPackage": "multijoinanalytics",
-      "id": 14,
+      "id": 22,
       "idService": 1,
       "idSource": 7,
       "keyType": "AnalyticsKey",
@@ -270,7 +352,7 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "KeyPaymentsForJoin",
       "functionPackage": "joinanalytics",
-      "id": 11,
+      "id": 19,
       "idService": 1,
       "idSource": 8,
       "keyType": "AnalyticsKey",
@@ -287,7 +369,7 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "KeyPaymentsForMultiJoin",
       "functionPackage": "multijoinanalytics",
-      "id": 15,
+      "id": 23,
       "idService": 1,
       "idSource": 8,
       "keyType": "AnalyticsKey",
@@ -304,7 +386,7 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "KeyShipmentsForMultiJoin",
       "functionPackage": "multijoinanalytics",
-      "id": 16,
+      "id": 24,
       "idService": 1,
       "idSource": 6,
       "keyType": "AnalyticsKey",
@@ -315,18 +397,32 @@ const DEFAULT_CONFIG = {
       "xPos": -1160,
       "yPos": 910
     },
+    "mergeCycleAnalytics": {
+      "id": 14,
+      "idService": 1,
+      "idSource": 0,
+      "idSources": [
+        12,
+        13
+      ],
+      "name": "Merge Cycle Analytics",
+      "pipeline": "cycleAnalytics",
+      "type": 10,
+      "xPos": -1350,
+      "yPos": 1160
+    },
     "multiJoinAnalyticsEvents": {
       "functionDescription": "Combine matching order, payment, and shipment analytics events.",
       "functionInitializerGroup": "",
       "functionModule": "",
       "functionName": "MultiJoinAnalyticsEvents",
       "functionPackage": "multijoinanalytics",
-      "id": 17,
+      "id": 25,
       "idService": 1,
-      "idSource": 14,
+      "idSource": 22,
       "idSources": [
-        15,
-        16
+        23,
+        24
       ],
       "joinStorage": 1,
       "name": "Multi Join Analytics Events",
@@ -344,9 +440,9 @@ const DEFAULT_CONFIG = {
       "functionModule": "",
       "functionName": "RouteAnalyticsResult",
       "functionPackage": "multijoinanalytics",
-      "id": 18,
+      "id": 26,
       "idService": 1,
-      "idSource": 17,
+      "idSource": 25,
       "name": "Route Analytics Result",
       "pipeline": "multiJoinAnalytics",
       "type": 12,
@@ -373,10 +469,20 @@ const DEFAULT_CONFIG = {
       "xPos": -1390,
       "yPos": 430
     },
-    "standardAnalytics": {
-      "id": 19,
+    "splitCycleAnalytics": {
+      "id": 15,
       "idService": 1,
-      "idSource": 18,
+      "idSource": 9,
+      "name": "Split Cycle Analytics",
+      "pipeline": "cycleAnalytics",
+      "type": 11,
+      "xPos": -850,
+      "yPos": 1160
+    },
+    "standardAnalytics": {
+      "id": 27,
+      "idService": 1,
+      "idSource": 26,
       "name": "Standard Analytics",
       "pipeline": "multiJoinAnalytics",
       "type": 17,
@@ -384,11 +490,23 @@ const DEFAULT_CONFIG = {
       "xPos": -400,
       "yPos": 830
     },
-    "writeHighValueAnalytics": {
-      "id": 20,
-      "idEndpoint": 4,
+    "writeCycleAnalytics": {
+      "id": 16,
+      "idEndpoint": 5,
       "idService": 1,
-      "idSource": 13,
+      "idSource": 10,
+      "name": "Write Cycle Analytics",
+      "pipeline": "cycleAnalytics",
+      "type": 13,
+      "valueType": "AnalyticsEvent",
+      "xPos": -350,
+      "yPos": 1260
+    },
+    "writeHighValueAnalytics": {
+      "id": 28,
+      "idEndpoint": 6,
+      "idService": 1,
+      "idSource": 21,
       "name": "Write High Value Analytics",
       "pipeline": "multiJoinAnalytics",
       "type": 13,
@@ -397,10 +515,10 @@ const DEFAULT_CONFIG = {
       "yPos": 650
     },
     "writeJoinedAnalytics": {
-      "id": 12,
-      "idEndpoint": 5,
+      "id": 20,
+      "idEndpoint": 7,
       "idService": 1,
-      "idSource": 9,
+      "idSource": 17,
       "name": "Write Joined Analytics",
       "pipeline": "joinAnalytics",
       "type": 13,
@@ -409,10 +527,10 @@ const DEFAULT_CONFIG = {
       "yPos": 260
     },
     "writeStandardAnalytics": {
-      "id": 21,
-      "idEndpoint": 6,
+      "id": 29,
+      "idEndpoint": 8,
       "idService": 1,
-      "idSource": 19,
+      "idSource": 27,
       "name": "Write Standard Analytics",
       "pipeline": "multiJoinAnalytics",
       "type": 13,
@@ -475,7 +593,7 @@ const DEFAULT_CONFIG = {
       "functionInitializerGroup": "",
       "functionName": "AnalyticsSchedule",
       "functionPackage": "cron",
-      "id": 7,
+      "id": 9,
       "idDataConnector": 2,
       "missedRunPolicy": "FireOnce",
       "name": "Analytics Schedule",
@@ -495,12 +613,32 @@ const DEFAULT_CONFIG = {
       "name": "Analytics Shipments",
       "publicFunction": false
     },
+    "cycleAnalyticsInput": {
+      "functionDescription": "Produce one deterministic analytics event that exercises the finite feedback cycle.",
+      "functionInitializerGroup": "",
+      "functionName": "CycleAnalyticsInput",
+      "functionPackage": "endpoint",
+      "id": 4,
+      "idDataConnector": 1,
+      "name": "Cycle Analytics Input",
+      "publicFunction": false
+    },
+    "cycleAnalyticsResult": {
+      "functionDescription": "Validate the terminal event emitted after three passes through the feedback cycle.",
+      "functionInitializerGroup": "",
+      "functionName": "CycleAnalyticsResult",
+      "functionPackage": "endpoint",
+      "id": 5,
+      "idDataConnector": 1,
+      "name": "Cycle Analytics Result",
+      "publicFunction": false
+    },
     "highValueAnalytics": {
       "functionDescription": "Validate and record analytics results routed to the high-value Case branch.",
       "functionInitializerGroup": "",
       "functionName": "HighValueAnalytics",
       "functionPackage": "endpoint",
-      "id": 4,
+      "id": 6,
       "idDataConnector": 1,
       "name": "High Value Analytics",
       "publicFunction": false
@@ -510,7 +648,7 @@ const DEFAULT_CONFIG = {
       "functionInitializerGroup": "",
       "functionName": "JoinedAnalytics",
       "functionPackage": "endpoint",
-      "id": 5,
+      "id": 7,
       "idDataConnector": 1,
       "name": "Joined Analytics",
       "publicFunction": false
@@ -523,7 +661,7 @@ const DEFAULT_CONFIG = {
       "functionInitializerGroup": "",
       "functionName": "OrderProcessedEndpoint",
       "functionPackage": "endpoint",
-      "id": 8,
+      "id": 10,
       "idDataConnector": 3,
       "name": "Order Processed",
       "partitions": 1,
@@ -536,7 +674,7 @@ const DEFAULT_CONFIG = {
       "functionInitializerGroup": "",
       "functionName": "StandardAnalytics",
       "functionPackage": "endpoint",
-      "id": 6,
+      "id": 8,
       "idDataConnector": 1,
       "name": "Standard Analytics",
       "publicFunction": false

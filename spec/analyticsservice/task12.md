@@ -1,33 +1,33 @@
-# Task 12/17: `KeyPaymentsForJoin`
+# Task 12/22: `JoinedAnalyticsSink`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `keyBy` |
-| File | `analyticsservice/src/internal/functions/key-payments-for-join.ts` |
-| Test | `analyticsservice/test/functions/key-payments-for-join.test.ts` |
+| Kind | `custom-sink` |
+| File | `analyticsservice/src/internal/functions/joined-analytics-sink.ts` |
+| Test | `analyticsservice/test/functions/joined-analytics-sink.test.ts` |
 | Service | `Analytics Service` |
 
 
 ## Behaviour
 
-Key the payment analytics event by correlation key.
+Validate and record the result of the two-way analytics join.
 
 
 
 
 ## Stream types
-- Input: `AnalyticsEvent` — `analyticsservice/src/internal/types/analytics-event.ts`
-- Output: `AnalyticsEvent` — `analyticsservice/src/internal/types/analytics-event.ts`
+- Input: `AnalyticsResult` — `analyticsservice/src/internal/types/analytics-result.ts`
+- Output: `AnalyticsResult` — `analyticsservice/src/internal/types/analytics-result.ts`
 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `analyticsservice/src/internal/functions/key-payments-for-join.ts` and preserve its generated contract
-- [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
-- [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
-- [ ] Implement meaningful assertions in `analyticsservice/test/functions/key-payments-for-join.test.ts`
+- [ ] Open `analyticsservice/src/internal/functions/joined-analytics-sink.ts` and preserve its generated contract
+- [ ] Inspect input type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
+- [ ] Inspect output type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
+- [ ] Implement meaningful assertions in `analyticsservice/test/functions/joined-analytics-sink.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task12.md — KeyPaymentsForJoin — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task12.md — JoinedAnalyticsSink — TypeScript — done`

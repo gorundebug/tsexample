@@ -26,9 +26,14 @@ import {
 import {
   CountOrderProcessed, makeCountOrderProcessed,
   AnalyticsScheduleSource, makeAnalyticsScheduleSource,
+  AdvanceCycleAnalytics, makeAdvanceCycleAnalytics,
+  CompleteCycleAnalytics, makeCompleteCycleAnalytics,
+  ContinueCycleAnalytics, makeContinueCycleAnalytics,
   AnalyticsOrdersSource, makeAnalyticsOrdersSource,
   AnalyticsPaymentsSource, makeAnalyticsPaymentsSource,
   AnalyticsShipmentsSource, makeAnalyticsShipmentsSource,
+  CycleAnalyticsInputSource, makeCycleAnalyticsInputSource,
+  CycleAnalyticsResultSink, makeCycleAnalyticsResultSink,
   HighValueAnalyticsSink, makeHighValueAnalyticsSink,
   JoinedAnalyticsSink, makeJoinedAnalyticsSink,
   OrderProcessedEndpointSource, makeOrderProcessedEndpointSource,
@@ -61,6 +66,7 @@ export function registerGeneratedSerdes(registry: SerdeRegistry): void {
   registry.register(serdeTypes.analyticsResult, makeStreamSerde(new JsonSerde(serdeTypes.analyticsResult)));
   registry.register(serdeTypes.automationJob, registry.require(stringSerdeType));
   registry.register(serdeTypes.orderProcessed, makeStreamSerde(new JsonSerde(serdeTypes.orderProcessed)));
+  registry.registerStreamValueType(StreamIds.CYCLE_ANALYTICS_LINK, serdeTypes.analyticsEvent);
   registry.registerStreamValueType(StreamIds.ANALYTICS_SCHEDULE, serdeTypes.automationJob);
   registry.registerStreamErrorType(StreamIds.ANALYTICS_SCHEDULE, errorSerdeType);
   registry.registerStreamValueType(StreamIds.CONSUME_ORDER_PROCESSED, serdeTypes.orderProcessed);
@@ -75,6 +81,15 @@ export function registerGeneratedSerdes(registry: SerdeRegistry): void {
   registry.registerStreamErrorType(StreamIds.ANALYTICS_SHIPMENTS, errorSerdeType);
   registry.registerStreamValueType(StreamIds.SPLIT_ANALYTICS_ORDERS, serdeTypes.analyticsEvent);
   registry.registerStreamValueType(StreamIds.SPLIT_ANALYTICS_PAYMENTS, serdeTypes.analyticsEvent);
+  registry.registerStreamValueType(StreamIds.CYCLE_ANALYTICS_INPUT, serdeTypes.analyticsEvent);
+  registry.registerStreamErrorType(StreamIds.CYCLE_ANALYTICS_INPUT, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.MERGE_CYCLE_ANALYTICS, serdeTypes.analyticsEvent);
+  registry.registerStreamValueType(StreamIds.ADVANCE_CYCLE_ANALYTICS, serdeTypes.analyticsEvent);
+  registry.registerStreamValueType(StreamIds.SPLIT_CYCLE_ANALYTICS, serdeTypes.analyticsEvent);
+  registry.registerStreamValueType(StreamIds.COMPLETE_CYCLE_ANALYTICS, serdeTypes.analyticsEvent);
+  registry.registerStreamValueType(StreamIds.CONTINUE_CYCLE_ANALYTICS, serdeTypes.analyticsEvent);
+  registry.registerStreamValueType(StreamIds.WRITE_CYCLE_ANALYTICS, serdeTypes.analyticsEvent);
+  registry.registerStreamErrorType(StreamIds.WRITE_CYCLE_ANALYTICS, errorSerdeType);
   registry.registerStreamValueType(StreamIds.KEY_ORDERS_FOR_JOIN, serdeTypes.analyticsEvent);
   registry.registerStreamValueType(StreamIds.KEY_PAYMENTS_FOR_JOIN, serdeTypes.analyticsEvent);
   registry.registerStreamValueType(StreamIds.JOIN_ORDER_PAYMENT_ANALYTICS, serdeTypes.analyticsResult);
@@ -104,6 +119,21 @@ export interface ServiceMakers {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
   ) => Promise<AnalyticsScheduleSource>;
+  advanceCycleAnalytics: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => Promise<AdvanceCycleAnalytics>;
+  completeCycleAnalytics: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").FilterStreamConfig,
+  ) => Promise<CompleteCycleAnalytics>;
+  continueCycleAnalytics: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").FilterStreamConfig,
+  ) => Promise<ContinueCycleAnalytics>;
   analyticsOrdersSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -119,6 +149,16 @@ export interface ServiceMakers {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
   ) => Promise<AnalyticsShipmentsSource>;
+  cycleAnalyticsInputSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
+  ) => Promise<CycleAnalyticsInputSource>;
+  cycleAnalyticsResultSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
+  ) => Promise<CycleAnalyticsResultSink>;
   highValueAnalyticsSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -192,6 +232,21 @@ export type WorkflowServiceMakers = {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
   ) => Promise<AnalyticsScheduleSource>;
+  advanceCycleAnalytics: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => Promise<AdvanceCycleAnalytics>;
+  completeCycleAnalytics: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").FilterStreamConfig,
+  ) => Promise<CompleteCycleAnalytics>;
+  continueCycleAnalytics: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").FilterStreamConfig,
+  ) => Promise<ContinueCycleAnalytics>;
   analyticsOrdersSource: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -207,6 +262,16 @@ export type WorkflowServiceMakers = {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
   ) => Promise<AnalyticsShipmentsSource>;
+  cycleAnalyticsInputSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
+  ) => Promise<CycleAnalyticsInputSource>;
+  cycleAnalyticsResultSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
+  ) => Promise<CycleAnalyticsResultSink>;
   highValueAnalyticsSink: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -273,9 +338,14 @@ export function defaultMakers(): ServiceMakers {
   return {
     countOrderProcessed: makeCountOrderProcessed,
     analyticsScheduleSource: makeAnalyticsScheduleSource,
+    advanceCycleAnalytics: makeAdvanceCycleAnalytics,
+    completeCycleAnalytics: makeCompleteCycleAnalytics,
+    continueCycleAnalytics: makeContinueCycleAnalytics,
     analyticsOrdersSource: makeAnalyticsOrdersSource,
     analyticsPaymentsSource: makeAnalyticsPaymentsSource,
     analyticsShipmentsSource: makeAnalyticsShipmentsSource,
+    cycleAnalyticsInputSource: makeCycleAnalyticsInputSource,
+    cycleAnalyticsResultSink: makeCycleAnalyticsResultSink,
     highValueAnalyticsSink: makeHighValueAnalyticsSink,
     joinedAnalyticsSink: makeJoinedAnalyticsSink,
     orderProcessedEndpointSource: makeOrderProcessedEndpointSource,
@@ -295,9 +365,14 @@ export function defaultWorkflowMakers(): WorkflowServiceMakers {
   return {
     countOrderProcessed: makeCountOrderProcessed,
     analyticsScheduleSource: makeAnalyticsScheduleSource,
+    advanceCycleAnalytics: makeAdvanceCycleAnalytics,
+    completeCycleAnalytics: makeCompleteCycleAnalytics,
+    continueCycleAnalytics: makeContinueCycleAnalytics,
     analyticsOrdersSource: makeAnalyticsOrdersSource,
     analyticsPaymentsSource: makeAnalyticsPaymentsSource,
     analyticsShipmentsSource: makeAnalyticsShipmentsSource,
+    cycleAnalyticsInputSource: makeCycleAnalyticsInputSource,
+    cycleAnalyticsResultSink: makeCycleAnalyticsResultSink,
     highValueAnalyticsSink: makeHighValueAnalyticsSink,
     joinedAnalyticsSink: makeJoinedAnalyticsSink,
     orderProcessedEndpointSource: makeOrderProcessedEndpointSource,
@@ -316,9 +391,14 @@ export function defaultWorkflowMakers(): WorkflowServiceMakers {
 export interface ServiceFunctions {
   countOrderProcessed: CountOrderProcessed;
   analyticsScheduleSource: AnalyticsScheduleSource;
+  advanceCycleAnalytics: AdvanceCycleAnalytics;
+  completeCycleAnalytics: CompleteCycleAnalytics;
+  continueCycleAnalytics: ContinueCycleAnalytics;
   analyticsOrdersSource: AnalyticsOrdersSource;
   analyticsPaymentsSource: AnalyticsPaymentsSource;
   analyticsShipmentsSource: AnalyticsShipmentsSource;
+  cycleAnalyticsInputSource: CycleAnalyticsInputSource;
+  cycleAnalyticsResultSink: CycleAnalyticsResultSink;
   highValueAnalyticsSink: HighValueAnalyticsSink;
   joinedAnalyticsSink: JoinedAnalyticsSink;
   orderProcessedEndpointSource: OrderProcessedEndpointSource;
@@ -341,9 +421,14 @@ export async function initFunctions(
 ): Promise<ServiceFunctions> {
   let countOrderProcessed: CountOrderProcessed;
   let analyticsScheduleSource: AnalyticsScheduleSource;
+  let advanceCycleAnalytics: AdvanceCycleAnalytics;
+  let completeCycleAnalytics: CompleteCycleAnalytics;
+  let continueCycleAnalytics: ContinueCycleAnalytics;
   let analyticsOrdersSource: AnalyticsOrdersSource;
   let analyticsPaymentsSource: AnalyticsPaymentsSource;
   let analyticsShipmentsSource: AnalyticsShipmentsSource;
+  let cycleAnalyticsInputSource: CycleAnalyticsInputSource;
+  let cycleAnalyticsResultSink: CycleAnalyticsResultSink;
   let highValueAnalyticsSink: HighValueAnalyticsSink;
   let joinedAnalyticsSink: JoinedAnalyticsSink;
   let orderProcessedEndpointSource: OrderProcessedEndpointSource;
@@ -380,6 +465,15 @@ export async function initFunctions(
       invokeMaker(() => makers.analyticsScheduleSource(
         makerContext, environment, config.named.endpoints.analyticsSchedule,
       )),
+      invokeMaker(() => makers.advanceCycleAnalytics(
+        makerContext, environment, config.named.streams.advanceCycleAnalytics,
+      )),
+      invokeMaker(() => makers.completeCycleAnalytics(
+        makerContext, environment, config.named.streams.completeCycleAnalytics,
+      )),
+      invokeMaker(() => makers.continueCycleAnalytics(
+        makerContext, environment, config.named.streams.continueCycleAnalytics,
+      )),
       invokeMaker(() => makers.analyticsOrdersSource(
         makerContext, environment, config.named.endpoints.analyticsOrders,
       )),
@@ -388,6 +482,12 @@ export async function initFunctions(
       )),
       invokeMaker(() => makers.analyticsShipmentsSource(
         makerContext, environment, config.named.endpoints.analyticsShipments,
+      )),
+      invokeMaker(() => makers.cycleAnalyticsInputSource(
+        makerContext, environment, config.named.endpoints.cycleAnalyticsInput,
+      )),
+      invokeMaker(() => makers.cycleAnalyticsResultSink(
+        makerContext, environment, config.named.endpoints.cycleAnalyticsResult,
       )),
       invokeMaker(() => makers.highValueAnalyticsSink(
         makerContext, environment, config.named.endpoints.highValueAnalytics,
@@ -438,77 +538,102 @@ export async function initFunctions(
       throw analyticsScheduleSourceResult0.reason;
     }
     analyticsScheduleSource = analyticsScheduleSourceResult0.value;
-    const analyticsOrdersSourceResult0 = group[2];
+    const advanceCycleAnalyticsResult0 = group[2];
+    if (advanceCycleAnalyticsResult0.status !== "fulfilled") {
+      throw advanceCycleAnalyticsResult0.reason;
+    }
+    advanceCycleAnalytics = advanceCycleAnalyticsResult0.value;
+    const completeCycleAnalyticsResult0 = group[3];
+    if (completeCycleAnalyticsResult0.status !== "fulfilled") {
+      throw completeCycleAnalyticsResult0.reason;
+    }
+    completeCycleAnalytics = completeCycleAnalyticsResult0.value;
+    const continueCycleAnalyticsResult0 = group[4];
+    if (continueCycleAnalyticsResult0.status !== "fulfilled") {
+      throw continueCycleAnalyticsResult0.reason;
+    }
+    continueCycleAnalytics = continueCycleAnalyticsResult0.value;
+    const analyticsOrdersSourceResult0 = group[5];
     if (analyticsOrdersSourceResult0.status !== "fulfilled") {
       throw analyticsOrdersSourceResult0.reason;
     }
     analyticsOrdersSource = analyticsOrdersSourceResult0.value;
-    const analyticsPaymentsSourceResult0 = group[3];
+    const analyticsPaymentsSourceResult0 = group[6];
     if (analyticsPaymentsSourceResult0.status !== "fulfilled") {
       throw analyticsPaymentsSourceResult0.reason;
     }
     analyticsPaymentsSource = analyticsPaymentsSourceResult0.value;
-    const analyticsShipmentsSourceResult0 = group[4];
+    const analyticsShipmentsSourceResult0 = group[7];
     if (analyticsShipmentsSourceResult0.status !== "fulfilled") {
       throw analyticsShipmentsSourceResult0.reason;
     }
     analyticsShipmentsSource = analyticsShipmentsSourceResult0.value;
-    const highValueAnalyticsSinkResult0 = group[5];
+    const cycleAnalyticsInputSourceResult0 = group[8];
+    if (cycleAnalyticsInputSourceResult0.status !== "fulfilled") {
+      throw cycleAnalyticsInputSourceResult0.reason;
+    }
+    cycleAnalyticsInputSource = cycleAnalyticsInputSourceResult0.value;
+    const cycleAnalyticsResultSinkResult0 = group[9];
+    if (cycleAnalyticsResultSinkResult0.status !== "fulfilled") {
+      throw cycleAnalyticsResultSinkResult0.reason;
+    }
+    cycleAnalyticsResultSink = cycleAnalyticsResultSinkResult0.value;
+    const highValueAnalyticsSinkResult0 = group[10];
     if (highValueAnalyticsSinkResult0.status !== "fulfilled") {
       throw highValueAnalyticsSinkResult0.reason;
     }
     highValueAnalyticsSink = highValueAnalyticsSinkResult0.value;
-    const joinedAnalyticsSinkResult0 = group[6];
+    const joinedAnalyticsSinkResult0 = group[11];
     if (joinedAnalyticsSinkResult0.status !== "fulfilled") {
       throw joinedAnalyticsSinkResult0.reason;
     }
     joinedAnalyticsSink = joinedAnalyticsSinkResult0.value;
-    const orderProcessedEndpointSourceResult0 = group[7];
+    const orderProcessedEndpointSourceResult0 = group[12];
     if (orderProcessedEndpointSourceResult0.status !== "fulfilled") {
       throw orderProcessedEndpointSourceResult0.reason;
     }
     orderProcessedEndpointSource = orderProcessedEndpointSourceResult0.value;
-    const standardAnalyticsSinkResult0 = group[8];
+    const standardAnalyticsSinkResult0 = group[13];
     if (standardAnalyticsSinkResult0.status !== "fulfilled") {
       throw standardAnalyticsSinkResult0.reason;
     }
     standardAnalyticsSink = standardAnalyticsSinkResult0.value;
-    const joinOrderPaymentAnalyticsResult0 = group[9];
+    const joinOrderPaymentAnalyticsResult0 = group[14];
     if (joinOrderPaymentAnalyticsResult0.status !== "fulfilled") {
       throw joinOrderPaymentAnalyticsResult0.reason;
     }
     joinOrderPaymentAnalytics = joinOrderPaymentAnalyticsResult0.value;
-    const keyOrdersForJoinResult0 = group[10];
+    const keyOrdersForJoinResult0 = group[15];
     if (keyOrdersForJoinResult0.status !== "fulfilled") {
       throw keyOrdersForJoinResult0.reason;
     }
     keyOrdersForJoin = keyOrdersForJoinResult0.value;
-    const keyPaymentsForJoinResult0 = group[11];
+    const keyPaymentsForJoinResult0 = group[16];
     if (keyPaymentsForJoinResult0.status !== "fulfilled") {
       throw keyPaymentsForJoinResult0.reason;
     }
     keyPaymentsForJoin = keyPaymentsForJoinResult0.value;
-    const keyOrdersForMultiJoinResult0 = group[12];
+    const keyOrdersForMultiJoinResult0 = group[17];
     if (keyOrdersForMultiJoinResult0.status !== "fulfilled") {
       throw keyOrdersForMultiJoinResult0.reason;
     }
     keyOrdersForMultiJoin = keyOrdersForMultiJoinResult0.value;
-    const keyPaymentsForMultiJoinResult0 = group[13];
+    const keyPaymentsForMultiJoinResult0 = group[18];
     if (keyPaymentsForMultiJoinResult0.status !== "fulfilled") {
       throw keyPaymentsForMultiJoinResult0.reason;
     }
     keyPaymentsForMultiJoin = keyPaymentsForMultiJoinResult0.value;
-    const keyShipmentsForMultiJoinResult0 = group[14];
+    const keyShipmentsForMultiJoinResult0 = group[19];
     if (keyShipmentsForMultiJoinResult0.status !== "fulfilled") {
       throw keyShipmentsForMultiJoinResult0.reason;
     }
     keyShipmentsForMultiJoin = keyShipmentsForMultiJoinResult0.value;
-    const multiJoinAnalyticsEventsResult0 = group[15];
+    const multiJoinAnalyticsEventsResult0 = group[20];
     if (multiJoinAnalyticsEventsResult0.status !== "fulfilled") {
       throw multiJoinAnalyticsEventsResult0.reason;
     }
     multiJoinAnalyticsEvents = multiJoinAnalyticsEventsResult0.value;
-    const routeAnalyticsResultResult0 = group[16];
+    const routeAnalyticsResultResult0 = group[21];
     if (routeAnalyticsResultResult0.status !== "fulfilled") {
       throw routeAnalyticsResultResult0.reason;
     }
@@ -517,9 +642,14 @@ export async function initFunctions(
   return {
     countOrderProcessed,
     analyticsScheduleSource,
+    advanceCycleAnalytics,
+    completeCycleAnalytics,
+    continueCycleAnalytics,
     analyticsOrdersSource,
     analyticsPaymentsSource,
     analyticsShipmentsSource,
+    cycleAnalyticsInputSource,
+    cycleAnalyticsResultSink,
     highValueAnalyticsSink,
     joinedAnalyticsSink,
     orderProcessedEndpointSource,
@@ -543,9 +673,14 @@ export async function initFunctionsParallel(
 ): Promise<ServiceFunctions> {
   let countOrderProcessed: CountOrderProcessed;
   let analyticsScheduleSource: AnalyticsScheduleSource;
+  let advanceCycleAnalytics: AdvanceCycleAnalytics;
+  let completeCycleAnalytics: CompleteCycleAnalytics;
+  let continueCycleAnalytics: ContinueCycleAnalytics;
   let analyticsOrdersSource: AnalyticsOrdersSource;
   let analyticsPaymentsSource: AnalyticsPaymentsSource;
   let analyticsShipmentsSource: AnalyticsShipmentsSource;
+  let cycleAnalyticsInputSource: CycleAnalyticsInputSource;
+  let cycleAnalyticsResultSink: CycleAnalyticsResultSink;
   let highValueAnalyticsSink: HighValueAnalyticsSink;
   let joinedAnalyticsSink: JoinedAnalyticsSink;
   let orderProcessedEndpointSource: OrderProcessedEndpointSource;
@@ -582,6 +717,15 @@ export async function initFunctionsParallel(
       invokeMaker(() => makers.analyticsScheduleSource(
         makerContext, environment, config.named.endpoints.analyticsSchedule,
       )),
+      invokeMaker(() => makers.advanceCycleAnalytics(
+        makerContext, environment, config.named.streams.advanceCycleAnalytics,
+      )),
+      invokeMaker(() => makers.completeCycleAnalytics(
+        makerContext, environment, config.named.streams.completeCycleAnalytics,
+      )),
+      invokeMaker(() => makers.continueCycleAnalytics(
+        makerContext, environment, config.named.streams.continueCycleAnalytics,
+      )),
       invokeMaker(() => makers.analyticsOrdersSource(
         makerContext, environment, config.named.endpoints.analyticsOrders,
       )),
@@ -590,6 +734,12 @@ export async function initFunctionsParallel(
       )),
       invokeMaker(() => makers.analyticsShipmentsSource(
         makerContext, environment, config.named.endpoints.analyticsShipments,
+      )),
+      invokeMaker(() => makers.cycleAnalyticsInputSource(
+        makerContext, environment, config.named.endpoints.cycleAnalyticsInput,
+      )),
+      invokeMaker(() => makers.cycleAnalyticsResultSink(
+        makerContext, environment, config.named.endpoints.cycleAnalyticsResult,
       )),
       invokeMaker(() => makers.highValueAnalyticsSink(
         makerContext, environment, config.named.endpoints.highValueAnalytics,
@@ -640,77 +790,102 @@ export async function initFunctionsParallel(
       throw analyticsScheduleSourceResult0.reason;
     }
     analyticsScheduleSource = analyticsScheduleSourceResult0.value;
-    const analyticsOrdersSourceResult0 = group[2];
+    const advanceCycleAnalyticsResult0 = group[2];
+    if (advanceCycleAnalyticsResult0.status !== "fulfilled") {
+      throw advanceCycleAnalyticsResult0.reason;
+    }
+    advanceCycleAnalytics = advanceCycleAnalyticsResult0.value;
+    const completeCycleAnalyticsResult0 = group[3];
+    if (completeCycleAnalyticsResult0.status !== "fulfilled") {
+      throw completeCycleAnalyticsResult0.reason;
+    }
+    completeCycleAnalytics = completeCycleAnalyticsResult0.value;
+    const continueCycleAnalyticsResult0 = group[4];
+    if (continueCycleAnalyticsResult0.status !== "fulfilled") {
+      throw continueCycleAnalyticsResult0.reason;
+    }
+    continueCycleAnalytics = continueCycleAnalyticsResult0.value;
+    const analyticsOrdersSourceResult0 = group[5];
     if (analyticsOrdersSourceResult0.status !== "fulfilled") {
       throw analyticsOrdersSourceResult0.reason;
     }
     analyticsOrdersSource = analyticsOrdersSourceResult0.value;
-    const analyticsPaymentsSourceResult0 = group[3];
+    const analyticsPaymentsSourceResult0 = group[6];
     if (analyticsPaymentsSourceResult0.status !== "fulfilled") {
       throw analyticsPaymentsSourceResult0.reason;
     }
     analyticsPaymentsSource = analyticsPaymentsSourceResult0.value;
-    const analyticsShipmentsSourceResult0 = group[4];
+    const analyticsShipmentsSourceResult0 = group[7];
     if (analyticsShipmentsSourceResult0.status !== "fulfilled") {
       throw analyticsShipmentsSourceResult0.reason;
     }
     analyticsShipmentsSource = analyticsShipmentsSourceResult0.value;
-    const highValueAnalyticsSinkResult0 = group[5];
+    const cycleAnalyticsInputSourceResult0 = group[8];
+    if (cycleAnalyticsInputSourceResult0.status !== "fulfilled") {
+      throw cycleAnalyticsInputSourceResult0.reason;
+    }
+    cycleAnalyticsInputSource = cycleAnalyticsInputSourceResult0.value;
+    const cycleAnalyticsResultSinkResult0 = group[9];
+    if (cycleAnalyticsResultSinkResult0.status !== "fulfilled") {
+      throw cycleAnalyticsResultSinkResult0.reason;
+    }
+    cycleAnalyticsResultSink = cycleAnalyticsResultSinkResult0.value;
+    const highValueAnalyticsSinkResult0 = group[10];
     if (highValueAnalyticsSinkResult0.status !== "fulfilled") {
       throw highValueAnalyticsSinkResult0.reason;
     }
     highValueAnalyticsSink = highValueAnalyticsSinkResult0.value;
-    const joinedAnalyticsSinkResult0 = group[6];
+    const joinedAnalyticsSinkResult0 = group[11];
     if (joinedAnalyticsSinkResult0.status !== "fulfilled") {
       throw joinedAnalyticsSinkResult0.reason;
     }
     joinedAnalyticsSink = joinedAnalyticsSinkResult0.value;
-    const orderProcessedEndpointSourceResult0 = group[7];
+    const orderProcessedEndpointSourceResult0 = group[12];
     if (orderProcessedEndpointSourceResult0.status !== "fulfilled") {
       throw orderProcessedEndpointSourceResult0.reason;
     }
     orderProcessedEndpointSource = orderProcessedEndpointSourceResult0.value;
-    const standardAnalyticsSinkResult0 = group[8];
+    const standardAnalyticsSinkResult0 = group[13];
     if (standardAnalyticsSinkResult0.status !== "fulfilled") {
       throw standardAnalyticsSinkResult0.reason;
     }
     standardAnalyticsSink = standardAnalyticsSinkResult0.value;
-    const joinOrderPaymentAnalyticsResult0 = group[9];
+    const joinOrderPaymentAnalyticsResult0 = group[14];
     if (joinOrderPaymentAnalyticsResult0.status !== "fulfilled") {
       throw joinOrderPaymentAnalyticsResult0.reason;
     }
     joinOrderPaymentAnalytics = joinOrderPaymentAnalyticsResult0.value;
-    const keyOrdersForJoinResult0 = group[10];
+    const keyOrdersForJoinResult0 = group[15];
     if (keyOrdersForJoinResult0.status !== "fulfilled") {
       throw keyOrdersForJoinResult0.reason;
     }
     keyOrdersForJoin = keyOrdersForJoinResult0.value;
-    const keyPaymentsForJoinResult0 = group[11];
+    const keyPaymentsForJoinResult0 = group[16];
     if (keyPaymentsForJoinResult0.status !== "fulfilled") {
       throw keyPaymentsForJoinResult0.reason;
     }
     keyPaymentsForJoin = keyPaymentsForJoinResult0.value;
-    const keyOrdersForMultiJoinResult0 = group[12];
+    const keyOrdersForMultiJoinResult0 = group[17];
     if (keyOrdersForMultiJoinResult0.status !== "fulfilled") {
       throw keyOrdersForMultiJoinResult0.reason;
     }
     keyOrdersForMultiJoin = keyOrdersForMultiJoinResult0.value;
-    const keyPaymentsForMultiJoinResult0 = group[13];
+    const keyPaymentsForMultiJoinResult0 = group[18];
     if (keyPaymentsForMultiJoinResult0.status !== "fulfilled") {
       throw keyPaymentsForMultiJoinResult0.reason;
     }
     keyPaymentsForMultiJoin = keyPaymentsForMultiJoinResult0.value;
-    const keyShipmentsForMultiJoinResult0 = group[14];
+    const keyShipmentsForMultiJoinResult0 = group[19];
     if (keyShipmentsForMultiJoinResult0.status !== "fulfilled") {
       throw keyShipmentsForMultiJoinResult0.reason;
     }
     keyShipmentsForMultiJoin = keyShipmentsForMultiJoinResult0.value;
-    const multiJoinAnalyticsEventsResult0 = group[15];
+    const multiJoinAnalyticsEventsResult0 = group[20];
     if (multiJoinAnalyticsEventsResult0.status !== "fulfilled") {
       throw multiJoinAnalyticsEventsResult0.reason;
     }
     multiJoinAnalyticsEvents = multiJoinAnalyticsEventsResult0.value;
-    const routeAnalyticsResultResult0 = group[16];
+    const routeAnalyticsResultResult0 = group[21];
     if (routeAnalyticsResultResult0.status !== "fulfilled") {
       throw routeAnalyticsResultResult0.reason;
     }
@@ -719,9 +894,14 @@ export async function initFunctionsParallel(
   return {
     countOrderProcessed,
     analyticsScheduleSource,
+    advanceCycleAnalytics,
+    completeCycleAnalytics,
+    continueCycleAnalytics,
     analyticsOrdersSource,
     analyticsPaymentsSource,
     analyticsShipmentsSource,
+    cycleAnalyticsInputSource,
+    cycleAnalyticsResultSink,
     highValueAnalyticsSink,
     joinedAnalyticsSink,
     orderProcessedEndpointSource,
@@ -742,6 +922,7 @@ export function initStreams(
   environment: RuntimeEnvironment,
   functions: ServiceFunctions,
 ) {
+  const cycleAnalyticsLink = makeLinkStream<AnalyticsEvent>(config.named.streams.cycleAnalyticsLink, environment);
   const analyticsSchedule = makeInputStream<string, unknown, Error>(config.named.streams.analyticsSchedule, environment);
   const consumeOrderProcessed = makeInputStream<OrderProcessed, OrderProcessed, Error>(config.named.streams.consumeOrderProcessed, environment);
   const countOrderProcessed = makeProcessStream<OrderProcessed, OrderProcessed, Error>(config.named.streams.countOrderProcessed, consumeOrderProcessed, functions.countOrderProcessed);
@@ -750,6 +931,13 @@ export function initStreams(
   const analyticsShipments = makeInputStream<AnalyticsEvent, unknown, Error>(config.named.streams.analyticsShipments, environment);
   const splitAnalyticsOrders = makeSplitStream<AnalyticsEvent>(config.named.streams.splitAnalyticsOrders, analyticsOrders);
   const splitAnalyticsPayments = makeSplitStream<AnalyticsEvent>(config.named.streams.splitAnalyticsPayments, analyticsPayments);
+  const cycleAnalyticsInput = makeInputStream<AnalyticsEvent, unknown, Error>(config.named.streams.cycleAnalyticsInput, environment);
+  const mergeCycleAnalytics = makeMergeStream<AnalyticsEvent>(config.named.streams.mergeCycleAnalytics, cycleAnalyticsInput, cycleAnalyticsLink);
+  const advanceCycleAnalytics = makeMapStream<AnalyticsEvent, AnalyticsEvent>(config.named.streams.advanceCycleAnalytics, mergeCycleAnalytics, functions.advanceCycleAnalytics);
+  const splitCycleAnalytics = makeSplitStream<AnalyticsEvent>(config.named.streams.splitCycleAnalytics, advanceCycleAnalytics);
+  const completeCycleAnalytics = makeFilterStream<AnalyticsEvent>(config.named.streams.completeCycleAnalytics, splitCycleAnalytics.addStream(), functions.completeCycleAnalytics);
+  const continueCycleAnalytics = makeFilterStream<AnalyticsEvent>(config.named.streams.continueCycleAnalytics, splitCycleAnalytics.addStream(), functions.continueCycleAnalytics);
+  const writeCycleAnalytics = makeSinkStream<AnalyticsEvent, Error>(config.named.streams.writeCycleAnalytics, completeCycleAnalytics);
   const keyOrdersForJoin = makeKeyByStream<AnalyticsEvent, string, AnalyticsEvent>(config.named.streams.keyOrdersForJoin, splitAnalyticsOrders.addStream(), functions.keyOrdersForJoin);
   const keyPaymentsForJoin = makeKeyByStream<AnalyticsEvent, string, AnalyticsEvent>(config.named.streams.keyPaymentsForJoin, splitAnalyticsPayments.addStream(), functions.keyPaymentsForJoin);
   const joinOrderPaymentAnalytics = makeJoinStream<string, AnalyticsEvent, AnalyticsEvent, AnalyticsResult>(config.named.streams.joinOrderPaymentAnalytics, keyOrdersForJoin, keyPaymentsForJoin, functions.joinOrderPaymentAnalytics);
@@ -766,7 +954,9 @@ export function initStreams(
   const writeHighValueAnalytics = makeSinkStream<AnalyticsResult, Error>(config.named.streams.writeHighValueAnalytics, highValueAnalytics);
   const writeStandardAnalytics = makeSinkStream<AnalyticsResult, Error>(config.named.streams.writeStandardAnalytics, standardAnalytics);
   consumeOrderProcessed.setSource(countOrderProcessed);
+  cycleAnalyticsLink.setSource(continueCycleAnalytics);
   return {
+    cycleAnalyticsLink,
     analyticsSchedule,
     consumeOrderProcessed,
     countOrderProcessed,
@@ -775,6 +965,13 @@ export function initStreams(
     analyticsShipments,
     splitAnalyticsOrders,
     splitAnalyticsPayments,
+    cycleAnalyticsInput,
+    mergeCycleAnalytics,
+    advanceCycleAnalytics,
+    splitCycleAnalytics,
+    completeCycleAnalytics,
+    continueCycleAnalytics,
+    writeCycleAnalytics,
     keyOrdersForJoin,
     keyPaymentsForJoin,
     joinOrderPaymentAnalytics,

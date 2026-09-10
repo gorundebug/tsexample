@@ -12,6 +12,10 @@ import {
   type CustomDataConnectorConfig,
   requireCustomEndpointConfig,
   type CustomEndpointConfig,
+  requireCycleLinkStreamConfig,
+  type CycleLinkStreamConfig,
+  requireFilterStreamConfig,
+  type FilterStreamConfig,
   requireInputStreamConfig,
   type InputStreamConfig,
   requireJoinStreamConfig,
@@ -22,6 +26,10 @@ import {
   type KafkaEndpointConfig,
   requireKeyByStreamConfig,
   type KeyByStreamConfig,
+  requireMapStreamConfig,
+  type MapStreamConfig,
+  requireMergeStreamConfig,
+  type MergeStreamConfig,
   type ModuleConfig,
   requireMultiJoinStreamConfig,
   type MultiJoinStreamConfig,
@@ -42,27 +50,35 @@ export const ServiceIds = {
 } as const;
 
 export const StreamIds = {
+  ADVANCE_CYCLE_ANALYTICS: 9,
   ANALYTICS_ORDERS: 4,
   ANALYTICS_PAYMENTS: 5,
   ANALYTICS_SCHEDULE: 1,
   ANALYTICS_SHIPMENTS: 6,
+  COMPLETE_CYCLE_ANALYTICS: 10,
   CONSUME_ORDER_PROCESSED: 2,
+  CONTINUE_CYCLE_ANALYTICS: 11,
   COUNT_ORDER_PROCESSED: 3,
-  HIGH_VALUE_ANALYTICS: 13,
-  JOIN_ORDER_PAYMENT_ANALYTICS: 9,
-  KEY_ORDERS_FOR_JOIN: 10,
-  KEY_ORDERS_FOR_MULTI_JOIN: 14,
-  KEY_PAYMENTS_FOR_JOIN: 11,
-  KEY_PAYMENTS_FOR_MULTI_JOIN: 15,
-  KEY_SHIPMENTS_FOR_MULTI_JOIN: 16,
-  MULTI_JOIN_ANALYTICS_EVENTS: 17,
-  ROUTE_ANALYTICS_RESULT: 18,
+  CYCLE_ANALYTICS_INPUT: 12,
+  CYCLE_ANALYTICS_LINK: 13,
+  HIGH_VALUE_ANALYTICS: 21,
+  JOIN_ORDER_PAYMENT_ANALYTICS: 17,
+  KEY_ORDERS_FOR_JOIN: 18,
+  KEY_ORDERS_FOR_MULTI_JOIN: 22,
+  KEY_PAYMENTS_FOR_JOIN: 19,
+  KEY_PAYMENTS_FOR_MULTI_JOIN: 23,
+  KEY_SHIPMENTS_FOR_MULTI_JOIN: 24,
+  MERGE_CYCLE_ANALYTICS: 14,
+  MULTI_JOIN_ANALYTICS_EVENTS: 25,
+  ROUTE_ANALYTICS_RESULT: 26,
   SPLIT_ANALYTICS_ORDERS: 7,
   SPLIT_ANALYTICS_PAYMENTS: 8,
-  STANDARD_ANALYTICS: 19,
-  WRITE_HIGH_VALUE_ANALYTICS: 20,
-  WRITE_JOINED_ANALYTICS: 12,
-  WRITE_STANDARD_ANALYTICS: 21,
+  SPLIT_CYCLE_ANALYTICS: 15,
+  STANDARD_ANALYTICS: 27,
+  WRITE_CYCLE_ANALYTICS: 16,
+  WRITE_HIGH_VALUE_ANALYTICS: 28,
+  WRITE_JOINED_ANALYTICS: 20,
+  WRITE_STANDARD_ANALYTICS: 29,
 } as const;
 
 export const DataConnectorIds = {
@@ -74,12 +90,14 @@ export const DataConnectorIds = {
 export const EndpointIds = {
   ANALYTICS_ORDERS: 1,
   ANALYTICS_PAYMENTS: 2,
-  ANALYTICS_SCHEDULE: 7,
+  ANALYTICS_SCHEDULE: 9,
   ANALYTICS_SHIPMENTS: 3,
-  HIGH_VALUE_ANALYTICS: 4,
-  JOINED_ANALYTICS: 5,
-  ORDER_PROCESSED: 8,
-  STANDARD_ANALYTICS: 6,
+  CYCLE_ANALYTICS_INPUT: 4,
+  CYCLE_ANALYTICS_RESULT: 5,
+  HIGH_VALUE_ANALYTICS: 6,
+  JOINED_ANALYTICS: 7,
+  ORDER_PROCESSED: 10,
+  STANDARD_ANALYTICS: 8,
 } as const;
 
 export interface NamedConfig {
@@ -87,12 +105,17 @@ export interface NamedConfig {
     readonly analyticsService: ServiceConfig;
   };
   readonly streams: {
+    readonly advanceCycleAnalytics: MapStreamConfig;
     readonly analyticsOrders: InputStreamConfig;
     readonly analyticsPayments: InputStreamConfig;
     readonly analyticsSchedule: InputStreamConfig;
     readonly analyticsShipments: InputStreamConfig;
+    readonly completeCycleAnalytics: FilterStreamConfig;
     readonly consumeOrderProcessed: InputStreamConfig;
+    readonly continueCycleAnalytics: FilterStreamConfig;
     readonly countOrderProcessed: ProcessStreamConfig;
+    readonly cycleAnalyticsInput: InputStreamConfig;
+    readonly cycleAnalyticsLink: CycleLinkStreamConfig;
     readonly highValueAnalytics: WhenStreamConfig;
     readonly joinOrderPaymentAnalytics: JoinStreamConfig;
     readonly keyOrdersForJoin: KeyByStreamConfig;
@@ -100,11 +123,14 @@ export interface NamedConfig {
     readonly keyPaymentsForJoin: KeyByStreamConfig;
     readonly keyPaymentsForMultiJoin: KeyByStreamConfig;
     readonly keyShipmentsForMultiJoin: KeyByStreamConfig;
+    readonly mergeCycleAnalytics: MergeStreamConfig;
     readonly multiJoinAnalyticsEvents: MultiJoinStreamConfig;
     readonly routeAnalyticsResult: CaseStreamConfig;
     readonly splitAnalyticsOrders: SplitStreamConfig;
     readonly splitAnalyticsPayments: SplitStreamConfig;
+    readonly splitCycleAnalytics: SplitStreamConfig;
     readonly standardAnalytics: WhenStreamConfig;
+    readonly writeCycleAnalytics: SinkStreamConfig;
     readonly writeHighValueAnalytics: SinkStreamConfig;
     readonly writeJoinedAnalytics: SinkStreamConfig;
     readonly writeStandardAnalytics: SinkStreamConfig;
@@ -119,6 +145,8 @@ export interface NamedConfig {
     readonly analyticsPayments: CustomEndpointConfig;
     readonly analyticsSchedule: CronEndpointConfig;
     readonly analyticsShipments: CustomEndpointConfig;
+    readonly cycleAnalyticsInput: CustomEndpointConfig;
+    readonly cycleAnalyticsResult: CustomEndpointConfig;
     readonly highValueAnalytics: CustomEndpointConfig;
     readonly joinedAnalytics: CustomEndpointConfig;
     readonly orderProcessed: KafkaEndpointConfig;
@@ -151,12 +179,17 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       analyticsService: required(runtime.serviceById(ServiceIds.ANALYTICS_SERVICE), "Analytics Service"),
     },
     streams: {
+      advanceCycleAnalytics: requireMapStreamConfig(runtime.streamById(StreamIds.ADVANCE_CYCLE_ANALYTICS)),
       analyticsOrders: requireInputStreamConfig(runtime.streamById(StreamIds.ANALYTICS_ORDERS)),
       analyticsPayments: requireInputStreamConfig(runtime.streamById(StreamIds.ANALYTICS_PAYMENTS)),
       analyticsSchedule: requireInputStreamConfig(runtime.streamById(StreamIds.ANALYTICS_SCHEDULE)),
       analyticsShipments: requireInputStreamConfig(runtime.streamById(StreamIds.ANALYTICS_SHIPMENTS)),
+      completeCycleAnalytics: requireFilterStreamConfig(runtime.streamById(StreamIds.COMPLETE_CYCLE_ANALYTICS)),
       consumeOrderProcessed: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_ORDER_PROCESSED)),
+      continueCycleAnalytics: requireFilterStreamConfig(runtime.streamById(StreamIds.CONTINUE_CYCLE_ANALYTICS)),
       countOrderProcessed: requireProcessStreamConfig(runtime.streamById(StreamIds.COUNT_ORDER_PROCESSED)),
+      cycleAnalyticsInput: requireInputStreamConfig(runtime.streamById(StreamIds.CYCLE_ANALYTICS_INPUT)),
+      cycleAnalyticsLink: requireCycleLinkStreamConfig(runtime.streamById(StreamIds.CYCLE_ANALYTICS_LINK)),
       highValueAnalytics: requireWhenStreamConfig(runtime.streamById(StreamIds.HIGH_VALUE_ANALYTICS)),
       joinOrderPaymentAnalytics: requireJoinStreamConfig(runtime.streamById(StreamIds.JOIN_ORDER_PAYMENT_ANALYTICS)),
       keyOrdersForJoin: requireKeyByStreamConfig(runtime.streamById(StreamIds.KEY_ORDERS_FOR_JOIN)),
@@ -164,11 +197,14 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       keyPaymentsForJoin: requireKeyByStreamConfig(runtime.streamById(StreamIds.KEY_PAYMENTS_FOR_JOIN)),
       keyPaymentsForMultiJoin: requireKeyByStreamConfig(runtime.streamById(StreamIds.KEY_PAYMENTS_FOR_MULTI_JOIN)),
       keyShipmentsForMultiJoin: requireKeyByStreamConfig(runtime.streamById(StreamIds.KEY_SHIPMENTS_FOR_MULTI_JOIN)),
+      mergeCycleAnalytics: requireMergeStreamConfig(runtime.streamById(StreamIds.MERGE_CYCLE_ANALYTICS)),
       multiJoinAnalyticsEvents: requireMultiJoinStreamConfig(runtime.streamById(StreamIds.MULTI_JOIN_ANALYTICS_EVENTS)),
       routeAnalyticsResult: requireCaseStreamConfig(runtime.streamById(StreamIds.ROUTE_ANALYTICS_RESULT)),
       splitAnalyticsOrders: requireSplitStreamConfig(runtime.streamById(StreamIds.SPLIT_ANALYTICS_ORDERS)),
       splitAnalyticsPayments: requireSplitStreamConfig(runtime.streamById(StreamIds.SPLIT_ANALYTICS_PAYMENTS)),
+      splitCycleAnalytics: requireSplitStreamConfig(runtime.streamById(StreamIds.SPLIT_CYCLE_ANALYTICS)),
       standardAnalytics: requireWhenStreamConfig(runtime.streamById(StreamIds.STANDARD_ANALYTICS)),
+      writeCycleAnalytics: requireSinkStreamConfig(runtime.streamById(StreamIds.WRITE_CYCLE_ANALYTICS)),
       writeHighValueAnalytics: requireSinkStreamConfig(runtime.streamById(StreamIds.WRITE_HIGH_VALUE_ANALYTICS)),
       writeJoinedAnalytics: requireSinkStreamConfig(runtime.streamById(StreamIds.WRITE_JOINED_ANALYTICS)),
       writeStandardAnalytics: requireSinkStreamConfig(runtime.streamById(StreamIds.WRITE_STANDARD_ANALYTICS)),
@@ -183,6 +219,8 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       analyticsPayments: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.ANALYTICS_PAYMENTS)),
       analyticsSchedule: requireCronEndpointConfig(runtime.endpointById(EndpointIds.ANALYTICS_SCHEDULE)),
       analyticsShipments: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.ANALYTICS_SHIPMENTS)),
+      cycleAnalyticsInput: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.CYCLE_ANALYTICS_INPUT)),
+      cycleAnalyticsResult: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.CYCLE_ANALYTICS_RESULT)),
       highValueAnalytics: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.HIGH_VALUE_ANALYTICS)),
       joinedAnalytics: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.JOINED_ANALYTICS)),
       orderProcessed: requireKafkaEndpointConfig(runtime.endpointById(EndpointIds.ORDER_PROCESSED)),

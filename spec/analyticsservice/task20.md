@@ -1,19 +1,19 @@
-# Task 10/22: `CycleAnalyticsResultSink`
+# Task 20/22: `KeyShipmentsForMultiJoin`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `custom-sink` |
-| File | `analyticsservice/src/internal/functions/cycle-analytics-result-sink.ts` |
-| Test | `analyticsservice/test/functions/cycle-analytics-result-sink.test.ts` |
+| Kind | `keyBy` |
+| File | `analyticsservice/src/internal/functions/key-shipments-for-multi-join.ts` |
+| Test | `analyticsservice/test/functions/key-shipments-for-multi-join.test.ts` |
 | Service | `Analytics Service` |
 
 
 ## Behaviour
 
-Validate the terminal event emitted after three passes through the feedback cycle.
+Key the shipment analytics event for the multi-way join.
 
 
 
@@ -25,9 +25,9 @@ Validate the terminal event emitted after three passes through the feedback cycl
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `analyticsservice/src/internal/functions/cycle-analytics-result-sink.ts` and preserve its generated contract
+- [ ] Open `analyticsservice/src/internal/functions/key-shipments-for-multi-join.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
-- [ ] Implement meaningful assertions in `analyticsservice/test/functions/cycle-analytics-result-sink.test.ts`
+- [ ] Implement meaningful assertions in `analyticsservice/test/functions/key-shipments-for-multi-join.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task10.md — CycleAnalyticsResultSink — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task20.md — KeyShipmentsForMultiJoin — TypeScript — done`

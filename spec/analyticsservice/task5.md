@@ -1,33 +1,31 @@
-# Task 5/17: `AnalyticsShipmentsSource`
+# Task 5/22: `ContinueCycleAnalytics`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `custom-source` |
-| File | `analyticsservice/src/internal/functions/analytics-shipments-source.ts` |
-| Test | `analyticsservice/test/functions/analytics-shipments-source.test.ts` |
+| Kind | `filter` |
+| File | `analyticsservice/src/internal/functions/continue-cycle-analytics.ts` |
+| Test | `analyticsservice/test/functions/continue-cycle-analytics.test.ts` |
 | Service | `Analytics Service` |
 
 
 ## Behaviour
 
-Produce a deterministic shipment analytics event for the canonical multi-way join example.
+Keep intermediate analytics events whose cycle counter is below three.
 
 
 
 
 ## Stream types
 - Input: `AnalyticsEvent` — `analyticsservice/src/internal/types/analytics-event.ts`
-- Output: `AnalyticsEvent` — `analyticsservice/src/internal/types/analytics-event.ts`
 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `analyticsservice/src/internal/functions/analytics-shipments-source.ts` and preserve its generated contract
+- [ ] Open `analyticsservice/src/internal/functions/continue-cycle-analytics.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
-- [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
-- [ ] Implement meaningful assertions in `analyticsservice/test/functions/analytics-shipments-source.test.ts`
+- [ ] Implement meaningful assertions in `analyticsservice/test/functions/continue-cycle-analytics.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task5.md — AnalyticsShipmentsSource — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task5.md — ContinueCycleAnalytics — TypeScript — done`
