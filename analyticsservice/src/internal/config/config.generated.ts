@@ -148,8 +148,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "cycleAnalytics",
       "type": 2,
       "valueType": "AnalyticsEvent",
-      "xPos": -1100,
-      "yPos": 1160
+      "xPos": -1502,
+      "yPos": -1648
     },
     "analyticsOrders": {
       "id": 4,
@@ -160,8 +160,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "analyticsSources",
       "type": 1,
       "valueType": "AnalyticsEvent",
-      "xPos": -1600,
-      "yPos": 220
+      "xPos": -1739,
+      "yPos": -1133
     },
     "analyticsPayments": {
       "id": 5,
@@ -172,8 +172,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "analyticsSources",
       "type": 1,
       "valueType": "AnalyticsEvent",
-      "xPos": -1600,
-      "yPos": 430
+      "xPos": -2307,
+      "yPos": -767
     },
     "analyticsSchedule": {
       "id": 1,
@@ -184,8 +184,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "analytics",
       "type": 1,
       "valueType": "AutomationJob",
-      "xPos": -1600,
-      "yPos": -205
+      "xPos": -1905,
+      "yPos": -497
     },
     "analyticsShipments": {
       "id": 6,
@@ -196,8 +196,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "analyticsSources",
       "type": 1,
       "valueType": "AnalyticsEvent",
-      "xPos": -1600,
-      "yPos": 780
+      "xPos": 12,
+      "yPos": -1308
     },
     "completeCycleAnalytics": {
       "functionDescription": "Keep the terminal analytics event once its cycle counter reaches three.",
@@ -211,8 +211,8 @@ const DEFAULT_CONFIG = {
       "name": "Complete Cycle Analytics",
       "pipeline": "cycleAnalytics",
       "type": 3,
-      "xPos": -600,
-      "yPos": 1260
+      "xPos": -529,
+      "yPos": -1718
     },
     "consumeOrderProcessed": {
       "id": 2,
@@ -223,8 +223,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "analytics",
       "type": 1,
       "valueType": "OrderProcessed",
-      "xPos": -1190,
-      "yPos": -205
+      "xPos": -1453,
+      "yPos": -510
     },
     "continueCycleAnalytics": {
       "functionDescription": "Keep intermediate analytics events whose cycle counter is below three.",
@@ -238,8 +238,8 @@ const DEFAULT_CONFIG = {
       "name": "Continue Cycle Analytics",
       "pipeline": "cycleAnalytics",
       "type": 3,
-      "xPos": -600,
-      "yPos": 1060
+      "xPos": -879,
+      "yPos": -2196
     },
     "countOrderProcessed": {
       "functionDescription": "Count successful and unsuccessful orders independently, then return the event unchanged.\n",
@@ -253,8 +253,8 @@ const DEFAULT_CONFIG = {
       "name": "Count Order Processed",
       "pipeline": "analytics",
       "type": 6,
-      "xPos": -1390,
-      "yPos": -19
+      "xPos": -1695,
+      "yPos": -518
     },
     "cycleAnalyticsInput": {
       "id": 12,
@@ -265,8 +265,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "cycleAnalytics",
       "type": 1,
       "valueType": "AnalyticsEvent",
-      "xPos": -1600,
-      "yPos": 1160
+      "xPos": -2362,
+      "yPos": -1830
     },
     "cycleAnalyticsLink": {
       "id": 13,
@@ -275,8 +275,8 @@ const DEFAULT_CONFIG = {
       "name": "Cycle Analytics Link",
       "pipeline": "cycleAnalytics",
       "type": 14,
-      "xPos": -1100,
-      "yPos": 960
+      "xPos": -1311,
+      "yPos": -2114
     },
     "highValueAnalytics": {
       "id": 21,
@@ -286,8 +286,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "multiJoinAnalytics",
       "type": 17,
       "valueType": "AnalyticsResult",
-      "xPos": -400,
-      "yPos": 650
+      "xPos": 398,
+      "yPos": -1650
     },
     "joinOrderPaymentAnalytics": {
       "functionDescription": "Join matching order and payment analytics events and emit their combined total.",
@@ -309,8 +309,8 @@ const DEFAULT_CONFIG = {
       "ttl": 60000,
       "type": 4,
       "valueType": "AnalyticsResult",
-      "xPos": -900,
-      "yPos": 260
+      "xPos": -637,
+      "yPos": -1050
     },
     "keyOrdersForJoin": {
       "functionDescription": "Key the order analytics event by correlation key.",
@@ -326,8 +326,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "joinAnalytics",
       "type": 9,
       "valueType": "AnalyticsEvent",
-      "xPos": -1160,
-      "yPos": 170
+      "xPos": -1258,
+      "yPos": -1007
     },
     "keyOrdersForMultiJoin": {
       "functionDescription": "Key the order analytics event for the multi-way join.",
@@ -343,8 +343,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "multiJoinAnalytics",
       "type": 9,
       "valueType": "AnalyticsEvent",
-      "xPos": -1160,
-      "yPos": 570
+      "xPos": -1325,
+      "yPos": -1256
     },
     "keyPaymentsForJoin": {
       "functionDescription": "Key the payment analytics event by correlation key.",
@@ -360,8 +360,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "joinAnalytics",
       "type": 9,
       "valueType": "AnalyticsEvent",
-      "xPos": -1160,
-      "yPos": 350
+      "xPos": -1377,
+      "yPos": -723
     },
     "keyPaymentsForMultiJoin": {
       "functionDescription": "Key the payment analytics event for the multi-way join.",
@@ -377,8 +377,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "multiJoinAnalytics",
       "type": 9,
       "valueType": "AnalyticsEvent",
-      "xPos": -1160,
-      "yPos": 740
+      "xPos": -1984,
+      "yPos": -1293
     },
     "keyShipmentsForMultiJoin": {
       "functionDescription": "Key the shipment analytics event for the multi-way join.",
@@ -394,8 +394,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "multiJoinAnalytics",
       "type": 9,
       "valueType": "AnalyticsEvent",
-      "xPos": -1160,
-      "yPos": 910
+      "xPos": -365,
+      "yPos": -1315
     },
     "mergeCycleAnalytics": {
       "id": 14,
@@ -408,8 +408,8 @@ const DEFAULT_CONFIG = {
       "name": "Merge Cycle Analytics",
       "pipeline": "cycleAnalytics",
       "type": 10,
-      "xPos": -1350,
-      "yPos": 1160
+      "xPos": -1830,
+      "yPos": -1827
     },
     "multiJoinAnalyticsEvents": {
       "functionDescription": "Combine matching order, payment, and shipment analytics events.",
@@ -431,8 +431,8 @@ const DEFAULT_CONFIG = {
       "ttl": 60000,
       "type": 5,
       "valueType": "AnalyticsResult",
-      "xPos": -900,
-      "yPos": 740
+      "xPos": -812,
+      "yPos": -1446
     },
     "routeAnalyticsResult": {
       "functionDescription": "Route high-value analytics results to the first branch and all others to the second branch.",
@@ -446,8 +446,8 @@ const DEFAULT_CONFIG = {
       "name": "Route Analytics Result",
       "pipeline": "multiJoinAnalytics",
       "type": 12,
-      "xPos": -650,
-      "yPos": 740
+      "xPos": -89,
+      "yPos": -1589
     },
     "splitAnalyticsOrders": {
       "id": 7,
@@ -456,8 +456,8 @@ const DEFAULT_CONFIG = {
       "name": "Split Analytics Orders",
       "pipeline": "analyticsSources",
       "type": 11,
-      "xPos": -1390,
-      "yPos": 220
+      "xPos": -1529,
+      "yPos": -1100
     },
     "splitAnalyticsPayments": {
       "id": 8,
@@ -466,8 +466,8 @@ const DEFAULT_CONFIG = {
       "name": "Split Analytics Payments",
       "pipeline": "analyticsSources",
       "type": 11,
-      "xPos": -1390,
-      "yPos": 430
+      "xPos": -1945,
+      "yPos": -776
     },
     "splitCycleAnalytics": {
       "id": 15,
@@ -476,8 +476,8 @@ const DEFAULT_CONFIG = {
       "name": "Split Cycle Analytics",
       "pipeline": "cycleAnalytics",
       "type": 11,
-      "xPos": -850,
-      "yPos": 1160
+      "xPos": -830,
+      "yPos": -1687
     },
     "standardAnalytics": {
       "id": 27,
@@ -487,8 +487,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "multiJoinAnalytics",
       "type": 17,
       "valueType": "AnalyticsResult",
-      "xPos": -400,
-      "yPos": 830
+      "xPos": 463,
+      "yPos": -1449
     },
     "writeCycleAnalytics": {
       "id": 16,
@@ -499,8 +499,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "cycleAnalytics",
       "type": 13,
       "valueType": "AnalyticsEvent",
-      "xPos": -350,
-      "yPos": 1260
+      "xPos": -545,
+      "yPos": -2204
     },
     "writeHighValueAnalytics": {
       "id": 28,
@@ -511,8 +511,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "multiJoinAnalytics",
       "type": 13,
       "valueType": "AnalyticsResult",
-      "xPos": -130,
-      "yPos": 650
+      "xPos": 820,
+      "yPos": -1669
     },
     "writeJoinedAnalytics": {
       "id": 20,
@@ -523,8 +523,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "joinAnalytics",
       "type": 13,
       "valueType": "AnalyticsResult",
-      "xPos": -640,
-      "yPos": 260
+      "xPos": -231,
+      "yPos": -1079
     },
     "writeStandardAnalytics": {
       "id": 29,
@@ -535,8 +535,8 @@ const DEFAULT_CONFIG = {
       "pipeline": "multiJoinAnalytics",
       "type": 13,
       "valueType": "AnalyticsResult",
-      "xPos": -130,
-      "yPos": 830
+      "xPos": 966,
+      "yPos": -1453
     }
   },
   "dataConnectors": {
