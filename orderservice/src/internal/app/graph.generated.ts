@@ -33,6 +33,16 @@ import {
   ProcessOrderItems, makeProcessOrderItems,
   SoftDeadline, makeSoftDeadline,
 } from "../functions/index.generated.js";
+import {
+  defaultOrderPipelineMakers,
+  initOrderPipelineStreams,
+  postInitOrderPipelineStreams,
+} from "./pipeline_order.generated.js";
+import type {
+  OrderPipelineFunctions,
+  OrderPipelineMakers,
+  OrderPipelineStreams,
+} from "./pipeline_order.generated.js";
 
 function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -68,128 +78,25 @@ export function registerGeneratedSerdes(registry: SerdeRegistry): void {
   registry.registerStreamErrorType(StreamIds.PUBLISH_ORDER_PROCESSED, errorSerdeType);
 }
 
-export interface ServiceMakers {
-  orderProcessedEndpointSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
-  ) => Promise<OrderProcessedEndpointSink>;
-  processOrderItemSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
-  ) => Promise<ProcessOrderItemSink>;
-  processOrderSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").HttpEndpointConfig,
-  ) => Promise<ProcessOrderSource>;
-  mapOrderItemResultToOrderState: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => Promise<MapOrderItemResultToOrderState>;
-  mapToOrderProcessed: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => Promise<MapToOrderProcessed>;
-  mapToOrderState: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => Promise<MapToOrderState>;
-  processOrderItems: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").FlatMapStreamConfig,
-  ) => Promise<ProcessOrderItems>;
-  softDeadline: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => Promise<SoftDeadline>;
-}
+export type ServiceMakers =
+  OrderPipelineMakers;
 
-export type WorkflowServiceMakers = {
-  orderProcessedEndpointSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
-  ) => Promise<OrderProcessedEndpointSink>;
-  processOrderItemSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
-  ) => Promise<ProcessOrderItemSink>;
-  processOrderSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").HttpEndpointConfig,
-  ) => Promise<ProcessOrderSource>;
-  mapOrderItemResultToOrderState: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => Promise<MapOrderItemResultToOrderState>;
-  mapToOrderProcessed: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => Promise<MapToOrderProcessed>;
-  mapToOrderState: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => Promise<MapToOrderState>;
-  processOrderItems: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").FlatMapStreamConfig,
-  ) => Promise<ProcessOrderItems>;
-  softDeadline: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").DelayStreamConfig,
-  ) => Promise<SoftDeadline>;
-};
+export type WorkflowServiceMakers = ServiceMakers;
 
 export function defaultMakers(): ServiceMakers {
   return {
-    orderProcessedEndpointSink: makeOrderProcessedEndpointSink,
-    processOrderItemSink: makeProcessOrderItemSink,
-    processOrderSource: makeProcessOrderSource,
-    mapOrderItemResultToOrderState: makeMapOrderItemResultToOrderState,
-    mapToOrderProcessed: makeMapToOrderProcessed,
-    mapToOrderState: makeMapToOrderState,
-    processOrderItems: makeProcessOrderItems,
-    softDeadline: makeSoftDeadline,
+    ...defaultOrderPipelineMakers(),
   };
 }
 
 export function defaultWorkflowMakers(): WorkflowServiceMakers {
   return {
-    orderProcessedEndpointSink: makeOrderProcessedEndpointSink,
-    processOrderItemSink: makeProcessOrderItemSink,
-    processOrderSource: makeProcessOrderSource,
-    mapOrderItemResultToOrderState: makeMapOrderItemResultToOrderState,
-    mapToOrderProcessed: makeMapToOrderProcessed,
-    mapToOrderState: makeMapToOrderState,
-    processOrderItems: makeProcessOrderItems,
-    softDeadline: makeSoftDeadline,
+    ...defaultOrderPipelineMakers(),
   };
 }
 
-export interface ServiceFunctions {
-  orderProcessedEndpointSink: OrderProcessedEndpointSink;
-  processOrderItemSink: ProcessOrderItemSink;
-  processOrderSource: ProcessOrderSource;
-  mapOrderItemResultToOrderState: MapOrderItemResultToOrderState;
-  mapToOrderProcessed: MapToOrderProcessed;
-  mapToOrderState: MapToOrderState;
-  processOrderItems: ProcessOrderItems;
-  softDeadline: SoftDeadline;
-}
+export type ServiceFunctions =
+  OrderPipelineFunctions;
 
 export async function initFunctions(
   context: MessageContext,
@@ -419,34 +326,12 @@ export function initStreams(
   config: ConfigSnapshot,
   environment: RuntimeEnvironment,
   functions: ServiceFunctions,
-) {
-  const processOrder = makeInputStream<Order, OrderState, Error>(config.named.streams.processOrder, environment);
-  const splitPipeline = makeSplitStream<Order>(config.named.streams.splitPipeline, processOrder);
-  const processOrderItems = makeFlatMapStream<Order, OrderItem>(config.named.streams.processOrderItems, splitPipeline.addStream(), functions.processOrderItems);
-  const processOrderItem = makeSinkStreamWithResult<OrderItem, OrderItemResult, OrderState>(config.named.streams.processOrderItem, processOrderItems);
-  const processOrderItemError = processOrderItem.errorStream();
-  const mapOrderItemResultToOrderState = makeMapStream<OrderItemResult, OrderState>(config.named.streams.mapOrderItemResultToOrderState, processOrderItem, functions.mapOrderItemResultToOrderState);
-  const softDeadline = makeDelayStream<Order>(config.named.streams.softDeadline, splitPipeline.addStream(), functions.softDeadline);
-  const mapToOrderState = makeMapStream<Order, OrderState>(config.named.streams.mapToOrderState, softDeadline, functions.mapToOrderState);
-  const mergeResults = makeMergeStream<OrderState>(config.named.streams.mergeResults, mapToOrderState, mapOrderItemResultToOrderState, processOrderItemError);
-  const splitOrderResult = makeSplitStream<OrderState>(config.named.streams.splitOrderResult, mergeResults);
-  const mapToOrderProcessed = makeMapStream<OrderState, OrderProcessed>(config.named.streams.mapToOrderProcessed, splitOrderResult.addStream(), functions.mapToOrderProcessed);
-  const publishOrderProcessed = makeSinkStream<OrderProcessed, Error>(config.named.streams.publishOrderProcessed, mapToOrderProcessed);
-  processOrder.setSource(splitOrderResult.addStream());
-  return {
-    processOrder,
-    splitPipeline,
-    processOrderItems,
-    processOrderItem,
-    processOrderItemError,
-    mapOrderItemResultToOrderState,
-    softDeadline,
-    mapToOrderState,
-    mergeResults,
-    splitOrderResult,
-    mapToOrderProcessed,
-    publishOrderProcessed,
-  };
+): ServiceStreams {
+  const streams = {} as ServiceStreams;
+  initOrderPipelineStreams(config, environment, functions, streams);
+  postInitOrderPipelineStreams(streams);
+  return streams;
 }
 
-export type ServiceStreams = ReturnType<typeof initStreams>;
+export type ServiceStreams =
+  OrderPipelineStreams;

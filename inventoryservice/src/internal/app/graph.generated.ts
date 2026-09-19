@@ -17,6 +17,7 @@ import {
   makeMultiJoinStream, makeProcessStream, makeSinkStream,
   makeSinkStreamWithResult, makeSplitStream, makeWhenStream,
 } from "@gorundebug/tsservicelib/operators";
+import type { InventoryFailure } from "../types/index.generated.js";
 import type { OrderItem, OrderItemResult } from "@gorundebug/model";
 import {
   StreamIds,
@@ -25,71 +26,60 @@ import {
 import {
   ProcessOrderItemSource, makeProcessOrderItemSource,
   GetInventoryItemData, makeGetInventoryItemData,
+  GetInventoryItemError, makeGetInventoryItemError,
 } from "../functions/index.generated.js";
+import {
+  defaultInventoryItemPipelineMakers,
+  initInventoryItemPipelineStreams,
+  postInitInventoryItemPipelineStreams,
+} from "./pipeline_inventory_item.generated.js";
+import type {
+  InventoryItemPipelineFunctions,
+  InventoryItemPipelineMakers,
+  InventoryItemPipelineStreams,
+} from "./pipeline_inventory_item.generated.js";
 
 function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 const serdeTypes = {
+  inventoryFailure: new SerdeType<InventoryFailure>("InventoryFailure", (value): value is InventoryFailure => isRecord(value)),
   orderItem: new SerdeType<OrderItem>("OrderItem", (value): value is OrderItem => isRecord(value)),
   orderItemResult: new SerdeType<OrderItemResult>("OrderItemResult", (value): value is OrderItemResult => isRecord(value)),
 } as const;
 
 export function registerGeneratedSerdes(registry: SerdeRegistry): void {
+  registry.register(serdeTypes.inventoryFailure, makeStreamSerde(new JsonSerde(serdeTypes.inventoryFailure)));
   registry.register(serdeTypes.orderItem, makeStreamSerde(new JsonSerde(serdeTypes.orderItem)));
   registry.register(serdeTypes.orderItemResult, makeStreamSerde(new JsonSerde(serdeTypes.orderItemResult)));
   registry.registerStreamValueType(StreamIds.PROCESS_INVENTORY_ITEM, serdeTypes.orderItem);
   registry.registerStreamErrorType(StreamIds.PROCESS_INVENTORY_ITEM, errorSerdeType);
   registry.registerStreamValueType(StreamIds.GET_INVENTORY_ITEM_DATA, serdeTypes.orderItemResult);
-  registry.registerStreamErrorType(StreamIds.GET_INVENTORY_ITEM_DATA, serdeTypes.orderItemResult);
+  registry.registerStreamErrorType(StreamIds.GET_INVENTORY_ITEM_DATA, serdeTypes.inventoryFailure);
+  registry.registerStreamValueType(StreamIds.MAP_INVENTORY_ITEM_ERROR, serdeTypes.orderItemResult);
   registry.registerStreamValueType(StreamIds.MERGE_INVENTORY_RESULT, serdeTypes.orderItemResult);
 }
 
-export interface ServiceMakers {
-  processOrderItemSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
-  ) => Promise<ProcessOrderItemSource>;
-  getInventoryItemData: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
-  ) => Promise<GetInventoryItemData>;
-}
+export type ServiceMakers =
+  InventoryItemPipelineMakers;
 
-export type WorkflowServiceMakers = {
-  processOrderItemSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").GrpcEndpointConfig,
-  ) => Promise<ProcessOrderItemSource>;
-  getInventoryItemData: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
-  ) => Promise<GetInventoryItemData>;
-};
+export type WorkflowServiceMakers = ServiceMakers;
 
 export function defaultMakers(): ServiceMakers {
   return {
-    processOrderItemSource: makeProcessOrderItemSource,
-    getInventoryItemData: makeGetInventoryItemData,
+    ...defaultInventoryItemPipelineMakers(),
   };
 }
 
 export function defaultWorkflowMakers(): WorkflowServiceMakers {
   return {
-    processOrderItemSource: makeProcessOrderItemSource,
-    getInventoryItemData: makeGetInventoryItemData,
+    ...defaultInventoryItemPipelineMakers(),
   };
 }
 
-export interface ServiceFunctions {
-  processOrderItemSource: ProcessOrderItemSource;
-  getInventoryItemData: GetInventoryItemData;
-}
+export type ServiceFunctions =
+  InventoryItemPipelineFunctions;
 
 export async function initFunctions(
   context: MessageContext,
@@ -99,6 +89,7 @@ export async function initFunctions(
 ): Promise<ServiceFunctions> {
   let processOrderItemSource: ProcessOrderItemSource;
   let getInventoryItemData: GetInventoryItemData;
+  let getInventoryItemError: GetInventoryItemError;
   {
     const controller = new AbortController();
     const makerContext = context.withExternalCancellation(controller.signal);
@@ -123,6 +114,9 @@ export async function initFunctions(
       invokeMaker(() => makers.getInventoryItemData(
         makerContext, environment, config.named.streams.getInventoryItemData,
       )),
+      invokeMaker(() => makers.getInventoryItemError(
+        makerContext, environment, config.named.streams.mapInventoryItemError,
+      )),
     ] as const);
     controller.abort();
     if (failed) throw firstError;
@@ -136,10 +130,16 @@ export async function initFunctions(
       throw getInventoryItemDataResult0.reason;
     }
     getInventoryItemData = getInventoryItemDataResult0.value;
+    const getInventoryItemErrorResult0 = group[2];
+    if (getInventoryItemErrorResult0.status !== "fulfilled") {
+      throw getInventoryItemErrorResult0.reason;
+    }
+    getInventoryItemError = getInventoryItemErrorResult0.value;
   }
   return {
     processOrderItemSource,
     getInventoryItemData,
+    getInventoryItemError,
   };
 }
 
@@ -151,6 +151,7 @@ export async function initFunctionsParallel(
 ): Promise<ServiceFunctions> {
   let processOrderItemSource: ProcessOrderItemSource;
   let getInventoryItemData: GetInventoryItemData;
+  let getInventoryItemError: GetInventoryItemError;
   {
     const controller = new AbortController();
     const makerContext = context.withExternalCancellation(controller.signal);
@@ -175,6 +176,9 @@ export async function initFunctionsParallel(
       invokeMaker(() => makers.getInventoryItemData(
         makerContext, environment, config.named.streams.getInventoryItemData,
       )),
+      invokeMaker(() => makers.getInventoryItemError(
+        makerContext, environment, config.named.streams.mapInventoryItemError,
+      )),
     ] as const);
     controller.abort();
     if (failed) throw firstError;
@@ -188,10 +192,16 @@ export async function initFunctionsParallel(
       throw getInventoryItemDataResult0.reason;
     }
     getInventoryItemData = getInventoryItemDataResult0.value;
+    const getInventoryItemErrorResult0 = group[2];
+    if (getInventoryItemErrorResult0.status !== "fulfilled") {
+      throw getInventoryItemErrorResult0.reason;
+    }
+    getInventoryItemError = getInventoryItemErrorResult0.value;
   }
   return {
     processOrderItemSource,
     getInventoryItemData,
+    getInventoryItemError,
   };
 }
 
@@ -199,18 +209,12 @@ export function initStreams(
   config: ConfigSnapshot,
   environment: RuntimeEnvironment,
   functions: ServiceFunctions,
-) {
-  const processInventoryItem = makeInputStream<OrderItem, OrderItemResult, Error>(config.named.streams.processInventoryItem, environment);
-  const getInventoryItemData = makeProcessStream<OrderItem, OrderItemResult, OrderItemResult>(config.named.streams.getInventoryItemData, processInventoryItem, functions.getInventoryItemData);
-  const getInventoryItemError = getInventoryItemData.errorStream();
-  const mergeInventoryResult = makeMergeStream<OrderItemResult>(config.named.streams.mergeInventoryResult, getInventoryItemData, getInventoryItemError);
-  processInventoryItem.setSource(mergeInventoryResult);
-  return {
-    processInventoryItem,
-    getInventoryItemData,
-    getInventoryItemError,
-    mergeInventoryResult,
-  };
+): ServiceStreams {
+  const streams = {} as ServiceStreams;
+  initInventoryItemPipelineStreams(config, environment, functions, streams);
+  postInitInventoryItemPipelineStreams(streams);
+  return streams;
 }
 
-export type ServiceStreams = ReturnType<typeof initStreams>;
+export type ServiceStreams =
+  InventoryItemPipelineStreams;

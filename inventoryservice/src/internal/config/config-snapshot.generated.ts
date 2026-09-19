@@ -8,6 +8,8 @@ import {
   type GrpcEndpointConfig,
   requireInputStreamConfig,
   type InputStreamConfig,
+  requireMapStreamConfig,
+  type MapStreamConfig,
   requireMergeStreamConfig,
   type MergeStreamConfig,
   type ModuleConfig,
@@ -24,8 +26,9 @@ export const ServiceIds = {
 
 export const StreamIds = {
   GET_INVENTORY_ITEM_DATA: 1,
-  MERGE_INVENTORY_RESULT: 2,
-  PROCESS_INVENTORY_ITEM: 3,
+  MAP_INVENTORY_ITEM_ERROR: 2,
+  MERGE_INVENTORY_RESULT: 3,
+  PROCESS_INVENTORY_ITEM: 4,
 } as const;
 
 export const DataConnectorIds = {
@@ -42,6 +45,7 @@ export interface NamedConfig {
   };
   readonly streams: {
     readonly getInventoryItemData: ProcessStreamConfig;
+    readonly mapInventoryItemError: MapStreamConfig;
     readonly mergeInventoryResult: MergeStreamConfig;
     readonly processInventoryItem: InputStreamConfig;
   };
@@ -60,6 +64,7 @@ export interface NamedConfig {
     readonly orderServiceApi: ModuleConfig;
   };
   readonly types: {
+    readonly inventoryFailure: TypeConfig;
     readonly orderItem: TypeConfig;
     readonly orderItemResult: TypeConfig;
   };
@@ -77,6 +82,7 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
     },
     streams: {
       getInventoryItemData: requireProcessStreamConfig(runtime.streamById(StreamIds.GET_INVENTORY_ITEM_DATA)),
+      mapInventoryItemError: requireMapStreamConfig(runtime.streamById(StreamIds.MAP_INVENTORY_ITEM_ERROR)),
       mergeInventoryResult: requireMergeStreamConfig(runtime.streamById(StreamIds.MERGE_INVENTORY_RESULT)),
       processInventoryItem: requireInputStreamConfig(runtime.streamById(StreamIds.PROCESS_INVENTORY_ITEM)),
     },
@@ -95,6 +101,7 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       orderServiceApi: required(runtime.moduleByName("order_service_api"), "order_service_api"),
     },
     types: {
+      inventoryFailure: required(runtime.typeByName("InventoryFailure"), "InventoryFailure"),
       orderItem: required(runtime.typeByName("OrderItem"), "OrderItem"),
       orderItemResult: required(runtime.typeByName("OrderItemResult"), "OrderItemResult"),
     },

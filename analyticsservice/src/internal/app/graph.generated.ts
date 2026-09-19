@@ -53,6 +53,66 @@ import {
   BuildSubstreamAnalyticsResult, makeBuildSubstreamAnalyticsResult,
   InvokeAnalyticsSubstream, makeInvokeAnalyticsSubstream,
 } from "../functions/index.generated.js";
+import {
+  defaultAnalyticsPipelineMakers,
+  initAnalyticsPipelineStreams,
+  postInitAnalyticsPipelineStreams,
+} from "./pipeline_analytics.generated.js";
+import type {
+  AnalyticsPipelineFunctions,
+  AnalyticsPipelineMakers,
+  AnalyticsPipelineStreams,
+} from "./pipeline_analytics.generated.js";
+import {
+  defaultAnalyticsSourcesPipelineMakers,
+  initAnalyticsSourcesPipelineStreams,
+  postInitAnalyticsSourcesPipelineStreams,
+} from "./pipeline_analytics_sources.generated.js";
+import type {
+  AnalyticsSourcesPipelineFunctions,
+  AnalyticsSourcesPipelineMakers,
+  AnalyticsSourcesPipelineStreams,
+} from "./pipeline_analytics_sources.generated.js";
+import {
+  defaultCycleAnalyticsPipelineMakers,
+  initCycleAnalyticsPipelineStreams,
+  postInitCycleAnalyticsPipelineStreams,
+} from "./pipeline_cycle_analytics.generated.js";
+import type {
+  CycleAnalyticsPipelineFunctions,
+  CycleAnalyticsPipelineMakers,
+  CycleAnalyticsPipelineStreams,
+} from "./pipeline_cycle_analytics.generated.js";
+import {
+  defaultJoinAnalyticsPipelineMakers,
+  initJoinAnalyticsPipelineStreams,
+  postInitJoinAnalyticsPipelineStreams,
+} from "./pipeline_join_analytics.generated.js";
+import type {
+  JoinAnalyticsPipelineFunctions,
+  JoinAnalyticsPipelineMakers,
+  JoinAnalyticsPipelineStreams,
+} from "./pipeline_join_analytics.generated.js";
+import {
+  defaultMultiJoinAnalyticsPipelineMakers,
+  initMultiJoinAnalyticsPipelineStreams,
+  postInitMultiJoinAnalyticsPipelineStreams,
+} from "./pipeline_multi_join_analytics.generated.js";
+import type {
+  MultiJoinAnalyticsPipelineFunctions,
+  MultiJoinAnalyticsPipelineMakers,
+  MultiJoinAnalyticsPipelineStreams,
+} from "./pipeline_multi_join_analytics.generated.js";
+import {
+  defaultSubstreamAnalyticsPipelineMakers,
+  initSubstreamAnalyticsPipelineStreams,
+  postInitSubstreamAnalyticsPipelineStreams,
+} from "./pipeline_substream_analytics.generated.js";
+import type {
+  SubstreamAnalyticsPipelineFunctions,
+  SubstreamAnalyticsPipelineMakers,
+  SubstreamAnalyticsPipelineStreams,
+} from "./pipeline_substream_analytics.generated.js";
 
 function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -122,362 +182,45 @@ export function registerGeneratedSerdes(registry: SerdeRegistry): void {
   registry.registerStreamErrorType(StreamIds.WRITE_SUBSTREAM_ANALYTICS, errorSerdeType);
 }
 
-export interface ServiceMakers {
-  countOrderProcessed: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
-  ) => Promise<CountOrderProcessed>;
-  analyticsScheduleSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
-  ) => Promise<AnalyticsScheduleSource>;
-  advanceCycleAnalytics: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => Promise<AdvanceCycleAnalytics>;
-  completeCycleAnalytics: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").FilterStreamConfig,
-  ) => Promise<CompleteCycleAnalytics>;
-  continueCycleAnalytics: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").FilterStreamConfig,
-  ) => Promise<ContinueCycleAnalytics>;
-  analyticsOrdersSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<AnalyticsOrdersSource>;
-  analyticsPaymentsSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<AnalyticsPaymentsSource>;
-  analyticsShipmentsSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<AnalyticsShipmentsSource>;
-  cycleAnalyticsInputSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<CycleAnalyticsInputSource>;
-  cycleAnalyticsResultSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<CycleAnalyticsResultSink>;
-  highValueAnalyticsSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<HighValueAnalyticsSink>;
-  joinedAnalyticsSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<JoinedAnalyticsSink>;
-  orderProcessedEndpointSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
-  ) => Promise<OrderProcessedEndpointSource>;
-  standardAnalyticsSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<StandardAnalyticsSink>;
-  substreamAnalyticsInputSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<SubstreamAnalyticsInputSource>;
-  substreamAnalyticsResultSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<SubstreamAnalyticsResultSink>;
-  joinOrderPaymentAnalytics: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").JoinStreamConfig,
-  ) => Promise<JoinOrderPaymentAnalytics>;
-  keyOrdersForJoin: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KeyByStreamConfig,
-  ) => Promise<KeyOrdersForJoin>;
-  keyPaymentsForJoin: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KeyByStreamConfig,
-  ) => Promise<KeyPaymentsForJoin>;
-  keyOrdersForMultiJoin: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KeyByStreamConfig,
-  ) => Promise<KeyOrdersForMultiJoin>;
-  keyPaymentsForMultiJoin: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KeyByStreamConfig,
-  ) => Promise<KeyPaymentsForMultiJoin>;
-  keyShipmentsForMultiJoin: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KeyByStreamConfig,
-  ) => Promise<KeyShipmentsForMultiJoin>;
-  multiJoinAnalyticsEvents: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MultiJoinStreamConfig,
-  ) => Promise<MultiJoinAnalyticsEvents>;
-  routeAnalyticsResult: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CaseStreamConfig,
-  ) => Promise<RouteAnalyticsResult>;
-  buildSubstreamAnalyticsResult: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => Promise<BuildSubstreamAnalyticsResult>;
-  invokeAnalyticsSubstream: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => Promise<InvokeAnalyticsSubstream>;
-}
+export type ServiceMakers =
+  AnalyticsPipelineMakers
+  & AnalyticsSourcesPipelineMakers
+  & CycleAnalyticsPipelineMakers
+  & JoinAnalyticsPipelineMakers
+  & MultiJoinAnalyticsPipelineMakers
+  & SubstreamAnalyticsPipelineMakers;
 
-export type WorkflowServiceMakers = {
-  countOrderProcessed: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").ProcessStreamConfig,
-  ) => Promise<CountOrderProcessed>;
-  analyticsScheduleSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CronEndpointConfig,
-  ) => Promise<AnalyticsScheduleSource>;
-  advanceCycleAnalytics: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => Promise<AdvanceCycleAnalytics>;
-  completeCycleAnalytics: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").FilterStreamConfig,
-  ) => Promise<CompleteCycleAnalytics>;
-  continueCycleAnalytics: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").FilterStreamConfig,
-  ) => Promise<ContinueCycleAnalytics>;
-  analyticsOrdersSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<AnalyticsOrdersSource>;
-  analyticsPaymentsSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<AnalyticsPaymentsSource>;
-  analyticsShipmentsSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<AnalyticsShipmentsSource>;
-  cycleAnalyticsInputSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<CycleAnalyticsInputSource>;
-  cycleAnalyticsResultSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<CycleAnalyticsResultSink>;
-  highValueAnalyticsSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<HighValueAnalyticsSink>;
-  joinedAnalyticsSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<JoinedAnalyticsSink>;
-  orderProcessedEndpointSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KafkaEndpointConfig,
-  ) => Promise<OrderProcessedEndpointSource>;
-  standardAnalyticsSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<StandardAnalyticsSink>;
-  substreamAnalyticsInputSource: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<SubstreamAnalyticsInputSource>;
-  substreamAnalyticsResultSink: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
-  ) => Promise<SubstreamAnalyticsResultSink>;
-  joinOrderPaymentAnalytics: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").JoinStreamConfig,
-  ) => Promise<JoinOrderPaymentAnalytics>;
-  keyOrdersForJoin: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KeyByStreamConfig,
-  ) => Promise<KeyOrdersForJoin>;
-  keyPaymentsForJoin: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KeyByStreamConfig,
-  ) => Promise<KeyPaymentsForJoin>;
-  keyOrdersForMultiJoin: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KeyByStreamConfig,
-  ) => Promise<KeyOrdersForMultiJoin>;
-  keyPaymentsForMultiJoin: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KeyByStreamConfig,
-  ) => Promise<KeyPaymentsForMultiJoin>;
-  keyShipmentsForMultiJoin: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").KeyByStreamConfig,
-  ) => Promise<KeyShipmentsForMultiJoin>;
-  multiJoinAnalyticsEvents: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MultiJoinStreamConfig,
-  ) => Promise<MultiJoinAnalyticsEvents>;
-  routeAnalyticsResult: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").CaseStreamConfig,
-  ) => Promise<RouteAnalyticsResult>;
-  buildSubstreamAnalyticsResult: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => Promise<BuildSubstreamAnalyticsResult>;
-  invokeAnalyticsSubstream: (
-    context: MessageContext,
-    environment: RuntimeEnvironment,
-    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
-  ) => Promise<InvokeAnalyticsSubstream>;
-};
+export type WorkflowServiceMakers = ServiceMakers;
 
 export function defaultMakers(): ServiceMakers {
   return {
-    countOrderProcessed: makeCountOrderProcessed,
-    analyticsScheduleSource: makeAnalyticsScheduleSource,
-    advanceCycleAnalytics: makeAdvanceCycleAnalytics,
-    completeCycleAnalytics: makeCompleteCycleAnalytics,
-    continueCycleAnalytics: makeContinueCycleAnalytics,
-    analyticsOrdersSource: makeAnalyticsOrdersSource,
-    analyticsPaymentsSource: makeAnalyticsPaymentsSource,
-    analyticsShipmentsSource: makeAnalyticsShipmentsSource,
-    cycleAnalyticsInputSource: makeCycleAnalyticsInputSource,
-    cycleAnalyticsResultSink: makeCycleAnalyticsResultSink,
-    highValueAnalyticsSink: makeHighValueAnalyticsSink,
-    joinedAnalyticsSink: makeJoinedAnalyticsSink,
-    orderProcessedEndpointSource: makeOrderProcessedEndpointSource,
-    standardAnalyticsSink: makeStandardAnalyticsSink,
-    substreamAnalyticsInputSource: makeSubstreamAnalyticsInputSource,
-    substreamAnalyticsResultSink: makeSubstreamAnalyticsResultSink,
-    joinOrderPaymentAnalytics: makeJoinOrderPaymentAnalytics,
-    keyOrdersForJoin: makeKeyOrdersForJoin,
-    keyPaymentsForJoin: makeKeyPaymentsForJoin,
-    keyOrdersForMultiJoin: makeKeyOrdersForMultiJoin,
-    keyPaymentsForMultiJoin: makeKeyPaymentsForMultiJoin,
-    keyShipmentsForMultiJoin: makeKeyShipmentsForMultiJoin,
-    multiJoinAnalyticsEvents: makeMultiJoinAnalyticsEvents,
-    routeAnalyticsResult: makeRouteAnalyticsResult,
-    buildSubstreamAnalyticsResult: makeBuildSubstreamAnalyticsResult,
-    invokeAnalyticsSubstream: makeInvokeAnalyticsSubstream,
+    ...defaultAnalyticsPipelineMakers(),
+    ...defaultAnalyticsSourcesPipelineMakers(),
+    ...defaultCycleAnalyticsPipelineMakers(),
+    ...defaultJoinAnalyticsPipelineMakers(),
+    ...defaultMultiJoinAnalyticsPipelineMakers(),
+    ...defaultSubstreamAnalyticsPipelineMakers(),
   };
 }
 
 export function defaultWorkflowMakers(): WorkflowServiceMakers {
   return {
-    countOrderProcessed: makeCountOrderProcessed,
-    analyticsScheduleSource: makeAnalyticsScheduleSource,
-    advanceCycleAnalytics: makeAdvanceCycleAnalytics,
-    completeCycleAnalytics: makeCompleteCycleAnalytics,
-    continueCycleAnalytics: makeContinueCycleAnalytics,
-    analyticsOrdersSource: makeAnalyticsOrdersSource,
-    analyticsPaymentsSource: makeAnalyticsPaymentsSource,
-    analyticsShipmentsSource: makeAnalyticsShipmentsSource,
-    cycleAnalyticsInputSource: makeCycleAnalyticsInputSource,
-    cycleAnalyticsResultSink: makeCycleAnalyticsResultSink,
-    highValueAnalyticsSink: makeHighValueAnalyticsSink,
-    joinedAnalyticsSink: makeJoinedAnalyticsSink,
-    orderProcessedEndpointSource: makeOrderProcessedEndpointSource,
-    standardAnalyticsSink: makeStandardAnalyticsSink,
-    substreamAnalyticsInputSource: makeSubstreamAnalyticsInputSource,
-    substreamAnalyticsResultSink: makeSubstreamAnalyticsResultSink,
-    joinOrderPaymentAnalytics: makeJoinOrderPaymentAnalytics,
-    keyOrdersForJoin: makeKeyOrdersForJoin,
-    keyPaymentsForJoin: makeKeyPaymentsForJoin,
-    keyOrdersForMultiJoin: makeKeyOrdersForMultiJoin,
-    keyPaymentsForMultiJoin: makeKeyPaymentsForMultiJoin,
-    keyShipmentsForMultiJoin: makeKeyShipmentsForMultiJoin,
-    multiJoinAnalyticsEvents: makeMultiJoinAnalyticsEvents,
-    routeAnalyticsResult: makeRouteAnalyticsResult,
-    buildSubstreamAnalyticsResult: makeBuildSubstreamAnalyticsResult,
-    invokeAnalyticsSubstream: makeInvokeAnalyticsSubstream,
+    ...defaultAnalyticsPipelineMakers(),
+    ...defaultAnalyticsSourcesPipelineMakers(),
+    ...defaultCycleAnalyticsPipelineMakers(),
+    ...defaultJoinAnalyticsPipelineMakers(),
+    ...defaultMultiJoinAnalyticsPipelineMakers(),
+    ...defaultSubstreamAnalyticsPipelineMakers(),
   };
 }
 
-export interface ServiceFunctions {
-  countOrderProcessed: CountOrderProcessed;
-  analyticsScheduleSource: AnalyticsScheduleSource;
-  advanceCycleAnalytics: AdvanceCycleAnalytics;
-  completeCycleAnalytics: CompleteCycleAnalytics;
-  continueCycleAnalytics: ContinueCycleAnalytics;
-  analyticsOrdersSource: AnalyticsOrdersSource;
-  analyticsPaymentsSource: AnalyticsPaymentsSource;
-  analyticsShipmentsSource: AnalyticsShipmentsSource;
-  cycleAnalyticsInputSource: CycleAnalyticsInputSource;
-  cycleAnalyticsResultSink: CycleAnalyticsResultSink;
-  highValueAnalyticsSink: HighValueAnalyticsSink;
-  joinedAnalyticsSink: JoinedAnalyticsSink;
-  orderProcessedEndpointSource: OrderProcessedEndpointSource;
-  standardAnalyticsSink: StandardAnalyticsSink;
-  substreamAnalyticsInputSource: SubstreamAnalyticsInputSource;
-  substreamAnalyticsResultSink: SubstreamAnalyticsResultSink;
-  joinOrderPaymentAnalytics: JoinOrderPaymentAnalytics;
-  keyOrdersForJoin: KeyOrdersForJoin;
-  keyPaymentsForJoin: KeyPaymentsForJoin;
-  keyOrdersForMultiJoin: KeyOrdersForMultiJoin;
-  keyPaymentsForMultiJoin: KeyPaymentsForMultiJoin;
-  keyShipmentsForMultiJoin: KeyShipmentsForMultiJoin;
-  multiJoinAnalyticsEvents: MultiJoinAnalyticsEvents;
-  routeAnalyticsResult: RouteAnalyticsResult;
-  buildSubstreamAnalyticsResult: BuildSubstreamAnalyticsResult;
-  invokeAnalyticsSubstream: InvokeAnalyticsSubstream;
-}
+export type ServiceFunctions =
+  AnalyticsPipelineFunctions
+  & AnalyticsSourcesPipelineFunctions
+  & CycleAnalyticsPipelineFunctions
+  & JoinAnalyticsPipelineFunctions
+  & MultiJoinAnalyticsPipelineFunctions
+  & SubstreamAnalyticsPipelineFunctions;
 
 export async function initFunctions(
   context: MessageContext,
@@ -1067,85 +810,30 @@ export function initStreams(
   config: ConfigSnapshot,
   environment: RuntimeEnvironment,
   functions: ServiceFunctions,
-) {
-  const cycleAnalyticsLink = makeLinkStream<AnalyticsEvent>(config.named.streams.cycleAnalyticsLink, environment);
-  const analyticsSchedule = makeInputStream<string, unknown, Error>(config.named.streams.analyticsSchedule, environment);
-  const consumeOrderProcessed = makeInputStream<OrderProcessed, OrderProcessed, Error>(config.named.streams.consumeOrderProcessed, environment);
-  const countOrderProcessed = makeProcessStream<OrderProcessed, OrderProcessed, Error>(config.named.streams.countOrderProcessed, consumeOrderProcessed, functions.countOrderProcessed);
-  const analyticsOrders = makeInputStream<AnalyticsEvent, unknown, Error>(config.named.streams.analyticsOrders, environment);
-  const analyticsPayments = makeInputStream<AnalyticsEvent, unknown, Error>(config.named.streams.analyticsPayments, environment);
-  const analyticsShipments = makeInputStream<AnalyticsEvent, unknown, Error>(config.named.streams.analyticsShipments, environment);
-  const splitAnalyticsOrders = makeSplitStream<AnalyticsEvent>(config.named.streams.splitAnalyticsOrders, analyticsOrders);
-  const splitAnalyticsPayments = makeSplitStream<AnalyticsEvent>(config.named.streams.splitAnalyticsPayments, analyticsPayments);
-  const cycleAnalyticsInput = makeInputStream<AnalyticsEvent, unknown, Error>(config.named.streams.cycleAnalyticsInput, environment);
-  const mergeCycleAnalytics = makeMergeStream<AnalyticsEvent>(config.named.streams.mergeCycleAnalytics, cycleAnalyticsInput, cycleAnalyticsLink);
-  const advanceCycleAnalytics = makeMapStream<AnalyticsEvent, AnalyticsEvent>(config.named.streams.advanceCycleAnalytics, mergeCycleAnalytics, functions.advanceCycleAnalytics);
-  const splitCycleAnalytics = makeSplitStream<AnalyticsEvent>(config.named.streams.splitCycleAnalytics, advanceCycleAnalytics);
-  const completeCycleAnalytics = makeFilterStream<AnalyticsEvent>(config.named.streams.completeCycleAnalytics, splitCycleAnalytics.addStream(), functions.completeCycleAnalytics);
-  const continueCycleAnalytics = makeFilterStream<AnalyticsEvent>(config.named.streams.continueCycleAnalytics, splitCycleAnalytics.addStream(), functions.continueCycleAnalytics);
-  const writeCycleAnalytics = makeSinkStream<AnalyticsEvent, Error>(config.named.streams.writeCycleAnalytics, completeCycleAnalytics);
-  const keyOrdersForJoin = makeKeyByStream<AnalyticsEvent, string, AnalyticsEvent>(config.named.streams.keyOrdersForJoin, splitAnalyticsOrders.addStream(), functions.keyOrdersForJoin);
-  const keyPaymentsForJoin = makeKeyByStream<AnalyticsEvent, string, AnalyticsEvent>(config.named.streams.keyPaymentsForJoin, splitAnalyticsPayments.addStream(), functions.keyPaymentsForJoin);
-  const joinOrderPaymentAnalytics = makeJoinStream<string, AnalyticsEvent, AnalyticsEvent, AnalyticsResult>(config.named.streams.joinOrderPaymentAnalytics, keyOrdersForJoin, keyPaymentsForJoin, functions.joinOrderPaymentAnalytics);
-  const writeJoinedAnalytics = makeSinkStream<AnalyticsResult, Error>(config.named.streams.writeJoinedAnalytics, joinOrderPaymentAnalytics);
-  const keyOrdersForMultiJoin = makeKeyByStream<AnalyticsEvent, string, AnalyticsEvent>(config.named.streams.keyOrdersForMultiJoin, splitAnalyticsOrders.addStream(), functions.keyOrdersForMultiJoin);
-  const keyPaymentsForMultiJoin = makeKeyByStream<AnalyticsEvent, string, AnalyticsEvent>(config.named.streams.keyPaymentsForMultiJoin, splitAnalyticsPayments.addStream(), functions.keyPaymentsForMultiJoin);
-  const keyShipmentsForMultiJoin = makeKeyByStream<AnalyticsEvent, string, AnalyticsEvent>(config.named.streams.keyShipmentsForMultiJoin, analyticsShipments, functions.keyShipmentsForMultiJoin);
-  const multiJoinAnalyticsEvents = makeMultiJoinStream<string, AnalyticsEvent, AnalyticsResult>(config.named.streams.multiJoinAnalyticsEvents, keyOrdersForMultiJoin, functions.multiJoinAnalyticsEvents);
-  makeMultiJoinLink(multiJoinAnalyticsEvents, keyPaymentsForMultiJoin);
-  makeMultiJoinLink(multiJoinAnalyticsEvents, keyShipmentsForMultiJoin);
-  const routeAnalyticsResult = makeCaseStream<AnalyticsResult>(config.named.streams.routeAnalyticsResult, multiJoinAnalyticsEvents, functions.routeAnalyticsResult);
-  const highValueAnalytics = makeWhenStream<AnalyticsResult, AnalyticsResult>(config.named.streams.highValueAnalytics, routeAnalyticsResult);
-  const standardAnalytics = makeWhenStream<AnalyticsResult, AnalyticsResult>(config.named.streams.standardAnalytics, routeAnalyticsResult);
-  const writeHighValueAnalytics = makeSinkStream<AnalyticsResult, Error>(config.named.streams.writeHighValueAnalytics, highValueAnalytics);
-  const writeStandardAnalytics = makeSinkStream<AnalyticsResult, Error>(config.named.streams.writeStandardAnalytics, standardAnalytics);
-  const analyzeAnalyticsSubstream = makeSubStream<AnalyticsEvent, AnalyticsResult>(config.named.streams.analyzeAnalyticsSubstream, environment);
-  const buildSubstreamAnalyticsResult = makeMapStream<AnalyticsEvent, AnalyticsResult>(config.named.streams.buildSubstreamAnalyticsResult, analyzeAnalyticsSubstream, functions.buildSubstreamAnalyticsResult);
-  const substreamAnalyticsInput = makeInputStream<AnalyticsEvent, unknown, Error>(config.named.streams.substreamAnalyticsInput, environment);
-  const invokeAnalyticsSubstream = makeMapStream<AnalyticsEvent, AnalyticsResult>(config.named.streams.invokeAnalyticsSubstream, substreamAnalyticsInput, functions.invokeAnalyticsSubstream);
-  const writeSubstreamAnalytics = makeSinkStream<AnalyticsResult, Error>(config.named.streams.writeSubstreamAnalytics, invokeAnalyticsSubstream);
-  consumeOrderProcessed.setSource(countOrderProcessed);
-  cycleAnalyticsLink.setSource(continueCycleAnalytics);
-  analyzeAnalyticsSubstream.setSource(buildSubstreamAnalyticsResult);
-  return {
-    cycleAnalyticsLink,
-    analyticsSchedule,
-    consumeOrderProcessed,
-    countOrderProcessed,
-    analyticsOrders,
-    analyticsPayments,
-    analyticsShipments,
-    splitAnalyticsOrders,
-    splitAnalyticsPayments,
-    cycleAnalyticsInput,
-    mergeCycleAnalytics,
-    advanceCycleAnalytics,
-    splitCycleAnalytics,
-    completeCycleAnalytics,
-    continueCycleAnalytics,
-    writeCycleAnalytics,
-    keyOrdersForJoin,
-    keyPaymentsForJoin,
-    joinOrderPaymentAnalytics,
-    writeJoinedAnalytics,
-    keyOrdersForMultiJoin,
-    keyPaymentsForMultiJoin,
-    keyShipmentsForMultiJoin,
-    multiJoinAnalyticsEvents,
-    routeAnalyticsResult,
-    highValueAnalytics,
-    standardAnalytics,
-    writeHighValueAnalytics,
-    writeStandardAnalytics,
-    analyzeAnalyticsSubstream,
-    buildSubstreamAnalyticsResult,
-    substreamAnalyticsInput,
-    invokeAnalyticsSubstream,
-    writeSubstreamAnalytics,
-  };
+): ServiceStreams {
+  const streams = {} as ServiceStreams;
+  initAnalyticsPipelineStreams(config, environment, functions, streams);
+  initAnalyticsSourcesPipelineStreams(config, environment, functions, streams);
+  initCycleAnalyticsPipelineStreams(config, environment, functions, streams);
+  initJoinAnalyticsPipelineStreams(config, environment, functions, streams);
+  initMultiJoinAnalyticsPipelineStreams(config, environment, functions, streams);
+  initSubstreamAnalyticsPipelineStreams(config, environment, functions, streams);
+  postInitAnalyticsPipelineStreams(streams);
+  postInitAnalyticsSourcesPipelineStreams(streams);
+  postInitCycleAnalyticsPipelineStreams(streams);
+  postInitJoinAnalyticsPipelineStreams(streams);
+  postInitMultiJoinAnalyticsPipelineStreams(streams);
+  postInitSubstreamAnalyticsPipelineStreams(streams);
+  return streams;
 }
 
-export type ServiceStreams = ReturnType<typeof initStreams>;
+export type ServiceStreams =
+  AnalyticsPipelineStreams
+  & AnalyticsSourcesPipelineStreams
+  & CycleAnalyticsPipelineStreams
+  & JoinAnalyticsPipelineStreams
+  & MultiJoinAnalyticsPipelineStreams
+  & SubstreamAnalyticsPipelineStreams;
 
 class SubStreamHandle<T, R> implements SubStream<T, R> {
   public target: SubStream<T, R> | undefined;

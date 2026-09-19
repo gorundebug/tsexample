@@ -10,6 +10,7 @@ import {
   type GrpcEndpointConfigDocument,
   type InputStreamConfigDocument,
   type LinkConfigDocument,
+  type MapStreamConfigDocument,
   type MergeStreamConfigDocument,
   type ModuleConfigDocument,
   type PoolConfigDocument,
@@ -34,6 +35,7 @@ interface DefaultConfig {
   };
   readonly streams: {
     readonly "getInventoryItemData": ProcessStreamConfigDocument;
+    readonly "mapInventoryItemError": MapStreamConfigDocument;
     readonly "mergeInventoryResult": MergeStreamConfigDocument;
     readonly "processInventoryItem": InputStreamConfigDocument;
   };
@@ -56,6 +58,7 @@ interface DefaultConfig {
     readonly "orderServiceApi": ModuleConfigDocument;
   };
   readonly types: {
+    readonly "inventoryFailure": TypeConfigDocument;
     readonly "orderItem": TypeConfigDocument;
     readonly "orderItemResult": TypeConfigDocument;
   };
@@ -94,19 +97,36 @@ const DEFAULT_CONFIG = {
       "functionPackage": "inventoryItem",
       "id": 1,
       "idService": 1,
-      "idSource": 3,
+      "idSource": 4,
       "name": "Get Inventory Item Data",
       "pipeline": "inventoryItem",
       "type": 6,
       "xPos": 527,
       "yPos": -562
     },
-    "mergeInventoryResult": {
+    "mapInventoryItemError": {
+      "functionDescription": "When inventory processing fails, return an OUT_OF_STOCK result with no available quantity.\nPreserve the order and item identity and requested quantity, and record the failure.\n",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "GetInventoryItemError",
+      "functionPackage": "inventoryItem",
       "id": 2,
       "idService": 1,
       "idSource": 0,
+      "name": "Map Inventory Item Error",
+      "pipeline": "inventoryItem",
+      "type": 2,
+      "valueType": "OrderItemResult",
+      "xPos": 733,
+      "yPos": -263
+    },
+    "mergeInventoryResult": {
+      "id": 3,
+      "idService": 1,
+      "idSource": 0,
       "idSources": [
-        1
+        1,
+        2
       ],
       "name": "Merge Inventory Result",
       "pipeline": "inventoryItem",
@@ -115,10 +135,10 @@ const DEFAULT_CONFIG = {
       "yPos": 33
     },
     "processInventoryItem": {
-      "id": 3,
+      "id": 4,
       "idEndpoint": 1,
       "idService": 1,
-      "idSource": 2,
+      "idSource": 3,
       "name": "Process Inventory Item",
       "pipeline": "inventoryItem",
       "type": 1,
@@ -160,13 +180,15 @@ const DEFAULT_CONFIG = {
   },
   "links": {
     "getInventoryItemDataToMergeInventoryResult": {
-      "callSemantics": 2,
+      "callSemantics": 5,
       "from": 1,
-      "to": 2
+      "to": 3
     },
     "processInventoryItemToGetInventoryItemData": {
-      "callSemantics": 2,
-      "from": 3,
+      "callSemantics": 4,
+      "from": 4,
+      "poolName": "Inventory Priority Workers",
+      "priority": 10,
       "to": 1
     }
   },
@@ -185,6 +207,12 @@ const DEFAULT_CONFIG = {
     }
   },
   "types": {
+    "inventoryFailure": {
+      "name": "InventoryFailure",
+      "type": "error",
+      "typeDefinition": "Error",
+      "typeImport": "./internal/types/inventory-failure.js"
+    },
     "orderItem": {
       "name": "OrderItem",
       "type": "struct",
