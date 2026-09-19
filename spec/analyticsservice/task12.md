@@ -1,4 +1,4 @@
-# Task 12/22: `JoinedAnalyticsSink`
+# Task 12/26: `JoinedAnalyticsSink`
 
 > Rules: [`spec/rules.md`](../rules.md)
 

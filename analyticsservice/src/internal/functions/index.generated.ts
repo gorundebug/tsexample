@@ -13,6 +13,8 @@ export { HighValueAnalyticsSink, makeHighValueAnalyticsSink } from "./endpoint/h
 export { JoinedAnalyticsSink, makeJoinedAnalyticsSink } from "./endpoint/joined-analytics-sink.js";
 export { OrderProcessedEndpointSource, makeOrderProcessedEndpointSource } from "./endpoint/order-processed-endpoint-source.js";
 export { StandardAnalyticsSink, makeStandardAnalyticsSink } from "./endpoint/standard-analytics-sink.js";
+export { SubstreamAnalyticsInputSource, makeSubstreamAnalyticsInputSource } from "./endpoint/substream-analytics-input-source.js";
+export { SubstreamAnalyticsResultSink, makeSubstreamAnalyticsResultSink } from "./endpoint/substream-analytics-result-sink.js";
 export { JoinOrderPaymentAnalytics, makeJoinOrderPaymentAnalytics } from "./joinanalytics/join-order-payment-analytics.js";
 export { KeyOrdersForJoin, makeKeyOrdersForJoin } from "./joinanalytics/key-orders-for-join.js";
 export { KeyPaymentsForJoin, makeKeyPaymentsForJoin } from "./joinanalytics/key-payments-for-join.js";
@@ -21,3 +23,5 @@ export { KeyPaymentsForMultiJoin, makeKeyPaymentsForMultiJoin } from "./multijoi
 export { KeyShipmentsForMultiJoin, makeKeyShipmentsForMultiJoin } from "./multijoinanalytics/key-shipments-for-multi-join.js";
 export { MultiJoinAnalyticsEvents, makeMultiJoinAnalyticsEvents } from "./multijoinanalytics/multi-join-analytics-events.js";
 export { RouteAnalyticsResult, makeRouteAnalyticsResult } from "./multijoinanalytics/route-analytics-result.js";
+export { BuildSubstreamAnalyticsResult, makeBuildSubstreamAnalyticsResult } from "./substreamanalytics/build-substream-analytics-result.js";
+export { InvokeAnalyticsSubstream, makeInvokeAnalyticsSubstream } from "./substreamanalytics/invoke-analytics-substream.js";

@@ -1,31 +1,33 @@
-# Task 21/22: `MultiJoinAnalyticsEvents`
+# Task 21/26: `KeyPaymentsForMultiJoin`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `multiJoin` |
-| File | `analyticsservice/src/internal/functions/multi-join-analytics-events.ts` |
-| Test | `analyticsservice/test/functions/multi-join-analytics-events.test.ts` |
+| Kind | `keyBy` |
+| File | `analyticsservice/src/internal/functions/key-payments-for-multi-join.ts` |
+| Test | `analyticsservice/test/functions/key-payments-for-multi-join.test.ts` |
 | Service | `Analytics Service` |
 
 
 ## Behaviour
 
-Combine matching order, payment, and shipment analytics events.
+Key the payment analytics event for the multi-way join.
 
 
 
 
 ## Stream types
-- Output: `AnalyticsResult` — `analyticsservice/src/internal/types/analytics-result.ts`
+- Input: `AnalyticsEvent` — `analyticsservice/src/internal/types/analytics-event.ts`
+- Output: `AnalyticsEvent` — `analyticsservice/src/internal/types/analytics-event.ts`
 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `analyticsservice/src/internal/functions/multi-join-analytics-events.ts` and preserve its generated contract
-- [ ] Inspect output type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
-- [ ] Implement meaningful assertions in `analyticsservice/test/functions/multi-join-analytics-events.test.ts`
+- [ ] Open `analyticsservice/src/internal/functions/key-payments-for-multi-join.ts` and preserve its generated contract
+- [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
+- [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
+- [ ] Implement meaningful assertions in `analyticsservice/test/functions/key-payments-for-multi-join.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task21.md — MultiJoinAnalyticsEvents — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task21.md — KeyPaymentsForMultiJoin — TypeScript — done`

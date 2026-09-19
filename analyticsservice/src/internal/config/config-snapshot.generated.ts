@@ -40,6 +40,8 @@ import {
   type SinkStreamConfig,
   requireSplitStreamConfig,
   type SplitStreamConfig,
+  requireSubStreamConfig,
+  type SubStreamConfig,
   type TypeConfig,
   requireWhenStreamConfig,
   type WhenStreamConfig,
@@ -55,6 +57,8 @@ export const StreamIds = {
   ANALYTICS_PAYMENTS: 5,
   ANALYTICS_SCHEDULE: 1,
   ANALYTICS_SHIPMENTS: 6,
+  ANALYZE_ANALYTICS_SUBSTREAM: 30,
+  BUILD_SUBSTREAM_ANALYTICS_RESULT: 31,
   COMPLETE_CYCLE_ANALYTICS: 10,
   CONSUME_ORDER_PROCESSED: 2,
   CONTINUE_CYCLE_ANALYTICS: 11,
@@ -62,6 +66,7 @@ export const StreamIds = {
   CYCLE_ANALYTICS_INPUT: 12,
   CYCLE_ANALYTICS_LINK: 13,
   HIGH_VALUE_ANALYTICS: 21,
+  INVOKE_ANALYTICS_SUBSTREAM: 32,
   JOIN_ORDER_PAYMENT_ANALYTICS: 17,
   KEY_ORDERS_FOR_JOIN: 18,
   KEY_ORDERS_FOR_MULTI_JOIN: 22,
@@ -75,10 +80,12 @@ export const StreamIds = {
   SPLIT_ANALYTICS_PAYMENTS: 8,
   SPLIT_CYCLE_ANALYTICS: 15,
   STANDARD_ANALYTICS: 27,
+  SUBSTREAM_ANALYTICS_INPUT: 33,
   WRITE_CYCLE_ANALYTICS: 16,
   WRITE_HIGH_VALUE_ANALYTICS: 28,
   WRITE_JOINED_ANALYTICS: 20,
   WRITE_STANDARD_ANALYTICS: 29,
+  WRITE_SUBSTREAM_ANALYTICS: 34,
 } as const;
 
 export const DataConnectorIds = {
@@ -90,14 +97,16 @@ export const DataConnectorIds = {
 export const EndpointIds = {
   ANALYTICS_ORDERS: 1,
   ANALYTICS_PAYMENTS: 2,
-  ANALYTICS_SCHEDULE: 9,
+  ANALYTICS_SCHEDULE: 11,
   ANALYTICS_SHIPMENTS: 3,
   CYCLE_ANALYTICS_INPUT: 4,
   CYCLE_ANALYTICS_RESULT: 5,
   HIGH_VALUE_ANALYTICS: 6,
   JOINED_ANALYTICS: 7,
-  ORDER_PROCESSED: 10,
+  ORDER_PROCESSED: 12,
   STANDARD_ANALYTICS: 8,
+  SUBSTREAM_ANALYTICS_INPUT: 9,
+  SUBSTREAM_ANALYTICS_RESULT: 10,
 } as const;
 
 export interface NamedConfig {
@@ -110,6 +119,8 @@ export interface NamedConfig {
     readonly analyticsPayments: InputStreamConfig;
     readonly analyticsSchedule: InputStreamConfig;
     readonly analyticsShipments: InputStreamConfig;
+    readonly analyzeAnalyticsSubstream: SubStreamConfig;
+    readonly buildSubstreamAnalyticsResult: MapStreamConfig;
     readonly completeCycleAnalytics: FilterStreamConfig;
     readonly consumeOrderProcessed: InputStreamConfig;
     readonly continueCycleAnalytics: FilterStreamConfig;
@@ -117,6 +128,7 @@ export interface NamedConfig {
     readonly cycleAnalyticsInput: InputStreamConfig;
     readonly cycleAnalyticsLink: CycleLinkStreamConfig;
     readonly highValueAnalytics: WhenStreamConfig;
+    readonly invokeAnalyticsSubstream: MapStreamConfig;
     readonly joinOrderPaymentAnalytics: JoinStreamConfig;
     readonly keyOrdersForJoin: KeyByStreamConfig;
     readonly keyOrdersForMultiJoin: KeyByStreamConfig;
@@ -130,10 +142,12 @@ export interface NamedConfig {
     readonly splitAnalyticsPayments: SplitStreamConfig;
     readonly splitCycleAnalytics: SplitStreamConfig;
     readonly standardAnalytics: WhenStreamConfig;
+    readonly substreamAnalyticsInput: InputStreamConfig;
     readonly writeCycleAnalytics: SinkStreamConfig;
     readonly writeHighValueAnalytics: SinkStreamConfig;
     readonly writeJoinedAnalytics: SinkStreamConfig;
     readonly writeStandardAnalytics: SinkStreamConfig;
+    readonly writeSubstreamAnalytics: SinkStreamConfig;
   };
   readonly dataConnectors: {
     readonly analyticsFunctions: CustomDataConnectorConfig;
@@ -151,6 +165,8 @@ export interface NamedConfig {
     readonly joinedAnalytics: CustomEndpointConfig;
     readonly orderProcessed: KafkaEndpointConfig;
     readonly standardAnalytics: CustomEndpointConfig;
+    readonly substreamAnalyticsInput: CustomEndpointConfig;
+    readonly substreamAnalyticsResult: CustomEndpointConfig;
   };
   readonly pools: {
   };
@@ -184,6 +200,8 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       analyticsPayments: requireInputStreamConfig(runtime.streamById(StreamIds.ANALYTICS_PAYMENTS)),
       analyticsSchedule: requireInputStreamConfig(runtime.streamById(StreamIds.ANALYTICS_SCHEDULE)),
       analyticsShipments: requireInputStreamConfig(runtime.streamById(StreamIds.ANALYTICS_SHIPMENTS)),
+      analyzeAnalyticsSubstream: requireSubStreamConfig(runtime.streamById(StreamIds.ANALYZE_ANALYTICS_SUBSTREAM)),
+      buildSubstreamAnalyticsResult: requireMapStreamConfig(runtime.streamById(StreamIds.BUILD_SUBSTREAM_ANALYTICS_RESULT)),
       completeCycleAnalytics: requireFilterStreamConfig(runtime.streamById(StreamIds.COMPLETE_CYCLE_ANALYTICS)),
       consumeOrderProcessed: requireInputStreamConfig(runtime.streamById(StreamIds.CONSUME_ORDER_PROCESSED)),
       continueCycleAnalytics: requireFilterStreamConfig(runtime.streamById(StreamIds.CONTINUE_CYCLE_ANALYTICS)),
@@ -191,6 +209,7 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       cycleAnalyticsInput: requireInputStreamConfig(runtime.streamById(StreamIds.CYCLE_ANALYTICS_INPUT)),
       cycleAnalyticsLink: requireCycleLinkStreamConfig(runtime.streamById(StreamIds.CYCLE_ANALYTICS_LINK)),
       highValueAnalytics: requireWhenStreamConfig(runtime.streamById(StreamIds.HIGH_VALUE_ANALYTICS)),
+      invokeAnalyticsSubstream: requireMapStreamConfig(runtime.streamById(StreamIds.INVOKE_ANALYTICS_SUBSTREAM)),
       joinOrderPaymentAnalytics: requireJoinStreamConfig(runtime.streamById(StreamIds.JOIN_ORDER_PAYMENT_ANALYTICS)),
       keyOrdersForJoin: requireKeyByStreamConfig(runtime.streamById(StreamIds.KEY_ORDERS_FOR_JOIN)),
       keyOrdersForMultiJoin: requireKeyByStreamConfig(runtime.streamById(StreamIds.KEY_ORDERS_FOR_MULTI_JOIN)),
@@ -204,10 +223,12 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       splitAnalyticsPayments: requireSplitStreamConfig(runtime.streamById(StreamIds.SPLIT_ANALYTICS_PAYMENTS)),
       splitCycleAnalytics: requireSplitStreamConfig(runtime.streamById(StreamIds.SPLIT_CYCLE_ANALYTICS)),
       standardAnalytics: requireWhenStreamConfig(runtime.streamById(StreamIds.STANDARD_ANALYTICS)),
+      substreamAnalyticsInput: requireInputStreamConfig(runtime.streamById(StreamIds.SUBSTREAM_ANALYTICS_INPUT)),
       writeCycleAnalytics: requireSinkStreamConfig(runtime.streamById(StreamIds.WRITE_CYCLE_ANALYTICS)),
       writeHighValueAnalytics: requireSinkStreamConfig(runtime.streamById(StreamIds.WRITE_HIGH_VALUE_ANALYTICS)),
       writeJoinedAnalytics: requireSinkStreamConfig(runtime.streamById(StreamIds.WRITE_JOINED_ANALYTICS)),
       writeStandardAnalytics: requireSinkStreamConfig(runtime.streamById(StreamIds.WRITE_STANDARD_ANALYTICS)),
+      writeSubstreamAnalytics: requireSinkStreamConfig(runtime.streamById(StreamIds.WRITE_SUBSTREAM_ANALYTICS)),
     },
     dataConnectors: {
       analyticsFunctions: requireCustomDataConnectorConfig(runtime.dataConnectorById(DataConnectorIds.ANALYTICS_FUNCTIONS)),
@@ -225,6 +246,8 @@ function namedConfig(runtime: RuntimeConfig): NamedConfig {
       joinedAnalytics: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.JOINED_ANALYTICS)),
       orderProcessed: requireKafkaEndpointConfig(runtime.endpointById(EndpointIds.ORDER_PROCESSED)),
       standardAnalytics: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.STANDARD_ANALYTICS)),
+      substreamAnalyticsInput: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.SUBSTREAM_ANALYTICS_INPUT)),
+      substreamAnalyticsResult: requireCustomEndpointConfig(runtime.endpointById(EndpointIds.SUBSTREAM_ANALYTICS_RESULT)),
     },
     pools: {
     },

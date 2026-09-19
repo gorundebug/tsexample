@@ -1,4 +1,4 @@
-# Task 19/22: `KeyPaymentsForMultiJoin`
+# Task 19/26: `KeyPaymentsForJoin`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
@@ -6,14 +6,14 @@
 |-------|-------|
 | Language | `TypeScript` |
 | Kind | `keyBy` |
-| File | `analyticsservice/src/internal/functions/key-payments-for-multi-join.ts` |
-| Test | `analyticsservice/test/functions/key-payments-for-multi-join.test.ts` |
+| File | `analyticsservice/src/internal/functions/key-payments-for-join.ts` |
+| Test | `analyticsservice/test/functions/key-payments-for-join.test.ts` |
 | Service | `Analytics Service` |
 
 
 ## Behaviour
 
-Key the payment analytics event for the multi-way join.
+Key the payment analytics event by correlation key.
 
 
 
@@ -25,9 +25,9 @@ Key the payment analytics event for the multi-way join.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `analyticsservice/src/internal/functions/key-payments-for-multi-join.ts` and preserve its generated contract
+- [ ] Open `analyticsservice/src/internal/functions/key-payments-for-join.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
-- [ ] Implement meaningful assertions in `analyticsservice/test/functions/key-payments-for-multi-join.test.ts`
+- [ ] Implement meaningful assertions in `analyticsservice/test/functions/key-payments-for-join.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task19.md — KeyPaymentsForMultiJoin — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task19.md — KeyPaymentsForJoin — TypeScript — done`

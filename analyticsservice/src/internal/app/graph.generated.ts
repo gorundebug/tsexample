@@ -3,6 +3,7 @@
 import {
   JsonSerde, MessageContext, SerdeRegistry, SerdeType,
   type RuntimeEnvironment,
+  type SubStream, type SubStreamCollector,
   boolSerdeType, bytesSerdeType, errorSerdeType,
   float32SerdeType, float64SerdeType,
   int8SerdeType, int16SerdeType, int32SerdeType, int64SerdeType, intSerdeType,
@@ -16,6 +17,7 @@ import {
   makeLinkStream, makeMapStream, makeMergeStream, makeMultiJoinLink,
   makeMultiJoinStream, makeProcessStream, makeSinkStream,
   makeSinkStreamWithResult, makeSplitStream, makeWhenStream,
+  makeSubStream,
 } from "@gorundebug/tsservicelib/operators";
 import type { AnalyticsEvent, AnalyticsKey, AnalyticsResult } from "../types/index.generated.js";
 import type { AutomationJob, OrderProcessed } from "@gorundebug/model";
@@ -38,6 +40,8 @@ import {
   JoinedAnalyticsSink, makeJoinedAnalyticsSink,
   OrderProcessedEndpointSource, makeOrderProcessedEndpointSource,
   StandardAnalyticsSink, makeStandardAnalyticsSink,
+  SubstreamAnalyticsInputSource, makeSubstreamAnalyticsInputSource,
+  SubstreamAnalyticsResultSink, makeSubstreamAnalyticsResultSink,
   JoinOrderPaymentAnalytics, makeJoinOrderPaymentAnalytics,
   KeyOrdersForJoin, makeKeyOrdersForJoin,
   KeyPaymentsForJoin, makeKeyPaymentsForJoin,
@@ -46,6 +50,8 @@ import {
   KeyShipmentsForMultiJoin, makeKeyShipmentsForMultiJoin,
   MultiJoinAnalyticsEvents, makeMultiJoinAnalyticsEvents,
   RouteAnalyticsResult, makeRouteAnalyticsResult,
+  BuildSubstreamAnalyticsResult, makeBuildSubstreamAnalyticsResult,
+  InvokeAnalyticsSubstream, makeInvokeAnalyticsSubstream,
 } from "../functions/index.generated.js";
 
 function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {
@@ -106,6 +112,14 @@ export function registerGeneratedSerdes(registry: SerdeRegistry): void {
   registry.registerStreamErrorType(StreamIds.WRITE_HIGH_VALUE_ANALYTICS, errorSerdeType);
   registry.registerStreamValueType(StreamIds.WRITE_STANDARD_ANALYTICS, serdeTypes.analyticsResult);
   registry.registerStreamErrorType(StreamIds.WRITE_STANDARD_ANALYTICS, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.ANALYZE_ANALYTICS_SUBSTREAM, serdeTypes.analyticsEvent);
+  registry.registerStreamErrorType(StreamIds.ANALYZE_ANALYTICS_SUBSTREAM, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.BUILD_SUBSTREAM_ANALYTICS_RESULT, serdeTypes.analyticsResult);
+  registry.registerStreamValueType(StreamIds.SUBSTREAM_ANALYTICS_INPUT, serdeTypes.analyticsEvent);
+  registry.registerStreamErrorType(StreamIds.SUBSTREAM_ANALYTICS_INPUT, errorSerdeType);
+  registry.registerStreamValueType(StreamIds.INVOKE_ANALYTICS_SUBSTREAM, serdeTypes.analyticsResult);
+  registry.registerStreamValueType(StreamIds.WRITE_SUBSTREAM_ANALYTICS, serdeTypes.analyticsResult);
+  registry.registerStreamErrorType(StreamIds.WRITE_SUBSTREAM_ANALYTICS, errorSerdeType);
 }
 
 export interface ServiceMakers {
@@ -179,6 +193,16 @@ export interface ServiceMakers {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
   ) => Promise<StandardAnalyticsSink>;
+  substreamAnalyticsInputSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
+  ) => Promise<SubstreamAnalyticsInputSource>;
+  substreamAnalyticsResultSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
+  ) => Promise<SubstreamAnalyticsResultSink>;
   joinOrderPaymentAnalytics: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -219,6 +243,16 @@ export interface ServiceMakers {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CaseStreamConfig,
   ) => Promise<RouteAnalyticsResult>;
+  buildSubstreamAnalyticsResult: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => Promise<BuildSubstreamAnalyticsResult>;
+  invokeAnalyticsSubstream: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => Promise<InvokeAnalyticsSubstream>;
 }
 
 export type WorkflowServiceMakers = {
@@ -292,6 +326,16 @@ export type WorkflowServiceMakers = {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
   ) => Promise<StandardAnalyticsSink>;
+  substreamAnalyticsInputSource: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
+  ) => Promise<SubstreamAnalyticsInputSource>;
+  substreamAnalyticsResultSink: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").CustomEndpointConfig,
+  ) => Promise<SubstreamAnalyticsResultSink>;
   joinOrderPaymentAnalytics: (
     context: MessageContext,
     environment: RuntimeEnvironment,
@@ -332,6 +376,16 @@ export type WorkflowServiceMakers = {
     environment: RuntimeEnvironment,
     config: import("@gorundebug/tsservicelib/runtime/graph").CaseStreamConfig,
   ) => Promise<RouteAnalyticsResult>;
+  buildSubstreamAnalyticsResult: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => Promise<BuildSubstreamAnalyticsResult>;
+  invokeAnalyticsSubstream: (
+    context: MessageContext,
+    environment: RuntimeEnvironment,
+    config: import("@gorundebug/tsservicelib/runtime/graph").MapStreamConfig,
+  ) => Promise<InvokeAnalyticsSubstream>;
 };
 
 export function defaultMakers(): ServiceMakers {
@@ -350,6 +404,8 @@ export function defaultMakers(): ServiceMakers {
     joinedAnalyticsSink: makeJoinedAnalyticsSink,
     orderProcessedEndpointSource: makeOrderProcessedEndpointSource,
     standardAnalyticsSink: makeStandardAnalyticsSink,
+    substreamAnalyticsInputSource: makeSubstreamAnalyticsInputSource,
+    substreamAnalyticsResultSink: makeSubstreamAnalyticsResultSink,
     joinOrderPaymentAnalytics: makeJoinOrderPaymentAnalytics,
     keyOrdersForJoin: makeKeyOrdersForJoin,
     keyPaymentsForJoin: makeKeyPaymentsForJoin,
@@ -358,6 +414,8 @@ export function defaultMakers(): ServiceMakers {
     keyShipmentsForMultiJoin: makeKeyShipmentsForMultiJoin,
     multiJoinAnalyticsEvents: makeMultiJoinAnalyticsEvents,
     routeAnalyticsResult: makeRouteAnalyticsResult,
+    buildSubstreamAnalyticsResult: makeBuildSubstreamAnalyticsResult,
+    invokeAnalyticsSubstream: makeInvokeAnalyticsSubstream,
   };
 }
 
@@ -377,6 +435,8 @@ export function defaultWorkflowMakers(): WorkflowServiceMakers {
     joinedAnalyticsSink: makeJoinedAnalyticsSink,
     orderProcessedEndpointSource: makeOrderProcessedEndpointSource,
     standardAnalyticsSink: makeStandardAnalyticsSink,
+    substreamAnalyticsInputSource: makeSubstreamAnalyticsInputSource,
+    substreamAnalyticsResultSink: makeSubstreamAnalyticsResultSink,
     joinOrderPaymentAnalytics: makeJoinOrderPaymentAnalytics,
     keyOrdersForJoin: makeKeyOrdersForJoin,
     keyPaymentsForJoin: makeKeyPaymentsForJoin,
@@ -385,6 +445,8 @@ export function defaultWorkflowMakers(): WorkflowServiceMakers {
     keyShipmentsForMultiJoin: makeKeyShipmentsForMultiJoin,
     multiJoinAnalyticsEvents: makeMultiJoinAnalyticsEvents,
     routeAnalyticsResult: makeRouteAnalyticsResult,
+    buildSubstreamAnalyticsResult: makeBuildSubstreamAnalyticsResult,
+    invokeAnalyticsSubstream: makeInvokeAnalyticsSubstream,
   };
 }
 
@@ -403,6 +465,8 @@ export interface ServiceFunctions {
   joinedAnalyticsSink: JoinedAnalyticsSink;
   orderProcessedEndpointSource: OrderProcessedEndpointSource;
   standardAnalyticsSink: StandardAnalyticsSink;
+  substreamAnalyticsInputSource: SubstreamAnalyticsInputSource;
+  substreamAnalyticsResultSink: SubstreamAnalyticsResultSink;
   joinOrderPaymentAnalytics: JoinOrderPaymentAnalytics;
   keyOrdersForJoin: KeyOrdersForJoin;
   keyPaymentsForJoin: KeyPaymentsForJoin;
@@ -411,6 +475,8 @@ export interface ServiceFunctions {
   keyShipmentsForMultiJoin: KeyShipmentsForMultiJoin;
   multiJoinAnalyticsEvents: MultiJoinAnalyticsEvents;
   routeAnalyticsResult: RouteAnalyticsResult;
+  buildSubstreamAnalyticsResult: BuildSubstreamAnalyticsResult;
+  invokeAnalyticsSubstream: InvokeAnalyticsSubstream;
 }
 
 export async function initFunctions(
@@ -433,6 +499,8 @@ export async function initFunctions(
   let joinedAnalyticsSink: JoinedAnalyticsSink;
   let orderProcessedEndpointSource: OrderProcessedEndpointSource;
   let standardAnalyticsSink: StandardAnalyticsSink;
+  let substreamAnalyticsInputSource: SubstreamAnalyticsInputSource;
+  let substreamAnalyticsResultSink: SubstreamAnalyticsResultSink;
   let joinOrderPaymentAnalytics: JoinOrderPaymentAnalytics;
   let keyOrdersForJoin: KeyOrdersForJoin;
   let keyPaymentsForJoin: KeyPaymentsForJoin;
@@ -441,6 +509,8 @@ export async function initFunctions(
   let keyShipmentsForMultiJoin: KeyShipmentsForMultiJoin;
   let multiJoinAnalyticsEvents: MultiJoinAnalyticsEvents;
   let routeAnalyticsResult: RouteAnalyticsResult;
+  let buildSubstreamAnalyticsResult: BuildSubstreamAnalyticsResult;
+  let invokeAnalyticsSubstream: InvokeAnalyticsSubstream;
   {
     const controller = new AbortController();
     const makerContext = context.withExternalCancellation(controller.signal);
@@ -501,6 +571,12 @@ export async function initFunctions(
       invokeMaker(() => makers.standardAnalyticsSink(
         makerContext, environment, config.named.endpoints.standardAnalytics,
       )),
+      invokeMaker(() => makers.substreamAnalyticsInputSource(
+        makerContext, environment, config.named.endpoints.substreamAnalyticsInput,
+      )),
+      invokeMaker(() => makers.substreamAnalyticsResultSink(
+        makerContext, environment, config.named.endpoints.substreamAnalyticsResult,
+      )),
       invokeMaker(() => makers.joinOrderPaymentAnalytics(
         makerContext, environment, config.named.streams.joinOrderPaymentAnalytics,
       )),
@@ -524,6 +600,12 @@ export async function initFunctions(
       )),
       invokeMaker(() => makers.routeAnalyticsResult(
         makerContext, environment, config.named.streams.routeAnalyticsResult,
+      )),
+      invokeMaker(() => makers.buildSubstreamAnalyticsResult(
+        makerContext, environment, config.named.streams.buildSubstreamAnalyticsResult,
+      )),
+      invokeMaker(() => makers.invokeAnalyticsSubstream(
+        makerContext, environment, config.named.streams.invokeAnalyticsSubstream,
       )),
     ] as const);
     controller.abort();
@@ -598,46 +680,66 @@ export async function initFunctions(
       throw standardAnalyticsSinkResult0.reason;
     }
     standardAnalyticsSink = standardAnalyticsSinkResult0.value;
-    const joinOrderPaymentAnalyticsResult0 = group[14];
+    const substreamAnalyticsInputSourceResult0 = group[14];
+    if (substreamAnalyticsInputSourceResult0.status !== "fulfilled") {
+      throw substreamAnalyticsInputSourceResult0.reason;
+    }
+    substreamAnalyticsInputSource = substreamAnalyticsInputSourceResult0.value;
+    const substreamAnalyticsResultSinkResult0 = group[15];
+    if (substreamAnalyticsResultSinkResult0.status !== "fulfilled") {
+      throw substreamAnalyticsResultSinkResult0.reason;
+    }
+    substreamAnalyticsResultSink = substreamAnalyticsResultSinkResult0.value;
+    const joinOrderPaymentAnalyticsResult0 = group[16];
     if (joinOrderPaymentAnalyticsResult0.status !== "fulfilled") {
       throw joinOrderPaymentAnalyticsResult0.reason;
     }
     joinOrderPaymentAnalytics = joinOrderPaymentAnalyticsResult0.value;
-    const keyOrdersForJoinResult0 = group[15];
+    const keyOrdersForJoinResult0 = group[17];
     if (keyOrdersForJoinResult0.status !== "fulfilled") {
       throw keyOrdersForJoinResult0.reason;
     }
     keyOrdersForJoin = keyOrdersForJoinResult0.value;
-    const keyPaymentsForJoinResult0 = group[16];
+    const keyPaymentsForJoinResult0 = group[18];
     if (keyPaymentsForJoinResult0.status !== "fulfilled") {
       throw keyPaymentsForJoinResult0.reason;
     }
     keyPaymentsForJoin = keyPaymentsForJoinResult0.value;
-    const keyOrdersForMultiJoinResult0 = group[17];
+    const keyOrdersForMultiJoinResult0 = group[19];
     if (keyOrdersForMultiJoinResult0.status !== "fulfilled") {
       throw keyOrdersForMultiJoinResult0.reason;
     }
     keyOrdersForMultiJoin = keyOrdersForMultiJoinResult0.value;
-    const keyPaymentsForMultiJoinResult0 = group[18];
+    const keyPaymentsForMultiJoinResult0 = group[20];
     if (keyPaymentsForMultiJoinResult0.status !== "fulfilled") {
       throw keyPaymentsForMultiJoinResult0.reason;
     }
     keyPaymentsForMultiJoin = keyPaymentsForMultiJoinResult0.value;
-    const keyShipmentsForMultiJoinResult0 = group[19];
+    const keyShipmentsForMultiJoinResult0 = group[21];
     if (keyShipmentsForMultiJoinResult0.status !== "fulfilled") {
       throw keyShipmentsForMultiJoinResult0.reason;
     }
     keyShipmentsForMultiJoin = keyShipmentsForMultiJoinResult0.value;
-    const multiJoinAnalyticsEventsResult0 = group[20];
+    const multiJoinAnalyticsEventsResult0 = group[22];
     if (multiJoinAnalyticsEventsResult0.status !== "fulfilled") {
       throw multiJoinAnalyticsEventsResult0.reason;
     }
     multiJoinAnalyticsEvents = multiJoinAnalyticsEventsResult0.value;
-    const routeAnalyticsResultResult0 = group[21];
+    const routeAnalyticsResultResult0 = group[23];
     if (routeAnalyticsResultResult0.status !== "fulfilled") {
       throw routeAnalyticsResultResult0.reason;
     }
     routeAnalyticsResult = routeAnalyticsResultResult0.value;
+    const buildSubstreamAnalyticsResultResult0 = group[24];
+    if (buildSubstreamAnalyticsResultResult0.status !== "fulfilled") {
+      throw buildSubstreamAnalyticsResultResult0.reason;
+    }
+    buildSubstreamAnalyticsResult = buildSubstreamAnalyticsResultResult0.value;
+    const invokeAnalyticsSubstreamResult0 = group[25];
+    if (invokeAnalyticsSubstreamResult0.status !== "fulfilled") {
+      throw invokeAnalyticsSubstreamResult0.reason;
+    }
+    invokeAnalyticsSubstream = invokeAnalyticsSubstreamResult0.value;
   }
   return {
     countOrderProcessed,
@@ -654,6 +756,8 @@ export async function initFunctions(
     joinedAnalyticsSink,
     orderProcessedEndpointSource,
     standardAnalyticsSink,
+    substreamAnalyticsInputSource,
+    substreamAnalyticsResultSink,
     joinOrderPaymentAnalytics,
     keyOrdersForJoin,
     keyPaymentsForJoin,
@@ -662,6 +766,8 @@ export async function initFunctions(
     keyShipmentsForMultiJoin,
     multiJoinAnalyticsEvents,
     routeAnalyticsResult,
+    buildSubstreamAnalyticsResult,
+    invokeAnalyticsSubstream,
   };
 }
 
@@ -685,6 +791,8 @@ export async function initFunctionsParallel(
   let joinedAnalyticsSink: JoinedAnalyticsSink;
   let orderProcessedEndpointSource: OrderProcessedEndpointSource;
   let standardAnalyticsSink: StandardAnalyticsSink;
+  let substreamAnalyticsInputSource: SubstreamAnalyticsInputSource;
+  let substreamAnalyticsResultSink: SubstreamAnalyticsResultSink;
   let joinOrderPaymentAnalytics: JoinOrderPaymentAnalytics;
   let keyOrdersForJoin: KeyOrdersForJoin;
   let keyPaymentsForJoin: KeyPaymentsForJoin;
@@ -693,6 +801,8 @@ export async function initFunctionsParallel(
   let keyShipmentsForMultiJoin: KeyShipmentsForMultiJoin;
   let multiJoinAnalyticsEvents: MultiJoinAnalyticsEvents;
   let routeAnalyticsResult: RouteAnalyticsResult;
+  let buildSubstreamAnalyticsResult: BuildSubstreamAnalyticsResult;
+  let invokeAnalyticsSubstream: InvokeAnalyticsSubstream;
   {
     const controller = new AbortController();
     const makerContext = context.withExternalCancellation(controller.signal);
@@ -753,6 +863,12 @@ export async function initFunctionsParallel(
       invokeMaker(() => makers.standardAnalyticsSink(
         makerContext, environment, config.named.endpoints.standardAnalytics,
       )),
+      invokeMaker(() => makers.substreamAnalyticsInputSource(
+        makerContext, environment, config.named.endpoints.substreamAnalyticsInput,
+      )),
+      invokeMaker(() => makers.substreamAnalyticsResultSink(
+        makerContext, environment, config.named.endpoints.substreamAnalyticsResult,
+      )),
       invokeMaker(() => makers.joinOrderPaymentAnalytics(
         makerContext, environment, config.named.streams.joinOrderPaymentAnalytics,
       )),
@@ -776,6 +892,12 @@ export async function initFunctionsParallel(
       )),
       invokeMaker(() => makers.routeAnalyticsResult(
         makerContext, environment, config.named.streams.routeAnalyticsResult,
+      )),
+      invokeMaker(() => makers.buildSubstreamAnalyticsResult(
+        makerContext, environment, config.named.streams.buildSubstreamAnalyticsResult,
+      )),
+      invokeMaker(() => makers.invokeAnalyticsSubstream(
+        makerContext, environment, config.named.streams.invokeAnalyticsSubstream,
       )),
     ] as const);
     controller.abort();
@@ -850,46 +972,66 @@ export async function initFunctionsParallel(
       throw standardAnalyticsSinkResult0.reason;
     }
     standardAnalyticsSink = standardAnalyticsSinkResult0.value;
-    const joinOrderPaymentAnalyticsResult0 = group[14];
+    const substreamAnalyticsInputSourceResult0 = group[14];
+    if (substreamAnalyticsInputSourceResult0.status !== "fulfilled") {
+      throw substreamAnalyticsInputSourceResult0.reason;
+    }
+    substreamAnalyticsInputSource = substreamAnalyticsInputSourceResult0.value;
+    const substreamAnalyticsResultSinkResult0 = group[15];
+    if (substreamAnalyticsResultSinkResult0.status !== "fulfilled") {
+      throw substreamAnalyticsResultSinkResult0.reason;
+    }
+    substreamAnalyticsResultSink = substreamAnalyticsResultSinkResult0.value;
+    const joinOrderPaymentAnalyticsResult0 = group[16];
     if (joinOrderPaymentAnalyticsResult0.status !== "fulfilled") {
       throw joinOrderPaymentAnalyticsResult0.reason;
     }
     joinOrderPaymentAnalytics = joinOrderPaymentAnalyticsResult0.value;
-    const keyOrdersForJoinResult0 = group[15];
+    const keyOrdersForJoinResult0 = group[17];
     if (keyOrdersForJoinResult0.status !== "fulfilled") {
       throw keyOrdersForJoinResult0.reason;
     }
     keyOrdersForJoin = keyOrdersForJoinResult0.value;
-    const keyPaymentsForJoinResult0 = group[16];
+    const keyPaymentsForJoinResult0 = group[18];
     if (keyPaymentsForJoinResult0.status !== "fulfilled") {
       throw keyPaymentsForJoinResult0.reason;
     }
     keyPaymentsForJoin = keyPaymentsForJoinResult0.value;
-    const keyOrdersForMultiJoinResult0 = group[17];
+    const keyOrdersForMultiJoinResult0 = group[19];
     if (keyOrdersForMultiJoinResult0.status !== "fulfilled") {
       throw keyOrdersForMultiJoinResult0.reason;
     }
     keyOrdersForMultiJoin = keyOrdersForMultiJoinResult0.value;
-    const keyPaymentsForMultiJoinResult0 = group[18];
+    const keyPaymentsForMultiJoinResult0 = group[20];
     if (keyPaymentsForMultiJoinResult0.status !== "fulfilled") {
       throw keyPaymentsForMultiJoinResult0.reason;
     }
     keyPaymentsForMultiJoin = keyPaymentsForMultiJoinResult0.value;
-    const keyShipmentsForMultiJoinResult0 = group[19];
+    const keyShipmentsForMultiJoinResult0 = group[21];
     if (keyShipmentsForMultiJoinResult0.status !== "fulfilled") {
       throw keyShipmentsForMultiJoinResult0.reason;
     }
     keyShipmentsForMultiJoin = keyShipmentsForMultiJoinResult0.value;
-    const multiJoinAnalyticsEventsResult0 = group[20];
+    const multiJoinAnalyticsEventsResult0 = group[22];
     if (multiJoinAnalyticsEventsResult0.status !== "fulfilled") {
       throw multiJoinAnalyticsEventsResult0.reason;
     }
     multiJoinAnalyticsEvents = multiJoinAnalyticsEventsResult0.value;
-    const routeAnalyticsResultResult0 = group[21];
+    const routeAnalyticsResultResult0 = group[23];
     if (routeAnalyticsResultResult0.status !== "fulfilled") {
       throw routeAnalyticsResultResult0.reason;
     }
     routeAnalyticsResult = routeAnalyticsResultResult0.value;
+    const buildSubstreamAnalyticsResultResult0 = group[24];
+    if (buildSubstreamAnalyticsResultResult0.status !== "fulfilled") {
+      throw buildSubstreamAnalyticsResultResult0.reason;
+    }
+    buildSubstreamAnalyticsResult = buildSubstreamAnalyticsResultResult0.value;
+    const invokeAnalyticsSubstreamResult0 = group[25];
+    if (invokeAnalyticsSubstreamResult0.status !== "fulfilled") {
+      throw invokeAnalyticsSubstreamResult0.reason;
+    }
+    invokeAnalyticsSubstream = invokeAnalyticsSubstreamResult0.value;
   }
   return {
     countOrderProcessed,
@@ -906,6 +1048,8 @@ export async function initFunctionsParallel(
     joinedAnalyticsSink,
     orderProcessedEndpointSource,
     standardAnalyticsSink,
+    substreamAnalyticsInputSource,
+    substreamAnalyticsResultSink,
     joinOrderPaymentAnalytics,
     keyOrdersForJoin,
     keyPaymentsForJoin,
@@ -914,6 +1058,8 @@ export async function initFunctionsParallel(
     keyShipmentsForMultiJoin,
     multiJoinAnalyticsEvents,
     routeAnalyticsResult,
+    buildSubstreamAnalyticsResult,
+    invokeAnalyticsSubstream,
   };
 }
 
@@ -953,8 +1099,14 @@ export function initStreams(
   const standardAnalytics = makeWhenStream<AnalyticsResult, AnalyticsResult>(config.named.streams.standardAnalytics, routeAnalyticsResult);
   const writeHighValueAnalytics = makeSinkStream<AnalyticsResult, Error>(config.named.streams.writeHighValueAnalytics, highValueAnalytics);
   const writeStandardAnalytics = makeSinkStream<AnalyticsResult, Error>(config.named.streams.writeStandardAnalytics, standardAnalytics);
+  const analyzeAnalyticsSubstream = makeSubStream<AnalyticsEvent, AnalyticsResult>(config.named.streams.analyzeAnalyticsSubstream, environment);
+  const buildSubstreamAnalyticsResult = makeMapStream<AnalyticsEvent, AnalyticsResult>(config.named.streams.buildSubstreamAnalyticsResult, analyzeAnalyticsSubstream, functions.buildSubstreamAnalyticsResult);
+  const substreamAnalyticsInput = makeInputStream<AnalyticsEvent, unknown, Error>(config.named.streams.substreamAnalyticsInput, environment);
+  const invokeAnalyticsSubstream = makeMapStream<AnalyticsEvent, AnalyticsResult>(config.named.streams.invokeAnalyticsSubstream, substreamAnalyticsInput, functions.invokeAnalyticsSubstream);
+  const writeSubstreamAnalytics = makeSinkStream<AnalyticsResult, Error>(config.named.streams.writeSubstreamAnalytics, invokeAnalyticsSubstream);
   consumeOrderProcessed.setSource(countOrderProcessed);
   cycleAnalyticsLink.setSource(continueCycleAnalytics);
+  analyzeAnalyticsSubstream.setSource(buildSubstreamAnalyticsResult);
   return {
     cycleAnalyticsLink,
     analyticsSchedule,
@@ -985,7 +1137,36 @@ export function initStreams(
     standardAnalytics,
     writeHighValueAnalytics,
     writeStandardAnalytics,
+    analyzeAnalyticsSubstream,
+    buildSubstreamAnalyticsResult,
+    substreamAnalyticsInput,
+    invokeAnalyticsSubstream,
+    writeSubstreamAnalytics,
   };
 }
 
 export type ServiceStreams = ReturnType<typeof initStreams>;
+
+class SubStreamHandle<T, R> implements SubStream<T, R> {
+  public target: SubStream<T, R> | undefined;
+
+  public consume(context: MessageContext, value: T, collector: SubStreamCollector<R>): Promise<void> {
+    if (this.target === undefined) {
+      return Promise.reject(new Error("SubStream graph is not initialized"));
+    }
+    return this.target.consume(context, value, collector);
+  }
+}
+
+/** Stable typed accessors are available before business-function makers run. */
+export class ServiceSubStreams {
+  readonly #analyzeAnalyticsSubstream = new SubStreamHandle<AnalyticsEvent, AnalyticsResult>();
+
+  public getAnalyzeAnalyticsSubstreamSubStream(): SubStream<AnalyticsEvent, AnalyticsResult> {
+    return this.#analyzeAnalyticsSubstream;
+  }
+
+  public bindSubStreams(streams: ServiceStreams): void {
+    this.#analyzeAnalyticsSubstream.target = streams.analyzeAnalyticsSubstream;
+  }
+}

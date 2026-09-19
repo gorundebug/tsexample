@@ -1,31 +1,33 @@
-# Task 15/22: `JoinOrderPaymentAnalytics`
+# Task 15/26: `SubstreamAnalyticsInputSource`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
-| Kind | `join` |
-| File | `analyticsservice/src/internal/functions/join-order-payment-analytics.ts` |
-| Test | `analyticsservice/test/functions/join-order-payment-analytics.test.ts` |
+| Kind | `custom-source` |
+| File | `analyticsservice/src/internal/functions/substream-analytics-input-source.ts` |
+| Test | `analyticsservice/test/functions/substream-analytics-input-source.test.ts` |
 | Service | `Analytics Service` |
 
 
 ## Behaviour
 
-Join matching order and payment analytics events and emit their combined total.
+Produce one deterministic analytics event that invokes the service-local SubStream example.
 
 
 
 
 ## Stream types
-- Output: `AnalyticsResult` — `analyticsservice/src/internal/types/analytics-result.ts`
+- Input: `AnalyticsEvent` — `analyticsservice/src/internal/types/analytics-event.ts`
+- Output: `AnalyticsEvent` — `analyticsservice/src/internal/types/analytics-event.ts`
 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `analyticsservice/src/internal/functions/join-order-payment-analytics.ts` and preserve its generated contract
-- [ ] Inspect output type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
-- [ ] Implement meaningful assertions in `analyticsservice/test/functions/join-order-payment-analytics.test.ts`
+- [ ] Open `analyticsservice/src/internal/functions/substream-analytics-input-source.ts` and preserve its generated contract
+- [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
+- [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
+- [ ] Implement meaningful assertions in `analyticsservice/test/functions/substream-analytics-input-source.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task15.md — JoinOrderPaymentAnalytics — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task15.md — SubstreamAnalyticsInputSource — TypeScript — done`

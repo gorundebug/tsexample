@@ -14,6 +14,7 @@ import { Config } from "../config/config.js";
 import { DataConnectorIds, ServiceIds } from "../config/config.generated.js";
 import {
   defaultMakers, initFunctionsParallel, initStreams, registerGeneratedSerdes,
+  ServiceSubStreams,
   type ServiceFunctions, type ServiceMakers, type ServiceStreams,
 } from "./graph.generated.js";
 
@@ -94,6 +95,8 @@ function initDataConnectors(
   const writeJoinedAnalytics = makeCustomSinkEndpointConsumer(streams.writeJoinedAnalytics, functions.joinedAnalyticsSink);
   const writeHighValueAnalytics = makeCustomSinkEndpointConsumer(streams.writeHighValueAnalytics, functions.highValueAnalyticsSink);
   const writeStandardAnalytics = makeCustomSinkEndpointConsumer(streams.writeStandardAnalytics, functions.standardAnalyticsSink);
+  const substreamAnalyticsInput = makeCustomSourceEndpointConsumer(streams.substreamAnalyticsInput, functions.substreamAnalyticsInputSource, functions.substreamAnalyticsInputSource);
+  const writeSubstreamAnalytics = makeCustomSinkEndpointConsumer(streams.writeSubstreamAnalytics, functions.substreamAnalyticsResultSink);
   return {
     dataConnectors: {
       analyticsSchedule,
@@ -106,6 +109,8 @@ function initDataConnectors(
       writeJoinedAnalytics,
       writeHighValueAnalytics,
       writeStandardAnalytics,
+      substreamAnalyticsInput,
+      writeSubstreamAnalytics,
     },
     handlers: {
     },
@@ -115,7 +120,7 @@ function initDataConnectors(
 export type ServiceDataConnectors = ReturnType<typeof initDataConnectors>["dataConnectors"];
 export type ServiceHandlers = ReturnType<typeof initDataConnectors>["handlers"];
 
-export abstract class ServiceGenerated {
+export abstract class ServiceGenerated extends ServiceSubStreams {
   protected readonly makers: ServiceMakers = defaultMakers();
   protected readonly infrastructureMakers: ServiceInfrastructureMakers =
     defaultInfrastructureMakers();
@@ -165,6 +170,7 @@ export abstract class ServiceGenerated {
     await this.customFunctionsInit(messageContext);
     initRuntimeConnectors(environment);
     this.streams = initStreams(config, environment, this.functions);
+    this.bindSubStreams(this.streams);
     const bindings = initDataConnectors(this.streams, this.functions, this.clients);
     this.dataConnectors = bindings.dataConnectors;
     this.handlers = bindings.handlers;

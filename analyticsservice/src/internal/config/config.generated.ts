@@ -26,6 +26,7 @@ import {
   type ServiceConfigDocument,
   type SinkStreamConfigDocument,
   type SplitStreamConfigDocument,
+  type SubStreamConfigDocument,
   type TypeConfigDocument,
   type WhenStreamConfigDocument,
 } from "@gorundebug/tsservicelib/runtime/config";
@@ -50,6 +51,8 @@ interface DefaultConfig {
     readonly "analyticsPayments": InputStreamConfigDocument;
     readonly "analyticsSchedule": InputStreamConfigDocument;
     readonly "analyticsShipments": InputStreamConfigDocument;
+    readonly "analyzeAnalyticsSubstream": SubStreamConfigDocument;
+    readonly "buildSubstreamAnalyticsResult": MapStreamConfigDocument;
     readonly "completeCycleAnalytics": FilterStreamConfigDocument;
     readonly "consumeOrderProcessed": InputStreamConfigDocument;
     readonly "continueCycleAnalytics": FilterStreamConfigDocument;
@@ -57,6 +60,7 @@ interface DefaultConfig {
     readonly "cycleAnalyticsInput": InputStreamConfigDocument;
     readonly "cycleAnalyticsLink": CycleLinkStreamConfigDocument;
     readonly "highValueAnalytics": WhenStreamConfigDocument;
+    readonly "invokeAnalyticsSubstream": MapStreamConfigDocument;
     readonly "joinOrderPaymentAnalytics": JoinStreamConfigDocument;
     readonly "keyOrdersForJoin": KeyByStreamConfigDocument;
     readonly "keyOrdersForMultiJoin": KeyByStreamConfigDocument;
@@ -70,10 +74,12 @@ interface DefaultConfig {
     readonly "splitAnalyticsPayments": SplitStreamConfigDocument;
     readonly "splitCycleAnalytics": SplitStreamConfigDocument;
     readonly "standardAnalytics": WhenStreamConfigDocument;
+    readonly "substreamAnalyticsInput": InputStreamConfigDocument;
     readonly "writeCycleAnalytics": SinkStreamConfigDocument;
     readonly "writeHighValueAnalytics": SinkStreamConfigDocument;
     readonly "writeJoinedAnalytics": SinkStreamConfigDocument;
     readonly "writeStandardAnalytics": SinkStreamConfigDocument;
+    readonly "writeSubstreamAnalytics": SinkStreamConfigDocument;
   };
   readonly dataConnectors: {
     readonly "analyticsFunctions": CustomDataConnectorConfigDocument;
@@ -91,6 +97,8 @@ interface DefaultConfig {
     readonly "joinedAnalytics": CustomEndpointConfigDocument;
     readonly "orderProcessed": KafkaEndpointConfigDocument;
     readonly "standardAnalytics": CustomEndpointConfigDocument;
+    readonly "substreamAnalyticsInput": CustomEndpointConfigDocument;
+    readonly "substreamAnalyticsResult": CustomEndpointConfigDocument;
   };
   readonly pools: {
   };
@@ -177,7 +185,7 @@ const DEFAULT_CONFIG = {
     },
     "analyticsSchedule": {
       "id": 1,
-      "idEndpoint": 9,
+      "idEndpoint": 11,
       "idService": 1,
       "idSource": 0,
       "name": "Analytics Schedule",
@@ -199,6 +207,33 @@ const DEFAULT_CONFIG = {
       "xPos": 12,
       "yPos": -1308
     },
+    "analyzeAnalyticsSubstream": {
+      "id": 30,
+      "idService": 1,
+      "idSource": 31,
+      "name": "Analyze Analytics Substream",
+      "pipeline": "substreamAnalytics",
+      "type": 18,
+      "valueType": "AnalyticsEvent",
+      "xPos": -1740,
+      "yPos": -2860
+    },
+    "buildSubstreamAnalyticsResult": {
+      "functionDescription": "Transform one callable SubStream input into its analytics result.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "BuildSubstreamAnalyticsResult",
+      "functionPackage": "substreamanalytics",
+      "id": 31,
+      "idService": 1,
+      "idSource": 30,
+      "name": "Build Substream Analytics Result",
+      "pipeline": "substreamAnalytics",
+      "type": 2,
+      "valueType": "AnalyticsResult",
+      "xPos": -1110,
+      "yPos": -2860
+    },
     "completeCycleAnalytics": {
       "functionDescription": "Keep the terminal analytics event once its cycle counter reaches three.",
       "functionInitializerGroup": "",
@@ -216,7 +251,7 @@ const DEFAULT_CONFIG = {
     },
     "consumeOrderProcessed": {
       "id": 2,
-      "idEndpoint": 10,
+      "idEndpoint": 12,
       "idService": 1,
       "idSource": 3,
       "name": "Consume Order Processed",
@@ -288,6 +323,22 @@ const DEFAULT_CONFIG = {
       "valueType": "AnalyticsResult",
       "xPos": 398,
       "yPos": -1650
+    },
+    "invokeAnalyticsSubstream": {
+      "functionDescription": "Invoke the service-local analytics SubStream and emit its returned result.",
+      "functionInitializerGroup": "",
+      "functionModule": "",
+      "functionName": "InvokeAnalyticsSubstream",
+      "functionPackage": "substreamanalytics",
+      "id": 32,
+      "idService": 1,
+      "idSource": 33,
+      "name": "Invoke Analytics Substream",
+      "pipeline": "substreamAnalytics",
+      "type": 2,
+      "valueType": "AnalyticsResult",
+      "xPos": -1740,
+      "yPos": -2530
     },
     "joinOrderPaymentAnalytics": {
       "functionDescription": "Join matching order and payment analytics events and emit their combined total.",
@@ -490,6 +541,18 @@ const DEFAULT_CONFIG = {
       "xPos": 463,
       "yPos": -1449
     },
+    "substreamAnalyticsInput": {
+      "id": 33,
+      "idEndpoint": 9,
+      "idService": 1,
+      "idSource": 0,
+      "name": "Substream Analytics Input",
+      "pipeline": "substreamAnalytics",
+      "type": 1,
+      "valueType": "AnalyticsEvent",
+      "xPos": -2362,
+      "yPos": -2530
+    },
     "writeCycleAnalytics": {
       "id": 16,
       "idEndpoint": 5,
@@ -537,6 +600,18 @@ const DEFAULT_CONFIG = {
       "valueType": "AnalyticsResult",
       "xPos": 966,
       "yPos": -1453
+    },
+    "writeSubstreamAnalytics": {
+      "id": 34,
+      "idEndpoint": 10,
+      "idService": 1,
+      "idSource": 32,
+      "name": "Write Substream Analytics",
+      "pipeline": "substreamAnalytics",
+      "type": 13,
+      "valueType": "AnalyticsResult",
+      "xPos": -1110,
+      "yPos": -2530
     }
   },
   "dataConnectors": {
@@ -593,7 +668,7 @@ const DEFAULT_CONFIG = {
       "functionInitializerGroup": "",
       "functionName": "AnalyticsSchedule",
       "functionPackage": "cron",
-      "id": 9,
+      "id": 11,
       "idDataConnector": 2,
       "missedRunPolicy": "FireOnce",
       "name": "Analytics Schedule",
@@ -661,7 +736,7 @@ const DEFAULT_CONFIG = {
       "functionInitializerGroup": "",
       "functionName": "OrderProcessedEndpoint",
       "functionPackage": "endpoint",
-      "id": 10,
+      "id": 12,
       "idDataConnector": 3,
       "name": "Order Processed",
       "partitions": 1,
@@ -677,6 +752,26 @@ const DEFAULT_CONFIG = {
       "id": 8,
       "idDataConnector": 1,
       "name": "Standard Analytics",
+      "publicFunction": false
+    },
+    "substreamAnalyticsInput": {
+      "functionDescription": "Produce one deterministic analytics event that invokes the service-local SubStream example.",
+      "functionInitializerGroup": "",
+      "functionName": "SubstreamAnalyticsInput",
+      "functionPackage": "endpoint",
+      "id": 9,
+      "idDataConnector": 1,
+      "name": "Substream Analytics Input",
+      "publicFunction": false
+    },
+    "substreamAnalyticsResult": {
+      "functionDescription": "Validate and record the result returned by the service-local SubStream example.",
+      "functionInitializerGroup": "",
+      "functionName": "SubstreamAnalyticsResult",
+      "functionPackage": "endpoint",
+      "id": 10,
+      "idDataConnector": 1,
+      "name": "Substream Analytics Result",
       "publicFunction": false
     }
   },

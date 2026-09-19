@@ -1,4 +1,4 @@
-# Task 20/22: `KeyShipmentsForMultiJoin`
+# Task 20/26: `KeyOrdersForMultiJoin`
 
 > Rules: [`spec/rules.md`](../rules.md)
 
@@ -6,14 +6,14 @@
 |-------|-------|
 | Language | `TypeScript` |
 | Kind | `keyBy` |
-| File | `analyticsservice/src/internal/functions/key-shipments-for-multi-join.ts` |
-| Test | `analyticsservice/test/functions/key-shipments-for-multi-join.test.ts` |
+| File | `analyticsservice/src/internal/functions/key-orders-for-multi-join.ts` |
+| Test | `analyticsservice/test/functions/key-orders-for-multi-join.test.ts` |
 | Service | `Analytics Service` |
 
 
 ## Behaviour
 
-Key the shipment analytics event for the multi-way join.
+Key the order analytics event for the multi-way join.
 
 
 
@@ -25,9 +25,9 @@ Key the shipment analytics event for the multi-way join.
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
-- [ ] Open `analyticsservice/src/internal/functions/key-shipments-for-multi-join.ts` and preserve its generated contract
+- [ ] Open `analyticsservice/src/internal/functions/key-orders-for-multi-join.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
-- [ ] Implement meaningful assertions in `analyticsservice/test/functions/key-shipments-for-multi-join.test.ts`
+- [ ] Implement meaningful assertions in `analyticsservice/test/functions/key-orders-for-multi-join.test.ts`
 - [ ] Re-read this checklist
-- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task20.md — KeyShipmentsForMultiJoin — TypeScript — done`
+- [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task20.md — KeyOrdersForMultiJoin — TypeScript — done`
