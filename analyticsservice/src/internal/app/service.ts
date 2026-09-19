@@ -8,7 +8,6 @@ import { environmentFlagEnabled } from "@gorundebug/tsservicelib/runtime";
 import { opentelemetry } from "@gorundebug/tsservicelib/runtime/telemetry";
 
 import { ServiceGenerated } from "./service.generated.js";
-import { InvokeAnalyticsSubstream } from "#internal/functions/substreamanalytics/invoke-analytics-substream.js";
 
 /** User-owned lifecycle and dependency customization for Analytics Service. */
 export class Service extends ServiceGenerated {
@@ -18,8 +17,6 @@ export class Service extends ServiceGenerated {
    */
   protected override customMakersInit(context: MessageContext): void | Promise<void> {
     void context;
-    const substream = this.getAnalyzeAnalyticsSubstreamSubStream();
-    this.makers.invokeAnalyticsSubstream = async () => new InvokeAnalyticsSubstream(substream);
   }
 
   /** Called after every function is constructed and before the graph is wired. */
