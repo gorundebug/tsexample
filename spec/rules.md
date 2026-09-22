@@ -14,8 +14,14 @@ user-owned extension points.
   transport contracts in order to make an implementation easier.
 - Change `.proto`/OpenAPI source and regenerate; never patch generated bindings.
 - Preserve the message/stream context received from the framework.
-- Do not keep mutable per-request state in function objects: function instances
-  are created once and may process requests concurrently.
+- Each business function has one instance per service shared by all referencing
+  streams, including streams in different pipelines. Its maker receives only
+  context and environment, never a stream or stream configuration.
+- Operator configuration, metrics and tracing remain local to each stream.
+  Endpoint-handler makers also receive only context and environment.
+  Only infrastructure makers retain their typed configuration.
+- Do not keep mutable per-request state in function objects: shared instances
+  may process requests concurrently.
 - Finish one task at a time and immediately copy its completion line to
   `spec/progress.md`.
 

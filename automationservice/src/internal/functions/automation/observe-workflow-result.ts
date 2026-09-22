@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  MapStreamConfig
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type { MapFunction } from "@gorundebug/tsservicelib/transformation";
 
 /** Preserve the result returned through the on-demand Workflow endpoint. */
@@ -24,11 +18,10 @@ export class ObserveWorkflowResult implements MapFunction<string, string> {
 /** Construct ObserveWorkflowResult once while the service graph is initialized. */
 export async function makeObserveWorkflowResult(
   context: MessageContext,
-  environment: RuntimeEnvironment,
-  config: MapStreamConfig
+  environment: RuntimeEnvironment
 ): Promise<ObserveWorkflowResult> {
   void context;
   void environment;
-  void config;
+
   return new ObserveWorkflowResult();
 }

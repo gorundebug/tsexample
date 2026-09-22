@@ -77,6 +77,8 @@ persistence:
 
 env:
   ORDER_EVENTS_BROKERS: "redpanda:9093"
+  ORDER_SERVICE_GRPC_HOST: "0.0.0.0"
+  ORDER_SERVICE_HTTP_HOST: "0.0.0.0"
   NODE_DIAGNOSTIC_DIR: "/tmp/node-diagnostics"
 
 args:

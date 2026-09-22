@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  JoinStreamConfig,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   JoinFunction,
 } from "@gorundebug/tsservicelib/transformation";
@@ -25,8 +19,7 @@ export class JoinOrderPaymentAnalytics implements JoinFunction<string, Analytics
 export async function makeJoinOrderPaymentAnalytics(
   context: MessageContext,
   environment: RuntimeEnvironment,
-  config: JoinStreamConfig,
 ): Promise<JoinOrderPaymentAnalytics> {
-  void context; void environment; void config;
+  void context; void environment;
   return new JoinOrderPaymentAnalytics();
 }

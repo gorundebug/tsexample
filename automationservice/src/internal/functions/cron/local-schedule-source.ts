@@ -1,13 +1,6 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  CronEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  Collector,
-  ScheduleEndpointFunction,
-  ScheduleTrigger
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { MessageContext, RuntimeEnvironment, Collector, ScheduleEndpointFunction, ScheduleTrigger } from "@gorundebug/tsservicelib/runtime/graph";
 
 export type LocalScheduleSourceHandlerState = undefined;
 
@@ -25,8 +18,7 @@ export class LocalScheduleSource implements ScheduleEndpointFunction<string> {
 /** Construct LocalScheduleSource once while the service graph is initialized. */
 export async function makeLocalScheduleSource(
   _context: MessageContext,
-  _environment: RuntimeEnvironment,
-  _config: CronEndpointConfig
+  _environment: RuntimeEnvironment
 ): Promise<LocalScheduleSource> {
   return new LocalScheduleSource();
 }

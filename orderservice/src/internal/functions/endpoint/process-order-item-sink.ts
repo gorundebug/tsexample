@@ -1,12 +1,6 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  Completion,
-  GrpcEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  SinkStreamContext,
-} from "@gorundebug/tsservicelib/runtime";
+import type { Completion, MessageContext, RuntimeEnvironment, SinkStreamContext } from "@gorundebug/tsservicelib/runtime";
 import type {
   EndpointHandler as GrpcSinkEndpointHandler,
   ResultContext as GrpcSinkResultContext,
@@ -14,11 +8,10 @@ import type {
 } from "@gorundebug/tsservicelib/datasink/grpc";
 import type { OrderState } from "#internal/types/index.generated.js";
 import type { OrderItem, OrderItemResult } from "@gorundebug/model";
-import {
-  ProcessOrderItemRequestSchema,
-  type ProcessOrderItemRequest,
-  type ProcessOrderItemResponse,
-} from "@gorundebug/inventory-service-api";
+import { InventoryServiceApiProcessOrderItemMessages as inventoryMessages } from "@gorundebug/inventory-service-api";
+type ProcessOrderItemRequest = inventoryMessages.ProcessOrderItemRequest;
+type ProcessOrderItemResponse = inventoryMessages.ProcessOrderItemResponse;
+const { ProcessOrderItemRequestSchema } = inventoryMessages;
 import { create } from "@bufbuild/protobuf";
 
 export interface ProcessOrderItemSinkHandlerState {
@@ -88,7 +81,6 @@ export class ProcessOrderItemSink implements GrpcSinkEndpointHandler<ProcessOrde
 export async function makeProcessOrderItemSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: GrpcEndpointConfig,
 ): Promise<ProcessOrderItemSink> {
   return new ProcessOrderItemSink();
 }

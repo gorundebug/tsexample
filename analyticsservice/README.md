@@ -50,3 +50,29 @@ Use `make debug` to start the development image with the Node inspector on
 report or `SIGUSR2` for a heap snapshot; artifacts are written below
 `.artifacts/node-diagnostics` in development and `/tmp/node-diagnostics` in the
 minimal runtime image.
+
+## Generated service structure
+
+Runtime ownership follows responsibilities, not pipeline boundaries:
+
+| File | Responsibility |
+| --- | --- |
+| `streams.generated.ts` | All streams, global topological initialization, final connections |
+| `makers.generated.ts` | Shared business-function makers, safe to import in workflows |
+| `functions.generated.ts` | One instance per business function and ordered initializer groups |
+| `infrastructure-makers.generated.ts` | Configured infrastructure construction |
+| `endpoints.generated.ts` | Endpoint adapters and handlers |
+| `clients.generated.ts`, `servers.generated.ts` | Client and server instances |
+| `connectors.generated.ts` | Data connectors and Temporal worker registration |
+| `substreams.generated.ts` | Stable typed SubStream accessors |
+| `serde.generated.ts` | Serialization registration |
+| `service.generated.ts` | Service lifecycle coordination |
+| `graph.generated.ts` | Compatible, workflow-safe exports only |
+
+Every initializer group starts all of its functions concurrently, even when
+streams using them belong to different pipelines. The next group starts only
+after all peers settle successfully. A shared function is constructed once per
+service graph; each Temporal workflow creates its own makers, functions and
+streams. Cross-pipeline links follow the same global dependency order as links
+inside a pipeline. User-owned business implementations and custom hooks remain
+separate and survive regeneration.

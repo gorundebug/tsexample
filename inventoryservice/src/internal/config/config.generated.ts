@@ -112,7 +112,7 @@ const DEFAULT_CONFIG = {
       "functionPackage": "inventoryItem",
       "id": 2,
       "idService": 1,
-      "idSource": 0,
+      "idSource": -1,
       "name": "Map Inventory Item Error",
       "pipeline": "inventoryItem",
       "type": 2,

@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  MultiJoinStreamConfig,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   MultiJoinFunction,
 } from "@gorundebug/tsservicelib/transformation";
@@ -28,8 +22,7 @@ export class MultiJoinAnalyticsEvents implements MultiJoinFunction<string, Analy
 export async function makeMultiJoinAnalyticsEvents(
   context: MessageContext,
   environment: RuntimeEnvironment,
-  config: MultiJoinStreamConfig,
 ): Promise<MultiJoinAnalyticsEvents> {
-  void context; void environment; void config;
+  void context; void environment;
   return new MultiJoinAnalyticsEvents();
 }

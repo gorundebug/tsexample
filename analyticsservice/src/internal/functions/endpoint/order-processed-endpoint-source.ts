@@ -1,11 +1,6 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  KafkaEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  StreamContext,
-} from "@gorundebug/tsservicelib/runtime";
+import type { MessageContext, RuntimeEnvironment, StreamContext } from "@gorundebug/tsservicelib/runtime";
 import type {
   ConsumerMessage,
   EndpointHandler as KafkaSourceEndpointHandler,
@@ -90,7 +85,6 @@ function requiredDate(value: Record<string, unknown>, name: string): Date {
 export async function makeOrderProcessedEndpointSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: KafkaEndpointConfig,
 ): Promise<OrderProcessedEndpointSource> {
   return new OrderProcessedEndpointSource();
 }

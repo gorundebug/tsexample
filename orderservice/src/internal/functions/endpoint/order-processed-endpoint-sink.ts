@@ -1,11 +1,6 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  KafkaEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-} from "@gorundebug/tsservicelib/runtime";
+import type { MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime";
 import type {
   EndpointHandler as KafkaSinkEndpointHandler,
   SinkMessage,
@@ -44,7 +39,6 @@ export class OrderProcessedEndpointSink implements KafkaSinkEndpointHandler<Orde
 export async function makeOrderProcessedEndpointSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: KafkaEndpointConfig,
 ): Promise<OrderProcessedEndpointSink> {
   return new OrderProcessedEndpointSink();
 }

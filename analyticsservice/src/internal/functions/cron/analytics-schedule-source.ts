@@ -1,13 +1,6 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  CronEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  Collector,
-  ScheduleEndpointFunction,
-  ScheduleTrigger,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { MessageContext, RuntimeEnvironment, Collector, ScheduleEndpointFunction, ScheduleTrigger } from "@gorundebug/tsservicelib/runtime/graph";
 
 export type AnalyticsScheduleSourceHandlerState = undefined;
 
@@ -26,7 +19,6 @@ export class AnalyticsScheduleSource implements ScheduleEndpointFunction<string>
 export async function makeAnalyticsScheduleSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: CronEndpointConfig,
 ): Promise<AnalyticsScheduleSource> {
   return new AnalyticsScheduleSource();
 }

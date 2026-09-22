@@ -4,7 +4,9 @@ import test from "node:test";
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 
-import type { ProcessOrderRequest, ProcessOrderResponse } from "@gorundebug/order-service-api";
+import type { http } from "@gorundebug/order-service-api";
+type ProcessOrderRequest = http.orderServiceApi.ProcessOrderRequest;
+type ProcessOrderResponse = http.orderServiceApi.ProcessOrderResponse;
 import { MessageContext } from "@gorundebug/tsservicelib/runtime";
 import type {
   HandlerData,

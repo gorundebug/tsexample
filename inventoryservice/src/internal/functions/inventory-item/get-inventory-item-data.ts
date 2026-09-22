@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  ProcessStreamConfig,
-} from "@gorundebug/tsservicelib/runtime";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime";
 import type {
   ProcessFunction,
 } from "@gorundebug/tsservicelib/transformation";
@@ -62,7 +56,6 @@ export class GetInventoryItemData implements ProcessFunction<OrderItem, OrderIte
 export async function makeGetInventoryItemData(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: ProcessStreamConfig,
 ): Promise<GetInventoryItemData> {
   return new GetInventoryItemData();
 }

@@ -1,12 +1,6 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  CustomEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  Collector,
-  Stream,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { MessageContext, RuntimeEnvironment, Collector, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   EndpointHandler as CustomSinkEndpointHandler,
 } from "@gorundebug/tsservicelib/datasink/localsink";
@@ -35,7 +29,6 @@ export class HighValueAnalyticsSink implements CustomSinkEndpointHandler<HighVal
 export async function makeHighValueAnalyticsSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: CustomEndpointConfig,
 ): Promise<HighValueAnalyticsSink> {
   return new HighValueAnalyticsSink();
 }

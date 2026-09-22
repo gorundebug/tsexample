@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  MapStreamConfig,
-} from "@gorundebug/tsservicelib/runtime";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime";
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
@@ -36,7 +30,6 @@ export class MapToOrderProcessed implements MapFunction<OrderState, OrderProcess
 export async function makeMapToOrderProcessed(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: MapStreamConfig,
 ): Promise<MapToOrderProcessed> {
   return new MapToOrderProcessed();
 }

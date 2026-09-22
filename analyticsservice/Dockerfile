@@ -24,6 +24,9 @@ COPY dependency-download-node-preload.generated.cjs /usr/local/lib/dependency-do
 COPY prepare-local-build.generated.sh /usr/local/bin/prepare-local-build
 SHELL ["/usr/local/bin/servicegen-download-env", "/bin/sh", "-c"]
 ENV NODE_OPTIONS=--require=/usr/local/lib/dependency-download-node-preload.generated.cjs
+RUN apt-get -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 -o Acquire::Retries=2 update \
+    && apt-get -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 -o Acquire::Retries=2 install --yes --no-install-recommends make curl ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 RUN corepack enable \
     && corepack prepare pnpm@11.18.0 --activate \
     && corepack pnpm config set registry "${NPM_CONFIG_REGISTRY}"
@@ -96,6 +99,7 @@ NODE
 RUN --mount=type=cache,id=servicegen-typescript-pnpm-11.18.0-${TARGETARCH},target=/pnpm/store,sharing=locked \
     corepack pnpm config set store-dir /pnpm/store \
     && corepack pnpm install --no-frozen-lockfile \
+    && make -C modules/model_ts generate SKIP_INSTALL=1 TOOLS_DIR=/usr/local/bin \
     && corepack pnpm --filter @gorundebug/tsservicelib run build \
     && corepack pnpm --recursive --filter './modules/**' run build
 

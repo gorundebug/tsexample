@@ -1,11 +1,6 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  TemporalEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  StreamContext,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { MessageContext, RuntimeEnvironment, StreamContext } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   TemporalEndpointHandler,
 } from "@gorundebug/tsservicelib/datasource/temporal";
@@ -29,7 +24,6 @@ export class ActivityJobEndpointSource implements TemporalEndpointHandler<Activi
 export async function makeActivityJobEndpointSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: TemporalEndpointConfig,
 ): Promise<ActivityJobEndpointSource> {
   return new ActivityJobEndpointSource();
 }

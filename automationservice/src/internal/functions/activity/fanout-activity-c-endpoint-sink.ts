@@ -1,12 +1,6 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  TemporalEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  StreamContext,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { MessageContext, RuntimeEnvironment, Stream, StreamContext } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   TemporalEndpointHandler,
 } from "@gorundebug/tsservicelib/datasink/temporal";
@@ -32,7 +26,6 @@ export class FanoutActivityCEndpointSink implements TemporalEndpointHandler<Fano
 export async function makeFanoutActivityCEndpointSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: TemporalEndpointConfig,
 ): Promise<FanoutActivityCEndpointSink> {
   return new FanoutActivityCEndpointSink();
 }

@@ -1,13 +1,7 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
 import { MessageContext } from "@gorundebug/tsservicelib/runtime/graph";
-import type {
-  CustomEndpointConfig,
-  Consumer,
-  Context,
-  RuntimeEnvironment,
-  StreamContext,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Consumer, Context, RuntimeEnvironment, StreamContext } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   DataProducer,
   EndpointHandler as CustomSourceEndpointHandler,
@@ -49,7 +43,6 @@ export class CycleAnalyticsInputSource implements DataProducer<AnalyticsEvent>, 
 export async function makeCycleAnalyticsInputSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: CustomEndpointConfig,
 ): Promise<CycleAnalyticsInputSource> {
   return new CycleAnalyticsInputSource();
 }

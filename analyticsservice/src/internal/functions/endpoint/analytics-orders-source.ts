@@ -1,13 +1,7 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
 import { MessageContext } from "@gorundebug/tsservicelib/runtime/graph";
-import type {
-  CustomEndpointConfig,
-  Consumer,
-  Context,
-  RuntimeEnvironment,
-  StreamContext,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Consumer, Context, RuntimeEnvironment, StreamContext } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   DataProducer,
   EndpointHandler as CustomSourceEndpointHandler,
@@ -51,7 +45,6 @@ export class AnalyticsOrdersSource implements DataProducer<AnalyticsEvent>, Cust
 export async function makeAnalyticsOrdersSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: CustomEndpointConfig,
 ): Promise<AnalyticsOrdersSource> {
   return new AnalyticsOrdersSource();
 }

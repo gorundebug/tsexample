@@ -5,9 +5,9 @@ import { defineConfig } from "@hey-api/openapi-ts";
 export default defineConfig({
   input: "./openapi/orderserviceapi/orderserviceapi.generated.yaml",
   output: {
-    path: "./src/generated/http",
+    path: "./src/generated/http/orderserviceapi",
     clean: false,
     fileName: { suffix: ".generated" },
   },
-  plugins: ["zod"],
+  plugins: [{ name: "zod", definitions: { case: "preserve" } }],
 });

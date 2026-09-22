@@ -1,13 +1,6 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  CustomEndpointConfig,
-  Consumer,
-  Context,
-  MessageContext,
-  RuntimeEnvironment,
-  StreamContext,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Consumer, Context, MessageContext, RuntimeEnvironment, StreamContext } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   DataProducer,
   EndpointHandler as CustomSourceEndpointHandler,
@@ -52,7 +45,6 @@ export class SubstreamAnalyticsInputSource implements DataProducer<AnalyticsEven
 export async function makeSubstreamAnalyticsInputSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: CustomEndpointConfig,
 ): Promise<SubstreamAnalyticsInputSource> {
   return new SubstreamAnalyticsInputSource();
 }

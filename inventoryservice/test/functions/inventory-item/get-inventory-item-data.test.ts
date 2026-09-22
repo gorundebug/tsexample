@@ -4,13 +4,13 @@ import test from "node:test";
 import type { OrderItemResult } from "@gorundebug/model";
 import { FunctionCollector, MessageContext } from "@gorundebug/tsservicelib/runtime";
 
-import { GetInventoryItemData } from "#internal/functions/inventory-item/get-inventory-item-data.js";
+import { GetInventoryItemData, InventoryFailureError } from "#internal/functions/inventory-item/get-inventory-item-data.js";
 import { TestTypedStream } from "../../support/stream.js";
 
 void test("GetInventoryItemData reserves available stock", async () => {
   const function_ = new GetInventoryItemData({ "SKU-001": 10 });
   const results: OrderItemResult[] = [];
-  const errors: OrderItemResult[] = [];
+  const errors: Error[] = [];
 
   await function_.process(
     new MessageContext(),
@@ -43,11 +43,11 @@ void test("GetInventoryItemData reserves available stock", async () => {
 void test("GetInventoryItemData reports current stock without overdrawing it", async () => {
   const function_ = new GetInventoryItemData({ "SKU-001": 2 });
   const results: OrderItemResult[] = [];
-  const errors: OrderItemResult[] = [];
+  const errors: Error[] = [];
   const out = new FunctionCollector<OrderItemResult>((_context, value) => {
     results.push(value);
   });
-  const errorOut = new FunctionCollector<OrderItemResult>((_context, value) => {
+  const errorOut = new FunctionCollector<Error>((_context, value) => {
     errors.push(value);
   });
 
@@ -68,9 +68,11 @@ void test("GetInventoryItemData reports current stock without overdrawing it", a
 
   assert.equal(errors.length, 1);
   const rejected = errors.at(0);
-  assert.ok(rejected !== undefined);
+  assert.ok(rejected instanceof InventoryFailureError);
   assert.equal(rejected.availableQty, 2);
-  assert.equal(rejected.status, "OUT_OF_STOCK");
+  assert.deepEqual(rejected.item, {
+    orderId: "order-1", itemId: "item-1", sku: "SKU-001", quantity: 3, unitPrice: 2,
+  });
   assert.equal(results.length, 1);
   const accepted = results.at(0);
   assert.ok(accepted !== undefined);

@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  CaseStreamConfig,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import {
   type BuildSwitchFunction,
   type When,
@@ -28,8 +22,7 @@ export class RouteAnalyticsResult implements BuildSwitchFunction<AnalyticsResult
 export async function makeRouteAnalyticsResult(
   context: MessageContext,
   environment: RuntimeEnvironment,
-  config: CaseStreamConfig,
 ): Promise<RouteAnalyticsResult> {
-  void context; void environment; void config;
+  void context; void environment;
   return new RouteAnalyticsResult();
 }

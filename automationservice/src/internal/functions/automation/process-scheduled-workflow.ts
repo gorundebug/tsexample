@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  MapStreamConfig
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type { MapFunction } from "@gorundebug/tsservicelib/transformation";
 
 /** Return the visible result of one scheduled Workflow execution. */
@@ -24,11 +18,10 @@ export class ProcessScheduledWorkflow implements MapFunction<string, string> {
 /** Construct ProcessScheduledWorkflow once while the service graph is initialized. */
 export async function makeProcessScheduledWorkflow(
   context: MessageContext,
-  environment: RuntimeEnvironment,
-  config: MapStreamConfig
+  environment: RuntimeEnvironment
 ): Promise<ProcessScheduledWorkflow> {
   void context;
   void environment;
-  void config;
+
   return new ProcessScheduledWorkflow();
 }

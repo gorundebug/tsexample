@@ -1,23 +1,16 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  Completion,
-  GrpcEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  StreamContext,
-} from "@gorundebug/tsservicelib/runtime";
+import type { Completion, MessageContext, RuntimeEnvironment, StreamContext } from "@gorundebug/tsservicelib/runtime";
 import type {
   EndpointHandler as GrpcSourceEndpointHandler,
   ResultContext as GrpcResultContext,
   Sender as GrpcResponseSender,
 } from "@gorundebug/tsservicelib/datasource/grpc";
 import type { OrderItem, OrderItemResult } from "@gorundebug/model";
-import {
-  ProcessOrderItemResponseSchema,
-  type ProcessOrderItemRequest,
-  type ProcessOrderItemResponse,
-} from "@gorundebug/inventory-service-api";
+import { InventoryServiceApiProcessOrderItemMessages as inventoryMessages } from "@gorundebug/inventory-service-api";
+type ProcessOrderItemRequest = inventoryMessages.ProcessOrderItemRequest;
+type ProcessOrderItemResponse = inventoryMessages.ProcessOrderItemResponse;
+const { ProcessOrderItemResponseSchema } = inventoryMessages;
 import { create } from "@bufbuild/protobuf";
 
 export type ProcessOrderItemSourceHandlerState = undefined;
@@ -60,7 +53,6 @@ export class ProcessOrderItemSource implements GrpcSourceEndpointHandler<Process
 export async function makeProcessOrderItemSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: GrpcEndpointConfig,
 ): Promise<ProcessOrderItemSource> {
   return new ProcessOrderItemSource();
 }

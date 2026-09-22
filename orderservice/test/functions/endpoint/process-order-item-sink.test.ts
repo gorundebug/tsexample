@@ -2,10 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { create } from "@bufbuild/protobuf";
-import {
-  ProcessOrderItemResponseSchema,
-  type ProcessOrderItemRequest,
-} from "@gorundebug/inventory-service-api";
+import { InventoryServiceApiProcessOrderItemMessages as inventoryMessages } from "@gorundebug/inventory-service-api";
+type ProcessOrderItemRequest = inventoryMessages.ProcessOrderItemRequest;
+const { ProcessOrderItemResponseSchema } = inventoryMessages;
 import type { OrderItem, OrderItemResult } from "@gorundebug/model";
 import { MessageContext } from "@gorundebug/tsservicelib/runtime";
 import type {

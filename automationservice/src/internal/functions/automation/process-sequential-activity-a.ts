@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  MapStreamConfig
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type { MapFunction } from "@gorundebug/tsservicelib/transformation";
 
 /** Return sequential Activity A's typed result to its Temporal sink. */
@@ -24,11 +18,10 @@ export class ProcessSequentialActivityA implements MapFunction<string, string> {
 /** Construct ProcessSequentialActivityA once while the service graph is initialized. */
 export async function makeProcessSequentialActivityA(
   context: MessageContext,
-  environment: RuntimeEnvironment,
-  config: MapStreamConfig
+  environment: RuntimeEnvironment
 ): Promise<ProcessSequentialActivityA> {
   void context;
   void environment;
-  void config;
+
   return new ProcessSequentialActivityA();
 }

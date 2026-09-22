@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  MapStreamConfig,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
@@ -24,8 +18,7 @@ export class AdvanceCycleAnalytics implements MapFunction<AnalyticsEvent, Analyt
 export async function makeAdvanceCycleAnalytics(
   context: MessageContext,
   environment: RuntimeEnvironment,
-  config: MapStreamConfig,
 ): Promise<AdvanceCycleAnalytics> {
-  void context; void environment; void config;
+  void context; void environment;
   return new AdvanceCycleAnalytics();
 }

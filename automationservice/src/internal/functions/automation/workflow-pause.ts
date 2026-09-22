@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  DelayStreamConfig
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import { requireDelayStreamConfig } from "@gorundebug/tsservicelib/runtime/graph";
 import type { DelayFunction } from "@gorundebug/tsservicelib/transformation";
 
@@ -28,11 +22,10 @@ export class WorkflowPause implements DelayFunction<string> {
 /** Construct WorkflowPause once while the service graph is initialized. */
 export async function makeWorkflowPause(
   context: MessageContext,
-  environment: RuntimeEnvironment,
-  config: DelayStreamConfig
+  environment: RuntimeEnvironment
 ): Promise<WorkflowPause> {
   void context;
   void environment;
-  void config;
+
   return new WorkflowPause();
 }

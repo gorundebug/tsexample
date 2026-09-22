@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  DelayStreamConfig,
-} from "@gorundebug/tsservicelib/runtime";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime";
 import { requireDelayStreamConfig } from "@gorundebug/tsservicelib/runtime";
 import type {
   DelayFunction,
@@ -29,7 +23,6 @@ export class SoftDeadline implements DelayFunction<Order> {
 export async function makeSoftDeadline(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: DelayStreamConfig,
 ): Promise<SoftDeadline> {
   return new SoftDeadline();
 }

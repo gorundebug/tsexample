@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  KeyByStreamConfig,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   KeyByFunction,
 } from "@gorundebug/tsservicelib/transformation";
@@ -24,8 +18,7 @@ export class KeyShipmentsForMultiJoin implements KeyByFunction<AnalyticsEvent, s
 export async function makeKeyShipmentsForMultiJoin(
   context: MessageContext,
   environment: RuntimeEnvironment,
-  config: KeyByStreamConfig,
 ): Promise<KeyShipmentsForMultiJoin> {
-  void context; void environment; void config;
+  void context; void environment;
   return new KeyShipmentsForMultiJoin();
 }

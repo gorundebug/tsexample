@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  FlatMapStreamConfig,
-} from "@gorundebug/tsservicelib/runtime";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime";
 import type {
   FlatMapFunction,
 } from "@gorundebug/tsservicelib/transformation";
@@ -27,7 +21,6 @@ export class ProcessOrderItems implements FlatMapFunction<Order, OrderItem> {
 export async function makeProcessOrderItems(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: FlatMapStreamConfig,
 ): Promise<ProcessOrderItems> {
   return new ProcessOrderItems();
 }

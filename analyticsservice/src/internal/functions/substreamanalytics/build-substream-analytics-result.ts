@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  MapStreamConfig,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
@@ -28,8 +22,7 @@ export class BuildSubstreamAnalyticsResult implements MapFunction<AnalyticsEvent
 export async function makeBuildSubstreamAnalyticsResult(
   context: MessageContext,
   environment: RuntimeEnvironment,
-  config: MapStreamConfig,
 ): Promise<BuildSubstreamAnalyticsResult> {
-  void context; void environment; void config;
+  void context; void environment;
   return new BuildSubstreamAnalyticsResult();
 }

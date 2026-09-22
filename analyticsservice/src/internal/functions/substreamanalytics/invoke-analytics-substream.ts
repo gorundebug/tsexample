@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  MapStreamConfig,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type { SubStream } from "@gorundebug/tsservicelib/runtime/graph";
 import { SubStreamCollectorFunc } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
@@ -33,9 +27,8 @@ export class InvokeAnalyticsSubstream implements MapFunction<AnalyticsEvent, Ana
 export async function makeInvokeAnalyticsSubstream(
   context: MessageContext,
   environment: RuntimeEnvironment,
-  config: MapStreamConfig,
 ): Promise<InvokeAnalyticsSubstream> {
-  void context; void environment; void config;
+  void context; void environment;
   throw new Error(
     "InvokeAnalyticsSubstream must be constructed by Service.customMakersInit with the analyzeAnalyticsSubstream handle",
   );

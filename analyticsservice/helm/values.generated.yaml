@@ -76,6 +76,8 @@ persistence:
   size: 1Gi
 
 env:
+  ANALYTICS_SERVICE_GRPC_HOST: "0.0.0.0"
+  ANALYTICS_SERVICE_HTTP_HOST: "0.0.0.0"
   ORDER_EVENTS_BROKERS: "redpanda:9093"
   NODE_DIAGNOSTIC_DIR: "/tmp/node-diagnostics"
 

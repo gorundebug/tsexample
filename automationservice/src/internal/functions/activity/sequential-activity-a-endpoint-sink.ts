@@ -1,12 +1,6 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  TemporalEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  StreamContext,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { MessageContext, RuntimeEnvironment, Stream, StreamContext } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   TemporalEndpointHandler,
 } from "@gorundebug/tsservicelib/datasink/temporal";
@@ -32,7 +26,6 @@ export class SequentialActivityAEndpointSink implements TemporalEndpointHandler<
 export async function makeSequentialActivityAEndpointSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: TemporalEndpointConfig,
 ): Promise<SequentialActivityAEndpointSink> {
   return new SequentialActivityAEndpointSink();
 }

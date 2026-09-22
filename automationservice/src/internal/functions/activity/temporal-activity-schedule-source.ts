@@ -1,13 +1,6 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  TemporalEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  Collector,
-  ScheduleEndpointFunction,
-  ScheduleTrigger
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { MessageContext, RuntimeEnvironment, Collector, ScheduleEndpointFunction, ScheduleTrigger } from "@gorundebug/tsservicelib/runtime/graph";
 import { durableCallHeartbeat } from "@gorundebug/tsservicelib/runtime/graph";
 
 export type TemporalActivityScheduleSourceHandlerState = undefined;
@@ -27,8 +20,7 @@ export class TemporalActivityScheduleSource implements ScheduleEndpointFunction<
 /** Construct TemporalActivityScheduleSource once while the service graph is initialized. */
 export async function makeTemporalActivityScheduleSource(
   _context: MessageContext,
-  _environment: RuntimeEnvironment,
-  _config: TemporalEndpointConfig
+  _environment: RuntimeEnvironment
 ): Promise<TemporalActivityScheduleSource> {
   return new TemporalActivityScheduleSource();
 }

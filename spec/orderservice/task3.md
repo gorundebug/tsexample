@@ -25,8 +25,8 @@ Calculate the total from processed item prices, falling back to the submitted to
 | Field | Value |
 |-------|-------|
 | Format | `openapi` |
-| Request | `ProcessOrderRequest` |
-| Response | `ProcessOrderResponse` |
+| Request | `http.orderServiceApi.ProcessOrderRequest` |
+| Response | `http.orderServiceApi.ProcessOrderResponse` |
 
 
 ## Stream types

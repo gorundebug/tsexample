@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  MapStreamConfig
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type { MapFunction } from "@gorundebug/tsservicelib/transformation";
 
 /** Observe the typed result returned by the Activity B fan-out branch. */
@@ -24,11 +18,10 @@ export class ObserveFanoutActivityB implements MapFunction<string, string> {
 /** Construct ObserveFanoutActivityB once while the service graph is initialized. */
 export async function makeObserveFanoutActivityB(
   context: MessageContext,
-  environment: RuntimeEnvironment,
-  config: MapStreamConfig
+  environment: RuntimeEnvironment
 ): Promise<ObserveFanoutActivityB> {
   void context;
   void environment;
-  void config;
+
   return new ObserveFanoutActivityB();
 }

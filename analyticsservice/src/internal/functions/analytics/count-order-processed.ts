@@ -1,13 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  ProcessStreamConfig,
-  Int64CounterVec,
-} from "@gorundebug/tsservicelib/runtime";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream, Int64CounterVec } from "@gorundebug/tsservicelib/runtime";
 import type {
   ProcessFunction,
 } from "@gorundebug/tsservicelib/transformation";
@@ -32,7 +25,6 @@ export class CountOrderProcessed implements ProcessFunction<OrderProcessed, Orde
 export async function makeCountOrderProcessed(
   _context: MessageContext,
   environment: RuntimeEnvironment,
-  _config: ProcessStreamConfig,
 ): Promise<CountOrderProcessed> {
   const counter = environment
     .metrics()

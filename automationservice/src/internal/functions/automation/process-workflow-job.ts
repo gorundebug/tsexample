@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  MapStreamConfig
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import { temporalContinueAsNew } from "@gorundebug/tsservicelib/runtime/graph";
 import type { MapFunction } from "@gorundebug/tsservicelib/transformation";
 
@@ -29,11 +23,10 @@ export class ProcessWorkflowJob implements MapFunction<string, string> {
 /** Construct ProcessWorkflowJob once while the service graph is initialized. */
 export async function makeProcessWorkflowJob(
   context: MessageContext,
-  environment: RuntimeEnvironment,
-  config: MapStreamConfig
+  environment: RuntimeEnvironment
 ): Promise<ProcessWorkflowJob> {
   void context;
   void environment;
-  void config;
+
   return new ProcessWorkflowJob();
 }

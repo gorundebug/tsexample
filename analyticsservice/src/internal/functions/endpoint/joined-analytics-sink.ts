@@ -1,12 +1,6 @@
 /** User-owned endpoint implementation. The generator preserves this file. */
 
-import type {
-  CustomEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  Collector,
-  Stream,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { MessageContext, RuntimeEnvironment, Collector, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   EndpointHandler as CustomSinkEndpointHandler,
 } from "@gorundebug/tsservicelib/datasink/localsink";
@@ -36,7 +30,6 @@ export class JoinedAnalyticsSink implements CustomSinkEndpointHandler<JoinedAnal
 export async function makeJoinedAnalyticsSink(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  _config: CustomEndpointConfig,
 ): Promise<JoinedAnalyticsSink> {
   return new JoinedAnalyticsSink();
 }

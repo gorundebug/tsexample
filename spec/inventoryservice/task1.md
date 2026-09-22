@@ -24,8 +24,8 @@ If the inventory call fails, the caller returns a non-reserved PROCESSING_ERROR 
 | Field | Value |
 |-------|-------|
 | Format | `proto` |
-| Request | `ProcessOrderItemRequest` |
-| Response | `ProcessOrderItemResponse` |
+| Request | `InventoryServiceApiProcessOrderItemMessages.ProcessOrderItemRequest` |
+| Response | `InventoryServiceApiProcessOrderItemMessages.ProcessOrderItemResponse` |
 
 
 ## Stream types

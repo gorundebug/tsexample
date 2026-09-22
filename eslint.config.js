@@ -17,7 +17,7 @@ export default tseslint.config(
       "**/.cache/**",
       "tools/**",
       "**/src/generated/grpc/proto/**",
-      "**/src/generated/http/index.generated.ts"
+      "**/src/generated/http/**/index.generated.ts"
     ]
   },
   eslint.configs.recommended,

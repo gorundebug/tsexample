@@ -165,7 +165,8 @@ const DEFAULT_CONFIG = {
       "idSource": 0,
       "idSources": [
         3,
-        1
+        1,
+        -6
       ],
       "name": "Merge Results",
       "pipeline": "order",

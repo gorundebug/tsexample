@@ -76,6 +76,8 @@ persistence:
   size: 1Gi
 
 env:
+  AUTOMATION_SERVICE_GRPC_HOST: "0.0.0.0"
+  AUTOMATION_SERVICE_HTTP_HOST: "0.0.0.0"
   TEMPORAL_ADDRESS: "temporal-frontend:7233"
   NODE_DIAGNOSTIC_DIR: "/tmp/node-diagnostics"
   TEMPORAL_SDK_METRICS_BIND_ADDRESS: "0.0.0.0:9464"

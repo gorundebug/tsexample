@@ -1,12 +1,6 @@
 /** User-owned function implementation. The generator preserves this file. */
 
-import type {
-  Collector,
-  MessageContext,
-  RuntimeEnvironment,
-  Stream,
-  FilterStreamConfig,
-} from "@gorundebug/tsservicelib/runtime/graph";
+import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   FilterFunction,
 } from "@gorundebug/tsservicelib/transformation";
@@ -24,8 +18,7 @@ export class ContinueCycleAnalytics implements FilterFunction<AnalyticsEvent> {
 export async function makeContinueCycleAnalytics(
   context: MessageContext,
   environment: RuntimeEnvironment,
-  config: FilterStreamConfig,
 ): Promise<ContinueCycleAnalytics> {
-  void context; void environment; void config;
+  void context; void environment;
   return new ContinueCycleAnalytics();
 }

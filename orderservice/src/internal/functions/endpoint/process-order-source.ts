@@ -2,12 +2,7 @@
 
 import { randomUUID } from "node:crypto";
 
-import type {
-  HttpEndpointConfig,
-  MessageContext,
-  RuntimeEnvironment,
-  StreamContext,
-} from "@gorundebug/tsservicelib/runtime";
+import type { MessageContext, RuntimeEnvironment, StreamContext } from "@gorundebug/tsservicelib/runtime";
 import type {
   EndpointHandler as HttpSourceEndpointHandler,
   HandlerData,
@@ -20,11 +15,10 @@ import {
   writeRequestError,
 } from "@gorundebug/tsservicelib/datasource/http";
 import type { OrderItem, OrderItemResult } from "@gorundebug/model";
-import {
-  decodeProcessOrderRequest,
-  type ProcessOrderRequest,
-  type ProcessOrderResponse,
-} from "@gorundebug/order-service-api";
+import { http } from "@gorundebug/order-service-api";
+type ProcessOrderRequest = http.orderServiceApi.ProcessOrderRequest;
+type ProcessOrderResponse = http.orderServiceApi.ProcessOrderResponse;
+const { decodeProcessOrderRequest } = http.orderServiceApi;
 import type { Order, OrderState } from "#internal/types/index.generated.js";
 
 export interface ProcessOrderSourceHandlerState {
@@ -151,8 +145,6 @@ function requestHeader(data: HandlerData, name: string): string | undefined {
 export async function makeProcessOrderSource(
   _context: MessageContext,
   _environment: RuntimeEnvironment,
-  config: HttpEndpointConfig,
 ): Promise<ProcessOrderSource> {
-  const timeout = config.properties["timeout"];
-  return new ProcessOrderSource(typeof timeout === "number" && Number.isFinite(timeout) ? timeout : 5_000);
+  return new ProcessOrderSource(5_000);
 }
