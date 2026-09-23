@@ -47,6 +47,10 @@ async function executeGeneratedWorkflow(
     request.runtimeConfig,
     ServiceIds.AUTOMATION_SERVICE,
     registry,
+    {
+      noopMetrics: request.telemetry?.noopMetrics === true,
+      noopTracing: request.telemetry?.noopTracing === true
+    }
   );
   const context = new MessageContext();
   const makers = defaultWorkflowMakers();

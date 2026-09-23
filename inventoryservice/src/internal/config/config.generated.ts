@@ -180,15 +180,13 @@ const DEFAULT_CONFIG = {
   },
   "links": {
     "getInventoryItemDataToMergeInventoryResult": {
-      "callSemantics": 5,
+      "callSemantics": 2,
       "from": 1,
       "to": 3
     },
     "processInventoryItemToGetInventoryItemData": {
-      "callSemantics": 4,
+      "callSemantics": 2,
       "from": 4,
-      "poolName": "Inventory Priority Workers",
-      "priority": 10,
       "to": 1
     }
   },
@@ -209,9 +207,10 @@ const DEFAULT_CONFIG = {
   "types": {
     "inventoryFailure": {
       "name": "InventoryFailure",
-      "type": "error",
-      "typeDefinition": "Error",
-      "typeImport": "./internal/types/inventory-failure.js"
+      "type": "struct",
+      "typeDefinition": "InventoryFailure",
+      "typeImport": "./internal/types/inventory-failure.js",
+      "definitionFormat": 1
     },
     "orderItem": {
       "name": "OrderItem",

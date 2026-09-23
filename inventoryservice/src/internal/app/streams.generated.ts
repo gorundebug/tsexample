@@ -83,7 +83,7 @@ export function initGetInventoryItemDataStream(
   right?: unknown,
   sources: readonly unknown[] = [],
 ) {
-  const stream = makeProcessStream<OrderItem, OrderItemResult, Error>(config.named.streams.getInventoryItemData, source as never, functions.getInventoryItemData);
+  const stream = makeProcessStream<OrderItem, OrderItemResult, InventoryFailure>(config.named.streams.getInventoryItemData, source as never, functions.getInventoryItemData);
   return { stream, errorStream: stream.errorStream() };
 }
 export function initMapInventoryItemErrorStream(
@@ -94,7 +94,7 @@ export function initMapInventoryItemErrorStream(
   right?: unknown,
   sources: readonly unknown[] = [],
 ) {
-  const stream = makeMapStream<Error, OrderItemResult>(config.named.streams.mapInventoryItemError, source as never, functions.getInventoryItemError);
+  const stream = makeMapStream<InventoryFailure, OrderItemResult>(config.named.streams.mapInventoryItemError, source as never, functions.getInventoryItemError);
   return stream;
 }
 export function initMergeInventoryResultStream(

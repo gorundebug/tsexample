@@ -350,18 +350,17 @@ const DEFAULT_CONFIG = {
       "to": 10
     },
     "processOrderToSplitPipeline": {
-      "callSemantics": 3,
+      "callSemantics": 2,
       "from": 5,
-      "poolName": "Default Pool",
       "to": 11
     },
     "splitPipelineToProcessOrderItems": {
-      "callSemantics": 5,
+      "callSemantics": 2,
       "from": 11,
       "to": 7
     },
     "splitPipelineToSoftDeadline": {
-      "callSemantics": 5,
+      "callSemantics": 2,
       "from": 11,
       "to": 9
     }

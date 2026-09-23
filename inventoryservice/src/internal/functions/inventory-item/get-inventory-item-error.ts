@@ -5,23 +5,23 @@ import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
 import type { OrderItemResult } from "@gorundebug/model";
-import { InventoryFailureError } from "./get-inventory-item-data.js";
+import type { InventoryFailure } from '../../types/inventory-failure.js';
 
 /** When inventory processing fails, return an OUT_OF_STOCK result with no available quantity.
 Preserve the order and item identity and requested quantity, and record the failure. */
-export class GetInventoryItemError implements MapFunction<Error, OrderItemResult> {
-  public map(context: MessageContext, _stream: Stream, value: Readonly<Error>, out: Collector<OrderItemResult>): void | Promise<void> {
-    const failure = value instanceof InventoryFailureError ? value : undefined;
+export class GetInventoryItemError implements MapFunction<InventoryFailure, OrderItemResult> {
+  public map(context: MessageContext, _stream: Stream, value: Readonly<InventoryFailure>, out: Collector<OrderItemResult>): void | Promise<void> {
+    const failure = value;
     return out.out(context, {
-      orderId: failure?.item.orderId ?? "",
-      itemId: failure?.item.itemId ?? "",
-      sku: failure?.item.sku ?? "",
-      requestedQty: failure?.item.quantity ?? 0,
-      availableQty: failure?.availableQty ?? 0,
+      orderId: failure.item.orderId,
+      itemId: failure.item.itemId,
+      sku: failure.item.sku,
+      requestedQty: failure.item.quantity,
+      availableQty: failure.availableQty,
       reserved: false,
-      status: failure === undefined ? "PROCESSING_ERROR" : "OUT_OF_STOCK",
-      unitPrice: failure?.item.unitPrice ?? 0,
-      error: value.message,
+      status: "OUT_OF_STOCK",
+      unitPrice: failure.item.unitPrice,
+      error: 'inventory is out of stock',
     });
   }
 }

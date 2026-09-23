@@ -1,3 +1,4 @@
+import type { InventoryFailure } from '../../types/inventory-failure.js';
 /** User-owned function implementation. The generator preserves this file. */
 
 import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gorundebug/tsservicelib/runtime";
@@ -10,17 +11,8 @@ import type { OrderItem, OrderItemResult } from "@gorundebug/model";
 On success, return CONFIRMED with the requested quantity available. Otherwise return OUT_OF_STOCK with the current available quantity.
 Preserve the order and item identity, requested quantity, and unit price.
 The example starts with SKU-001: 100, SKU-002: 50, and SKU-003: 25. */
-export class InventoryFailureError extends Error {
-  public constructor(
-    public readonly item: Readonly<OrderItem>,
-    public readonly availableQty: number,
-  ) {
-    super("inventory is out of stock");
-    this.name = "InventoryFailureError";
-  }
-}
 
-export class GetInventoryItemData implements ProcessFunction<OrderItem, OrderItemResult, Error> {
+export class GetInventoryItemData implements ProcessFunction<OrderItem, OrderItemResult, InventoryFailure> {
   readonly #stock: Map<string, number>;
 
   public constructor(stock: Readonly<Record<string, number>> = {
@@ -31,7 +23,7 @@ export class GetInventoryItemData implements ProcessFunction<OrderItem, OrderIte
     this.#stock = new Map(Object.entries(stock));
   }
 
-  public process(context: MessageContext, _stream: Stream, value: Readonly<OrderItem>, out: Collector<OrderItemResult>, errorOut: Collector<Error>): void | Promise<void> {
+  public process(context: MessageContext, _stream: Stream, value: Readonly<OrderItem>, out: Collector<OrderItemResult>, errorOut: Collector<InventoryFailure>): void | Promise<void> {
     const available = this.#stock.get(value.sku) ?? 0;
     const reserved = available >= value.quantity;
     if (reserved) {
@@ -48,7 +40,7 @@ export class GetInventoryItemData implements ProcessFunction<OrderItem, OrderIte
       unitPrice: value.unitPrice,
       error: "",
     };
-    return reserved ? out.out(context, result) : errorOut.out(context, new InventoryFailureError(value, available));
+    return reserved ? out.out(context, result) : errorOut.out(context, { item: value, availableQty: available });
   }
 }
 
