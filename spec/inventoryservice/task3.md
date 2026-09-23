@@ -20,12 +20,14 @@ Preserve the order and item identity and requested quantity, and record the fail
 
 
 ## Stream types
+- Input: `InventoryFailure` — `inventoryservice/src/internal/types/inventory-failure.ts`
 - Output: `OrderItemResult` — `model_ts/src/types/order-item-result.ts`
 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `inventoryservice/src/internal/functions/get-inventory-item-error.ts` and preserve its generated contract
+- [ ] Inspect input type `InventoryFailure` in `inventoryservice/src/internal/types/inventory-failure.ts`
 - [ ] Inspect output type `OrderItemResult` in `model_ts/src/types/order-item-result.ts`
 - [ ] Implement meaningful assertions in `inventoryservice/test/functions/get-inventory-item-error.test.ts`
 - [ ] Re-read this checklist

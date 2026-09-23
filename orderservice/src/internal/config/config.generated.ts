@@ -360,6 +360,7 @@ const DEFAULT_CONFIG = {
       "to": 7
     },
     "splitPipelineToSoftDeadline": {
+      "async": true,
       "callSemantics": 2,
       "from": 11,
       "to": 9
