@@ -3,7 +3,7 @@
 import {
   Context, MessageContext, RuntimeConfigStore, ServiceApp,
   type ServiceAppOptions, type ServiceConfig,
-  errorFromUnknown, makeDefaultSerdeRegistry,
+  errorFromUnknown, makeDefaultSerdeRegistry, settleWithinDeadline,
 } from "@gorundebug/tsservicelib/runtime";
 import { Config } from "../config/config.js";
 import { ServiceIds } from "../config/config.generated.js";
@@ -85,8 +85,19 @@ export abstract class ServiceGenerated {
     try {
       terminationError = await waitForTermination();
     } finally {
-      await this.onStop(context);
-      await app.stop(context, environment.serviceConfig().shutdownTimeout);
+      const stopContext = context.bounded(environment.serviceConfig().shutdownTimeout);
+      const [shutdown] = await settleWithinDeadline(stopContext, [(async () => {
+        try {
+          await this.onStop(stopContext);
+        } finally {
+          await app.stop(stopContext, stopContext.remainingMs());
+        }
+      })()]);
+      if (shutdown === undefined) {
+        environment.log().warn(stopContext, "service shutdown timed out");
+      } else if (shutdown.status === "rejected") {
+        throw errorFromUnknown(shutdown.reason);
+      }
     }
     if (terminationError !== undefined) throw terminationError;
   }

@@ -4,8 +4,9 @@ import { Service } from "./internal/app/service.js";
 const service = new Service();
 try {
   await service.run(process.argv.slice(2));
+  process.exit(0);
 } catch (error: unknown) {
   const message = error instanceof Error ? (error.stack ?? error.message) : String(error);
   process.stderr.write(`start service error: ${message}\n`);
-  process.exitCode = 1;
+  process.exit(1);
 }
