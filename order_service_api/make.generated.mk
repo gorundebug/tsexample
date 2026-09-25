@@ -40,6 +40,8 @@ docker-build: ## [Docker] Verify this independent contract/model package
 		--build-arg DEPENDENCY_DOCKER_REGISTRY="$${DEPENDENCY_DOCKER_REGISTRY:-docker.io}" \
 		--build-arg NPM_CONFIG_REGISTRY="$${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}" \
 		--build-arg DEPENDENCY_GITHUB_RAW_URL="$${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}" \
+		--build-arg DEPENDENCY_APT_DEBIAN_URL="$${DEPENDENCY_APT_DEBIAN_URL:-}" \
+		--build-arg DEPENDENCY_APT_DEBIAN_SECURITY_URL="$${DEPENDENCY_APT_DEBIAN_SECURITY_URL:-}" \
 		-f Dockerfile.generated -t "order_service_api-typescript-package:local" .
 
 clean:

@@ -10,6 +10,8 @@ services:
         DEPENDENCY_DOCKER_REGISTRY: ${DEPENDENCY_DOCKER_REGISTRY:-docker.io}
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
+        DEPENDENCY_APT_DEBIAN_URL: ${DEPENDENCY_APT_DEBIAN_URL:-}
+        DEPENDENCY_APT_DEBIAN_SECURITY_URL: ${DEPENDENCY_APT_DEBIAN_SECURITY_URL:-}
     image: analyticsservice-typescript:local
     command: ["--config", "config/config.yaml", "--values", "config/overrides.yaml", "--overrides", "config/docker_overrides.yaml"]
     environment:
