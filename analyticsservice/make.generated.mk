@@ -2,6 +2,7 @@
 
 .DEFAULT_GOAL := build
 DOCKER_TARGET := runtime
+DOCKER_IMAGE_TAG ?= local
 DOCKER_DEV_TARGET := development
 STANDALONE_DOCKERFILE := Dockerfile
 STANDALONE_COMPOSE := $(if $(wildcard docker-compose.yml),docker-compose.yml,docker-compose.standalone.generated.yml)
@@ -97,11 +98,11 @@ docker-build: ## [Docker] Build the autonomous copied-source runtime image
 		--build-arg DEPENDENCY_GITHUB_RAW_URL="$${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}" \
 		--build-arg DEPENDENCY_APT_DEBIAN_URL="$${DEPENDENCY_APT_DEBIAN_URL:-}" \
 		--build-arg DEPENDENCY_APT_DEBIAN_SECURITY_URL="$${DEPENDENCY_APT_DEBIAN_SECURITY_URL:-}" \
-		-f "$(STANDALONE_DOCKERFILE)" -t "analyticsservice-typescript:local" .
+		-f "$(STANDALONE_DOCKERFILE)" -t "analyticsservice-typescript:$(DOCKER_IMAGE_TAG)" .
 
 docker-build-dev: ## Build this standalone TypeScript development image
 	@$(MAKE) docker-build DOCKER_TARGET="$(DOCKER_DEV_TARGET)"
-	@docker tag "analyticsservice-typescript:local" \
+	@docker tag "analyticsservice-typescript:$(DOCKER_IMAGE_TAG)" \
 		"analyticsservice-typescript-development:local"
 
 docker-up: docker-build ## Start this service through Docker Compose

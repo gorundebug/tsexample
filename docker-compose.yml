@@ -1,6 +1,6 @@
 services:
   analyticsservice:
-    image: analyticsservice-typescript:local
+    image: analyticsservice-typescript:${DOCKER_IMAGE_TAG:-local}
     build:
       context: .
       dockerfile: Dockerfile.typescript
@@ -45,7 +45,7 @@ services:
       - app_net
 
   automationservice:
-    image: automationservice-typescript:local
+    image: automationservice-typescript:${DOCKER_IMAGE_TAG:-local}
     build:
       context: .
       dockerfile: Dockerfile.typescript
@@ -91,7 +91,7 @@ services:
       - app_net
 
   inventoryservice:
-    image: inventoryservice-typescript:local
+    image: inventoryservice-typescript:${DOCKER_IMAGE_TAG:-local}
     build:
       context: .
       dockerfile: Dockerfile.typescript
@@ -133,7 +133,7 @@ services:
       - app_net
 
   orderservice:
-    image: orderservice-typescript:local
+    image: orderservice-typescript:${DOCKER_IMAGE_TAG:-local}
     build:
       context: .
       dockerfile: Dockerfile.typescript
