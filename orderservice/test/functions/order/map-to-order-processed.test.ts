@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import type { OrderProcessed } from "@gorundebug/model";
 import { FunctionCollector, MessageContext } from "@gorundebug/tsservicelib/runtime";
 
+import type { OrderProcessed } from "@gorundebug/model";
 import { MapToOrderProcessed } from "#internal/functions/order/map-to-order-processed.js";
 import { TestStream } from "../../support/stream.js";
 

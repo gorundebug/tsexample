@@ -8,10 +8,10 @@ import {
   makeMultiJoinStream, makeProcessStream, makeSinkStream,
   makeSinkStreamWithResult, makeSplitStream, makeSubStream, makeWhenStream,
 } from "@gorundebug/tsservicelib/operators";
-import type { AnalyticsEvent, AnalyticsKey, AnalyticsResult } from "../types/index.generated.js";
-import type { AutomationJob, OrderProcessed } from "@gorundebug/model";
 import type { KeyValue } from "@gorundebug/tsservicelib/runtime/graph";
 
+import type { AnalyticsEvent, AnalyticsKey, AnalyticsResult } from "../types/index.generated.js";
+import type { AutomationJob, OrderProcessed } from "@gorundebug/model";
 import type { ConfigSnapshot } from "../config/config-snapshot.generated.js";
 import type { ServiceFunctions } from "./functions.generated.js";
 

@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { create } from "@bufbuild/protobuf";
+
 import { InventoryServiceApiProcessOrderItemMessages as inventoryMessages } from "@gorundebug/inventory-service-api";
 type ProcessOrderItemResponse = inventoryMessages.ProcessOrderItemResponse;
 const { ProcessOrderItemRequestSchema } = inventoryMessages;
-import type { OrderItem, OrderItemResult } from "@gorundebug/model";
 import { MessageContext } from "@gorundebug/tsservicelib/runtime";
 import type {
   ResultCallback,
@@ -13,6 +13,7 @@ import type {
   Sender,
 } from "@gorundebug/tsservicelib/datasource/grpc";
 
+import type { OrderItem, OrderItemResult } from "@gorundebug/model";
 import { ProcessOrderItemSource } from "#internal/functions/endpoint/process-order-item-source.js";
 import { makeTestStreamContext } from "../../support/stream.js";
 

@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import type { OrderProcessed } from "@gorundebug/model";
 import {
   FunctionCollector,
   MessageContext,
@@ -11,6 +10,7 @@ import {
 } from "@gorundebug/tsservicelib/runtime";
 import { TestMetrics } from "@gorundebug/tsservicelib/runtime/testmetrics";
 
+import type { OrderProcessed } from "@gorundebug/model";
 import { CountOrderProcessed } from "#internal/functions/analytics/count-order-processed.js";
 
 void test("CountOrderProcessed counts successful and unsuccessful orders independently", async () => {

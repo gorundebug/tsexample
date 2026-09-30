@@ -9,9 +9,10 @@ import {
   stringSerdeType,
   uint8SerdeType, uint16SerdeType, uint32SerdeType, uint64SerdeType, uintSerdeType,
 } from "@gorundebug/tsservicelib/runtime/graph";
+import type { KeyValue } from "@gorundebug/tsservicelib/runtime/graph";
+
 import type { AnalyticsEvent, AnalyticsKey, AnalyticsResult } from "../types/index.generated.js";
 import type { AutomationJob, OrderProcessed } from "@gorundebug/model";
-import type { KeyValue } from "@gorundebug/tsservicelib/runtime/graph";
 import { StreamIds } from "../config/config-snapshot.generated.js";
 
 function isRecord(value: unknown): value is Readonly<Record<string, unknown>> {

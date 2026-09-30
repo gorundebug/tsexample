@@ -5,6 +5,7 @@ import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gor
 import type {
   ProcessFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { OrderItem, OrderItemResult } from "@gorundebug/model";
 
 /** Reserve the requested quantity without allowing concurrent orders to overdraw stock.

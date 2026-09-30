@@ -4,6 +4,7 @@ import type { Collector, MessageContext, RuntimeEnvironment, Stream, Int64Counte
 import type {
   ProcessFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { OrderProcessed } from "@gorundebug/model";
 
 /** Count successful and unsuccessful orders independently, then return the event unchanged. */

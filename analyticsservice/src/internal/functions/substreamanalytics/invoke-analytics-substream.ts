@@ -6,6 +6,7 @@ import { SubStreamCollectorFunc } from "@gorundebug/tsservicelib/runtime/graph";
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { AnalyticsEvent, AnalyticsResult } from "#internal/types/index.generated.js";
 
 /** Invoke the service-local analytics SubStream and emit its returned result. */

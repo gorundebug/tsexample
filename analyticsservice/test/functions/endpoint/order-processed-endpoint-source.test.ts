@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import type { OrderProcessed } from "@gorundebug/model";
 import { MessageContext } from "@gorundebug/tsservicelib/runtime";
 import {
   ConsumerMessage,
@@ -11,6 +10,7 @@ import {
   type ResultContext,
 } from "@gorundebug/tsservicelib/datasource/kafka";
 
+import type { OrderProcessed } from "@gorundebug/model";
 import { OrderProcessedEndpointSource } from "#internal/functions/endpoint/order-processed-endpoint-source.js";
 import { makeTestStreamContext } from "../../support/stream.js";
 

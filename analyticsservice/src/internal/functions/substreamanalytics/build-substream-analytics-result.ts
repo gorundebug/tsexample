@@ -4,6 +4,7 @@ import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gor
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { AnalyticsEvent, AnalyticsResult } from "#internal/types/index.generated.js";
 
 /** Transform one callable SubStream input into its analytics result. */

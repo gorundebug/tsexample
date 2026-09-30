@@ -4,6 +4,7 @@ import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gor
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { Order, OrderState } from "#internal/types/index.generated.js";
 
 /** Produce a TIMED_OUT order result that preserves the order ID and submitted total.

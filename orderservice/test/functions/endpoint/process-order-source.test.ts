@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 

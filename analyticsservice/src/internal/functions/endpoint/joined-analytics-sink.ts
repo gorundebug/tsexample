@@ -4,6 +4,7 @@ import type { MessageContext, RuntimeEnvironment, Collector, Stream } from "@gor
 import type {
   EndpointHandler as CustomSinkEndpointHandler,
 } from "@gorundebug/tsservicelib/datasink/localsink";
+
 import type { AnalyticsResult } from "#internal/types/index.generated.js";
 
 export type JoinedAnalyticsSinkHandlerState = undefined;

@@ -4,6 +4,7 @@ import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gor
 import type {
   JoinFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { AnalyticsEvent, AnalyticsResult } from "#internal/types/index.generated.js";
 
 /** Join matching order and payment analytics events and emit their combined total. */

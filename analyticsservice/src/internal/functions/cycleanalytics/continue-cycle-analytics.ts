@@ -4,6 +4,7 @@ import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gor
 import type {
   FilterFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { AnalyticsEvent } from "#internal/types/index.generated.js";
 
 /** Keep intermediate analytics events whose cycle counter is below three. */

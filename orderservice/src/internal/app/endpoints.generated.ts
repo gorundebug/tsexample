@@ -5,6 +5,7 @@ import {
   GrpcJsDataSink,
   makeGrpcNoStreamingEndpointConsumer as makeGrpcNoStreamingSinkEndpointConsumer,
 } from "@gorundebug/tsservicelib/datasink/grpc";
+
 import { InventoryServiceApi } from "@gorundebug/inventory-service-api";
 import type { ServiceClients } from "./clients.generated.js";
 import type { ServiceFunctions } from "./functions.generated.js";

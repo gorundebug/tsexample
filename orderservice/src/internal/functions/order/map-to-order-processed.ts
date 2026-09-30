@@ -4,6 +4,7 @@ import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gor
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { OrderState } from "#internal/types/index.generated.js";
 import type { OrderProcessed } from "@gorundebug/model";
 

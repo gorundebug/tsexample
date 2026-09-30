@@ -3,6 +3,7 @@ import { makeKafkaEndpointConsumer as makeKafkaSourceEndpointConsumer } from "@g
 import { makeCustomEndpointConsumer as makeCustomSourceEndpointConsumer } from "@gorundebug/tsservicelib/datasource/localsource";
 import { makeCustomEndpointConsumer as makeCustomSinkEndpointConsumer } from "@gorundebug/tsservicelib/datasink/localsink";
 import { makeCronEndpointConsumer } from "@gorundebug/tsservicelib/datasource/cron";
+
 import type { ServiceClients } from "./clients.generated.js";
 import type { ServiceFunctions } from "./functions.generated.js";
 import type { ServiceStreams } from "./streams.generated.js";

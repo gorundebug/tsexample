@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import type { OrderProcessed } from "@gorundebug/model";
 import { MessageContext } from "@gorundebug/tsservicelib/runtime";
 import { SinkMessage } from "@gorundebug/tsservicelib/datasink/kafka";
 
+import type { OrderProcessed } from "@gorundebug/model";
 import { OrderProcessedEndpointSink } from "#internal/functions/endpoint/order-processed-endpoint-sink.js";
 import { TestStream } from "../../support/stream.js";
 

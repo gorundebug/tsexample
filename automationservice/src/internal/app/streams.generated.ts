@@ -8,8 +8,8 @@ import {
   makeMultiJoinStream, makeProcessStream, makeSinkStream,
   makeSinkStreamWithResult, makeSplitStream, makeSubStream, makeWhenStream,
 } from "@gorundebug/tsservicelib/operators";
-import type { AutomationJob } from "@gorundebug/model";
 
+import type { AutomationJob } from "@gorundebug/model";
 import type { ConfigSnapshot } from "../config/config-snapshot.generated.js";
 import type { ServiceFunctions } from "./functions.generated.js";
 

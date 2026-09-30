@@ -5,6 +5,7 @@ import {
   type BuildSwitchFunction,
   type When,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { AnalyticsResult } from "#internal/types/index.generated.js";
 
 /** Route high-value analytics results to the first branch and all others to the second branch. */

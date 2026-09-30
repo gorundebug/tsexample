@@ -4,6 +4,7 @@ import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gor
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { AnalyticsEvent } from "#internal/types/index.generated.js";
 
 /** Increment the cycle counter while preserving the analytics event identity. */

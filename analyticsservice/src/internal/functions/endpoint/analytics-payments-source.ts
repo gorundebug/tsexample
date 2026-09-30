@@ -7,6 +7,7 @@ import type {
   EndpointHandler as CustomSourceEndpointHandler,
   ResultContext as CustomResultContext,
 } from "@gorundebug/tsservicelib/datasource/localsource";
+
 import type { AnalyticsEvent } from "#internal/types/index.generated.js";
 
 export type AnalyticsPaymentsSourceHandlerState = undefined;

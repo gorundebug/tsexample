@@ -5,6 +5,7 @@ import { requireDelayStreamConfig } from "@gorundebug/tsservicelib/runtime";
 import type {
   DelayFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { Order } from "#internal/types/index.generated.js";
 
 /** Trigger the timeout branch shortly before the request deadline, leaving the configured duration to assemble a response.

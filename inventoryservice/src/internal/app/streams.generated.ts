@@ -8,9 +8,9 @@ import {
   makeMultiJoinStream, makeProcessStream, makeSinkStream,
   makeSinkStreamWithResult, makeSplitStream, makeSubStream, makeWhenStream,
 } from "@gorundebug/tsservicelib/operators";
+
 import type { InventoryFailure } from "../types/index.generated.js";
 import type { OrderItem, OrderItemResult } from "@gorundebug/model";
-
 import type { ConfigSnapshot } from "../config/config-snapshot.generated.js";
 import type { ServiceFunctions } from "./functions.generated.js";
 

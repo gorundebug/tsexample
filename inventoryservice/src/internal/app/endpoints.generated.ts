@@ -3,6 +3,7 @@ import {
   GrpcJsDataSource,
   makeGrpcNoStreamingEndpointConsumer as makeGrpcNoStreamingSourceEndpointConsumer,
 } from "@gorundebug/tsservicelib/datasource/grpc";
+
 import { InventoryServiceApi } from "@gorundebug/inventory-service-api";
 import type { ServiceClients } from "./clients.generated.js";
 import type { ServiceFunctions } from "./functions.generated.js";

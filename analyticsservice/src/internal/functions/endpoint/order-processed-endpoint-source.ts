@@ -6,6 +6,7 @@ import type {
   EndpointHandler as KafkaSourceEndpointHandler,
   ResultContext as KafkaResultContext,
 } from "@gorundebug/tsservicelib/datasource/kafka";
+
 import type { OrderProcessed } from "@gorundebug/model";
 
 export type OrderProcessedEndpointSourceHandlerState = undefined;

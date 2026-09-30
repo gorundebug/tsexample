@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import type { SubStream } from "@gorundebug/tsservicelib/runtime/graph";
+
 import type { AnalyticsEvent, AnalyticsResult } from "#internal/types/index.generated.js";
 import { InvokeAnalyticsSubstream } from "#internal/functions/substreamanalytics/invoke-analytics-substream.js";
 

@@ -1,10 +1,10 @@
-import type { InventoryFailure } from '../../../src/internal/types/inventory-failure.js';
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import type { OrderItemResult } from "@gorundebug/model";
 import { FunctionCollector, MessageContext } from "@gorundebug/tsservicelib/runtime";
 
+import type { InventoryFailure } from '../../../src/internal/types/inventory-failure.js';
+import type { OrderItemResult } from "@gorundebug/model";
 import { GetInventoryItemData } from "#internal/functions/inventory-item/get-inventory-item-data.js";
 import { TestTypedStream } from "../../support/stream.js";
 

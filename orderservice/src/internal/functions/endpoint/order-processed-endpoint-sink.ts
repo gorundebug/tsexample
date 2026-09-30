@@ -5,6 +5,7 @@ import type {
   EndpointHandler as KafkaSinkEndpointHandler,
   SinkMessage,
 } from "@gorundebug/tsservicelib/datasink/kafka";
+
 import type { OrderProcessed } from "@gorundebug/model";
 
 export type OrderProcessedEndpointSinkHandlerState = undefined;

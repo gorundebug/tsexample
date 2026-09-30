@@ -1,10 +1,11 @@
-import type { OrderItemResult } from "@gorundebug/model";
-import { FunctionCollector, MessageContext } from "@gorundebug/tsservicelib/runtime";
-import { TestTypedStream } from "../../support/stream.js";
-import type { InventoryFailure } from '../../../src/internal/types/inventory-failure.js';
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { FunctionCollector, MessageContext } from "@gorundebug/tsservicelib/runtime";
+
+import type { OrderItemResult } from "@gorundebug/model";
+import { TestTypedStream } from "../../support/stream.js";
+import type { InventoryFailure } from '../../../src/internal/types/inventory-failure.js';
 import { GetInventoryItemError } from "#internal/functions/inventory-item/get-inventory-item-error.js";
 
 void test("GetInventoryItemError exposes its canonical function contract", () => {

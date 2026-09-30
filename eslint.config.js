@@ -1,6 +1,7 @@
-import eslint from "@eslint/js";
 import { existsSync } from "node:fs";
 import { URL } from "node:url";
+
+import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 
 const typeScriptProjects = existsSync(new URL("./tsconfig.test.json", import.meta.url))

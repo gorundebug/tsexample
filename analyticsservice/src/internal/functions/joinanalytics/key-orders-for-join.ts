@@ -4,8 +4,9 @@ import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gor
 import type {
   KeyByFunction,
 } from "@gorundebug/tsservicelib/transformation";
-import type { AnalyticsEvent } from "#internal/types/index.generated.js";
 import type { KeyValue } from "@gorundebug/tsservicelib/runtime/graph";
+
+import type { AnalyticsEvent } from "#internal/types/index.generated.js";
 
 /** Key the order analytics event by correlation key. */
 export class KeyOrdersForJoin implements KeyByFunction<AnalyticsEvent, string, AnalyticsEvent> {

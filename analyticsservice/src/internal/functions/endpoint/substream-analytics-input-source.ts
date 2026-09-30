@@ -6,8 +6,9 @@ import type {
   EndpointHandler as CustomSourceEndpointHandler,
   ResultContext as CustomResultContext,
 } from "@gorundebug/tsservicelib/datasource/localsource";
-import type { AnalyticsEvent } from "#internal/types/index.generated.js";
 import { MessageContext as RuntimeMessageContext } from "@gorundebug/tsservicelib/runtime/graph";
+
+import type { AnalyticsEvent } from "#internal/types/index.generated.js";
 
 export type SubstreamAnalyticsInputSourceHandlerState = undefined;
 

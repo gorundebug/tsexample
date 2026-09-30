@@ -4,6 +4,7 @@ import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gor
 import type {
   FlatMapFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { Order } from "#internal/types/index.generated.js";
 import type { OrderItem } from "@gorundebug/model";
 

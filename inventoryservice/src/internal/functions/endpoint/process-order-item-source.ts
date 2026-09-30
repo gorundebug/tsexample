@@ -6,6 +6,7 @@ import type {
   ResultContext as GrpcResultContext,
   Sender as GrpcResponseSender,
 } from "@gorundebug/tsservicelib/datasource/grpc";
+
 import type { OrderItem, OrderItemResult } from "@gorundebug/model";
 import { InventoryServiceApiProcessOrderItemMessages as inventoryMessages } from "@gorundebug/inventory-service-api";
 type ProcessOrderItemRequest = inventoryMessages.ProcessOrderItemRequest;

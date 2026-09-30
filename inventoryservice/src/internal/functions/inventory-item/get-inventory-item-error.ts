@@ -4,6 +4,7 @@ import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gor
 import type {
   MapFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { OrderItemResult } from "@gorundebug/model";
 import type { InventoryFailure } from '../../types/inventory-failure.js';
 

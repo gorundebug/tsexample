@@ -2,16 +2,17 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { create } from "@bufbuild/protobuf";
+
 import { InventoryServiceApiProcessOrderItemMessages as inventoryMessages } from "@gorundebug/inventory-service-api";
 type ProcessOrderItemRequest = inventoryMessages.ProcessOrderItemRequest;
 const { ProcessOrderItemResponseSchema } = inventoryMessages;
-import type { OrderItem, OrderItemResult } from "@gorundebug/model";
 import { MessageContext } from "@gorundebug/tsservicelib/runtime";
 import type {
   ResultContext,
   Sender,
 } from "@gorundebug/tsservicelib/datasink/grpc";
 
+import type { OrderItem, OrderItemResult } from "@gorundebug/model";
 import { ProcessOrderItemSink } from "#internal/functions/endpoint/process-order-item-sink.js";
 import type { OrderState } from "../../../src/internal/types/index.generated.js";
 import { makeTestSinkStreamContext } from "../../support/stream.js";

@@ -9,6 +9,7 @@ import {
   makeTemporalSinkEndpointConsumerWithHandler,
   makeTemporalSinkEndpointConsumerWithResultHandler,
 } from "@gorundebug/tsservicelib/datasink/temporal";
+
 import type { ServiceClients } from "./clients.generated.js";
 import type { ServiceFunctions } from "./functions.generated.js";
 import type { ServiceStreams } from "./streams.generated.js";

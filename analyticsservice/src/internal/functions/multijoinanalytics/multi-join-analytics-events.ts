@@ -4,6 +4,7 @@ import type { Collector, MessageContext, RuntimeEnvironment, Stream } from "@gor
 import type {
   MultiJoinFunction,
 } from "@gorundebug/tsservicelib/transformation";
+
 import type { AnalyticsEvent, AnalyticsResult } from "#internal/types/index.generated.js";
 
 /** Combine matching order, payment, and shipment analytics events. */
