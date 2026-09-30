@@ -17,7 +17,8 @@ ORDER_SERVICE_API_SOURCE_CONTEXT ?= https://github.com/gorundebug/tsexample.git\
 MODULE_CONTEXT_ARGS += --build-context module-order_service_api-source="$(ORDER_SERVICE_API_SOURCE_CONTEXT)"
 PROGRESS := ./scripts/run-with-progress.generated.sh
 DEPENDENCY_PNPM_REGISTRY_ARG = $(if $(strip $(NPM_CONFIG_REGISTRY)),--config.registry=$(NPM_CONFIG_REGISTRY),)
-DEPENDENCY_DOWNLOAD_ENV := $(or $(wildcard $(abspath ./dependency-download-env.generated.sh)),$(wildcard $(abspath ../dependency-download-env.generated.sh)),/bin/sh)
+# Keep SHELL relative: GNU Make parses an absolute shell path containing spaces as words.
+DEPENDENCY_DOWNLOAD_ENV := $(if $(wildcard dependency-download-env.generated.sh),./dependency-download-env.generated.sh,$(if $(wildcard ../dependency-download-env.generated.sh),../dependency-download-env.generated.sh,/bin/sh))
 SHELL := $(DEPENDENCY_DOWNLOAD_ENV)
 .SHELLFLAGS := -c
 export

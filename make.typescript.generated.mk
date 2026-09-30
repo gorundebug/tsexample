@@ -6,7 +6,7 @@ DEPENDENCY_PNPM_REGISTRY_ARG = $(if $(strip $(NPM_CONFIG_REGISTRY)),--config.reg
 TYPESCRIPT_PNPM ?= env CI=true \
 	corepack pnpm $(DEPENDENCY_PNPM_REGISTRY_ARG)
 TYPESCRIPT_PROGRESS := ./scripts/run-with-progress.generated.sh
-CONFORMANCE_DIR ?= $(abspath $(PROJECT_DIR)/../conformance)
+CONFORMANCE_DIR ?= $(PROJECT_DIR)/../conformance
 BENCHMARK_ARGS ?=
 PROFILING_ARGS ?=
 TYPESCRIPT_BUF_VERSION := v1.47.2
@@ -36,7 +36,7 @@ typescript-install:
 		$(TYPESCRIPT_PROGRESS) "TypeScript dependency install" $(TYPESCRIPT_PNPM) install; \
 	fi
 
-typescript-gen: typescript-install $(TYPESCRIPT_BUF)
+typescript-gen: typescript-install $(call make_escape_path,$(TYPESCRIPT_BUF))
 	@$(TYPESCRIPT_PROGRESS) "Generate TypeScript module inventory_service_api" \
 		$(MAKE) -C ./inventory_service_api generate SKIP_INSTALL=1 BUF="$(TYPESCRIPT_BUF)"
 	@$(TYPESCRIPT_PROGRESS) "Generate TypeScript module model_ts" \
@@ -88,7 +88,7 @@ benchmark: ## Benchmark this TypeScript example and its native baseline
 		echo "ERROR: conformance checkout not found at $(CONFORMANCE_DIR); set CONFORMANCE_DIR" >&2; \
 		exit 1; \
 	}
-	@DEPENDENCIES_DIR="$(abspath $(PROJECT_DIR)/..)" \
+	@DEPENDENCIES_DIR="$(PROJECT_DIR)/.." \
 		python3 "$(CONFORMANCE_DIR)/benchmarks/examples/run.py" \
 		--language typescript --language typescript-native $(BENCHMARK_ARGS)
 
@@ -97,7 +97,7 @@ profile: ## Profile this TypeScript example and its native baseline
 		echo "ERROR: conformance checkout not found at $(CONFORMANCE_DIR); set CONFORMANCE_DIR" >&2; \
 		exit 1; \
 	}
-	@DEPENDENCIES_DIR="$(abspath $(PROJECT_DIR)/..)" \
+	@DEPENDENCIES_DIR="$(PROJECT_DIR)/.." \
 		python3 "$(CONFORMANCE_DIR)/profiling/examples/run.py" \
 		--language typescript --language typescript-native $(PROFILING_ARGS)
 
@@ -141,7 +141,7 @@ typescript-clean:
 	@rm -rf ./inventory_service_api/dist ./inventory_service_api/tsconfig.tsbuildinfo
 	@rm -rf ./model_ts/dist ./model_ts/tsconfig.tsbuildinfo
 	@rm -rf ./order_service_api/dist ./order_service_api/tsconfig.tsbuildinfo
-$(TYPESCRIPT_BUF):
+$(call make_escape_path,$(TYPESCRIPT_BUF)):
 	@mkdir -p "$(TOOLS_DIR)"
 	@$(TYPESCRIPT_PROGRESS) "Download buf $(TYPESCRIPT_BUF_VERSION)" \
 		curl --fail --location --silent --show-error --connect-timeout 15 --speed-limit 1024 --speed-time 30 --retry 2 --retry-delay 2 --retry-max-time 30 --retry-all-errors \
@@ -149,4 +149,4 @@ $(TYPESCRIPT_BUF):
 		-o "$(TYPESCRIPT_BUF)"
 	@chmod +x "$(TYPESCRIPT_BUF)"
 
-typescript-tools: $(TYPESCRIPT_BUF) ## Install TypeScript code-generation tools
+typescript-tools: $(call make_escape_path,$(TYPESCRIPT_BUF)) ## Install TypeScript code-generation tools
