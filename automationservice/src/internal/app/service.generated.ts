@@ -82,10 +82,7 @@ export abstract class ServiceGenerated {
     const context = Context.background();
     await this.onStart(context);
     await app.start(context);
-    let terminationError: Error | undefined;
-    try {
-      terminationError = await waitForTermination();
-    } finally {
+    const stop = async (): Promise<void> => {
       const stopContext = context.bounded(environment.serviceConfig().shutdownTimeout);
       const [shutdown] = await settleWithinDeadline(stopContext, [(async () => {
         try {
@@ -99,6 +96,12 @@ export abstract class ServiceGenerated {
       } else if (shutdown.status === "rejected") {
         throw errorFromUnknown(shutdown.reason);
       }
+    };
+    let terminationError: Error | undefined;
+    try {
+      terminationError = await waitForTermination();
+    } finally {
+      await stop();
     }
     if (terminationError !== undefined) throw terminationError;
   }

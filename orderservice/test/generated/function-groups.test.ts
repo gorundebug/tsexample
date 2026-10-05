@@ -24,7 +24,7 @@ await test("function groups run all peers concurrently and initialize shared fun
   const completed = new Set<keyof ServiceMakers>();
   const tokens = new Map<keyof ServiceMakers, object>();
   for (const [index, group] of groups.entries()) {
-    const gate = Promise.withResolvers<void>();
+    const gate = Promise.withResolvers<undefined>();
     for (const field of group) {
       const token = {};
       tokens.set(field, token);
@@ -32,7 +32,7 @@ await test("function groups run all peers concurrently and initialize shared fun
         assert.equal(entered.has(field), false);
         for (const previous of groups.slice(0, index).flat()) assert.ok(completed.has(previous));
         entered.add(field);
-        if (group.every((name) => entered.has(name))) gate.resolve();
+        if (group.every((name) => entered.has(name))) gate.resolve(undefined);
         await gate.promise;
         completed.add(field);
         return token;

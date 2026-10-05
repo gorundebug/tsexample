@@ -24,10 +24,17 @@ export interface ServiceInfrastructureMakers {
   ) => Promise<ServiceHTTPServer>;
 }
 
+// Preserve synchronous construction and convert constructor failures to rejections.
+function construct<T>(factory: () => T): Promise<T> {
+  return new Promise((resolve) => {
+    resolve(factory());
+  });
+}
+
 export function defaultInfrastructureMakers(): ServiceInfrastructureMakers {
   return {
-    serviceHttpServer: async (_context, environment, _config) =>
-      new ServiceHTTPServer(() => environment.serviceConfig()),
+    serviceHttpServer: (_context, environment, _config) =>
+      construct(() => new ServiceHTTPServer(() => environment.serviceConfig())),
   };
 }
 
@@ -43,15 +50,14 @@ export async function initInfrastructure(
 ): Promise<void> {
   const controller = new AbortController();
   const makerContext = context.withExternalCancellation(controller.signal);
-  let firstError: unknown;
-  let failed = false;
+  const failure: { failed: boolean; error?: unknown } = { failed: false };
   const invokeMaker = async <T>(maker: () => Promise<T>): Promise<T> => {
     try {
       return await maker();
     } catch (error) {
-      if (!failed) {
-        failed = true;
-        firstError = error;
+      if (!failure.failed) {
+        failure.failed = true;
+        failure.error = error;
         controller.abort(error);
       }
       throw error;
@@ -63,7 +69,7 @@ export async function initInfrastructure(
     ...connectors.makerCalls(makerContext, config, environment, makers, invokeMaker),
   ]);
   controller.abort();
-  if (failed) throw firstError;
+  if (failure.failed) throw failure.error;
   servers.bind(environment);
   connectors.bind(environment);
 }

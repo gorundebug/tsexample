@@ -36,15 +36,14 @@ export async function initFunctions(
   {
     const controller = new AbortController();
     const makerContext = context.withExternalCancellation(controller.signal);
-    let firstError: unknown;
-    let failed = false;
+    const failure: { failed: boolean; error?: unknown } = { failed: false };
     const invokeMaker = async <T>(maker: () => Promise<T>): Promise<T> => {
       try {
         return await maker();
       } catch (error) {
-        if (!failed) {
-          failed = true;
-          firstError = error;
+        if (!failure.failed) {
+          failure.failed = true;
+          failure.error = error;
           controller.abort(error);
         }
         throw error;
@@ -77,7 +76,7 @@ export async function initFunctions(
       }),
     ]);
     controller.abort();
-    if (failed) throw firstError;
+    if (failure.failed) throw failure.error;
     for (const result of group) {
       if (result.status === "rejected") throw result.reason;
     }

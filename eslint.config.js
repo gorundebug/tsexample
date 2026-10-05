@@ -22,6 +22,10 @@ export default tseslint.config(
     ]
   },
   eslint.configs.recommended,
+  {
+    files: ["**/*.cjs"],
+    languageOptions: { globals: { process: "readonly" } }
+  },
   ...tseslint.configs.strictTypeChecked.map((config) => ({ ...config, files: ["**/*.ts"] })),
   ...tseslint.configs.stylisticTypeChecked.map((config) => ({ ...config, files: ["**/*.ts"] })),
   {
