@@ -79,7 +79,7 @@ export async function initInfrastructure(
     ...clients.makerCalls(makerContext, config, environment, makers, invokeMaker),
     ...connectors.makerCalls(makerContext, config, environment, makers, invokeMaker),
   ]);
-  controller.abort();
+  // Successful infrastructure retains its caller-owned lifetime.
   if (failure.failed) throw failure.error;
   servers.bind(environment);
   connectors.bind(environment);

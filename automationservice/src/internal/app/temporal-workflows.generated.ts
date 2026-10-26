@@ -14,6 +14,7 @@ import {
 import {
   ScheduleBackend,
   TemporalWorkflowEnvironment,
+  currentTemporalWorkflowMessageContext,
   executeTemporalWorkflowEndpoint,
   makeTemporalWorkflowSinkEndpointConsumer,
   makeTemporalWorkflowSinkEndpointConsumerWithResult,
@@ -52,7 +53,7 @@ async function executeGeneratedWorkflow(
       noopTracing: request.telemetry?.noopTracing === true
     }
   );
-  const context = new MessageContext();
+  const context = currentTemporalWorkflowMessageContext();
   const makers = defaultWorkflowMakers();
   await customWorkflowMakersInit(context, makers);
   const functions = await initFunctions(context, config, environment, makers);

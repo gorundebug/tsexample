@@ -215,7 +215,7 @@ export async function initFunctions(
         functions.workflowJobEndpointSource = await makers.workflowJobEndpointSource(makerContext, environment);
       }),
     ]);
-    controller.abort();
+    // Successful makers retain their caller-owned lifetime.
     if (failure.failed) throw failure.error;
     for (const result of group) {
       if (result.status === "rejected") throw result.reason;

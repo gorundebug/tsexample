@@ -1,6 +1,6 @@
 {
   "name": "@gorundebug/tsexample-automationservice",
-  "version": "0.2.156",
+  "version": "0.2.157",
   "private": true,
   "type": "module",
   "imports": {
@@ -33,6 +33,7 @@
     "@gorundebug/model": "git+https://github.com/gorundebug/tsexample.git#v0.2.157&path:model_ts"
   },
   "devDependencies": {
+    "@types/ms": "2.1.0",
     "@types/node": "24.13.3",
     "tsx": "4.20.6",
     "typescript": "6.0.3"
