@@ -14,6 +14,17 @@ import type { OrderProcessed } from "@gorundebug/model";
 import { OrderProcessedEndpointSource } from "#internal/functions/endpoint/order-processed-endpoint-source.js";
 import { makeTestStreamContext } from "../../support/stream.js";
 
+void test("transport errors reach the error branch without a message", async () => {
+  const errors: Error[] = [];
+  const values: OrderProcessed[] = [];
+  const stream = makeTestStreamContext<OrderProcessed, OrderProcessed, Error>(values, errors);
+  const context = new MessageContext();
+  const error = new Error("broker unavailable");
+  await new OrderProcessedEndpointSource().onError(context, stream, error);
+  assert.deepEqual(errors, [error]);
+  assert.deepEqual(values, []);
+});
+
 void test("OrderProcessedEndpointSource decodes an event and acknowledges it after the result", async () => {
   const function_ = new OrderProcessedEndpointSource();
   const values: OrderProcessed[] = [];

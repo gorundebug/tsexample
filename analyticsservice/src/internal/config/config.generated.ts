@@ -125,7 +125,7 @@ const DEFAULT_CONFIG = {
       "defaultCallSemantics": 2,
       "defaultGrpcTimeout": 0,
       "environment": "",
-      "golangVersion": "1.25.4",
+      "golangVersion": "1.26.4",
       "grpcHost": "0.0.0.0",
       "grpcPort": 9203,
       "httpHost": "0.0.0.0",
