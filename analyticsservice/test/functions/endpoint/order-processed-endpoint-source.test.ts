@@ -86,6 +86,7 @@ function record(value: unknown): KafkaRecord {
 }
 
 class RecordingControl implements KafkaConsumerControl {
+  public readonly signal = new AbortController().signal;
   public readonly marked: string[] = [];
 
   public mark(_record: KafkaRecord, metadata: string): void {
