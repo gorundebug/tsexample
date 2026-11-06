@@ -643,6 +643,7 @@ const DEFAULT_CONFIG = {
   },
   "endpoints": {
     "analyticsOrders": {
+      "enabled": true,
       "functionDescription": "Produce a deterministic order analytics event for the canonical join examples.",
       "functionInitializerGroup": "",
       "functionName": "AnalyticsOrders",
@@ -653,6 +654,7 @@ const DEFAULT_CONFIG = {
       "publicFunction": false
     },
     "analyticsPayments": {
+      "enabled": true,
       "functionDescription": "Produce a deterministic payment analytics event for the canonical join examples.",
       "functionInitializerGroup": "",
       "functionName": "AnalyticsPayments",
@@ -679,6 +681,7 @@ const DEFAULT_CONFIG = {
       "tracingEnabled": false
     },
     "analyticsShipments": {
+      "enabled": true,
       "functionDescription": "Produce a deterministic shipment analytics event for the canonical multi-way join example.",
       "functionInitializerGroup": "",
       "functionName": "AnalyticsShipments",
@@ -689,6 +692,7 @@ const DEFAULT_CONFIG = {
       "publicFunction": false
     },
     "cycleAnalyticsInput": {
+      "enabled": true,
       "functionDescription": "Produce one deterministic analytics event that exercises the finite feedback cycle.",
       "functionInitializerGroup": "",
       "functionName": "CycleAnalyticsInput",
@@ -699,6 +703,7 @@ const DEFAULT_CONFIG = {
       "publicFunction": false
     },
     "cycleAnalyticsResult": {
+      "enabled": true,
       "functionDescription": "Validate the terminal event emitted after three passes through the feedback cycle.",
       "functionInitializerGroup": "",
       "functionName": "CycleAnalyticsResult",
@@ -709,6 +714,7 @@ const DEFAULT_CONFIG = {
       "publicFunction": false
     },
     "highValueAnalytics": {
+      "enabled": true,
       "functionDescription": "Validate and record analytics results routed to the high-value Case branch.",
       "functionInitializerGroup": "",
       "functionName": "HighValueAnalytics",
@@ -719,6 +725,7 @@ const DEFAULT_CONFIG = {
       "publicFunction": false
     },
     "joinedAnalytics": {
+      "enabled": true,
       "functionDescription": "Validate and record the result of the two-way analytics join.",
       "functionInitializerGroup": "",
       "functionName": "JoinedAnalytics",
@@ -745,6 +752,7 @@ const DEFAULT_CONFIG = {
       "topic": "order-processed"
     },
     "standardAnalytics": {
+      "enabled": true,
       "functionDescription": "Validate and record analytics results routed to the standard Case branch.",
       "functionInitializerGroup": "",
       "functionName": "StandardAnalytics",
@@ -755,6 +763,7 @@ const DEFAULT_CONFIG = {
       "publicFunction": false
     },
     "substreamAnalyticsInput": {
+      "enabled": true,
       "functionDescription": "Produce one deterministic analytics event that invokes the service-local SubStream example.",
       "functionInitializerGroup": "",
       "functionName": "SubstreamAnalyticsInput",
@@ -765,6 +774,7 @@ const DEFAULT_CONFIG = {
       "publicFunction": false
     },
     "substreamAnalyticsResult": {
+      "enabled": true,
       "functionDescription": "Validate and record the result returned by the service-local SubStream example.",
       "functionInitializerGroup": "",
       "functionName": "SubstreamAnalyticsResult",
@@ -862,6 +872,8 @@ export function parseIntegerListEnvironment(value: string): readonly number[] {
 }
 
 const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
+  { environment: "ANALYTICS_ORDERS_ENABLED", path: ["endpoints", "analyticsOrders", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "ANALYTICS_PAYMENTS_ENABLED", path: ["endpoints", "analyticsPayments", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "ANALYTICS_SCHEDULE_ENABLED", path: ["endpoints", "analyticsSchedule", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "ANALYTICS_SCHEDULE_MISSED_RUN_POLICY", path: ["endpoints", "analyticsSchedule", "missedRunPolicy", ], parse: parseStringEnvironment },
   { environment: "ANALYTICS_SCHEDULE_OVERLAP_POLICY", path: ["endpoints", "analyticsSchedule", "overlapPolicy", ], parse: parseStringEnvironment },
@@ -874,12 +886,20 @@ const ENVIRONMENT_PATCHES: readonly EnvironmentPatch[] = [
   { environment: "ANALYTICS_SERVICE_GRPC_PORT", path: ["services", "analyticsService", "grpcPort", ], parse: parseIntegerEnvironment },
   { environment: "ANALYTICS_SERVICE_HTTP_HOST", path: ["services", "analyticsService", "httpHost", ], parse: parseStringEnvironment },
   { environment: "ANALYTICS_SERVICE_HTTP_PORT", path: ["services", "analyticsService", "httpPort", ], parse: parseIntegerEnvironment },
+  { environment: "ANALYTICS_SHIPMENTS_ENABLED", path: ["endpoints", "analyticsShipments", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "CYCLE_ANALYTICS_INPUT_ENABLED", path: ["endpoints", "cycleAnalyticsInput", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "CYCLE_ANALYTICS_RESULT_ENABLED", path: ["endpoints", "cycleAnalyticsResult", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "HIGH_VALUE_ANALYTICS_ENABLED", path: ["endpoints", "highValueAnalytics", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "JOINED_ANALYTICS_ENABLED", path: ["endpoints", "joinedAnalytics", "enabled", ], parse: parseBooleanEnvironment },
   { environment: "ORDER_EVENTS_BROKERS", path: ["dataConnectors", "orderEvents", "brokers", ], parse: parseStringEnvironment },
   { environment: "ORDER_EVENTS_PASSWORD", path: ["dataConnectors", "orderEvents", "password", ], parse: parseStringEnvironment },
   { environment: "ORDER_EVENTS_SASL_MECHANISM", path: ["dataConnectors", "orderEvents", "saslMechanism", ], parse: parseStringEnvironment },
   { environment: "ORDER_EVENTS_SECURITY_PROTOCOL", path: ["dataConnectors", "orderEvents", "securityProtocol", ], parse: parseStringEnvironment },
   { environment: "ORDER_EVENTS_USERNAME", path: ["dataConnectors", "orderEvents", "username", ], parse: parseStringEnvironment },
   { environment: "ORDER_PROCESSED_ENABLED", path: ["endpoints", "orderProcessed", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "STANDARD_ANALYTICS_ENABLED", path: ["endpoints", "standardAnalytics", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "SUBSTREAM_ANALYTICS_INPUT_ENABLED", path: ["endpoints", "substreamAnalyticsInput", "enabled", ], parse: parseBooleanEnvironment },
+  { environment: "SUBSTREAM_ANALYTICS_RESULT_ENABLED", path: ["endpoints", "substreamAnalyticsResult", "enabled", ], parse: parseBooleanEnvironment },
 ];
 
 export class ConfigGenerated extends ConfigSnapshot {
