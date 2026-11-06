@@ -15,6 +15,11 @@ export type OrderProcessedEndpointSourceHandlerState = undefined;
 Producers include the final status, processing time, total and confirmed item counts, and a failure reason for unsuccessful orders.
 Consumers decode the event and mark its Kafka message processed only after the pipeline handles it successfully. */
 export class OrderProcessedEndpointSource implements KafkaSourceEndpointHandler<OrderProcessedEndpointSourceHandlerState, OrderProcessed, OrderProcessed, Error> {
+  // No externally restored durable state: retain broker-managed positions.
+  public restoreCheckpoint(_context: MessageContext, _stream: StreamContext<OrderProcessed, OrderProcessed, Error>): ReadonlyMap<number, bigint> | null {
+    return null;
+  }
+
   public onError(context: MessageContext, stream: StreamContext<OrderProcessed, OrderProcessed, Error>, error: Error): void | Promise<void> {
     return stream.errorCollect(context, error);
   }
