@@ -2,6 +2,8 @@
 
 > Rules: [`spec/rules.md`](../rules.md)
 
+Paths and commands below are relative to the generated project root.
+
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
@@ -21,15 +23,15 @@ Consumers decode the event and mark its Kafka message processed only after the p
 
 
 ## Stream types
-- Input: `OrderProcessed` — `model_ts/src/types/order-processed.ts`
-- Output: `OrderProcessed` — `model_ts/src/types/order-processed.ts`
+- Emits into graph: `OrderProcessed` — `model_ts/src/types/order-processed.ts`
+- Receives graph result: `OrderProcessed` — `model_ts/src/types/order-processed.ts`
 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `analyticsservice/src/internal/functions/order-processed-endpoint-source.ts` and preserve its generated contract
-- [ ] Inspect input type `OrderProcessed` in `model_ts/src/types/order-processed.ts`
-- [ ] Inspect output type `OrderProcessed` in `model_ts/src/types/order-processed.ts`
+- [ ] Inspect emitted message type `OrderProcessed` in `model_ts/src/types/order-processed.ts`
+- [ ] Inspect graph result type `OrderProcessed` in `model_ts/src/types/order-processed.ts`
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/order-processed-endpoint-source.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task13.md — OrderProcessedEndpointSource — TypeScript — done`

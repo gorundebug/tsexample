@@ -2,6 +2,8 @@
 
 > Rules: [`spec/rules.md`](../rules.md)
 
+Paths and commands below are relative to the generated project root.
+
 | Field | Value |
 |-------|-------|
 | Language | `TypeScript` |
@@ -30,15 +32,15 @@ Calculate the total from processed item prices, falling back to the submitted to
 
 
 ## Stream types
-- Input: `Order` — `orderservice/src/internal/types/order.ts`
-- Output: `OrderState` — `orderservice/src/internal/types/order-state.ts`
+- Emits into graph: `Order` — `orderservice/src/internal/types/order.ts`
+- Receives graph result: `OrderState` — `orderservice/src/internal/types/order-state.ts`
 
 ## Checklist
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `orderservice/src/internal/functions/process-order-source.ts` and preserve its generated contract
-- [ ] Inspect input type `Order` in `orderservice/src/internal/types/order.ts`
-- [ ] Inspect output type `OrderState` in `orderservice/src/internal/types/order-state.ts`
+- [ ] Inspect emitted message type `Order` in `orderservice/src/internal/types/order.ts`
+- [ ] Inspect graph result type `OrderState` in `orderservice/src/internal/types/order-state.ts`
 - [ ] Implement meaningful assertions in `orderservice/test/functions/process-order-source.test.ts`
 - [ ] Verify the endpoint/result lifecycle, including completion and error paths
 - [ ] Re-read this checklist
