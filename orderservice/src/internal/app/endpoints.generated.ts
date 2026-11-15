@@ -9,12 +9,14 @@ import {
 import { InventoryServiceApi } from "@gorundebug/inventory-service-api";
 import type { ServiceClients } from "./clients.generated.js";
 import type { ServiceFunctions } from "./functions.generated.js";
+import type { ServiceMakers } from "./makers.generated.js";
 import type { ServiceStreams } from "./streams.generated.js";
 
 function initDataConnectors(
   streams: ServiceStreams,
   functions: ServiceFunctions,
   clients: ServiceClients,
+  _makers: ServiceMakers,
 ) {
   const [processOrder, processOrderHandler] = makeNodeHttpSourceEndpointConsumer(streams.processOrder, functions.processOrderSource);
   const processOrderItem = makeGrpcNoStreamingSinkEndpointConsumer(streams.processOrderItem, InventoryServiceApi, InventoryServiceApi.method.processOrderItem, functions.processOrderItemSink);
@@ -39,8 +41,8 @@ export class ServiceEndpoints {
   public dataConnectors!: ServiceDataConnectors;
   public handlers!: ServiceHandlers;
 
-  public bind(streams: ServiceStreams, functions: ServiceFunctions, clients: ServiceClients) {
-    const bindings = initDataConnectors(streams, functions, clients);
+  public bind(streams: ServiceStreams, functions: ServiceFunctions, clients: ServiceClients, makers: ServiceMakers) {
+    const bindings = initDataConnectors(streams, functions, clients, makers);
     this.dataConnectors = bindings.dataConnectors;
     this.handlers = bindings.handlers;
     return bindings;

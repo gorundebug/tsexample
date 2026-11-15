@@ -77,7 +77,7 @@ export abstract class ServiceGenerated extends ServiceSubStreams {
     this.connectors.initRuntimeConnectors(environment);
     this.streams = initStreams(config, environment, this.functions);
     this.bindSubStreams(this.streams);
-    const bindings = this.endpoints.bind(this.streams, this.functions, this.clients);
+    const bindings = this.endpoints.bind(this.streams, this.functions, this.clients, this.makers);
     this.dataConnectors = bindings.dataConnectors;
     this.handlers = bindings.handlers;
 

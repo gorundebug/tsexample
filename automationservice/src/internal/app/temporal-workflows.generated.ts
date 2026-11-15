@@ -58,14 +58,14 @@ async function executeGeneratedWorkflow(
   await customWorkflowMakersInit(context, makers);
   const functions = await initFunctions(context, config, environment, makers);
   const streams = initStreams(config, environment, functions);
-  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.callFanOutActivityA);
-  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.callFanOutActivityB);
-  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.callFanOutActivityC);
-  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.callSequentialActivityA);
-  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.callSequentialActivityB);
-  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.submitActivityJob);
-  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.submitWorkflowJob);
-  makeTemporalWorkflowSinkEndpointConsumer(streams.submitFanOutWorkflowJob);
+  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.callFanOutActivityA, makers.temporalSubmissionOptions.callFanOutActivityA);
+  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.callFanOutActivityB, makers.temporalSubmissionOptions.callFanOutActivityB);
+  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.callFanOutActivityC, makers.temporalSubmissionOptions.callFanOutActivityC);
+  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.callSequentialActivityA, makers.temporalSubmissionOptions.callSequentialActivityA);
+  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.callSequentialActivityB, makers.temporalSubmissionOptions.callSequentialActivityB);
+  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.submitActivityJob, makers.temporalSubmissionOptions.submitActivityJob);
+  makeTemporalWorkflowSinkEndpointConsumerWithResult(streams.submitWorkflowJob, makers.temporalSubmissionOptions.submitWorkflowJob);
+  makeTemporalWorkflowSinkEndpointConsumer(streams.submitFanOutWorkflowJob, makers.temporalSubmissionOptions.submitFanOutWorkflowJob);
 
   switch (endpointId) {
     case EndpointIds.FAN_OUT_WORKFLOW_JOB:

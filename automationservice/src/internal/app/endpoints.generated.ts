@@ -12,32 +12,34 @@ import {
 
 import type { ServiceClients } from "./clients.generated.js";
 import type { ServiceFunctions } from "./functions.generated.js";
+import type { ServiceMakers } from "./makers.generated.js";
 import type { ServiceStreams } from "./streams.generated.js";
 
 function initDataConnectors(
   streams: ServiceStreams,
   functions: ServiceFunctions,
   clients: ServiceClients,
+  _makers: ServiceMakers,
 ) {
   const consumeActivityJob = makeTemporalEndpointConsumerWithHandler(streams.consumeActivityJob, functions.activityJobEndpointSource);
   const consumeFanOutWorkflowJob = makeTemporalEndpointConsumerWithHandler(streams.consumeFanOutWorkflowJob, functions.fanoutWorkflowJobEndpointSource);
-  const callFanOutActivityA = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callFanOutActivityA, functions.fanoutActivityAEndpointSink);
-  const callFanOutActivityB = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callFanOutActivityB, functions.fanoutActivityBEndpointSink);
-  const callFanOutActivityC = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callFanOutActivityC, functions.fanoutActivityCEndpointSink);
+  const callFanOutActivityA = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callFanOutActivityA, functions.fanoutActivityAEndpointSink, _makers.temporalSubmissionOptions.callFanOutActivityA);
+  const callFanOutActivityB = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callFanOutActivityB, functions.fanoutActivityBEndpointSink, _makers.temporalSubmissionOptions.callFanOutActivityB);
+  const callFanOutActivityC = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callFanOutActivityC, functions.fanoutActivityCEndpointSink, _makers.temporalSubmissionOptions.callFanOutActivityC);
   const consumeWorkflowJob = makeTemporalEndpointConsumerWithHandler(streams.consumeWorkflowJob, functions.workflowJobEndpointSource);
-  const callSequentialActivityA = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callSequentialActivityA, functions.sequentialActivityAEndpointSink);
-  const callSequentialActivityB = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callSequentialActivityB, functions.sequentialActivityBEndpointSink);
+  const callSequentialActivityA = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callSequentialActivityA, functions.sequentialActivityAEndpointSink, _makers.temporalSubmissionOptions.callSequentialActivityA);
+  const callSequentialActivityB = makeTemporalSinkEndpointConsumerWithResultHandler(streams.callSequentialActivityB, functions.sequentialActivityBEndpointSink, _makers.temporalSubmissionOptions.callSequentialActivityB);
   const consumeFanOutActivityA = makeTemporalEndpointConsumerWithHandler(streams.consumeFanOutActivityA, functions.fanoutActivityAEndpointSource);
   const consumeFanOutActivityB = makeTemporalEndpointConsumerWithHandler(streams.consumeFanOutActivityB, functions.fanoutActivityBEndpointSource);
   const consumeFanOutActivityC = makeTemporalEndpointConsumerWithHandler(streams.consumeFanOutActivityC, functions.fanoutActivityCEndpointSource);
   const consumeSequentialActivityA = makeTemporalEndpointConsumerWithHandler(streams.consumeSequentialActivityA, functions.sequentialActivityAEndpointSource);
   const consumeSequentialActivityB = makeTemporalEndpointConsumerWithHandler(streams.consumeSequentialActivityB, functions.sequentialActivityBEndpointSource);
   const localSchedule = makeCronEndpointConsumer(streams.localSchedule, functions.localScheduleSource);
-  const submitActivityJob = makeTemporalSinkEndpointConsumerWithResultHandler(streams.submitActivityJob, functions.activityJobEndpointSink);
-  const submitWorkflowJob = makeTemporalSinkEndpointConsumerWithResultHandler(streams.submitWorkflowJob, functions.workflowJobEndpointSink);
+  const submitActivityJob = makeTemporalSinkEndpointConsumerWithResultHandler(streams.submitActivityJob, functions.activityJobEndpointSink, _makers.temporalSubmissionOptions.submitActivityJob);
+  const submitWorkflowJob = makeTemporalSinkEndpointConsumerWithResultHandler(streams.submitWorkflowJob, functions.workflowJobEndpointSink, _makers.temporalSubmissionOptions.submitWorkflowJob);
   const temporalActivitySchedule = makeTemporalScheduleEndpointConsumer(streams.temporalActivitySchedule, functions.temporalActivityScheduleSource);
   const temporalWorkflowSchedule = makeTemporalScheduleEndpointConsumer(streams.temporalWorkflowSchedule, functions.temporalWorkflowScheduleSource);
-  const submitFanOutWorkflowJob = makeTemporalSinkEndpointConsumerWithHandler(streams.submitFanOutWorkflowJob, functions.fanoutWorkflowJobEndpointSink);
+  const submitFanOutWorkflowJob = makeTemporalSinkEndpointConsumerWithHandler(streams.submitFanOutWorkflowJob, functions.fanoutWorkflowJobEndpointSink, _makers.temporalSubmissionOptions.submitFanOutWorkflowJob);
   return {
     dataConnectors: {
       consumeActivityJob,
@@ -73,8 +75,8 @@ export class ServiceEndpoints {
   public dataConnectors!: ServiceDataConnectors;
   public handlers!: ServiceHandlers;
 
-  public bind(streams: ServiceStreams, functions: ServiceFunctions, clients: ServiceClients) {
-    const bindings = initDataConnectors(streams, functions, clients);
+  public bind(streams: ServiceStreams, functions: ServiceFunctions, clients: ServiceClients, makers: ServiceMakers) {
+    const bindings = initDataConnectors(streams, functions, clients, makers);
     this.dataConnectors = bindings.dataConnectors;
     this.handlers = bindings.handlers;
     return bindings;

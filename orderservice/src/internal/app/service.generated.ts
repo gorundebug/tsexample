@@ -75,7 +75,7 @@ export abstract class ServiceGenerated {
     await this.customFunctionsInit(messageContext);
     this.connectors.initRuntimeConnectors(environment);
     this.streams = initStreams(config, environment, this.functions);
-    const bindings = this.endpoints.bind(this.streams, this.functions, this.clients);
+    const bindings = this.endpoints.bind(this.streams, this.functions, this.clients, this.makers);
     this.dataConnectors = bindings.dataConnectors;
     this.handlers = bindings.handlers;
 

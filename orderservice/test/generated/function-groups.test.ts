@@ -6,9 +6,9 @@ import { MessageContext, RuntimeConfigStore, ServiceEnvironment } from "@gorunde
 
 import { Config } from "#internal/config/config.js";
 import { ServiceIds } from "#internal/config/config.generated.js";
-import { defaultMakers, initFunctions, type ServiceMakers } from "#internal/app/graph.generated.js";
+import { defaultMakers, initFunctions, type ServiceFunctions } from "#internal/app/graph.generated.js";
 
-const groups: readonly (readonly (keyof ServiceMakers)[])[] = [
+const groups: readonly (readonly (keyof ServiceFunctions)[])[] = [
   ["orderProcessedEndpointSink", "processOrderItemSink", "processOrderSource", "mapOrderItemResultToOrderState", "mapToOrderProcessed", "mapToOrderState", "processOrderItems", "softDeadline"],
 ];
 
@@ -20,9 +20,9 @@ async function setup() {
 
 await test("function groups run all peers concurrently and initialize shared functions once", { timeout: 10000 }, async () => {
   const { config, environment, makers, context } = await setup();
-  const entered = new Set<keyof ServiceMakers>();
-  const completed = new Set<keyof ServiceMakers>();
-  const tokens = new Map<keyof ServiceMakers, object>();
+  const entered = new Set<keyof ServiceFunctions>();
+  const completed = new Set<keyof ServiceFunctions>();
+  const tokens = new Map<keyof ServiceFunctions, object>();
   for (const [index, group] of groups.entries()) {
     const gate = Promise.withResolvers<undefined>();
     for (const field of group) {
@@ -49,7 +49,7 @@ await test("failed function group settles its peers and never starts the next gr
   const first = groups[0];
   if (first === undefined || first.length === 0) return;
   const error = new Error("test maker failure");
-  const settled = new Set<keyof ServiceMakers>();
+  const settled = new Set<keyof ServiceFunctions>();
   for (const field of groups.flat()) {
     Object.defineProperty(makers, field, { value: async () => {
       await Promise.resolve();
