@@ -30,6 +30,7 @@ Produce a deterministic payment analytics event for the canonical join examples.
 - [ ] Open `analyticsservice/src/internal/functions/analytics-payments-source.ts` and preserve its generated contract
 - [ ] Inspect emitted message type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect graph result type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
+
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/analytics-payments-source.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task7.md — AnalyticsPaymentsSource — TypeScript — done`

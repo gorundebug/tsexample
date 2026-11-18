@@ -30,6 +30,7 @@ Validate and record analytics results routed to the high-value Case branch.
 - [ ] Open `analyticsservice/src/internal/functions/high-value-analytics-sink.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
 - [ ] Inspect output type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
+
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/high-value-analytics-sink.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task11.md — HighValueAnalyticsSink — TypeScript — done`

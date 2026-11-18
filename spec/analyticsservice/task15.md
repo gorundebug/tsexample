@@ -30,6 +30,7 @@ Produce one deterministic analytics event that invokes the service-local SubStre
 - [ ] Open `analyticsservice/src/internal/functions/substream-analytics-input-source.ts` and preserve its generated contract
 - [ ] Inspect emitted message type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect graph result type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
+
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/substream-analytics-input-source.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task15.md — SubstreamAnalyticsInputSource — TypeScript — done`

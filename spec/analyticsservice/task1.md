@@ -30,6 +30,7 @@ Count successful and unsuccessful orders independently, then return the event un
 - [ ] Open `analyticsservice/src/internal/functions/count-order-processed.ts` and preserve its generated contract
 - [ ] Inspect input type `OrderProcessed` in `model_ts/src/types/order-processed.ts`
 - [ ] Inspect output type `OrderProcessed` in `model_ts/src/types/order-processed.ts`
+
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/count-order-processed.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task1.md — CountOrderProcessed — TypeScript — done`

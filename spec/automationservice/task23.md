@@ -26,6 +26,7 @@ Return the visible result of one scheduled Activity execution.
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `automationservice/src/internal/functions/process-scheduled-activity.ts` and preserve its generated contract
+
 - [ ] Implement meaningful assertions in `automationservice/test/functions/process-scheduled-activity.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] automationservice/task23.md — ProcessScheduledActivity — TypeScript — done`

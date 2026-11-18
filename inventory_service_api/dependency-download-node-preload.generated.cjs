@@ -30,6 +30,10 @@ function assignments(file) {
     if (value.startsWith(githubPrefix)) {
       value = `${process.env.DEPENDENCY_GITHUB_RAW_URL || 'https://github.com'}${value.slice(githubPrefix.length)}`;
     }
+    const apachePrefix = '${DEPENDENCY_APACHE_ARCHIVE_URL}';
+    if (value.startsWith(apachePrefix)) {
+      value = `${process.env.DEPENDENCY_APACHE_ARCHIVE_URL || 'https://archive.apache.org'}${value.slice(apachePrefix.length)}`;
+    }
     return [[key, value]];
   });
 }

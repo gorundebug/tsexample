@@ -11,6 +11,7 @@ services:
         DEPENDENCY_DOCKER_REGISTRY: ${DEPENDENCY_DOCKER_REGISTRY:-docker.io}
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
+        DEPENDENCY_APACHE_ARCHIVE_URL: ${DEPENDENCY_APACHE_ARCHIVE_URL:-https://archive.apache.org}
         DEPENDENCY_APT_DEBIAN_URL: ${DEPENDENCY_APT_DEBIAN_URL:-}
         DEPENDENCY_APT_DEBIAN_SECURITY_URL: ${DEPENDENCY_APT_DEBIAN_SECURITY_URL:-}
         GIT_CONFIG_COUNT: ${GIT_CONFIG_COUNT:-0}
@@ -19,7 +20,7 @@ services:
         GIT_CONFIG_KEY_1: ${GIT_CONFIG_KEY_1:-}
         GIT_CONFIG_VALUE_1: ${GIT_CONFIG_VALUE_1:-}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.181}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.182}"
     command:
       - --config
       - /app/config/config.yaml
@@ -56,6 +57,7 @@ services:
         DEPENDENCY_DOCKER_REGISTRY: ${DEPENDENCY_DOCKER_REGISTRY:-docker.io}
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
+        DEPENDENCY_APACHE_ARCHIVE_URL: ${DEPENDENCY_APACHE_ARCHIVE_URL:-https://archive.apache.org}
         DEPENDENCY_APT_DEBIAN_URL: ${DEPENDENCY_APT_DEBIAN_URL:-}
         DEPENDENCY_APT_DEBIAN_SECURITY_URL: ${DEPENDENCY_APT_DEBIAN_SECURITY_URL:-}
         GIT_CONFIG_COUNT: ${GIT_CONFIG_COUNT:-0}
@@ -64,7 +66,7 @@ services:
         GIT_CONFIG_KEY_1: ${GIT_CONFIG_KEY_1:-}
         GIT_CONFIG_VALUE_1: ${GIT_CONFIG_VALUE_1:-}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.181}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.182}"
     command:
       - --config
       - /app/config/config.yaml
@@ -102,6 +104,7 @@ services:
         DEPENDENCY_DOCKER_REGISTRY: ${DEPENDENCY_DOCKER_REGISTRY:-docker.io}
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
+        DEPENDENCY_APACHE_ARCHIVE_URL: ${DEPENDENCY_APACHE_ARCHIVE_URL:-https://archive.apache.org}
         DEPENDENCY_APT_DEBIAN_URL: ${DEPENDENCY_APT_DEBIAN_URL:-}
         DEPENDENCY_APT_DEBIAN_SECURITY_URL: ${DEPENDENCY_APT_DEBIAN_SECURITY_URL:-}
         GIT_CONFIG_COUNT: ${GIT_CONFIG_COUNT:-0}
@@ -110,7 +113,7 @@ services:
         GIT_CONFIG_KEY_1: ${GIT_CONFIG_KEY_1:-}
         GIT_CONFIG_VALUE_1: ${GIT_CONFIG_VALUE_1:-}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.181}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.182}"
     command:
       - --config
       - /app/config/config.yaml
@@ -144,6 +147,7 @@ services:
         DEPENDENCY_DOCKER_REGISTRY: ${DEPENDENCY_DOCKER_REGISTRY:-docker.io}
         NPM_CONFIG_REGISTRY: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}
         DEPENDENCY_GITHUB_RAW_URL: ${DEPENDENCY_GITHUB_RAW_URL:-https://github.com}
+        DEPENDENCY_APACHE_ARCHIVE_URL: ${DEPENDENCY_APACHE_ARCHIVE_URL:-https://archive.apache.org}
         DEPENDENCY_APT_DEBIAN_URL: ${DEPENDENCY_APT_DEBIAN_URL:-}
         DEPENDENCY_APT_DEBIAN_SECURITY_URL: ${DEPENDENCY_APT_DEBIAN_SECURITY_URL:-}
         GIT_CONFIG_COUNT: ${GIT_CONFIG_COUNT:-0}
@@ -152,7 +156,7 @@ services:
         GIT_CONFIG_KEY_1: ${GIT_CONFIG_KEY_1:-}
         GIT_CONFIG_VALUE_1: ${GIT_CONFIG_VALUE_1:-}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.181}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.182}"
     command:
       - --config
       - /app/config/config.yaml
@@ -178,6 +182,10 @@ services:
         condition: service_healthy
     networks:
       - app_net
+
+
+
+
 
 
   redpanda:

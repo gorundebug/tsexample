@@ -11,6 +11,7 @@ RUN if [ -n "$DEPENDENCY_APT_DEBIAN_URL$DEPENDENCY_APT_DEBIAN_SECURITY_URL" ]; t
 ARG TARGETARCH
 ARG NPM_CONFIG_REGISTRY=https://registry.npmjs.org/
 ARG DEPENDENCY_GITHUB_RAW_URL=https://github.com
+ARG DEPENDENCY_APACHE_ARCHIVE_URL=https://archive.apache.org
 ARG GIT_CONFIG_COUNT=0
 ARG GIT_CONFIG_KEY_0=
 ARG GIT_CONFIG_VALUE_0=
@@ -19,7 +20,8 @@ ARG GIT_CONFIG_VALUE_1=
 ENV CI=true \
     NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY} \
     COREPACK_NPM_REGISTRY=${NPM_CONFIG_REGISTRY} \
-    DEPENDENCY_GITHUB_RAW_URL=${DEPENDENCY_GITHUB_RAW_URL}
+    DEPENDENCY_GITHUB_RAW_URL=${DEPENDENCY_GITHUB_RAW_URL} \
+    DEPENDENCY_APACHE_ARCHIVE_URL=${DEPENDENCY_APACHE_ARCHIVE_URL}
 COPY dependency-download-mirrors.generated.env /etc/servicegen/dependency-download-mirrors.generated.env
 COPY dependency-download-mirrors.env /etc/servicegen/dependency-download-mirrors.env
 COPY dependency-download-env.generated.sh /usr/local/bin/servicegen-download-env

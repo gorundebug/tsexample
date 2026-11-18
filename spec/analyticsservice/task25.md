@@ -30,6 +30,7 @@ Transform one callable SubStream input into its analytics result.
 - [ ] Open `analyticsservice/src/internal/functions/build-substream-analytics-result.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect output type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
+
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/build-substream-analytics-result.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task25.md — BuildSubstreamAnalyticsResult — TypeScript — done`

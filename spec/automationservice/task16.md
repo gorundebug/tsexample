@@ -26,6 +26,7 @@ Observe the typed result returned by the Activity B fan-out branch.
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `automationservice/src/internal/functions/observe-fanout-activity-b.ts` and preserve its generated contract
+
 - [ ] Implement meaningful assertions in `automationservice/test/functions/observe-fanout-activity-b.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] automationservice/task16.md — ObserveFanoutActivityB — TypeScript — done`

@@ -30,6 +30,7 @@ Validate and record the result of the two-way analytics join.
 - [ ] Open `analyticsservice/src/internal/functions/joined-analytics-sink.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
 - [ ] Inspect output type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
+
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/joined-analytics-sink.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task12.md — JoinedAnalyticsSink — TypeScript — done`

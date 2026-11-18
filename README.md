@@ -221,6 +221,11 @@ them.
 
 ### TypeScript
 
+Generated services use the same compiler policy as tsservicelib: strict source
+checking, including exact optional properties, with `skipLibCheck` for dependency
+declarations. This avoids incompatible internal declaration checks in third-party
+packages such as NATS.js; imported API usage in application code remains checked.
+
 ```sh
 make typescript-build   # [host]
 make typescript-test    # [host]

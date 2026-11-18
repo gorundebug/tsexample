@@ -11,11 +11,13 @@ injectWorkspacePackages: true
 syncInjectedDepsAfterScripts:
   - build
 overrides:
+  "rabbitmq-amqp-js-client>rhea": "3.0.5"
   "@gorundebug/inventory-service-api": "workspace:*"
   "@gorundebug/model": "workspace:*"
   "@gorundebug/order-service-api": "workspace:*"
 allowBuilds:
   '@confluentinc/kafka-javascript': true
+  pulsar-client: true
   '@swc/core': true
   esbuild: true
   protobufjs: false

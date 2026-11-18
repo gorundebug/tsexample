@@ -26,6 +26,7 @@ Return sequential Activity B's typed result to its Temporal sink.
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `automationservice/src/internal/functions/process-sequential-activity-b.ts` and preserve its generated contract
+
 - [ ] Implement meaningful assertions in `automationservice/test/functions/process-sequential-activity-b.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] automationservice/task26.md — ProcessSequentialActivityB — TypeScript — done`

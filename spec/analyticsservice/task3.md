@@ -30,6 +30,7 @@ Increment the cycle counter while preserving the analytics event identity.
 - [ ] Open `analyticsservice/src/internal/functions/advance-cycle-analytics.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
+
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/advance-cycle-analytics.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task3.md — AdvanceCycleAnalytics — TypeScript — done`

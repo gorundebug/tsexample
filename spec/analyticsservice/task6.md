@@ -30,6 +30,7 @@ Produce a deterministic order analytics event for the canonical join examples.
 - [ ] Open `analyticsservice/src/internal/functions/analytics-orders-source.ts` and preserve its generated contract
 - [ ] Inspect emitted message type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect graph result type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
+
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/analytics-orders-source.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task6.md — AnalyticsOrdersSource — TypeScript — done`

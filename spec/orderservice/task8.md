@@ -31,6 +31,7 @@ When no request deadline exists, use the configured duration itself. Never wait 
 - [ ] Open `orderservice/src/internal/functions/soft-deadline.ts` and preserve its generated contract
 - [ ] Inspect input type `Order` in `orderservice/src/internal/types/order.ts`
 - [ ] Inspect output type `Order` in `orderservice/src/internal/types/order.ts`
+
 - [ ] Implement meaningful assertions in `orderservice/test/functions/soft-deadline.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] orderservice/task8.md — SoftDeadline — TypeScript — done`

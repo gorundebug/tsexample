@@ -22,6 +22,7 @@ Paths and commands below are relative to the generated project root.
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `automationservice/src/internal/functions/fanout-activity-b-endpoint-source.ts` and preserve its generated contract
+
 - [ ] Implement meaningful assertions in `automationservice/test/functions/fanout-activity-b-endpoint-source.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] automationservice/task6.md — FanoutActivityBEndpointSource — TypeScript — done`

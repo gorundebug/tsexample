@@ -32,6 +32,7 @@ Consumers decode the event and mark its Kafka message processed only after the p
 - [ ] Open `orderservice/src/internal/functions/order-processed-endpoint-sink.ts` and preserve its generated contract
 - [ ] Inspect input type `OrderProcessed` in `model_ts/src/types/order-processed.ts`
 - [ ] Inspect output type `OrderProcessed` in `model_ts/src/types/order-processed.ts`
+
 - [ ] Implement meaningful assertions in `orderservice/test/functions/order-processed-endpoint-sink.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] orderservice/task1.md — OrderProcessedEndpointSink — TypeScript — done`

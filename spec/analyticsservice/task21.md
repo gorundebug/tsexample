@@ -30,6 +30,7 @@ Key the payment analytics event for the multi-way join.
 - [ ] Open `analyticsservice/src/internal/functions/key-payments-for-multi-join.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
+
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/key-payments-for-multi-join.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task21.md — KeyPaymentsForMultiJoin — TypeScript — done`

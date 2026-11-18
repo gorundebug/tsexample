@@ -30,6 +30,7 @@ Validate the terminal event emitted after three passes through the feedback cycl
 - [ ] Open `analyticsservice/src/internal/functions/cycle-analytics-result-sink.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
+
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/cycle-analytics-result-sink.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task10.md — CycleAnalyticsResultSink — TypeScript — done`

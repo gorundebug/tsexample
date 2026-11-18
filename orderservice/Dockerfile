@@ -16,6 +16,7 @@ ARG GIT_CONFIG_VALUE_0=
 ARG GIT_CONFIG_KEY_1=
 ARG GIT_CONFIG_VALUE_1=
 ARG DEPENDENCY_GITHUB_RAW_URL=https://github.com
+ARG DEPENDENCY_APACHE_ARCHIVE_URL=https://archive.apache.org
 ENV CI=true \
     NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY} \
     COREPACK_NPM_REGISTRY=${NPM_CONFIG_REGISTRY} \
@@ -25,6 +26,7 @@ ENV CI=true \
     GIT_CONFIG_KEY_1=${GIT_CONFIG_KEY_1} \
     GIT_CONFIG_VALUE_1=${GIT_CONFIG_VALUE_1}
 ENV DEPENDENCY_GITHUB_RAW_URL=${DEPENDENCY_GITHUB_RAW_URL}
+ENV DEPENDENCY_APACHE_ARCHIVE_URL=${DEPENDENCY_APACHE_ARCHIVE_URL}
 COPY dependency-download-mirrors.generated.env /etc/servicegen/dependency-download-mirrors.generated.env
 COPY dependency-download-mirrors.env /etc/servicegen/dependency-download-mirrors.env
 COPY dependency-download-env.generated.sh /usr/local/bin/servicegen-download-env
@@ -133,8 +135,11 @@ for (const manifest of manifests) {
 fs.writeFileSync(
   'pnpm-workspace.yaml',
   'packages:\n  - "."\n  - ".tsservicelib"\n  - "modules/*"\n' +
+    'overrides:\n' +
+    '  "rabbitmq-amqp-js-client>rhea": "3.0.5"\n' +
     'allowBuilds:\n' +
     "  '@confluentinc/kafka-javascript': true\n" +
+    "  pulsar-client: true\n" +
     "  '@swc/core': true\n" +
     '  esbuild: true\n' +
     '  protobufjs: false\n',

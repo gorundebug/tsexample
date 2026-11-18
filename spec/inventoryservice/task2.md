@@ -33,6 +33,7 @@ The example starts with SKU-001: 100, SKU-002: 50, and SKU-003: 25.
 - [ ] Open `inventoryservice/src/internal/functions/get-inventory-item-data.ts` and preserve its generated contract
 - [ ] Inspect input type `OrderItem` in `model_ts/src/types/order-item.ts`
 - [ ] Inspect output type `OrderItemResult` in `model_ts/src/types/order-item-result.ts`
+
 - [ ] Implement meaningful assertions in `inventoryservice/test/functions/get-inventory-item-data.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] inventoryservice/task2.md — GetInventoryItemData — TypeScript — done`
