@@ -26,7 +26,6 @@ Create a job message identifying the local scheduled firing.
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `automationservice/src/internal/functions/local-schedule-source.ts` and preserve its generated contract
-
 - [ ] Implement meaningful assertions in `automationservice/test/functions/local-schedule-source.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] automationservice/task31.md — LocalScheduleSource — TypeScript — done`

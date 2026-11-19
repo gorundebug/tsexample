@@ -11,17 +11,20 @@ import type { ServiceInfrastructureMakers } from "./infrastructure-makers.genera
 import { DataConnectorIds } from "../config/config.generated.js";
 
 export class ServiceConnectors {
+
   public inventoryServiceApiGrpcDataSource: GrpcJsDataSource | undefined;
 
   public makerCalls(context: MessageContext, config: Config, environment: ServiceEnvironment,
     makers: ServiceInfrastructureMakers, invokeMaker: <T>(maker: () => Promise<T>) => Promise<T>): Promise<void>[] {
     return [
+
       invokeMaker(async () => {
         this.inventoryServiceApiGrpcDataSource = await makers.inventoryServiceApiGrpcDataSource(context, environment, config.named.dataConnectors.inventoryServiceApi);
       }),
     ];
   }
   public bind(environment: ServiceEnvironment): void {
+
     if (this.inventoryServiceApiGrpcDataSource === undefined) throw new Error("inventoryServiceApiGrpcDataSource maker returned no data source");
     environment.addDataSource(this.inventoryServiceApiGrpcDataSource);
   }

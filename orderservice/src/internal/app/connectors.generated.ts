@@ -13,12 +13,14 @@ import type { ServiceInfrastructureMakers } from "./infrastructure-makers.genera
 import { DataConnectorIds } from "../config/config.generated.js";
 
 export class ServiceConnectors {
+
   public orderServiceApiHttpDataSource: NodeHttpDataSource | undefined;
   public inventoryServiceApiGrpcDataSink: GrpcJsDataSink | undefined;
 
   public makerCalls(context: MessageContext, config: Config, environment: ServiceEnvironment,
     makers: ServiceInfrastructureMakers, invokeMaker: <T>(maker: () => Promise<T>) => Promise<T>): Promise<void>[] {
     return [
+
       invokeMaker(async () => {
         this.orderServiceApiHttpDataSource = await makers.orderServiceApiHttpDataSource(context, environment, config.named.dataConnectors.orderServiceApi);
       }),
@@ -28,6 +30,7 @@ export class ServiceConnectors {
     ];
   }
   public bind(environment: ServiceEnvironment): void {
+
     if (this.orderServiceApiHttpDataSource === undefined) throw new Error("orderServiceApiHttpDataSource maker returned no data source");
     environment.addDataSource(this.orderServiceApiHttpDataSource);
     if (this.inventoryServiceApiGrpcDataSink === undefined) throw new Error("inventoryServiceApiGrpcDataSink maker returned no data sink");

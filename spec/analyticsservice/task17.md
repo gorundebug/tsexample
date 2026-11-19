@@ -28,7 +28,6 @@ Join matching order and payment analytics events and emit their combined total.
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `analyticsservice/src/internal/functions/join-order-payment-analytics.ts` and preserve its generated contract
 - [ ] Inspect output type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
-
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/join-order-payment-analytics.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task17.md — JoinOrderPaymentAnalytics — TypeScript — done`

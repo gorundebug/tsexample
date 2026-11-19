@@ -26,7 +26,6 @@ Apply the ordinary local Delay inside an Activity started by Temporal Schedule.
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `automationservice/src/internal/functions/scheduled-activity-pause.ts` and preserve its generated contract
-
 - [ ] Implement meaningful assertions in `automationservice/test/functions/scheduled-activity-pause.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] automationservice/task28.md — ScheduledActivityPause — TypeScript — done`

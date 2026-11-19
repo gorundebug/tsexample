@@ -30,7 +30,6 @@ Validate and record analytics results routed to the standard Case branch.
 - [ ] Open `analyticsservice/src/internal/functions/standard-analytics-sink.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
 - [ ] Inspect output type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
-
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/standard-analytics-sink.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task14.md — StandardAnalyticsSink — TypeScript — done`

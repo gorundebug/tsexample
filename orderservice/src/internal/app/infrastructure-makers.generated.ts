@@ -14,6 +14,7 @@ import { ServiceClients } from "./clients.generated.js";
 import { ServiceServers } from "./servers.generated.js";
 import { ServiceConnectors } from "./connectors.generated.js";
 export interface ServiceInfrastructureMakers {
+
   serviceHttpServer: (
     context: MessageContext,
     environment: ServiceEnvironment,
@@ -40,6 +41,7 @@ function construct<T>(factory: () => T): Promise<T> {
 
 export function defaultInfrastructureMakers(): ServiceInfrastructureMakers {
   return {
+
     serviceHttpServer: (_context, environment, _config) =>
       construct(() => new ServiceHTTPServer(() => environment.serviceConfig())),
     orderServiceApiHttpDataSource: (_context, environment, config) =>

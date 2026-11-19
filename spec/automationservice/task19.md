@@ -26,7 +26,6 @@ Record Activity progress with DurableCallHeartbeat and return the processed job 
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `automationservice/src/internal/functions/process-activity-job.ts` and preserve its generated contract
-
 - [ ] Implement meaningful assertions in `automationservice/test/functions/process-activity-job.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] automationservice/task19.md — ProcessActivityJob — TypeScript — done`

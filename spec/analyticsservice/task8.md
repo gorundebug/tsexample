@@ -30,7 +30,6 @@ Produce a deterministic shipment analytics event for the canonical multi-way joi
 - [ ] Open `analyticsservice/src/internal/functions/analytics-shipments-source.ts` and preserve its generated contract
 - [ ] Inspect emitted message type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect graph result type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
-
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/analytics-shipments-source.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task8.md — AnalyticsShipmentsSource — TypeScript — done`

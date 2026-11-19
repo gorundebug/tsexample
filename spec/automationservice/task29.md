@@ -26,7 +26,6 @@ Use the official Temporal Workflow timer for a scheduled Workflow.
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `automationservice/src/internal/functions/scheduled-workflow-pause.ts` and preserve its generated contract
-
 - [ ] Implement meaningful assertions in `automationservice/test/functions/scheduled-workflow-pause.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] automationservice/task29.md — ScheduledWorkflowPause — TypeScript — done`

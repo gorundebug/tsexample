@@ -30,7 +30,6 @@ Invoke the service-local analytics SubStream and emit its returned result.
 - [ ] Open `analyticsservice/src/internal/functions/invoke-analytics-substream.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect output type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
-
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/invoke-analytics-substream.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task26.md — InvokeAnalyticsSubstream — TypeScript — done`

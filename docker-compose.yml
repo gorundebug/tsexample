@@ -20,7 +20,7 @@ services:
         GIT_CONFIG_KEY_1: ${GIT_CONFIG_KEY_1:-}
         GIT_CONFIG_VALUE_1: ${GIT_CONFIG_VALUE_1:-}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.182}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.183}"
     command:
       - --config
       - /app/config/config.yaml
@@ -66,7 +66,7 @@ services:
         GIT_CONFIG_KEY_1: ${GIT_CONFIG_KEY_1:-}
         GIT_CONFIG_VALUE_1: ${GIT_CONFIG_VALUE_1:-}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.182}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.183}"
     command:
       - --config
       - /app/config/config.yaml
@@ -113,7 +113,7 @@ services:
         GIT_CONFIG_KEY_1: ${GIT_CONFIG_KEY_1:-}
         GIT_CONFIG_VALUE_1: ${GIT_CONFIG_VALUE_1:-}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.182}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.183}"
     command:
       - --config
       - /app/config/config.yaml
@@ -156,7 +156,7 @@ services:
         GIT_CONFIG_KEY_1: ${GIT_CONFIG_KEY_1:-}
         GIT_CONFIG_VALUE_1: ${GIT_CONFIG_VALUE_1:-}
       additional_contexts:
-        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.182}"
+        tsservicelib-source: "${TSSERVICELIB_SOURCE_CONTEXT:-https://github.com/gorundebug/tsservicelib.git#v0.2.183}"
     command:
       - --config
       - /app/config/config.yaml

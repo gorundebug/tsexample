@@ -40,7 +40,6 @@ If the inventory call fails, the caller returns a non-reserved PROCESSING_ERROR 
 - [ ] Open `inventoryservice/src/internal/functions/process-order-item-source.ts` and preserve its generated contract
 - [ ] Inspect emitted message type `OrderItem` in `model_ts/src/types/order-item.ts`
 - [ ] Inspect graph result type `OrderItemResult` in `model_ts/src/types/order-item-result.ts`
-
 - [ ] Implement meaningful assertions in `inventoryservice/test/functions/process-order-item-source.test.ts`
 - [ ] Verify the endpoint/result lifecycle, including completion and error paths
 - [ ] Re-read this checklist

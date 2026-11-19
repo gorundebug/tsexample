@@ -26,7 +26,6 @@ Return Activity A's typed result before the Workflow Split.
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `automationservice/src/internal/functions/process-fanout-activity-a.ts` and preserve its generated contract
-
 - [ ] Implement meaningful assertions in `automationservice/test/functions/process-fanout-activity-a.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] automationservice/task20.md — ProcessFanoutActivityA — TypeScript — done`

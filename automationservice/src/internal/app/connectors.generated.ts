@@ -19,12 +19,15 @@ import { DataConnectorIds } from "../config/config.generated.js";
 
 export class ServiceConnectors {
 
+
   public makerCalls(context: MessageContext, config: Config, environment: ServiceEnvironment,
     makers: ServiceInfrastructureMakers, invokeMaker: <T>(maker: () => Promise<T>) => Promise<T>): Promise<void>[] {
     return [
+
     ];
   }
   public bind(environment: ServiceEnvironment): void {
+
   }
   public initRuntimeConnectors(environment: ServiceEnvironment): void {
   makeTemporalConnector(DataConnectorIds.TEMPORAL, environment, {

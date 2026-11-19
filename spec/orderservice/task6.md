@@ -31,7 +31,6 @@ Do not add item results at this stage; results received before the timeout are i
 - [ ] Open `orderservice/src/internal/functions/map-to-order-state.ts` and preserve its generated contract
 - [ ] Inspect input type `Order` in `orderservice/src/internal/types/order.ts`
 - [ ] Inspect output type `OrderState` in `orderservice/src/internal/types/order-state.ts`
-
 - [ ] Implement meaningful assertions in `orderservice/test/functions/map-to-order-state.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] orderservice/task6.md — MapToOrderState — TypeScript — done`

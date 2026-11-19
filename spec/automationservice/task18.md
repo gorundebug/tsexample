@@ -26,7 +26,6 @@ Preserve the result returned through the on-demand Workflow endpoint.
 
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `automationservice/src/internal/functions/observe-workflow-result.ts` and preserve its generated contract
-
 - [ ] Implement meaningful assertions in `automationservice/test/functions/observe-workflow-result.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] automationservice/task18.md — ObserveWorkflowResult — TypeScript — done`

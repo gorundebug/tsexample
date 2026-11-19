@@ -28,7 +28,6 @@ Combine matching order, payment, and shipment analytics events.
 - [ ] Read [`spec/rules.md`](../rules.md), especially the `TypeScript` section
 - [ ] Open `analyticsservice/src/internal/functions/multi-join-analytics-events.ts` and preserve its generated contract
 - [ ] Inspect output type `AnalyticsResult` in `analyticsservice/src/internal/types/analytics-result.ts`
-
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/multi-join-analytics-events.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task23.md — MultiJoinAnalyticsEvents — TypeScript — done`

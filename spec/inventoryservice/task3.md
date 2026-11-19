@@ -31,7 +31,6 @@ Preserve the order and item identity and requested quantity, and record the fail
 - [ ] Open `inventoryservice/src/internal/functions/get-inventory-item-error.ts` and preserve its generated contract
 - [ ] Inspect input type `InventoryFailure` in `inventoryservice/src/internal/types/inventory-failure.ts`
 - [ ] Inspect output type `OrderItemResult` in `model_ts/src/types/order-item-result.ts`
-
 - [ ] Implement meaningful assertions in `inventoryservice/test/functions/get-inventory-item-error.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] inventoryservice/task3.md — GetInventoryItemError — TypeScript — done`

@@ -30,7 +30,6 @@ Key the shipment analytics event for the multi-way join.
 - [ ] Open `analyticsservice/src/internal/functions/key-shipments-for-multi-join.ts` and preserve its generated contract
 - [ ] Inspect input type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
 - [ ] Inspect output type `AnalyticsEvent` in `analyticsservice/src/internal/types/analytics-event.ts`
-
 - [ ] Implement meaningful assertions in `analyticsservice/test/functions/key-shipments-for-multi-join.test.ts`
 - [ ] Re-read this checklist
 - [ ] Append to `spec/progress.md`: `- [x] analyticsservice/task22.md — KeyShipmentsForMultiJoin — TypeScript — done`

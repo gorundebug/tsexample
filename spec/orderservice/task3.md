@@ -41,7 +41,6 @@ Calculate the total from processed item prices, falling back to the submitted to
 - [ ] Open `orderservice/src/internal/functions/process-order-source.ts` and preserve its generated contract
 - [ ] Inspect emitted message type `Order` in `orderservice/src/internal/types/order.ts`
 - [ ] Inspect graph result type `OrderState` in `orderservice/src/internal/types/order-state.ts`
-
 - [ ] Implement meaningful assertions in `orderservice/test/functions/process-order-source.test.ts`
 - [ ] Verify the endpoint/result lifecycle, including completion and error paths
 - [ ] Re-read this checklist

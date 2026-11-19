@@ -5,7 +5,7 @@ import {
   makeCaseStream, makeDelayStream, makeFilterStream, makeFlatMapIterableStream,
   makeFlatMapStream, makeInputStream, makeJoinStream, makeKeyByStream,
   makeLinkStream, makeMapStream, makeMergeStream, makeMultiJoinLink,
-  makeMultiJoinStream, makeProcessStream, makeSinkStream,
+  makeMultiJoinStream, makeProcessStream, makeQueryStream, makeSinkStream,
   makeSinkStreamWithResult, makeSplitStream, makeSubStream, makeWhenStream,
 } from "@gorundebug/tsservicelib/operators";
 
